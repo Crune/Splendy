@@ -17,9 +17,30 @@ public class RestService {
 	@Autowired
 	private SampleMapper demoMapper;
 
-
-	@RequestMapping(value = "/test/{name}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(
+			value = "/test/{test}",
+			method = RequestMethod.GET,
+			produces = "application/json")
 	public @ResponseBody TestVO test(@PathVariable String name) {
+		TestVO vo = null;
+		try {
+			vo = demoMapper.get(name);
+			/*
+			log.info("result:\t"+vo);
+			vo.setName("161028");
+			demoMapper.update(vo);
+			*/
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+
+	@RequestMapping(
+			value = "/test.do",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody TestVO testdo(String name) {
 		TestVO vo = null;
 		try {
 			vo = demoMapper.get(name);
