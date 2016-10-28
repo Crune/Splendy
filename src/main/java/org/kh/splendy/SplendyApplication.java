@@ -32,7 +32,7 @@ public class SplendyApplication {
 		}
 	}
 
-	@Bean
+	@Bean //DB연결
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
