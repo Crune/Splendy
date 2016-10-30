@@ -2,7 +2,7 @@ spring:
 
     mvc:
         view:
-            prefix: /WEB-INF/view/
+            prefix: /view/
             suffix: .jsp
 
     datasource:
