@@ -4,20 +4,20 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.kh.splendy.sample.SampleMapper">
-	<resultMap id="testVo" type="org.kh.splendy.vo.TestVO">
+	<resultMap id="testVo" type="org.kh.splendy.sample.TestVO">
 		<result column="id" property="id" />
 		<result column="pw" property="pw" />
 		<result column="age" property="age" />
 		<result column="name" property="name" />
 		<result column="reg" property="reg" />
 	</resultMap>
-	<insert id="set" parameterType="org.kh.splendy.vo.TestVO">
+	<insert id="set" parameterType="org.kh.splendy.sample.TestVO">
 	<![CDATA[
 		insert into test (id, pw, age, name, reg) values
 		(#{id},#{pw},#{age},#{name},sysdate)
 	]]>
 	</insert>	
-	<insert id="update" parameterType="org.kh.splendy.vo.TestVO">
+	<insert id="update" parameterType="org.kh.splendy.sample.TestVO">
 	<![CDATA[
 		UPDATE
 			test

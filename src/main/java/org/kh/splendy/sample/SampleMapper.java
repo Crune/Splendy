@@ -1,7 +1,6 @@
 package org.kh.splendy.sample;
 
 import org.apache.ibatis.annotations.*;
-import org.kh.splendy.vo.TestVO;
 
 /**
  * MyBatis 사용법을 위한 샘플 인터페이스

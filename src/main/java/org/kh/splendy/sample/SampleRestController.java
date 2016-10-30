@@ -1,6 +1,5 @@
 package org.kh.splendy.sample;
 
-import org.kh.splendy.vo.TestVO;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
