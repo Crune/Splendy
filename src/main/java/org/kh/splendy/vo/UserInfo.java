@@ -2,9 +2,7 @@ package org.kh.splendy.vo;
 
 import java.sql.Date;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
-
-public class UserInfo extends User {
+public class UserInfo {
 
 	private int id;
 	private String nickname;
