@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan(basePackages = { "org.kh.splendy.sample" }) // xml의 namespace
+@MapperScan(basePackages = { "org.kh.splendy.sample" })
 @RestController
 public class SampleRestController {
 
 	@Autowired
-	private SampleMapper demoMapper;
+	private SampleMapper sampleMapper;
 
 	@RequestMapping(
 			value = "/test/{test}",
@@ -22,7 +22,7 @@ public class SampleRestController {
 	public @ResponseBody TestVO test(@PathVariable String name) {
 		TestVO vo = null;
 		try {
-			vo = demoMapper.get(name);
+			vo = sampleMapper.get(name);
 			/*
 			log.info("result:\t"+vo);
 			vo.setName("161028");
@@ -41,7 +41,7 @@ public class SampleRestController {
 	public @ResponseBody TestVO testdo(String name) {
 		TestVO vo = null;
 		try {
-			vo = demoMapper.get(name);
+			vo = sampleMapper.get(name);
 			/*
 			log.info("result:\t"+vo);
 			vo.setName("161028");
@@ -61,7 +61,7 @@ public class SampleRestController {
 													//@ResponseBody annotation을 사용해주어야 한다.
 		TestVO vo = null;
 		try {
-			vo = demoMapper.get(name);
+			vo = sampleMapper.get(name);
 			/*
 			log.info("result:\t"+vo);
 			vo.setName("161028");
