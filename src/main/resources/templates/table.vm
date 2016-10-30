@@ -1,0 +1,1230 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+table {width:100%;}
+th {background-color:#ccc;}
+div {margin-bottom:30px;}
+</style>
+</head>
+<body>
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">사용자</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">USER</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">U_ID</td>
+<td colSpan="1">사용자키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">U_NICK</td>
+<td colSpan="1">닉네임</td>
+<td colSpan="1">이름</td>
+<td colSpan="1">VARCHAR2(50)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">U_EMAIL</td>
+<td colSpan="1">E-Mail</td>
+<td colSpan="1">이메일</td>
+<td colSpan="1">VARCHAR2(40)</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">U_PW</td>
+<td colSpan="1">비밀번호</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">5</td>
+<td colSpan="1">U_ENABLED</td>
+<td colSpan="1">사용가능</td>
+<td colSpan="1">논리값</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">1</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">6</td>
+<td colSpan="1">U_N_LOCKED</td>
+<td colSpan="1">!잠김</td>
+<td colSpan="1">논리값</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">1</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">7</td>
+<td colSpan="1">U_N_EXPIRED</td>
+<td colSpan="1">!만료</td>
+<td colSpan="1">논리값</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">1</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">8</td>
+<td colSpan="1">U_N_CREDENT</td>
+<td colSpan="1">!연동만료</td>
+<td colSpan="1">논리값</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">1</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">9</td>
+<td colSpan="1">U_REG</td>
+<td colSpan="1">등록일</td>
+<td colSpan="1">일시</td>
+<td colSpan="1">DATE</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">sysdate</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">게임방</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">ROOM</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">RM_ID</td>
+<td colSpan="1">게임목록키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">RM_TITLE</td>
+<td colSpan="1">제목</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">RM_PW</td>
+<td colSpan="1">비밀번호</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">RM_INFO</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">CLOB</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">5</td>
+<td colSpan="1">RM_PL_LIMITS</td>
+<td colSpan="1">인원제한</td>
+<td colSpan="1">숫자</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">6</td>
+<td colSpan="1">RM_STATE</td>
+<td colSpan="1">상태</td>
+<td colSpan="1">열거형</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">참가자</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">PLAYER</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">참가번호는 참가일 순</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">U_ID</td>
+<td colSpan="1">사용자키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">RM_ID</td>
+<td colSpan="1">게임목록키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">PL_STATE</td>
+<td colSpan="1">상태</td>
+<td colSpan="1">열거형</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">PL_REG</td>
+<td colSpan="1">참가일</td>
+<td colSpan="1">일시</td>
+<td colSpan="1">DATE</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">sysdate</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">규칙</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">TABLE3</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">COL</td>
+<td colSpan="1">규칙키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">COL2</td>
+<td colSpan="1">규칙이름</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">COL3</td>
+<td colSpan="1">규칙설명</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">CLOB</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">카드</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">CARD</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">CD_ID</td>
+<td colSpan="1">카드키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">CD_TYPE</td>
+<td colSpan="1">분류</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">CD_NAME</td>
+<td colSpan="1">이름</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">CD_IMG</td>
+<td colSpan="1">이미지</td>
+<td colSpan="1">웹주소</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">5</td>
+<td colSpan="1">CD_INFO</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">CLOB</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">덱</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">DECK</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">DK_ID</td>
+<td colSpan="1">덱키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">DK_TYPE</td>
+<td colSpan="1">분류</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">DK_NAME</td>
+<td colSpan="1">덱이름</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">DK_INFO</td>
+<td colSpan="1">덱설명</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">CLOB</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">카드목록</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">TABLE6</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">CD_ID</td>
+<td colSpan="1">카드키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">분류정보</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">TABLE7</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">COL</td>
+<td colSpan="1">규칙키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">COL4</td>
+<td colSpan="1">종류</td>
+<td colSpan="1">열거형</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">COL2</td>
+<td colSpan="1">분류</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">COL3</td>
+<td colSpan="1">필수여부</td>
+<td colSpan="1">논리값</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">1</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">코인</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">COIN</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">CN_ID</td>
+<td colSpan="1">코인키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">CN_TYPE</td>
+<td colSpan="1">분류</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">CN_NAME</td>
+<td colSpan="1">이름</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">CN_IMG</td>
+<td colSpan="1">이미지</td>
+<td colSpan="1">웹주소</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">5</td>
+<td colSpan="1">CN_INFO</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">CLOB</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">게임 컴포넌트</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">TABLE9</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">COL</td>
+<td colSpan="1">규칙키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">COL2</td>
+<td colSpan="1">종류</td>
+<td colSpan="1">N/A</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">COL3</td>
+<td colSpan="1">키</td>
+<td colSpan="1">N/A</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">사용코인</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">TABLE10</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">COL2</td>
+<td colSpan="1">규칙키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">COL</td>
+<td colSpan="1">분류키</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">사용덱</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">TABLE11</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">COL</td>
+<td colSpan="1">규칙키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">COL2</td>
+<td colSpan="1">분류키</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">진행정보</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">LOG</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">RM_ID</td>
+<td colSpan="1">게임목록키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">L_ID</td>
+<td colSpan="1">정보키</td>
+<td colSpan="1">숫자</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">L_TYPE</td>
+<td colSpan="1">정보종류</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">L_INFO</td>
+<td colSpan="1">정보</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">CLOB</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">5</td>
+<td colSpan="1">L_REG</td>
+<td colSpan="1">등록일시</td>
+<td colSpan="1">일시</td>
+<td colSpan="1">DATE</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">sysdate</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">메시지</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">MSG</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">작성자 NULL은 시스템</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">M_ID</td>
+<td colSpan="1">메시지키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">RM_ID</td>
+<td colSpan="1">게임목록키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">FK</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">M_TYPE</td>
+<td colSpan="1">분류</td>
+<td colSpan="1">열거형</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">M_AUTHOR</td>
+<td colSpan="1">작성</td>
+<td colSpan="1">문자</td>
+<td colSpan="1">VARCHAR2(255)</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">5</td>
+<td colSpan="1">M_CONT</td>
+<td colSpan="1">내용</td>
+<td colSpan="1">설명</td>
+<td colSpan="1">CLOB</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">6</td>
+<td colSpan="1">M_REG</td>
+<td colSpan="1">작성일시</td>
+<td colSpan="1">일시</td>
+<td colSpan="1">DATE</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">sysdate</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">컴포넌트 이동 이력</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">MOVE</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">MV_ID</td>
+<td colSpan="1">이동이력키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">RM_ID</td>
+<td colSpan="1">게임목록키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">FK</td>
+</tr>
+<tr>
+<td colSpan="1">3</td>
+<td colSpan="1">MV_FROM</td>
+<td colSpan="1">시작점</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">4</td>
+<td colSpan="1">MV_TO</td>
+<td colSpan="1">종료점</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">5</td>
+<td colSpan="1">CD_ID</td>
+<td colSpan="1">카드키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">FK</td>
+</tr>
+<tr>
+<td colSpan="1">6</td>
+<td colSpan="1">CN_ID</td>
+<td colSpan="1">코인키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">FK</td>
+</tr>
+<tr>
+<td colSpan="1">7</td>
+<td colSpan="1">MV_NUM</td>
+<td colSpan="1">이동수량</td>
+<td colSpan="1">숫자</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+<tr>
+<td colSpan="1">8</td>
+<td colSpan="1">MV_REG</td>
+<td colSpan="1">이동일시</td>
+<td colSpan="1">일시</td>
+<td colSpan="1">DATE</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">sysdate</td>
+<td colSpan="1">&nbsp;</td>
+</tr>
+</table>
+</div>
+<p />
+<div>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">엔티티 타입명</th>
+<td colSpan="2">카드목록</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성일</th>
+<td colSpan="2">2016 10 30</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블명</th>
+<td colSpan="2">CARDS</td>
+<th colSpan="2" style="background-color: #CCCCCC;">작성자</th>
+<td colSpan="2">eXERD</td>
+</tr>
+<tr>
+<th colSpan="2" style="background-color: #CCCCCC;">테이블 설명</th>
+<td colSpan="6">&nbsp;</td>
+</tr>
+</table>
+<table border=1 cellspacing="0" bordercolor="#000000">
+<tr>
+<th colSpan="1" style="background-color: #CCCCCC;">번호</th>
+<th colSpan="1" style="background-color: #CCCCCC;">컬럼명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">속성명</th>
+<th colSpan="1" style="background-color: #CCCCCC;">도메인</th>
+<th colSpan="1" style="background-color: #CCCCCC;">데이터 타입</th>
+<th colSpan="1" style="background-color: #CCCCCC;">NULL 여부</th>
+<th colSpan="1" style="background-color: #CCCCCC;">기본값</th>
+<th colSpan="1" style="background-color: #CCCCCC;">KEY</th>
+</tr>
+<tr>
+<td colSpan="1">1</td>
+<td colSpan="1">DK_ID</td>
+<td colSpan="1">덱키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+<tr>
+<td colSpan="1">2</td>
+<td colSpan="1">CD_ID</td>
+<td colSpan="1">카드키</td>
+<td colSpan="1">시퀸스</td>
+<td colSpan="1">INTEGER</td>
+<td colSpan="1">NOT NULL</td>
+<td colSpan="1">&nbsp;</td>
+<td colSpan="1">PK, FK</td>
+</tr>
+</table>
+</div>
+<p />
+</body>
+</html>

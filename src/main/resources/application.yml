@@ -1,0 +1,14 @@
+spring:
+
+    mvc:
+        view:
+            prefix: /WEB-INF/view/
+            suffix: .jsp
+
+    datasource:
+        url: jdbc:oracle:thin:@khstudy.iptime.org:7000:orcl
+        username: web19
+        password: web19
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+
+server.port: 80

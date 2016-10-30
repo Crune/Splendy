@@ -1,8 +1,17 @@
-package org.kh.splendy;
+package org.kh.splendy.sample;
 
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.TestVO;
 
+/**
+ * MyBatis 사용법을 위한 샘플 인터페이스
+ * 메서드 위에 어노테이션들이 붙지 않은 메서드들은 xml의 정보를 사용한다.
+ * 한줄짜리 sql문은 어노테이션으로 사용하기 바라며
+ * 샘플은 샘플로만 사용하고 따로 인터페이스를 생성하기 바람.
+ * 
+ * @author 최윤
+ *
+ */
 public interface SampleMapper {
 
 /*

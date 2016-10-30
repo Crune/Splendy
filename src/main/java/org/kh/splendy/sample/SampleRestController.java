@@ -1,6 +1,5 @@
-package org.kh.splendy.controller;
+package org.kh.splendy.sample;
 
-import org.kh.splendy.SampleMapper;
 import org.kh.splendy.vo.TestVO;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan(basePackages = { "org.kh.splendy" })
+@MapperScan(basePackages = { "org.kh.splendy.sample" }) // xml의 namespace
 @RestController
-public class RestService {
+public class SampleRestController {
 
 	@Autowired
 	private SampleMapper demoMapper;
