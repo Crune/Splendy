@@ -1,4 +1,4 @@
-package org.kh.splendy.vo;
+package org.kh.splendy.sample;
 
 import java.sql.Timestamp;
 

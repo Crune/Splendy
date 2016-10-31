@@ -1,0 +1,17 @@
+spring:
+
+    # JSP 파일을 사용하기 위한 설정
+    mvc:
+        view:
+            prefix: /view/
+            suffix: .jsp
+
+    # DB를 사용하기 위한 설정
+    datasource:
+        url: jdbc:oracle:thin:@khstudy.iptime.org:7000:orcl
+        username: web19
+        password: web19
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+
+#Spring Boot App 시작 포트 설정
+server.port: 80

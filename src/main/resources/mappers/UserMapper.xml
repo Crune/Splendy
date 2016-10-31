@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kh.splendy.mapper.UserMapper">
+	<resultMap id="testVo" type="org.kh.splendy.vo.UserInfo">
+		<result column="U_ID" property="id" />
+		<result column="U_NICK" property="nickname" />
+		<result column="U_EMAIL" property="email" />
+		<result column="U_PW" property="password" />
+		<result column="U_ENABLED" property="enabled" />
+		<result column="U_N_LOCKED" property="notLocked" />
+		<result column="U_N_EXPIRED" property="notExpired" />
+		<result column="U_N_CREDENT" property="notCredential" />
+		<result column="U_REG" property="reg" />
+	</resultMap>
+</mapper>
