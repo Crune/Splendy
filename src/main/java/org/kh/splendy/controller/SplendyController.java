@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * 기본 컨트롤러
+ */
 @Configuration
 @EnableTransactionManagement
 @MapperScan(basePackages = { "org.kh.splendy.mapper" })

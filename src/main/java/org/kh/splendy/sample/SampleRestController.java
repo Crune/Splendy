@@ -16,7 +16,7 @@ public class SampleRestController {
 	private SampleMapper sampleMapper;
 
 	@RequestMapping(
-			value = "/test/{test}",
+			value = "/s/{test}",
 			method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody TestVO test(@PathVariable String name) {
@@ -35,7 +35,7 @@ public class SampleRestController {
 	}
 	
 	@RequestMapping(
-			value = "/test.do",
+			value = "/s/test.do",
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody TestVO testdo(String name) {
@@ -54,7 +54,7 @@ public class SampleRestController {
 	}
 	
 	@RequestMapping(
-			value = "/test.min",
+			value = "/s/test.min",
 			method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody TestVO testmin(String name) { //jsp형식이 아닌 다른 결과 값을 보낼 때  

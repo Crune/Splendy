@@ -11,7 +11,7 @@ public class SampleController {
 	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
 
     
-	@RequestMapping("/")
+	@RequestMapping("/s/")
 	public String index() {
 		return "index";
 	}

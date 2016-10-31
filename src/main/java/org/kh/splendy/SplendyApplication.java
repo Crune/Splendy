@@ -32,7 +32,7 @@ public class SplendyApplication {
 	}
 
 	/**
-	 * 
+	 * MyBatis 사용을 위한 SqlSessionFactory 설정
 	 * Bean으로 설정되어 있어서 다른 클래스에선 어노테이션으로 연동시키면 된다.
 	 * 
 	 * 동작
