@@ -52,7 +52,12 @@ public class SampleRestController {
 		}
 		return vo;
 	}
-	
+
+	@RequestMapping("/s/aws/")
+	public @ResponseBody String aws() {
+		String result = "없다";
+		return result;
+	}
 	@RequestMapping(
 			value = "/s/test.min",
 			method = RequestMethod.GET,
