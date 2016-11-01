@@ -151,6 +151,21 @@
 			<artifactId>spring-websocket</artifactId>
 			
 		</dependency>
+		<!-- min -->
+		<!-- <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency> -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-facebook</artifactId>
+            <version>1.1.1.RELEASE</version>
+        </dependency>
+        <!-- <dependency>
+   			<groupId>org.springframework.boot</groupId>
+   			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency> -->
+		<!-- /min -->
 	</dependencies>
 
 	<build>

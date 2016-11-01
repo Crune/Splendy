@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * 기본 컨트롤러
@@ -18,11 +20,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class SplendyController {
 
 	private static final Logger log = LoggerFactory.getLogger(SplendyController.class);
-/*
+
 	@RequestMapping("/")
 	public String index() {
 		return "index";
 	}
-	*/
 	
 }

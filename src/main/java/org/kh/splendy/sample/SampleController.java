@@ -13,7 +13,7 @@ public class SampleController {
     
 	@RequestMapping("/s/")
 	public String index() {
-		return "index";
+		return "sample";
 	}
 	
 }
