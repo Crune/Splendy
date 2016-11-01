@@ -5,6 +5,10 @@ spring:
         view:
             prefix: /view/
             suffix: .jsp
+    social: 
+        facebook: 
+            appId: 1687598368235887
+            appSecret: 6cedf9fad691b370013d001c793907c4
 
     # DB를 사용하기 위한 설정
     datasource:
