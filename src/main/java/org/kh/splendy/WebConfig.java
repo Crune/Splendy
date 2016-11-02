@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.oauth2.OAuth2Parameters;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.socket.WebSocketHandler;
@@ -14,10 +15,11 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
-@Configuration
 /**
  * @EnableWebSocket -> webSocket을 사용하기 위해서 설정
  */
+@Configuration
+@EnableWebMvc
 @EnableWebSocket
 public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
 
@@ -25,10 +27,18 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
     private static final String GoogleClientSecret = "VR7RGj1x7ET3dG8eMUlMn_jj";
     @Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    	if (!registry.hasMappingForPattern("/webjars/**")) {
+            registry.addResourceHandler("/webjars/**").addResourceLocations(
+                    "classpath:/META-INF/resources/webjars/");
+        }
+        if (!registry.hasMappingForPattern("/**")) {
+            String RESOURCE_LOCATIONS = "/";
+			registry.addResourceHandler("/**").addResourceLocations(
+                    RESOURCE_LOCATIONS );
+        }
 		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
 		registry.addResourceHandler("/img/**").addResourceLocations("/img/");
-		
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 		super.addResourceHandlers(registry);
 	}

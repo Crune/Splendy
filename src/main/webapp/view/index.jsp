@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <link rel='stylesheet' href='/css/default.css'>
 <link rel='stylesheet' href='/js/default.js'>
-<link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css'>
+<link rel='stylesheet' href='/webjars/bootstrap/dist/css/bootstrap.min.css'>
 </head>
 <body>
 	<img src="<c:url value="/img/unnamed.png" />" />
