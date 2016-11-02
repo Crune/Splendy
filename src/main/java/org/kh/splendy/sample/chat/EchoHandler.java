@@ -21,7 +21,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	public EchoHandler() {
 		connectedUsers = new ArrayList<WebSocketSession>();
 	}
-	/*	클라이언트가 서버와 연결 종료
+	/**	클라이언트가 서버와 연결 종료
 	 * 
 	 * @param webSocketSession 연결을 끊은 클라이언트
 	 * @param CloseStatus 연결 상태 (확인 필요)	 
@@ -34,7 +34,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		super.afterConnectionClosed(session, status);
 	}
 	
-	/*	접속관련 Event Method
+	/**	접속관련 Event Method
 	 * @param WebSocketSession 접속한 사용자
 	 */
 	@Override
@@ -45,7 +45,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		super.afterConnectionEstablished(session);
 	}
 	
-	/*	2가지 이벤트 처리
+	/**	2가지 이벤트 처리
 	 * 	1.Send : 클라이언트가 서버에게 메시지를 보냄
 	 * 	2.Emit : 서버에 연결되어 있는 클라이언트들에게 메시지 보냄
 	 * 	@param WebSocketSession 메시지를 보낸 클라이언트

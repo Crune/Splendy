@@ -5,8 +5,7 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class UserInfo {
-
+public class UserCore {
 	private int id;
 	private String nickname;
 	private String email;
@@ -16,5 +15,4 @@ public class UserInfo {
 	private int notExpired;
 	private int notCredential;
 	private Date reg;
-
 }
