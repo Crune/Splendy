@@ -33,7 +33,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
 	 */
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(myHandler(), "/*/myHandler").addInterceptors(new HttpSessionHandshakeInterceptor());
+		registry.addHandler(myHandler(), "/myHandler").addInterceptors(new HttpSessionHandshakeInterceptor());
 	}
 	/**
 	 * myHandler()라는 Handler는 MyHandler클레스를 생성
