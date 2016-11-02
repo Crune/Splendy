@@ -17,6 +17,7 @@ public class SessionMapper {
 	 * @param session 접속한 클라이언트
 	 */
 	public static synchronized void add(WebSocketSession cSession) {
+		// TODO 사용자랑 연결 필요
 		websocketSessionMap.put(cSession.getId(), cSession);
 		for(Map.Entry<String, WebSocketSession> em : websocketSessionMap.entrySet()){
 			try {
