@@ -22,10 +22,13 @@ public class SessionMapper {
 		for(Map.Entry<String, WebSocketSession> em : websocketSessionMap.entrySet()){
 			try {
 				WebSocketSession session = em.getValue();
+				if(session.getUri().equals(cSession.getUri())){
 					if(session.isOpen()){
 						session.sendMessage(new TextMessage(cSession.getRemoteAddress().getHostName()+"님이 입장하셨습니다."));
 					}
+				}
 			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -41,14 +44,17 @@ public class SessionMapper {
 		for(Map.Entry<String, WebSocketSession> em : websocketSessionMap.entrySet()){
 				try {
 					WebSocketSession session = em.getValue();
+					if(session.getUri().equals(cSession.getUri())){
 						if(session.isOpen()){
 							synchronized (session) {
-								if(!session.getRemoteAddress().equals(cSession.getRemoteAddress())){
+								if(!session.getId().equals(cSession.getId())){
 									session.sendMessage(new TextMessage(cSession.getRemoteAddress().getHostName()+" : "+message));
-								} else { session.sendMessage(new TextMessage("나 : "+message)); }
+								} else { session.sendMessage(new TextMessage("me : "+message)); }
 							}
 						}
+					}	
 				} catch (IOException e) {
+					e.printStackTrace();
 				}
 		}
 	}	
