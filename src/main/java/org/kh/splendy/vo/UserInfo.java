@@ -16,6 +16,5 @@ public class UserInfo {
 	private int notExpired;
 	private int notCredential;
 	private Date reg;
-	
-	
+
 }
