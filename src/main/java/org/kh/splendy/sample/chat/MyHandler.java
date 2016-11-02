@@ -24,7 +24,6 @@ public class MyHandler extends TextWebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		log.info(session.getRemoteAddress().getHostName()+"님이 접속하셨습니다.");
 		SessionMapper.add(session);
-		
 	}
 	/**
 	 * 1. Send : 클라이언트가 서버에게 메세지 보냄
@@ -35,6 +34,7 @@ public class MyHandler extends TextWebSocketHandler {
 	 */
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+		log.info(session.getRemoteAddress().getHostName()+" : "+message.getPayload());
 		SessionMapper.sendAllForWebsocket(session,message.getPayload());
 	}
 	/**
@@ -44,10 +44,7 @@ public class MyHandler extends TextWebSocketHandler {
 	 */
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		log.info(session.getRemoteAddress().getHostName()+"님이 퇴장하셨습니다.");
 		SessionMapper.remove(session);
-	}
-	
-	@Override
-	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {		
 	}
 }

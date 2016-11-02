@@ -4,7 +4,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.kh.splendy.mapper.UserMapper">
-	<resultMap id="testVo" type="org.kh.splendy.vo.UserInfo">
+	<resultMap id="userVo" type="org.kh.splendy.vo.UserCore">
 		<result column="U_ID" property="id" />
 		<result column="U_NICK" property="nickname" />
 		<result column="U_EMAIL" property="email" />
