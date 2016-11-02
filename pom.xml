@@ -56,6 +56,23 @@
 			<optional>true</optional>
 		</dependency>
 		
+		<!-- min -->
+		<!-- <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency> -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-facebook</artifactId>
+            <version>1.1.1.RELEASE</version>
+        </dependency>
+        <!-- <dependency>
+   			<groupId>org.springframework.boot</groupId>
+   			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency> -->
+		<!-- /min -->
+		
+		
 		<!-- Spring Login 관련 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -133,15 +150,32 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
 			
-		</dependency>
-		
-		
+		</dependency>		
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-
+		
+		<!-- min -->
+		<!--
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-facebook</artifactId>
+            <version>1.1.1.RELEASE</version>
+        </dependency>
+        <!--
+        <dependency>
+   			<groupId>org.springframework.boot</groupId>
+   			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		-->
+		<!-- /min -->
 	</dependencies>
 
 	<build>
@@ -163,6 +197,17 @@
 			<name>in2p3</name>
 			<url>http://maven.in2p3.fr/</url>
 		</repository>
+		<!-- min -->
+		<repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <!-- /min -->
 	</repositories>
+
 
 </project>
