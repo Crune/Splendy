@@ -19,7 +19,6 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
  * @EnableWebSocket -> webSocket을 사용하기 위해서 설정
  */
 @Configuration
-@EnableWebMvc
 @EnableWebSocket
 public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
 
