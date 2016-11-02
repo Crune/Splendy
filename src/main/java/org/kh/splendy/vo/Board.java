@@ -2,6 +2,8 @@ package org.kh.splendy.vo;
 
 import java.sql.Timestamp;
 
+import lombok.Data;
+@Data
 public class Board {
 	private int bd_id; 
     private int u_id;
