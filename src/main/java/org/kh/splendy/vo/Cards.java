@@ -1,5 +1,9 @@
 package org.kh.splendy.vo;
 
-public class Cards {
+import lombok.Data;
 
+@Data
+public class Cards {
+	private int DeckId;
+	private int CardId;
 }

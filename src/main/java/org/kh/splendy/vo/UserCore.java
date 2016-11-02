@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class UserCore {
-
 	private int id;
 	private String nickname;
 	private String email;
@@ -16,5 +15,4 @@ public class UserCore {
 	private int notExpired;
 	private int notCredential;
 	private Date reg;
-
 }

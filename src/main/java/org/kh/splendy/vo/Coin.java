@@ -3,7 +3,7 @@ package org.kh.splendy.vo;
 import lombok.Data;
 
 @Data
-public class Card {
+public class Coin {
 	private int id;
 	private String type;
 	private String name;
