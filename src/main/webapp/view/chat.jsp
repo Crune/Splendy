@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css'>
+<link rel='stylesheet' href='/webjars/sockjs-client/sockjs.min.js'>
+<link rel='stylesheet' href='/webjars/jquery/dist/jquery.min.js'>
 </head>
 <body>
 	<TEXTAREA id="view" rows="10" cols="50" readonly="readonly"> </TEXTAREA>
@@ -15,8 +17,53 @@
 	<br/><br/>
 	<input type="button" name="ConnectEvent" value="Connect" onclick="connect();">
 	<input type="button" name="closeEvent" value="Close" onclick="closeEvent();">
+
 <script type="text/javascript">
 	var ws = null;
+	
+chatSock = new SockJS("/board/echo-ws");
+chatSock.onopen = function () {
+message = {};
+message.message = "반갑습니다~";
+message.type = "all";
+message.to = "all";
+chatSock.send( JSON.stringify(message) );
+}; 
+chatSock.onmessage = function (evt) {
+$("#chatMessage").append(evt.data + "<br/>");
+$("#chatMessage").scrollTop(99999999);
+};
+
+chatSock.onclose = function () {
+//sock.send("10.225.152.164 퇴장합니다~~~");
+};
+ 
+$("#message").keydown(function (key) {
+if(key.keyCode == 13) {
+$("#sendMessage").click();
+}
+});
+ 
+$("#sendMessage").click(function () {
+if( $("#message").val() != "") {
+message = {};
+message.message = $("#message").val();
+message.type = "all";
+message.to = "all"
+var to = $("#to").val();
+if(to != "" ) {
+message.type = "one";
+message.to = to;
+}
+         
+chatSock.send( JSON.stringify(message) );
+$("#chatMessage").append("나 -> "+ $("#message").val() + "<br/>");
+$("#chatMessage").scrollTop(99999999);
+         
+$("#message").val("");
+}
+});
+});
 	connect = function(){
 		if(ws == null){
 			ws = new WebSocket('ws://' + window.location.host + '/myHandler');
