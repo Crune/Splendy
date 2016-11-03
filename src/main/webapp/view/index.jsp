@@ -8,7 +8,8 @@
 <title>Insert title here</title>
 <link rel='stylesheet' href='/css/default.css'>
 <link rel='stylesheet' href='/js/default.js'>
-<link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css'>
+<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
+<script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 </head>
 <body>
 	<img src="<c:url value="/img/unnamed.png" />" />

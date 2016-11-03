@@ -4,11 +4,11 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.kh.splendy.mapper.CardMapper">
-	<resultMap id="cardVo" type="org.kh.splendy.vo.Card">
-		<result column="cd_id" property="id" />
-		<result column="cd_img" property="img" />
-		<result column="cd_info" property="info" />
-		<result column="cd_name" property="name" />
-		<result column="cd_type" property="type" />
+	<resultMap id="cardResult" type="org.kh.splendy.vo.Card">
+		<result property="id" column="CD_ID" />
+		<result property="type" column="CD_TYPE" />
+		<result property="name" column="CD_NAME" />
+		<result property="img" column="CD_IMG" />
+		<result property="info" column="CD_INFO" />
 	</resultMap>
 </mapper>

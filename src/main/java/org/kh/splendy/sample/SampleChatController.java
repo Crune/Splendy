@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class SampleChatController {
 
-	@RequestMapping("/chat/")
+	@RequestMapping("/chat.do")
 	public String chat() {
 		return "chat";
 	}
