@@ -29,13 +29,11 @@ public class SplendyController {
 
 	@RequestMapping("/")
 	public String index() {
-		/*
 		try {
-			cardServ.getAll();
+			cardServ.get(1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		*/
 		return "index";
 	}
 }
