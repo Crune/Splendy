@@ -17,5 +17,24 @@ spring:
         password: 1234qwer
         driver-class-name: oracle.jdbc.OracleDriver
 
+    # wabjar 버전생략 locator를 위한 설정
+    # ..인데 왜 안될까
+    resources.chain.enabled: true
+    
+    # HTTP encoding (HttpEncodingProperties)
+    http:
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true
+    
+    # MULTIPART (MultipartProperties)
+        multipart:
+            enabled: true
+            file-size-threshold: 500MB
+            max-file-size: 5Mb
+            max-request-size: 10Mb
+            resolve-lazily: false
+
 #Spring Boot App 시작 포트 설정
 server.port: 80
