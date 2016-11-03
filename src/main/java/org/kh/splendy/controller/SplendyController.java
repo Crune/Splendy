@@ -2,7 +2,7 @@ package org.kh.splendy.controller;
 
 import javax.annotation.Resource;
 
-import org.kh.splendy.service.CardService;
+import org.kh.splendy.service.*;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +26,15 @@ public class SplendyController {
 	
 	@Autowired
 	private CardService cardServ;
+	
+	@Autowired
+	private UserService userServ;
 
 	@RequestMapping("/")
 	public String index() {
 		try {
 			cardServ.get(1);
+			userServ.get("admin@spd.cu.cc");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
