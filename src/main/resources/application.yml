@@ -12,6 +12,7 @@ spring:
 
     # DB를 사용하기 위한 설정
     datasource:
+
         url: jdbc:oracle:thin:@//orlc.clvk5kokhwjz.ap-northeast-2.rds.amazonaws.com:1521/orcl
         username: dodo
         password: 1234qwer
