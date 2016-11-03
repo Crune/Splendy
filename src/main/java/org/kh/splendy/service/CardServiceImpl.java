@@ -22,8 +22,15 @@ public class CardServiceImpl implements CardService {
 	
 	@Override
 	public void getAll() throws Exception {
-		for (Card card : cardDao.getAllCard()) {
+		for (Card card : cardDao.selectAll()) {
 			log.info("card info : "+card.toString());
 		}
+	}
+
+	@Override
+	public Card get(int id) throws Exception {
+		Card card = cardDao.select(id);
+		log.info("card info : "+card);
+		return card;
 	}
 }

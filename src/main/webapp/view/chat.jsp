@@ -8,52 +8,57 @@
 <link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
 <script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 <script type='text/javascript' src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
-</head>
-<body>
-	<div id="view" style="overflow: auto; max-height: 500px;">as</div>
-	<br/><br/>
-	<input type="text" id="to" placeholder="귓속말" />
-	<input type="text" id="msg" value="Test Message">
-	<input type="button" id="sendEvent" value="Send">
-	<br/><br/>
-	<input type="button" id="closeEvent" value="Close">
-
 <script type="text/javascript">
-	var ws = null;
+	var chatSock = null;
+
 	$(document).ready(function () {
-		ws = new SockJS('/myHandler');
-		ws.onopen = function () {};
-		
-		ws.onmessage = function(messageEvent){
-			$("#view").append(messageEvent.date+"<br />");
-			$("#view").scrollTop(99999999);
+		// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
+		chatSock = new SockJS("http://" + window.location.host + "/myHandler");
+		chatSock.onopen = function () {
+
+			message = {};
+			message.message = "반갑습니다~";
+			message.type = "all";
+			message.to = "all";
+
+			chatSock.send( JSON.stringify(message) );
 		};
-		ws.onclose = function () {
-			//ws.send("");
+
+		chatSock.onmessage = function (evt) {
+			$("#chatMessage").append(evt.data + "<br/>");
+			$("#chatMessage").scrollTop(99999999);
 		};
-		$("#msg").keydown(function (key) {
-			if(key.keyCode == 13) {
-				$("#sendEvent").click();
-			}
-		});
-		$("#sendEvent").click(function() {
-			if($("msg").val() != "") {
-				msg = {};
-				msg.message = $("#msg").val();
-				msg.type = "all";
-				msg.to = "all";
+
+		chatSock.onclose = function () {
+		};
+
+		$("#sendMessage").click(function () {
+			if ( $("#message").val() != "") {
+				message = {};
+				message.message = $("#message").val();
+				message.type = "all";
+				message.to = "all"
+
 				var to = $("#to").val();
-				if(to != "") {
-					msg.type = "one";
-					msg.to = to;
+				if (to != "" ) {
+				message.type = "one";
+				message.to = to;
 				}
-				ws.send(JSON.stringify(msg));
-				$("#view").append("나 -> " + $("#msg").val() + "<br />");
-				$("#view").scrollTop(99999999);
-				$("msg").val("");
+
+				chatSock.send( JSON.stringify(message) );
+				$("#chatMessage").append("나 -> "+ $("#message").val() + "<br/>");
+				$("#chatMessage").scrollTop(99999999);
+
+				$("#message").val("");
 			}
 		});
 	});
 </script>
+</head>
+<body>
+	<div id="chatMessage" style="overflow: auto; height: 250px;"></div>
+	<input type="text" id="to" placeholder="귓속말" />
+	<input type="text" id="message" placeholder="메시지" />
+	<input type="button" id="sendMessage" value="메시지 보내기" />
 </body>
 </html>
