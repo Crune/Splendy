@@ -19,14 +19,12 @@ public class SessionMapper {
 	 * @param cSession 접속한 클라이언트
 	 */
 	public static synchronized void add(WebSocketSession cSession) {
-		// TODO 사용자랑 연결 필요
 		websocketSessionMap.put(cSession.getId(), cSession);
 		//info.put(, cSession.getId());
 		/**
-		 *  TODO
+		 *  TODO 진규 : 사용자 - 소켓세션 연동
 		 *  일단 세션에 cSession.getId() 값 저장
 		 *  누가 들어왔는지 확인되면 <게임방, 세션ID> 저장
-		 *  누군지 모를경우  
 		 */
 		
 		for(Map.Entry<String, WebSocketSession> em : websocketSessionMap.entrySet()){
@@ -76,7 +74,7 @@ public class SessionMapper {
 	}
 
 	/**
-	 * TODO
+	 * TODO 진규 : 게임방별 전송 구현
 	 * 해당 방 안에 있는 사용자를 검색해서 그 사용자의 세션 ID에 해당하는 세션에만 메시지 전송
 	 * @param cSession
 	 * @param roomId

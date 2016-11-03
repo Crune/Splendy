@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -25,6 +25,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- org.springframework 관련은 전부 여기 아래에 { -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
@@ -49,62 +50,54 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
 		
-		<!-- min -->
-		<!-- <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency> -->
-        <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-facebook</artifactId>
-            <version>1.1.1.RELEASE</version>
-        </dependency>
-        <dependency>
-		    <groupId>org.springframework.social</groupId>
-		    <artifactId>spring-social-google</artifactId>
-	            <version>1.0.0.RELEASE</version>
-	    </dependency>
-        <!-- <dependency>
-   			<groupId>org.springframework.boot</groupId>
-   			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency> -->
-		<!-- /min -->
-		
-		
-		<!-- Spring Login 관련 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security.oauth</groupId>
-			<artifactId>spring-security-oauth2</artifactId>
-		</dependency>
-		-->
-
-		<!-- OJDBC & MyBatis -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!-- min -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>1.1.1.RELEASE</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-google</artifactId>
+			<version>1.0.0.RELEASE</version>
+		</dependency>
+		<!-- } org.springframework 관련은 전부 여기 위에 -->
+
+		<!-- Spring Login 관련
+		<dependency>
+			<groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency> 
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId> 
+		</dependency>
+		-->
+		
+		<!-- OJDBC & MyBatis -->
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc7</artifactId>
 			<version>12.1.0.1</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.mybatis.spring.boot</groupId>
-		    <artifactId>mybatis-spring-boot-starter</artifactId>
-		    <version>1.1.1</version>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>1.1.1</version>
 		</dependency>
-		
+
 		<!-- JSP -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
@@ -115,14 +108,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
-		
-		<!-- Velocity
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-velocity</artifactId>
-		</dependency>
-		 -->
-		 
+
 		<!-- WebJars -->
 		<dependency>
 			<groupId>org.webjars.bower</groupId>
@@ -133,8 +119,7 @@
 			<groupId>org.webjars.bower</groupId>
 			<artifactId>jquery</artifactId>
 			<version>2.1.3</version>
-		</dependency>
-		
+		</dependency>		
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>angularjs</artifactId>
@@ -142,45 +127,26 @@
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
-			<artifactId>webjars-locator</artifactId>
+			<artifactId>sockjs-client</artifactId>
+			<version>0.3.4</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.webjars</groupId>
-    		<artifactId>sockjs-client</artifactId>
-   			<version>0.3.4</version>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator</artifactId>
+			<version>0.30</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
-
 		<!-- web socket -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
-			
-		</dependency>		
+		</dependency>
+
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-		
-		<!-- min -->
-		<!--
-		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        -->
-        <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-facebook</artifactId>
-            <version>1.1.1.RELEASE</version>
-        </dependency>
-        <!--
-        <dependency>
-   			<groupId>org.springframework.boot</groupId>
-   			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		-->
-		<!-- /min -->
+
 	</dependencies>
 
 	<build>
@@ -193,10 +159,10 @@
 		<finalName>Splendy</finalName>
 	</build>
 
-	
+
 
 	<!-- OJDBC repository -->
-	<repositories>	
+	<repositories>
 		<repository>
 			<id>in2p3</id>
 			<name>in2p3</name>
@@ -204,14 +170,14 @@
 		</repository>
 		<!-- min -->
 		<repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/libs-milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <!-- /min -->
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<!-- /min -->
 	</repositories>
 
 

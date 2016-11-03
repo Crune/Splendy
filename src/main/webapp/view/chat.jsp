@@ -5,8 +5,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css'>
-<link rel='stylesheet' href='/webjars/sockjs-client/sockjs.js'>
+<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
+<script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
+<script type='text/javascript' src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
 </head>
 <body>
 	<div id="view" style="overflow: auto; max-height: 500px;">as</div>
