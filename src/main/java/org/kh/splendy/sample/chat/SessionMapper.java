@@ -59,8 +59,8 @@ public class SessionMapper {
 				if(webSocketSession.isOpen()){
 					synchronized (webSocketSession) {
 						if (!session.getId().equals(webSocketSession.getId())) {
-							webSocketSession.sendMessage( new TextMessage(session.getId()
-							+ " -> " + messageVO.getMessage()) );
+							webSocketSession.sendMessage(new TextMessage(session.getId()
+							+ " -> " + messageVO.getMessage()));
 						}
 					}
 				}
