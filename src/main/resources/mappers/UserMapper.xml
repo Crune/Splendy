@@ -32,10 +32,10 @@
 	</insert>
 	<update id="modifyUserWithEmail" parameterType="org.kh.splendy.vo.UserCore">
 	<![CDATA[
-		UPDATE KH_USER SET
+		UPDATE KH_USER SET 
 			U_NICK=#{nickname}, U_PW=#{password}, 
 			U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, 
-			U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential}
+			U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} 
 		WHERE U_EMAIL=#{email}
 	]]>
 	</update>

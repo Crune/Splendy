@@ -6,4 +6,6 @@ public interface UserService {
 
 	UserCore get(String email) throws Exception;
 
+	UserCore join(UserCore newUser) throws Exception;
+
 }

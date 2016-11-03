@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Service
+@EnableTransactionManagement
 @MapperScan(basePackages = { "org.kh.splendy.dao" })
 public class UserServiceImpl implements UserService {
 
@@ -24,10 +26,22 @@ public class UserServiceImpl implements UserService {
 		List<UserCore> userList = userDAO.searchEmail(email);
 		UserCore lastId = null;
 		for (UserCore user : userList) {
-			if (user.getEnabled() == 1)
-				lastId = user;
+			if (user.getEnabled() == 1) {
+				if (lastId == null) {
+					lastId = user;
+				} else {
+					lastId = new UserCore();
+					lastId.setId(-1);
+				}
+			}
 		}
 		log.info("card info : "+lastId.toString());
 		return lastId;
+	}
+
+	@Override
+	public UserCore join(UserCore newUser) throws Exception {
+		userDAO.createUser(newUser);
+		return get(newUser.getEmail());
 	}
 }

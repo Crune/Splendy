@@ -11,9 +11,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @SpringBootApplication
-@MapperScan(basePackages = { "org.kh.splendy.dao" })
+@MapperScan(basePackages = { "org.kh.splendy.mapper" })
 public class SplendyApplication {
 
 	/**
@@ -54,4 +55,10 @@ public class SplendyApplication {
 
 		return sqlSessionFactoryBean.getObject();
 	}
+	
+
+    @Bean
+    public DataSourceTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
 }

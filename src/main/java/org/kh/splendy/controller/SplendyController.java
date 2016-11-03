@@ -1,8 +1,7 @@
 package org.kh.splendy.controller;
 
-import javax.annotation.Resource;
-
 import org.kh.splendy.service.*;
+import org.kh.splendy.vo.UserCore;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +34,14 @@ public class SplendyController {
 		try {
 			cardServ.get(1);
 			userServ.get("admin@spd.cu.cc");
+			/*
+			UserCore newUser = new UserCore();
+			newUser.setEmail("rune.choe@gmail.com");
+			newUser.setNickname("최윤");
+			newUser.setPassword("1234");
+			userServ.join(newUser);
+			*/
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
