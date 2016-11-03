@@ -56,7 +56,7 @@
 </script>
 </head>
 <body>
-<div id="chatMessage" style="overflow: auto; height: 250px;"></div>
+	<div id="chatMessage" style="overflow: auto; height: 250px;"></div>
 	<input type="text" id="to" placeholder="귓속말" />
 	<input type="text" id="message" placeholder="메시지" />
 	<input type="button" id="sendMessage" value="메시지 보내기" />
