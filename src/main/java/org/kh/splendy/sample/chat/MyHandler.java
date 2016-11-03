@@ -29,23 +29,29 @@ public class MyHandler extends TextWebSocketHandler {
 	/**
 	 * 두 가지 이벤트를 처리함.
 	 * 1. Send : client -> server로 메시지를 보냄
-	 * 2. Emit : server -> all client로 메시지를 보냄
-	 * 
+	 * 2. Emit : server -> client로 메시지를 보냄
 	 * @param WebSocketSession 메시지를 보낸 클라이언트
-	 * @param TextMessage 메시지의 내용
+	 * @param TextMessage 메시지의 내용과 정보
 	 */
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		log.info(session.getId() + " -> " + message.getPayload());
-		SessionMapper.sendAllForWebsocket(session, message);
+		Chat messageVO = Chat.convert(message.getPayload());
+		if (messageVO.getType().equals("all")) {
+			SessionMapper.sendAllForWebsocket(session, message);
+		} else if(messageVO.getType().equals("one")) {
+			SessionMapper.sendToWhisper(session, message);
+		} else if(messageVO.getType().equals("room")) {
+			
+		}
 	}
 	/**
 	 * 클라이언트가 서버와 연결을 끊음.
 	 * 
 	 * @param WebSocketSession 연결을 끊은 클라이언트
-	 * @param CloseStatus 연결 상태 (확인 필요함..)
+	 * @param CloseStatus 연결 상태
 	 */
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
 		log.info(session.getId() + "님이 퇴장했습니다.");
 		SessionMapper.remove(session);
 	}
