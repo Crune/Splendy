@@ -8,9 +8,14 @@
 	</head>
 	<body>
 	<c:if test="${facebookProfile != null}">
-		<h3>Hello, ${facebookProfile.name} User!</h3>
+		<h3>Hello, ${facebookProfile.name} User!</h3><br/>
+		id : ${facebookProfile.id}
+		
 	</c:if>
-		<h3>Hello, google User!</h3>
+	<c:if test="${googleProfile != null }">
+		<h3>Hello, ${googleProfile.name} google User!</h3>
+	</c:if>
+	google login complete
 		<%-- <div th:each="post:${feed}">
 			<b>${post.from.name}from</b> wrote:
 			<p th:text="${post.message}">message text</p>

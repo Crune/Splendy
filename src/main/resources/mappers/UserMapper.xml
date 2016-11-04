@@ -4,6 +4,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.kh.splendy.mapper.UserMapper">
+	<!-- 
 	<resultMap id="userVo" type="org.kh.splendy.vo.UserCore">
 		<result column="U_ID" property="id" />
 		<result column="U_NICK" property="nickname" />
@@ -15,4 +16,25 @@
 		<result column="U_N_CREDENT" property="notCredential" />
 		<result column="U_REG" property="reg" />
 	</resultMap>
+	-->
+	<insert id="createUser" parameterType="org.kh.splendy.vo.UserCore">
+	<![CDATA[
+		INSERT INTO KH_USER (
+			U_ID, U_NICK, U_EMAIL, U_PW,
+			U_ENABLED, U_N_LOCKED, U_N_EXPIRED, U_N_CREDENT, U_REG
+		) VALUES (
+			KH_USER_SEQ.NEXTVAL, #{nickname}, #{email}, #{password},
+			1,1,1,1 ,sysdate
+		)
+	]]>
+	</insert>
+	<update id="modifyUserWithEmail" parameterType="org.kh.splendy.vo.UserCore">
+	<![CDATA[
+		UPDATE KH_USER SET 
+			U_NICK=#{nickname}, U_PW=#{password}, 
+			U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, 
+			U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} 
+		WHERE U_EMAIL=#{email}
+	]]>
+	</update>
 </mapper>
