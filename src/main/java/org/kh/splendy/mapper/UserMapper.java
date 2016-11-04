@@ -1,14 +1,15 @@
-package org.kh.splendy.dao;
+package org.kh.splendy.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.*;
-import org.kh.splendy.vo.*;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.kh.splendy.vo.UserCore;
 
-public interface UserDAO {
+public interface UserMapper {
 
-	public void createUser(UserCore user) throws Exception;
-	
 	@Results(id = "userResult", value = {
 		@Result(property = "id", column = "U_ID"),
 		@Result(property = "nickname", column = "U_NICK"),
@@ -26,8 +27,12 @@ public interface UserDAO {
 	@Select("select count(*) from KH_USER where U_EMAIL=#{email} and U_PW=#{password}")
 	public int checkPassword(String email, String password) throws Exception;
 	
-	public void modifyUserWithEmail(UserCore user) throws Exception;
-	
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
-	public void disabling(UserCore user) throws Exception;
+	public void disabling(String email) throws Exception;
+
+	// SQL query in xml
+	public void createUser(UserCore user) throws Exception;
+
+	// SQL query in xml
+	public void modifyUserWithEmail(UserCore user) throws Exception;
 }

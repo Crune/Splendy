@@ -34,13 +34,13 @@ public class SplendyController {
 		try {
 			cardServ.get(1);
 			userServ.get("admin@spd.cu.cc");
-			/*
+			
 			UserCore newUser = new UserCore();
 			newUser.setEmail("rune.choe@gmail.com");
 			newUser.setNickname("최윤");
 			newUser.setPassword("1234");
 			userServ.join(newUser);
-			*/
+			userServ.get("rune.choe@gmail.com");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

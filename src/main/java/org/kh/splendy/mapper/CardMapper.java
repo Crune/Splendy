@@ -1,4 +1,4 @@
-package org.kh.splendy.dao;
+package org.kh.splendy.mapper;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.kh.splendy.vo.*;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Repository;
 
-public interface CardDAO {
+public interface CardMapper {
 
 	
 	@Insert("insert into KH_CARD(CD_ID, CD_TYPE, CD_NAME, CD_IMG, CD_INFO"

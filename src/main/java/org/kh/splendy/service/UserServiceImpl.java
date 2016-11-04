@@ -2,7 +2,7 @@ package org.kh.splendy.service;
 
 import java.util.List;
 
-import org.kh.splendy.dao.*;
+import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -17,13 +17,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserMapper userMap;
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
 	public UserCore get(String email) throws Exception {
-		List<UserCore> userList = userDAO.searchEmail(email);
+		List<UserCore> userList = userMap.searchEmail(email);
 		UserCore lastId = null;
 		for (UserCore user : userList) {
 			if (user.getEnabled() == 1) {
@@ -41,7 +41,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserCore join(UserCore newUser) throws Exception {
-		userDAO.createUser(newUser);
+		userMap.disabling(newUser.getEmail());
+		userMap.createUser(newUser);
 		return get(newUser.getEmail());
 	}
 }

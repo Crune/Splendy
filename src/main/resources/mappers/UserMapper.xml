@@ -21,12 +21,10 @@
 	<![CDATA[
 		INSERT INTO KH_USER (
 			U_ID, U_NICK, U_EMAIL, U_PW,
-			U_ENABLED, U_N_LOCKED, U_N_EXPIRED, U_N_CREDENT,
-			U_REG
+			U_ENABLED, U_N_LOCKED, U_N_EXPIRED, U_N_CREDENT, U_REG
 		) VALUES (
 			KH_USER_SEQ.NEXTVAL, #{nickname}, #{email}, #{password},
-			#{enabled}, #{notLocked}, #{notExpired}, #{notCredential},
-			,sysdate
+			1,1,1,1 ,sysdate
 		)
 	]]>
 	</insert>
