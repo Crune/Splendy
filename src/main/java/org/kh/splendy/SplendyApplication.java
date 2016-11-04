@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 @SpringBootApplication
 @MapperScan(basePackages = { "org.kh.splendy.mapper" })
@@ -85,13 +84,12 @@ public class SplendyApplication {
 
 	출처: http://springmvc.egloos.com/509029
 */
-	/**
-	 * 스프링 부트 시작점
-	 * 
-	 * @param args
-	 */
+	public static ApplicationContext ctx;
+
+	/** 스프링 부트 시작점
+	 * @param args 받지 않을 예정 */
 	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(SplendyApplication.class, args);
+		ctx = SpringApplication.run(SplendyApplication.class, args);
 
 		/*
 		 * String[] beanNames = ctx.getBeanDefinitionNames();
@@ -100,17 +98,15 @@ public class SplendyApplication {
 		 */
 	}
 
-	/**
+	@Bean
+	/** SqlSessionFactory 빈
 	 * MyBatis 사용을 위한 SqlSessionFactory 설정 Bean으로 설정되어 있어서 다른 클래스에선 어노테이션으로
 	 * 연동시키면 된다.
 	 * 
 	 * 동작 - MyBatis에서 xml로 작성된 쿼리를 사용하기 위하여 Mapper.xml 위치를 팩토리에 지정한다.
 	 * 
-	 * @param dataSource
-	 *            application(.properties 혹은 .yml)에 설정되어 있는 DataSource를 받아옴
-	 * @return SqlSessionFactory MyBatis 사용을 위한 SQL 세션 팩토리 생성
-	 */
-	@Bean
+	 * @param dataSource application(.properties 혹은 .yml)에 설정되어 있는 DataSource를 받아옴
+	 * @return SqlSessionFactory MyBatis 사용을 위한 SQL 세션 팩토리 생성 */
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);

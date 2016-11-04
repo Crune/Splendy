@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.*;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Repository;
 
 public interface CardMapper {
 
