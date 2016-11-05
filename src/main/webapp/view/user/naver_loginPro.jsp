@@ -9,15 +9,13 @@
 </head>
 <body>
 	<script>
-	
-		$.ajax({
-			url: "https://nid.naver.com/oauth2.0/token?client_id=iM6rVSYTz69Duz5F99Mp&client_secret=xP3KOGIDSB&grant_type=authorization_code&state=${state}&code=${code}",
-			dateType:'json',
-			success:function(data){
-				var str = data;
-			}
-		})
-		//location.href='https://nid.naver.com/oauth2.0/token?client_id=iM6rVSYTz69Duz5F99Mp&client_secret=xP3KOGIDSB&grant_type=authorization_code&state=${state}&code=${code}';
+		var url = 'https://nid.naver.com/oauth2.0/token?client_id=iM6rVSYTz69Duz5F99Mp&client_secret=xP3KOGIDSB&grant_type=authorization_code&state=${state}&code=${code}';
+		var author;
+		$.getJSON(url, function(data){
+			console.log(data);			
+		    });
+
+
 	</script>
 </body>
 </html>
