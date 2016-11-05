@@ -13,10 +13,13 @@ spring:
     # DB를 사용하기 위한 설정
     datasource:
 
-        url: jdbc:oracle:thin:@//orlc.clvk5kokhwjz.ap-northeast-2.rds.amazonaws.com:1521/orcl
+        platform: oracle
+        #url: jdbc:oracle:thin:@//orlc.clvk5kokhwjz.ap-northeast-2.rds.amazonaws.com:1521/orcl
+        #driver-class-name: oracle.jdbc.OracleDriver
+        url: jdbc:log4jdbc:oracle:thin:@//orlc.clvk5kokhwjz.ap-northeast-2.rds.amazonaws.com:1521/orcl
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
         username: dodo
         password: 1234qwer
-        driver-class-name: oracle.jdbc.OracleDriver
 
     # wabjar 버전생략 locator를 위한 설정
     # ..인데 왜 안될까

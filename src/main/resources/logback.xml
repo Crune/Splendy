@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  
+jdbc.sqlonly    : Logs only SQL
+jdbc.sqltiming  : Logs the SQL, post-execution, including timing execution statistics
+jdbc.audit      : Logs ALL JDBC calls except for ResultSets
+jdbc.resultset  : all calls to ResultSet objects are logged
+jdbc.connection : Logs connection open and close events
+-->
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+
+	<!-- log4jdbc-log4j2 -->
+	<logger name="jdbc.sqlonly"			level="DEBUG" />
+	<logger name="jdbc.sqltiming"		level="OFF" />
+	<logger name="jdbc.audit"			level="OFF" />
+	<logger name="jdbc.resultset"		level="ERROR" />
+	<logger name="jdbc.resultsettable"	level="ERROR" />
+	<logger name="jdbc.connection"		level="OFF" />
+</configuration>
