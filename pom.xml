@@ -132,9 +132,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
+			<artifactId>handlebars</artifactId>
+			<version>4.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
 			<artifactId>webjars-locator</artifactId>
 			<version>0.30</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
+		
 		<!-- web socket -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -146,6 +152,7 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+		
 		<!-- min -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
@@ -157,7 +164,9 @@
 		<dependency>
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>
-		    </dependency>
+		</dependency>
+		
+		<!-- DB Log -->
 		<dependency>
 			<groupId>org.logback-extensions</groupId>
 			<artifactId>logback-ext-spring</artifactId>
@@ -168,6 +177,9 @@
 			<artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
 			<version>1.16</version>
 		</dependency>
+		
+		<!-- NEW -->
+		
 	</dependencies>
 
 	<build>
