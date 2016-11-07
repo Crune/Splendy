@@ -21,7 +21,7 @@ public class SessionMapper {
 	 */
 	public static synchronized void add(WebSocketSession session) {
 		connectedUsers.add(session);
-		//info.put(, cSession.getId());
+		//info.put(, session.getId());
 		/**
 		 *  TODO 진규 : 사용자 - 소켓세션 연동
 		 *  일단 세션에 cSession.getId() 값 저장
