@@ -1,1 +1,45 @@
 @CHARSET "UTF-8";
+
+.index-frame   {
+	background: transparent url(/img/work/frame.png) no-repeat right top;
+	width: 1024px;
+	height: 700px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+}
+.index-inner-frame {
+}
+.index-image-frame {
+	background: transparent url(/img/work/index-img-01.png) no-repeat;
+	width: 1024px;
+	height: 700px;
+	position: relative;
+	background-position-y: 127px;
+	background-position-x: 47px;
+}
+.index-right-frame {
+	background: transparent url(/img/work/index-right-frame.png) no-repeat;
+	width: 350px;
+	height: 620px;
+	margin-left: 600px;
+	margin-right: auto;
+	padding-top: 100px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 100px;
+}
+.index-top {
+	height: 65px;
+}
+.index-title {
+	font-size: 36px;
+	font-weight: 400;
+	color: #464746;
+}
+.index-cont {
+	padding-top: 20px;
+}
+.index-bottom {
+	text-align: center;
+}

@@ -3,15 +3,12 @@ package org.kh.splendy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
-
-	private static final String GoogleClientID = "768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com";
-	private static final String GoogleClientSecret = "VR7RGj1x7ET3dG8eMUlMn_jj";
-
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		if (!registry.hasMappingForPattern("/webjars/**")) {
@@ -25,6 +22,18 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/img/**").addResourceLocations("/img/");
 		super.addResourceHandlers(registry);
 	}
+
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new SplendyInterceptor());
+		super.addInterceptors(registry);
+	}
+
+
+
+	private static final String GoogleClientID = "768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com";
+	private static final String GoogleClientSecret = "VR7RGj1x7ET3dG8eMUlMn_jj";
 
 	@Bean
 	public GoogleConnectionFactory getGoogleConnectionFactory() {

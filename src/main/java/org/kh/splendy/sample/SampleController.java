@@ -1,8 +1,12 @@
 package org.kh.splendy.sample;
 
+import org.kh.splendy.service.CardService;
+import org.kh.splendy.service.UserService;
+import org.kh.splendy.vo.UserCore;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -17,17 +21,17 @@ public class SampleController {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
-	/*
+	
 	@Autowired
 	private CardService cardServ;
 	
 	@Autowired
 	private UserService userServ;
-	 */
+
 	@RequestMapping("/")
 	public String index() {
-		/*
 		try {
+			/*
 			cardServ.get(1);
 			userServ.get("admin@spd.cu.cc");
 			
@@ -37,11 +41,11 @@ public class SampleController {
 			newUser.setPassword("1234");
 			userServ.join(newUser);
 			userServ.get("rune.choe@gmail.com");
+			*/
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		*/
 		return "index";
 	}
 
