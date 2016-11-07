@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kh.splendy.mapper.UserMapper">
+	<!-- 
+	<resultMap id="userVo" type="org.kh.splendy.vo.UserCore">
+		<result column="U_ID" property="id" />
+		<result column="U_NICK" property="nickname" />
+		<result column="U_EMAIL" property="email" />
+		<result column="U_PW" property="password" />
+		<result column="U_ENABLED" property="enabled" />
+		<result column="U_N_LOCKED" property="notLocked" />
+		<result column="U_N_EXPIRED" property="notExpired" />
+		<result column="U_N_CREDENT" property="notCredential" />
+		<result column="U_REG" property="reg" />
+	</resultMap>
+	-->
+	<select id="getList" parameterType="org.kh.splendy.vo.Article">
+		<![CDATA[select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount				
+				 from (select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount,rownum r  
+				 from (select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount 
+				 from board order by ref desc, re_step asc) order by ref desc, re_step asc ) where r >= #start# and r <= #end# ]]>
+	</select>
+	
+	<!-- 
+	<update id="modifyUserWithEmail" parameterType="org.kh.splendy.vo.UserCore">
+	<![CDATA[
+		UPDATE KH_USER SET 
+			U_NICK=#{nickname}, U_PW=#{password}, 
+			U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, 
+			U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} 
+		WHERE U_EMAIL=#{email}
+	]]>
+	</update>
+	 -->
+</mapper>

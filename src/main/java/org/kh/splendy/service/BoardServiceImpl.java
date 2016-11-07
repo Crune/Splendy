@@ -26,11 +26,12 @@ public class BoardServiceImpl implements BoardService {
 	private static final Logger log = LoggerFactory.getLogger(CardServiceImpl.class);
 
 	@Override
-	public List<Article> getList(String bName) {
+	public List<Article> getList(String bName) throws Exception {
 		/** TODO 찬우.게시판: 게시글 목록 반환 구현
 		 * boardMap 이용하여 작성
 		 */
-		return null;
+		List<Article> list = boardMap.getList();
+		return list;
 	}
 
 	@Override
@@ -38,7 +39,14 @@ public class BoardServiceImpl implements BoardService {
 		/** TODO 찬우.게시판: 게시글 내용 반환 구현
 		 * boardMap 이용하여 작성
 		 */
+		
 		return null;
+	}
+
+	@Override
+	public int boardCount() throws Exception {
+		int result = boardMap.boardCount();
+		return result;
 	}
 	
 }
