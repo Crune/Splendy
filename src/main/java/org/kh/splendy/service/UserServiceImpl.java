@@ -3,6 +3,7 @@ package org.kh.splendy.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
 import org.mybatis.spring.annotation.MapperScan;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override //???
-	public UserCore get(String email) throws Exception {
+	public UserCore get(@Param("email") String email) throws Exception {
 		List<UserCore> userList = userMap.searchEmail(email);
 		UserCore lastId = null;
 		for (UserCore user : userList) {
@@ -59,5 +60,15 @@ public class UserServiceImpl implements UserService {
 	public List<UserCore> searchEmail(String email) throws Exception {
 		List<UserCore> list = userMap.searchEmail(email);
 		return list;
+	}
+
+	@Override
+	public void updateUser(HashMap<String, String> map) throws Exception {
+		userMap.updateUser(map);
+	}
+
+	@Override
+	public void deleteUser(HashMap<String, String> map) throws Exception {
+		userMap.deleteUser(map);
 	}
 }
