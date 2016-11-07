@@ -1,5 +1,6 @@
 package org.kh.splendy.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.kh.splendy.mapper.*;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
-	@Override
+	@Override //???
 	public UserCore get(String email) throws Exception {
 		List<UserCore> userList = userMap.searchEmail(email);
 		UserCore lastId = null;
@@ -44,5 +45,17 @@ public class UserServiceImpl implements UserService {
 		userMap.disabling(newUser.getEmail());
 		userMap.createUser(newUser);
 		return get(newUser.getEmail());
+	}
+
+	@Override
+	public int checkPassword(HashMap<String, String> map) throws Exception {
+		int result = userMap.checkPassword(map);
+		return result;
+	}
+
+	@Override
+	public List<UserCore> searchEmail(String email) throws Exception {
+		List<UserCore> list = userMap.searchEmail(email);
+		return list;
 	}
 }

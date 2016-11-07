@@ -1,7 +1,7 @@
 package org.kh.splendy.mapper;
 
+import java.util.HashMap;
 import java.util.List;
-
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -25,11 +25,11 @@ public interface UserMapper {
 	public List<UserCore> searchEmail(String email) throws Exception;
 
 	@Select("select count(*) from KH_USER where U_EMAIL=#{email} and U_PW=#{password}")
-	public int checkPassword(String email, String password) throws Exception;
+	public int checkPassword(HashMap<String, String> map) throws Exception;
 	
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void disabling(String email) throws Exception;
-
+	
 	// SQL query in xml
 	public void createUser(UserCore user) throws Exception;
 
