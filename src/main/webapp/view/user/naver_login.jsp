@@ -18,7 +18,7 @@
 	<script>
 		function naverLogin(){
 			
-			location.href = "https://nid.naver.com/oauth2.0/authorize?client_id=iM6rVSYTz69Duz5F99Mp&response_type=code&redirect_uri=http://127.0.0.1/login/naver_loginPro&state=${state}";
+			location.href = "https://nid.naver.com/oauth2.0/authorize?client_id=iM6rVSYTz69Duz5F99Mp&response_type=code&redirect_uri=http://spd.cu.cc/login/naver_loginPro&state=${state}";
 		}
 	</script>
 	<style>
