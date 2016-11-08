@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public UserCore join(UserCore newUser) throws Exception {
-		userMap.disabling(newUser.getEmail());
+		/*userMap.disabling(newUser.getEmail());*/
 		userMap.createUser(newUser);
 		return get(newUser.getEmail());
 	}
@@ -70,5 +70,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(HashMap<String, String> map) throws Exception {
 		userMap.deleteUser(map);
+	}
+
+	@Override
+	public UserCore checkEmail(String email) throws Exception {
+		UserCore user = userMap.checkEmail(email);
+		return user;
 	}
 }

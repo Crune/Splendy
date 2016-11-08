@@ -30,28 +30,63 @@ body {
 <script>
 
 var curState = "join";
+var email =  "<%=session.getAttribute("email")%>";
+
 
 $(document).ready(function(){
 	var source_test = $("#temp_test").html();
 	var temp_test = Handlebars.compile(source_test);	
 	var data = {temp:""};
 	
-	
 	$("#testDiv").html(temp_test(data));
 	
-
-	$("#btn_login").on('click', function () {
-		curState = "login";
-		$("#joinDiv").hide();
-		$("#loginDiv").show();
-	});
+	var result = <%=request.getAttribute("result")%>;
+	if(result == 2) {
+		alert("email이 중복되었습니다.")
+	} else if(result == 1) {
+		alert("회원가입이 완료되었습니다.")
+	}
 	
-	$("#btn_join").on('click', function () {
-		curState = "join";
-		$("#loginDiv").hide();
-		$("#joinDiv").show();
+	if(email == "null") {
+		$("#btn_login").on('click', function () {
+			curState = "login";
+			$("#joinDiv").hide();
+			$("#login_sucDiv").hide();
+			$("#loginDiv").show();
+		});
+		
+		$("#btn_join").on('click', function () {
+			curState = "join";
+			$("#loginDiv").hide();
+			$("#login_sucDiv").hide();
+			$("#joinDiv").show();
+		});
+	}else {
+			curState = "login_suc";
+			$("#loginDiv").hide();
+			$("#login_sucDiv").show();
+			$("#joinDiv").hide();
+	}
 	});
-});
+
+
+function check() {
+		if(document.form1.email.value == ""){
+			alert("email을 입력해주세요.")
+			document.form1.email.focus();
+			return false;
+		} else if(document.form1.nickname.value == ""){
+			alert("nickname을 입력해주세요.")
+			document.form1.nickname.focus();
+			return false;
+		} else if(document.form1.password.value == ""){
+			alert("password을 입력해주세요.")
+			document.form1.password.focus();
+			return false;
+		}  else {
+			return true;
+		}
+}
 
 
 </script>
@@ -73,19 +108,20 @@ $(document).ready(function(){
 							<p class="index-title">회원가입</p>
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
-								<form id="form1" name="form1" method="post">
+								<form id="form1" name="form1" method="post" action="/user/joined"
+										onsubmit="return check();">
 									<div class="form-group">
-										<label for="textfield">이메일 주소</label> <input name="textfield"
-											type="email" class="form-control" id="textfield">
+										<label for="textfield">이메일 주소</label> <input name="email"
+											type="text" class="form-control" id="textfield">
 									</div>
 									<div class="form-group">
-										<label for="textfield">닉네임</label> <input name="textfield"
+										<label for="textfield">닉네임</label> <input name="nickname"
 											type="text" class="form-control" id="textfield">
 									</div>
 									<div class="form-group">
 										<label for="exampleInputPassword1">암호</label> <input
 											type="password" class="form-control"
-											id="exampleInputPassword1" placeholder="암호">
+											id="exampleInputPassword1" name="password" placeholder="암호">
 									</div>
 									<button type="submit" class="btn btn-default">회원가입</button>
 									<input id="btn_login" class="btn btn-default" type="button" value="로그인" />
@@ -97,19 +133,32 @@ $(document).ready(function(){
 							<p class="index-title">로그인</p>
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
-								<form id="form1" name="form1" method="post">
+								<form id="form2" name="form2" method="post" action="/user/login_suc">
 									<div class="form-group">
-										<label for="textfield">이메일 주소</label> <input name="textfield"
-											type="email" class="form-control" id="textfield">
+										<label for="textfield">이메일 주소</label> <input name="email"
+											type="text" class="form-control" id="textfield">
 									</div>
 									<div class="form-group">
 										<label for="exampleInputPassword1">암호</label> <input
 											type="password" class="form-control"
-											id="exampleInputPassword1" placeholder="암호">
+											id="exampleInputPassword1" name="password" placeholder="암호">
 									</div>
 									<button type="submit" class="btn btn-default">로그인</button>
 									<input id="btn_join" class="btn btn-default" type="button" value="회원가입" />
 								</form>
+							</div>
+						</div>
+						<div class="index-right-frame" id="login_sucDiv" style="display: none">
+							<p class="index-title">로그인성공</p>
+							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
+							<div class="index-cont">
+									<div class="form-group">
+										<label for="textfield"><b>${user[0].nickname}</b>님 환영합니다.</label>
+									</div>
+									<input id="btn_logout" class="btn btn-default" type="button" 
+									onclick="location.href='http://localhost/user/logout'" value="로그아웃" />
+									<input id="btn_logout" class="btn btn-default" type="button" 
+									onclick="location.href='http://localhost/user/delete_suc'" value="회원탈퇴" />
 							</div>
 						</div>
 						
