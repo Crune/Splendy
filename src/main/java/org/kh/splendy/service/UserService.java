@@ -18,4 +18,6 @@ public interface UserService {
 	void updateUser(HashMap<String, String> map) throws Exception;
 	
 	void deleteUser(HashMap<String, String> map) throws Exception;
+	
+	UserCore checkEmail(String email) throws Exception;
 }

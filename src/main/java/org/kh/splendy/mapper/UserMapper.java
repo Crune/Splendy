@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -25,6 +26,10 @@ public interface UserMapper {
 	})
 	@Select("select * from KH_USER where U_EMAIL=#{email}")
 	public List<UserCore> searchEmail(String email) throws Exception;
+
+	@ResultMap("userResult")
+	@Select("select * from KH_USER where U_EMAIL=#{email} and U_ENABLED=1")
+	public UserCore checkEmail(String email) throws Exception;
 
 	@Select("select count(*) from KH_USER where U_EMAIL=#{email} and U_PW=#{password} and U_ENABLED=1")
 	public int checkPassword(HashMap<String, String> map) throws Exception;
