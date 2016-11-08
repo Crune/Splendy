@@ -1,7 +1,10 @@
 package org.kh.splendy.service;
 
-import org.kh.splendy.mapper.*;
-import org.kh.splendy.vo.Card;
+import java.util.List;
+
+import org.kh.splendy.mapper.RoomMapper;
+import org.kh.splendy.vo.Article;
+import org.kh.splendy.vo.Room;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,24 +14,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Service
 @EnableTransactionManagement
-public class CardServiceImpl implements CardService {
+public class RoomServiceImpl implements RoomService {
 
 	@Autowired
-	private CardMapper cardMap;
+	private RoomMapper roomMap;
 
 	private static final Logger log = LoggerFactory.getLogger(CardServiceImpl.class);
-	
-	@Override
-	public void getAll() throws Exception {
-		for (Card card : cardMap.selectAll()) {
-			log.info("card info : "+card.toString());
-		}
-	}
 
 	@Override
-	public Card get(int id) throws Exception {
-		Card card = cardMap.select(id);
-		log.info("card info : "+card);
-		return card;
+	public List<Room> getList() {
+		// TODO 윤.로비: 리스트 서비스 구현
+		return null;
 	}
+	
 }
