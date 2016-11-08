@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mappers.UserMapper">
+<mapper namespace="org.kh.splendy.mapper.UserMapper">
 	<!-- 
 	<resultMap id="userVo" type="org.kh.splendy.vo.UserCore">
 		<result column="U_ID" property="id" />
@@ -17,17 +17,14 @@
 		<result column="U_REG" property="reg" />
 	</resultMap>
 	-->
-	<insert id="createUser" parameterType="org.kh.splendy.vo.UserCore">
-	<![CDATA[
-		INSERT INTO KH_USER (
-			U_ID, U_NICK, U_EMAIL, U_PW,
-			U_ENABLED, U_N_LOCKED, U_N_EXPIRED, U_N_CREDENT, U_REG
-		) VALUES (
-			KH_USER_SEQ.NEXTVAL, #{nickname}, #{email}, #{password},
-			1,1,1,1 ,sysdate
-		)
-	]]>
-	</insert>
+	<select id="getList" parameterType="org.kh.splendy.vo.Article">
+		<![CDATA[select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount				
+				 from (select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount,rownum r  
+				 from (select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount 
+				 from board order by ref desc, re_step asc) order by ref desc, re_step asc ) where r >= #start# and r <= #end# ]]>
+	</select>
+	
+	<!-- 
 	<update id="modifyUserWithEmail" parameterType="org.kh.splendy.vo.UserCore">
 	<![CDATA[
 		UPDATE KH_USER SET 
@@ -37,4 +34,5 @@
 		WHERE U_EMAIL=#{email}
 	]]>
 	</update>
+	 -->
 </mapper>

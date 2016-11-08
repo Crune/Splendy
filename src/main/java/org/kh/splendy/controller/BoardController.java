@@ -1,7 +1,10 @@
 package org.kh.splendy.controller;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.kh.splendy.sample.SampleController;
@@ -43,20 +46,54 @@ public class BoardController {
 	/** 게시글 목록
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
-	public String list(@RequestParam String bName, Model model) {
+	public String list(@RequestParam String bName, Model model,HttpServletRequest request) throws Exception{
 		/** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
 		 * - bName이 설정되어 있지 않을경우 default로 설정
-		 */
+		 */		
+		/*
 		String boardName = "default";
-		if (bName==null) {
+		if (bName==null) {			
 		} else if (!bName.isEmpty()) {
 			boardName = bName;
 		}
-		List<Article> list = boardServ.getList(boardName);
-		model.addAttribute("list",list);
+		*/
+		String pageNum = request.getParameter("pageNum");//페이지 번호
+        
+        if (pageNum == null) {
+            pageNum = "1";
+        }
+        int pageSize = 10;//한 페이지의 글의 개수
+        int currentPage = Integer.parseInt(pageNum);
+        int startRow = (currentPage - 1) * pageSize + 1;//한 페이지의 시작글 번호
+        int endRow = currentPage * pageSize;//한 페이지의 마지막 글번호
+        int count = 0;
+        int number=0;
+        
+	    List articleList = null;
+        //BoardDBBean dbPro = BoardDBBean.getInstance();//DB연동
+        //count = dbPro.getArticleCount();//전체 글의 수 
+        count = boardServ.boardCount();
+	    HashMap map = new HashMap();
+	    map.put("start", startRow);
+	    map.put("end", endRow);
+        if (count > 0) {
+            articleList = boardServ.getList(bName);
+        } else {
+            articleList = Collections.EMPTY_LIST;
+        }
+		number=count-(currentPage-1)*pageSize;//글목록에 표시할 글번호
+        //해당 뷰에서 사용할 속성
+        request.setAttribute("currentPage", new Integer(currentPage));
+        request.setAttribute("startRow", new Integer(startRow));
+        request.setAttribute("endRow", new Integer(endRow));
+        request.setAttribute("count", new Integer(count));
+        request.setAttribute("pageSize", new Integer(pageSize));
+		request.setAttribute("number", new Integer(number));
+        request.setAttribute("articleList", articleList);   
 		
-		return "board/list";
+		
+		return "view.board/list";
 	}
 
 	@RequestMapping(value = "/bbs/view", method = RequestMethod.GET)
@@ -68,8 +105,8 @@ public class BoardController {
 		 * - 사용자가 작성한 글이 아니고 해당 사용자가 처음 보는 글이라면 읽기 횟수가 증가해야 함
 		 * - 목록으로 돌아가기엔 해당 게시판이름에 해당하는 목록의 해당 글이 있는 페이지가 보여야 함
 		 */
-		Article article = boardServ.getArticle(aId);
-		model.addAttribute("article",article);
+		//Article article = boardServ.getArticle(aId);
+		//model.addAttribute("article",article);
 		
 		return "board/view";
 	}
@@ -82,6 +119,7 @@ public class BoardController {
 		/** TODO 찬우.게시판: 게시글 수정 구현
 		 * - 게시글 쓰기 화면으로 리다이렉트 하되 글쓰기 내용이 채워져 있어야 함.
 		 */
+	
 		return "redirect:/bbs/write";
 	}
 
@@ -93,6 +131,7 @@ public class BoardController {
 		/** TODO 찬우.게시판: 게시글 쓰기 구현
 		 * - 게시판 
 		 */
+		
 		return "board/write";
 	}
 	

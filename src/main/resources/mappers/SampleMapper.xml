@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.kh.splendy.sample.SampleMapper">
+<mapper namespace="mappers.SampleMapper">
 	<resultMap id="testVo" type="org.kh.splendy.sample.TestVO">
 		<result column="id" property="id" />
 		<result column="pw" property="pw" />
