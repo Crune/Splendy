@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.kh.splendy.mapper.UserMapper">
+<mapper namespace="mappers.UserMapper">
 	<!-- 
 	<resultMap id="userVo" type="org.kh.splendy.vo.UserCore">
 		<result column="U_ID" property="id" />

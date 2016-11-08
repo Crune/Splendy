@@ -24,6 +24,8 @@ public class AccountController {
 	@Autowired
 	private UserService userServ;
 	
+	
+	
 	@RequestMapping("/user/join")
 	public String join() {
 		return "user/join";
@@ -86,13 +88,74 @@ public class AccountController {
 		return "user/login_success";
 	}
 	
+	/** TODO 민정.계정: 정보수정 구현
+	* 
+	*/
 	@RequestMapping("/user/modify")
 	public String modify(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		String email = (String) session.getAttribute("email");
+		List<UserCore> user = null;
+		try {
+			user = userServ.searchEmail(email);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		request.setAttribute("email", email);
+		request.setAttribute("user", user);
 		return "user/modify";
 	}
+	
+	@RequestMapping("/user/modify_suc")
+	public String modify_suc(@RequestParam("email") String email,
+								@RequestParam("password") String password,
+								@RequestParam("nickname") String nickname,
+								HttpServletRequest request) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("password", password);
+		map.put("nickname", nickname);
+		List<UserCore> user = null;
+		try {
+			userServ.updateUser(map);
+			user = userServ.searchEmail(email);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		request.setAttribute("user", user);
+		return "user/modify_success";
+	}
+	
+	@RequestMapping("/user/delete")
+	public String remove(HttpServletRequest request) {
+		List<UserCore> user = null;
+		HttpSession session = request.getSession();
+		String email = (String) session.getAttribute("email");
+		try {
+			user = userServ.searchEmail(email);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		request.setAttribute("user", user);
+		return "user/delete";
+	}
+	
+	@RequestMapping("/user/delete_suc")
+	public String remove_suc(@RequestParam("email") String email,
+								@RequestParam("password") String password) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("password", password);
+		
+		try {
+			userServ.deleteUser(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "user/delete_success";
+	}
+	
 
 }

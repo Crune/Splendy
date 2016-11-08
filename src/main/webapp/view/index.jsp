@@ -69,23 +69,23 @@ $(document).ready(function(){
 				<div class="index-frame">
 					<div class="index-image-frame">
 						<div class="index-top"></div>
-						<div class="index-right-frame" id="joinDiv">
+						<div class="index-right-frame" id="joinDiv" style="display: none">
 							<p class="index-title">회원가입</p>
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
-								<form id="form1" name="form1" method="post">
+								<form id="joinForm" name="joinForm" method="post" action="/user/joined">
 									<div class="form-group">
-										<label for="textfield">이메일 주소</label> <input name="textfield"
-											type="email" class="form-control" id="textfield">
+										<label for="textfield">이메일 주소</label> <input name="email"
+											type="email" class="form-control" id="email">
 									</div>
 									<div class="form-group">
-										<label for="textfield">닉네임</label> <input name="textfield"
-											type="text" class="form-control" id="textfield">
+										<label for="textfield">닉네임</label> <input name="nickname"
+											type="text" class="form-control" id=""nickname"">
 									</div>
 									<div class="form-group">
-										<label for="exampleInputPassword1">암호</label> <input
+										<label for="exampleInputPassword1">암호</label> <input name="password"
 											type="password" class="form-control"
-											id="exampleInputPassword1" placeholder="암호">
+											id="password" placeholder="암호">
 									</div>
 									<button type="submit" class="btn btn-default">회원가입</button>
 									<input id="btn_login" class="btn btn-default" type="button" value="로그인" />
@@ -93,19 +93,19 @@ $(document).ready(function(){
 							</div>	
 						</div>
 						<div id="testDiv" style="display: none"></div>
-						<div class="index-right-frame" id="loginDiv" style="display: none">
+						<div class="index-right-frame" id="loginDiv">
 							<p class="index-title">로그인</p>
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
-								<form id="form1" name="form1" method="post">
+								<form id="loginForm" name="loginForm" method="post" action="/user/login_suc">
 									<div class="form-group">
-										<label for="textfield">이메일 주소</label> <input name="textfield"
-											type="email" class="form-control" id="textfield">
+										<label for="textfield">이메일 주소</label> <input name="email"
+											type="email" class="form-control" id="email">
 									</div>
 									<div class="form-group">
-										<label for="exampleInputPassword1">암호</label> <input
+										<label for="exampleInputPassword1">암호</label> <input name="password"
 											type="password" class="form-control"
-											id="exampleInputPassword1" placeholder="암호">
+											id="password" placeholder="암호">
 									</div>
 									<button type="submit" class="btn btn-default">로그인</button>
 									<input id="btn_join" class="btn btn-default" type="button" value="회원가입" />
