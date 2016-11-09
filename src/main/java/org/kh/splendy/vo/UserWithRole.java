@@ -1,10 +1,12 @@
 package org.kh.splendy.vo;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class Admin extends UserCore {
-	private String role;
+public class UserWithRole extends UserCore {
+	private List<String> roles;
 }
