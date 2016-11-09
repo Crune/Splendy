@@ -8,10 +8,10 @@
 <title>Error Debug Page</title>
 </head>
 <body>
-	<h4>${exception.getMessage() }</h4>
+	<h4>메시지: ${exception.getMessage() }</h4>
 	<ul>
 		<c:forEach items="${exception.getStackTrace() }" var="stack">
-			<li>${tstack.toString() }</li>
+			<li>${stack.toString() }</li>
 		</c:forEach>
 	</ul>
 </body>
