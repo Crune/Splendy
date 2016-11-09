@@ -1,4 +1,4 @@
-package org.kh.splendy.sample.email;
+package org.kh.splendy;
 
 import java.util.Properties;
 
