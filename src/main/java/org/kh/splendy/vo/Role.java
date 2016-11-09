@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class UserWithRole extends UserCore {
-	private List<String> roles;
+public class Role {
+	private String role;
 }
