@@ -24,7 +24,7 @@
 			U_ENABLED, U_N_LOCKED, U_N_EXPIRED, U_N_CREDENT, U_REG
 		) VALUES (
 			KH_USER_SEQ.NEXTVAL, #{nickname}, #{email}, #{password},
-			1,1,1,1 ,sysdate
+			1,1,1,0 ,sysdate
 		)
 	]]>
 	</insert>

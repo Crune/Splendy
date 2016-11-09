@@ -22,6 +22,7 @@ public class MailController {
 
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+			
 			helper.setFrom("yjku2323@gmail.com", "splendy");
 			helper.setTo("lc5@naver.com");
 			helper.setSubject("제목");

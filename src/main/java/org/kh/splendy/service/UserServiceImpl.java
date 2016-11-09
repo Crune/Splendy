@@ -77,4 +77,10 @@ public class UserServiceImpl implements UserService {
 		UserCore user = userMap.checkEmail(email);
 		return user;
 	}
+
+	@Override
+	public int checkCredent(HashMap<String, String> map) throws Exception {
+		int check = userMap.checkCredent(map);
+		return check;
+	}
 }

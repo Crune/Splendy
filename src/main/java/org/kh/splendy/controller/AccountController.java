@@ -3,6 +3,9 @@ package org.kh.splendy.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.activation.DataSource;
+import javax.activation.URLDataSource;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,7 +16,10 @@ import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +34,10 @@ public class AccountController {
 	
 	@Autowired
 	private UserService userServ;
+	
+	@Autowired
+	private JavaMailSender mailSender;
+
 	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
@@ -80,7 +90,6 @@ public class AccountController {
 										@RequestParam("password") String password,
 										@RequestParam("nickname") String nickname) {
 		
-		log.info(email);
 		UserCore user = new UserCore(); 
 		user.setEmail(email);
 		user.setPassword(password);
@@ -107,13 +116,74 @@ public class AccountController {
 		} else {
 			result = 2;
 		}
-		return result;
+		return result;	
+	}
+	
+	@RequestMapping("/user/join_cert/{code}")
+	public String join_cert(@PathVariable String code) {
+		/**
+		 * TODO 민정:메일인증 1순위 !
+		 */
+		return "index";
+	}
+
+	@RequestMapping("/user/send_pw")
+	public int send_pw() {
 		
+		int result_pw = -1;
+		/**
+		 * TODO 민정:새 비밀번호 메일 전송
+		 */
+		try {
+			String fileName = "img/unnamed.png"; // src/main/webapp 폴더
+
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+			
+			helper.setFrom("yjku2323@gmail.com", "splendy");
+			helper.setTo("lc5@naver.com");
+			helper.setSubject("제목");
+			helper.setText("합니다 <img src='cid:image'>", true);
+			
+			/*ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			if (classLoader == null) {
+				classLoader = this.getClass().getClassLoader();
+			}
+			DataSource ds = new URLDataSource(classLoader.getResource(fileName));
+
+			helper.addInline("image", ds);*/
+			mailSender.send(message);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result_pw;
 	}
 	
 	@RequestMapping("/user/login")
 	public String login() {
 		return "user/login";
+	}
+	
+	@RequestMapping(
+			value = "/user/login_credent",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody int login_credent(@RequestParam("email") String email,
+											@RequestParam("password") String password) {
+		int credent = -1;
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("password", password);
+		
+		try {
+			credent = userServ.checkCredent(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return credent;
 	}
 	
 	@RequestMapping("/user/login_suc")
@@ -125,7 +195,6 @@ public class AccountController {
 		map.put("email", email);
 		map.put("password", password);
 		int login_result = 0;
-		/*HttpSession session = request.getSession();*/
 		List<UserCore> user = null;
 		
 		try {
