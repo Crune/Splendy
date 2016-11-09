@@ -48,14 +48,10 @@ public class LobbyController {
 		return rooms;
 	}
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	/** 로비 첫 화면
-	 * @param bName 게시판이름
-	 * @return	해당 게시판의 게시글 목록 화면 */
+	/** 로비 첫 화면 */
+	@RequestMapping(value = "/lobby", method = RequestMethod.GET)
 	public String list(Model model) {
-		/** TODO 윤.로비: 로비 입장 화면 구현
-		 * - 
-		 */
+		/** TODO 윤.로비: 로비 입장 화면 구현 */
 		List<Room> rooms = roomServ.getList();
 		model.addAttribute("rooms",rooms);
 		

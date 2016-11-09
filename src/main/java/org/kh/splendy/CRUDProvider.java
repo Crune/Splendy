@@ -4,6 +4,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 public class CRUDProvider {
 
+	// @formatter:off
 	public static String create(Object obj) {
 		return new SQL() {{
 			INSERT_INTO("table");
@@ -33,4 +34,5 @@ public class CRUDProvider {
 			WHERE("condition");
 		}}.toString();
 	}
+	// @formatter:on
 }

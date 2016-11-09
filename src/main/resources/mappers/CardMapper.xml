@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mappers.CardMapper">
+<mapper namespace="org.kh.splendy.mapper.CardMapper">
 	<!-- 
 	<resultMap id="cardResult" type="org.kh.splendy.vo.Card">
 		<result property="id" column="CD_ID" />

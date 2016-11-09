@@ -1,5 +1,7 @@
 package org.kh.splendy.controller;
 
+import javax.activation.DataSource;
+import javax.activation.URLDataSource;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,26 +12,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MailController {
-
 	@Autowired
 	private JavaMailSender mailSender;
-	
-	
+
 	@RequestMapping(value = "/mail.do")
 	public String sendMail() {
 		try {
+			String fileName = "img/unnamed.png"; // src/main/webapp 폴더
+
 			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper messageHelper = new MimeMessageHelper(message);
-			messageHelper.setTo("doov1@naver.com");
-			messageHelper.setText("합니다");
-			messageHelper.setFrom("yjku2323@gmail.com");
-			messageHelper.setSubject("테스트");	// 메일제목은 생략이 가능하다
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+			helper.setFrom("yjku2323@gmail.com", "splendy");
+			helper.setTo("lc5@naver.com");
+			helper.setSubject("제목");
+			helper.setText("합니다 <img src='cid:image'", true);
+
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			if (classLoader == null) {
+				classLoader = this.getClass().getClassLoader();
+			}
+			DataSource ds = new URLDataSource(classLoader.getResource(fileName));
+
+			helper.addInline("image", ds);
 			mailSender.send(message);
-			
-		} catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return "index";
 	}
 }
