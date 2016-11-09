@@ -21,6 +21,7 @@ body {
 <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 <script src="/webjars/handlebars/4.0.5/handlebars.js"></script>
 <script src='/js/default.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <script id="temp_test" type="text/x-handlebars-template">
 
@@ -30,7 +31,6 @@ body {
 <script>
 
 var curState = "join";
-<%-- var email =  "<%=session.getAttribute("email")%>"; --%>
 var email = "${user[0].email}";
 
 $(document).ready(function(){
@@ -40,7 +40,6 @@ $(document).ready(function(){
 	
 	$("#testDiv").html(temp_test(data));
 	
-	<%-- var result = <%=request.getAttribute("result")%>; --%>
 	var result = "${result}";
 	if(result == "2") {
 		alert("email이 중복되었습니다.")
@@ -70,6 +69,15 @@ $(document).ready(function(){
 	}
 	});
 
+function joinRequest() {
+	$.ajax({
+        url:'/user/requestJoin',
+        type:'post',
+        data:$('#joinForm').serialize(),
+        success:function(data){
+        }
+    })
+}
 
 function join_check() {
 		if(document.joinForm.email.value == ""){
@@ -85,6 +93,8 @@ function join_check() {
 			document.joinForm.password.focus();
 			return false;
 		}  else {
+			joinRequest();
+			alert("회원가입을 완료하였습니다.")
 			return true;
 		}
 }
@@ -123,8 +133,8 @@ function login_check() {
 							<p class="index-title">회원가입</p>
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
-								<form id="joinForm" name="joinForm" method="post" action="/user/joined"
-										onsubmit="return join_check();">
+								<form id="joinForm" name="joinForm" method="post" 
+									onsubmit="return join_check();">
 									<div class="form-group">
 										<label for="textfield">이메일 주소</label> <input name="email"
 											type="email" class="form-control" id="email">
@@ -132,7 +142,7 @@ function login_check() {
 									<div class="form-group">
 										<label for="textfield">닉네임</label> <input name="nickname"
 
-											type="text" class="form-control" id=""nickname"">
+											type="text" class="form-control" id="nickname">
 									</div>
 									<div class="form-group">
 										<label for="exampleInputPassword1">암호</label> <input name="password"
