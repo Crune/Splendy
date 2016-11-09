@@ -122,7 +122,7 @@ public class AccountController {
 	@RequestMapping("/user/join_cert/{code}")
 	public String join_cert(@PathVariable String code) {
 		/**
-		 * TODO 민정:메일인증
+		 * TODO 민정:메일인증 1순위 !
 		 */
 		return "index";
 	}
@@ -144,8 +144,8 @@ public class AccountController {
 			helper.setTo("lc5@naver.com");
 			helper.setSubject("제목");
 			helper.setText("합니다 <img src='cid:image'>", true);
-/*
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			
+			/*ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			if (classLoader == null) {
 				classLoader = this.getClass().getClassLoader();
 			}
@@ -195,7 +195,6 @@ public class AccountController {
 		map.put("email", email);
 		map.put("password", password);
 		int login_result = 0;
-		/*HttpSession session = request.getSession();*/
 		List<UserCore> user = null;
 		
 		try {

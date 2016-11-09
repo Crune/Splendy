@@ -111,7 +111,7 @@ function login_check_credent() {
         }
     })
 }
-
+var login_result = "${login_result}";
 function login_check() {
 	
 	if(document.loginForm.email.value == ""){
@@ -121,6 +121,9 @@ function login_check() {
 	} else if(document.loginForm.password.value == ""){
 		alert("password을 입력해주세요.")
 		document.loginForm.password.focus();
+		return false;
+	} else if(login_result == 0){ /* 야 여기 다시해 */
+		alert("email과 password를 다시 확인해주세요.");
 		return false;
 	} else {
 		return true;
