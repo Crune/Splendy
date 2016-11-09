@@ -99,7 +99,21 @@ function join_check() {
 		}
 }
 
+function login_check_credent() {
+	$.ajax({
+        url:'/user/login_credent',
+        type:'post',
+        data:$('#loginForm').serialize(),
+        success:function(data){
+        	if(data == 1) {
+        		alert("email을 인증하세요.");
+        	}
+        }
+    })
+}
+
 function login_check() {
+	
 	if(document.loginForm.email.value == ""){
 		alert("email을 입력해주세요.")
 		document.loginForm.email.focus();
@@ -108,7 +122,7 @@ function login_check() {
 		alert("password을 입력해주세요.")
 		document.loginForm.password.focus();
 		return false;
-	}  else {
+	} else {
 		return true;
 	}
 }
@@ -174,7 +188,7 @@ function login_check() {
 									<button type="submit" class="btn btn-default">로그인</button>
 									<input id="btn_join" class="btn btn-default" type="button" value="회원가입" />
 									<input id="btn_join" class="btn btn-default" type="button" 
-									onclick = "window.open('http://location/user/find')" value="비밀번호 찾기" />
+									onclick = "" value="비밀번호 찾기" />
 								</form>
 							</div>
 						</div>

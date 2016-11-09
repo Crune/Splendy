@@ -13,6 +13,8 @@ public interface UserService {
 	
 	int checkPassword(HashMap<String, String> map) throws Exception;
 	
+	int checkCredent(HashMap<String, String> map) throws Exception;
+	
 	List<UserCore> searchEmail(String email) throws Exception;
 	
 	void updateUser(HashMap<String, String> map) throws Exception;

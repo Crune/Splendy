@@ -16,8 +16,8 @@ public class MailConfig {
 		mailSender.setDefaultEncoding("UTF-8");
 		mailSender.setHost("smtp.gmail.com");
 		mailSender.setPort(587);
-		mailSender.setUsername("yjku2323@gmail.com");
-		mailSender.setPassword("squbqusyqwxxbhhh");
+		mailSender.setUsername("splendy.spd@gmail.com");
+		mailSender.setPassword("dlehgusrhkdkdlemf");
 		Properties prop = new Properties();
 		prop.setProperty("mail.smtp.auth", "true");
 		prop.setProperty("mail.smtp.starttls.enable", "true");
