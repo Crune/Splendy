@@ -7,12 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
+import org.kh.splendy.sample.SampleController;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.UserCore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 회원가입, 수정, 비밀번호 찾기, 탈퇴
  * @author 민정
@@ -24,14 +29,15 @@ public class AccountController {
 	@Autowired
 	private UserService userServ;
 	
-	
+	@SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
 	
 	@RequestMapping("/user/join")
 	public String join() {
 		return "user/join";
 	}
 	
-	@RequestMapping("/user/joined")
+	/*@RequestMapping("/user/joined")
 	public String createUser(@RequestParam("email") String email,
 							@RequestParam("password") String password,
 							@RequestParam("nickname") String nickname,
@@ -64,6 +70,45 @@ public class AccountController {
 		System.out.println(result);
 		request.setAttribute("result", result);
 		return "index";
+	}*/
+	
+	@RequestMapping(
+			value = "/user/requestJoin",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody int requestJoin(@RequestParam("email") String email,
+										@RequestParam("password") String password,
+										@RequestParam("nickname") String nickname) {
+		
+		log.info(email);
+		UserCore user = new UserCore(); 
+		user.setEmail(email);
+		user.setPassword(password);
+		user.setNickname(nickname);
+
+		int result = -1;
+		UserCore ck_user = null;
+		
+		try {
+			ck_user = userServ.checkEmail(email);
+			System.out.println("결과 : " + ck_user);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		if (ck_user == null){
+			try {
+				userServ.join(user);
+				userServ.get(email);
+				result = 1;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			result = 2;
+		}
+		return result;
+		
 	}
 	
 	@RequestMapping("/user/login")
@@ -99,7 +144,6 @@ public class AccountController {
 		} 
 		
 		request.setAttribute("user", user);
-		/*return "user/login_success";*/
 		return "index";
 	}
 	
