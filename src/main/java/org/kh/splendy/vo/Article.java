@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 @Data
 public class Article {
-	private int id; 
+	private int at_id; 
     private int u_id;
 	private int bd_id; 
     private String subject;    

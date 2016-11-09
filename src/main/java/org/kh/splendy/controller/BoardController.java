@@ -13,10 +13,12 @@ import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /** TODO 찬우.게시판: 컨트롤러 구현
@@ -46,19 +48,19 @@ public class BoardController {
 	/** 게시글 목록
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
-	public String list(@RequestParam String bName, Model model,HttpServletRequest request) throws Exception{
+	public String list(@RequestParam("pageNum") String pageNum,@RequestParam String bName, ModelAndView model
+						,HttpServletRequest request) throws Exception{
 		/** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
 		 * - bName이 설정되어 있지 않을경우 default로 설정
 		 */		
-		/*
+		
 		String boardName = "default";
 		if (bName==null) {			
 		} else if (!bName.isEmpty()) {
 			boardName = bName;
 		}
-		*/
-		String pageNum = request.getParameter("pageNum");//페이지 번호
+		
         
         if (pageNum == null) {
             pageNum = "1";
@@ -67,33 +69,35 @@ public class BoardController {
         int currentPage = Integer.parseInt(pageNum);
         int startRow = (currentPage - 1) * pageSize + 1;//한 페이지의 시작글 번호
         int endRow = currentPage * pageSize;//한 페이지의 마지막 글번호
-        int count = 0;
+        int count =0;
         int number=0;
         
-	    List articleList = null;
+        List<Article> article = null;
         //BoardDBBean dbPro = BoardDBBean.getInstance();//DB연동
         //count = dbPro.getArticleCount();//전체 글의 수 
         count = boardServ.boardCount();
+        
 	    HashMap map = new HashMap();
 	    map.put("start", startRow);
 	    map.put("end", endRow);
         if (count > 0) {
-            articleList = boardServ.getList(bName);
+            article = boardServ.getList(bName);
         } else {
-            articleList = Collections.EMPTY_LIST;
+        	article = Collections.EMPTY_LIST;
         }
 		number=count-(currentPage-1)*pageSize;//글목록에 표시할 글번호
         //해당 뷰에서 사용할 속성
-        request.setAttribute("currentPage", new Integer(currentPage));
+		request.setAttribute("currentPage", new Integer(currentPage));
         request.setAttribute("startRow", new Integer(startRow));
         request.setAttribute("endRow", new Integer(endRow));
         request.setAttribute("count", new Integer(count));
         request.setAttribute("pageSize", new Integer(pageSize));
 		request.setAttribute("number", new Integer(number));
-        request.setAttribute("articleList", articleList);   
+		model.addObject("article", article);
 		
 		
-		return "view.board/list";
+		return "board/list";
+		
 	}
 
 	@RequestMapping(value = "/bbs/view", method = RequestMethod.GET)
@@ -127,11 +131,9 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String write(@RequestParam String bName) {
-		/** TODO 찬우.게시판: 게시글 쓰기 구현
-		 * - 게시판 
-		 */
+	public String write(@RequestParam("num") String num,@RequestParam String bName ) {	
 		
+	
 		return "board/write";
 	}
 	

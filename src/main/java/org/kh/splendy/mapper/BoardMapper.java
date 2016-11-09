@@ -13,9 +13,15 @@ import org.kh.splendy.vo.UserCore;
 
 
 public interface BoardMapper {
-	@Results(id = "boardResult", value = {
+	
+	// SQL query in xml
+		
+		public List<Article> getList(String bName) throws Exception;
+		
+/*
+		@Results(id ="boardResult", value = {
 			@Result(property = "u_id", column = "U_ID"),
-			@Result(property = "id", column = "AT_ID"),
+			@Result(property = "at_id", column = "AT_ID"),
 			@Result(property = "bd_id", column = "BD_ID"),
 			@Result(property = "pass", column = "AT_PASS"),
 			@Result(property = "subject", column = "AT_SUBJECT"),
@@ -27,13 +33,9 @@ public interface BoardMapper {
 			@Result(property = "reg_date", column = "AT_REG_DATE"),
 			@Result(property = "readcount", column = "AT_READCOUNT"),
 			@Result(property = "category", column = "AT_CATEGORY"),			
-			
 		})
-	
-		// SQL query in xml
-		public List<Article> getList() throws Exception;
-		
-		@Select("select count(*) from board")
+		*/
+		@Select("select count(*) from KH_ARTICLE")
 		public int boardCount() throws Exception;
 	
 		

@@ -1,14 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page contentType = "text/html; charset=euc-kr" %>
+<%@ page contentType = "text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-{$category}
 
 <html>
 <head>
 <title>게시판</title>
-<link href="style.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body bgcolor="${bodyback_c}">
@@ -16,10 +13,11 @@
 <table width="700">
   <tr>
     <td align="right" bgcolor="${value_c}">
-       <a href="writeForm.do">글쓰기</a>
+       <a href="/bbs/write">글쓰기</a>
     </td>
   </tr>
 </table>
+
 
 <c:if test="${count == 0}">
 <table width="700" border="1" cellpadding="0" cellspacing="0">
@@ -42,7 +40,7 @@
       <td align="center"  width="100" >IP</td>    
     </tr>
 
-   <c:forEach var="article" items="${articleList}">
+   <c:forEach var="article" items="${article}">
    <tr height="30">
     <td align="center"  width="50" >
 	  <c:out value="${number}"/>
@@ -58,14 +56,14 @@
 	    <img src="images/level.gif" width="${5 * article.re_level}" height="16">
 	  </c:if>
            
-      <a href="content.do?num=${article.num}&pageNum=${currentPage}">
+      <a href="content.do?num=${article.at_id}&pageNum=${currentPage}">
           ${article.subject}</a> 
           <c:if test="${article.readcount >= 20}">
             <img src="images/hot.gif" border="0"  height="16">
 		  </c:if>
 	</td>
     <td align="center"  width="100"> 
-       <a href="mailto:${article.email}">${article.writer}</a>
+       <a href="mailto:${article.ip}">${article.u_id}</a>
 	</td>
     <td align="center"  width="150">${article.reg_date}
 	</td>
@@ -98,7 +96,7 @@
         <a href="/study/ch19/list.do?pageNum=${startPage + 10}">[다음]</a>
    </c:if>
 </c:if>
-
+ 
 </center>
 </body>
 </html>

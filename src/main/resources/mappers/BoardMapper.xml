@@ -3,25 +3,26 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.kh.splendy.mapper.UserMapper">
-	<!-- 
-	<resultMap id="userVo" type="org.kh.splendy.vo.UserCore">
-		<result column="U_ID" property="id" />
-		<result column="U_NICK" property="nickname" />
-		<result column="U_EMAIL" property="email" />
-		<result column="U_PW" property="password" />
-		<result column="U_ENABLED" property="enabled" />
-		<result column="U_N_LOCKED" property="notLocked" />
-		<result column="U_N_EXPIRED" property="notExpired" />
-		<result column="U_N_CREDENT" property="notCredential" />
-		<result column="U_REG" property="reg" />
+<mapper namespace="org.kh.splendy.mapper.BoardMapper">
+ 
+	<resultMap id="BoardVO" type="org.kh.splendy.vo.Article">
+		<result column="U_ID" property="u_id" />
+		<result column="AT_ID" property="at_id" />
+		<result column="BD_ID" property="bd_id" />
+		<result column="AT_SUBJECT" property="subject" />
+		<result column="AT_CONTENT" property="content" />
+		<result column="AT_PASS" property="pass" />
+		<result column="AT_READCOUNT" property="readcount" />
+		<result column="AT_IP" property="ip" />
+		<result column="AT_REPLY" property="reply" />
+		<result column="AT_RE_STEP" property="re_step" />
+		<result column="AT_RE_LEVEL" property="re_level" />
+		<result column="AT_CATEGORY" property="category" />
+		<result column="AT_REG_DATE" property="reg_date" />
 	</resultMap>
-	-->
-	<select id="getList" parameterType="org.kh.splendy.vo.Article">
-		<![CDATA[select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount				
-				 from (select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount,rownum r  
-				 from (select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount 
-				 from board order by ref desc, re_step asc) order by ref desc, re_step asc ) where r >= #start# and r <= #end# ]]>
+
+	<select id="getList" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
+		select * from KH_ARTICLE
 	</select>
 	
 	<!-- 
