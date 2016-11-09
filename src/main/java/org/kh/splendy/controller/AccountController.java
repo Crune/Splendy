@@ -99,7 +99,6 @@ public class AccountController {
 		} 
 		
 		request.setAttribute("user", user);
-		/*return "user/login_success";*/
 		return "index";
 	}
 	

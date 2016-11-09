@@ -30,8 +30,8 @@ body {
 <script>
 
 var curState = "join";
-var email =  "<%=session.getAttribute("email")%>";
-
+<%-- var email =  "<%=session.getAttribute("email")%>"; --%>
+var email = "${user[0].email}";
 
 $(document).ready(function(){
 	var source_test = $("#temp_test").html();
@@ -40,14 +40,15 @@ $(document).ready(function(){
 	
 	$("#testDiv").html(temp_test(data));
 	
-	var result = <%=request.getAttribute("result")%>;
-	if(result == 2) {
+	<%-- var result = <%=request.getAttribute("result")%>; --%>
+	var result = "${result}";
+	if(result == "2") {
 		alert("email이 중복되었습니다.")
-	} else if(result == 1) {
+	} else if(result == "1") {
 		alert("회원가입이 완료되었습니다.")
 	}
 	
-	if(email == "null") {
+	if(email == "null" || email == "") {
 		$("#btn_login").on('click', function () {
 			curState = "login";
 			$("#joinDiv").hide();
@@ -70,22 +71,36 @@ $(document).ready(function(){
 	});
 
 
-function check() {
-		if(document.form1.email.value == ""){
+function join_check() {
+		if(document.joinForm.email.value == ""){
 			alert("email을 입력해주세요.")
-			document.form1.email.focus();
+			document.joinForm.email.focus();
 			return false;
-		} else if(document.form1.nickname.value == ""){
+		} else if(document.joinForm.nickname.value == ""){
 			alert("nickname을 입력해주세요.")
-			document.form1.nickname.focus();
+			document.joinForm.nickname.focus();
 			return false;
-		} else if(document.form1.password.value == ""){
+		} else if(document.joinForm.password.value == ""){
 			alert("password을 입력해주세요.")
-			document.form1.password.focus();
+			document.joinForm.password.focus();
 			return false;
 		}  else {
 			return true;
 		}
+}
+
+function login_check() {
+	if(document.loginForm.email.value == ""){
+		alert("email을 입력해주세요.")
+		document.loginForm.email.focus();
+		return false;
+	} else if(document.loginForm.password.value == ""){
+		alert("password을 입력해주세요.")
+		document.loginForm.password.focus();
+		return false;
+	}  else {
+		return true;
+	}
 }
 
 
@@ -109,7 +124,7 @@ function check() {
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
 								<form id="joinForm" name="joinForm" method="post" action="/user/joined"
-										onsubmit="return check();">
+										onsubmit="return join_check();">
 									<div class="form-group">
 										<label for="textfield">이메일 주소</label> <input name="email"
 											type="email" class="form-control" id="email">
@@ -134,7 +149,8 @@ function check() {
 							<p class="index-title">로그인</p>
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
-								<form id="loginForm" name="loginForm" method="post" action="/user/login_suc">
+								<form id="loginForm" name="loginForm" method="post" action="/user/login_suc"
+									onsubmit="return login_check();">
 									<div class="form-group">
 										<label for="textfield">이메일 주소</label> <input name="email"
 											type="email" class="form-control" id="email" />
