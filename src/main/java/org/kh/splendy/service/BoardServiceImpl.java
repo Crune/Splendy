@@ -5,6 +5,7 @@ import java.util.List;
 import org.kh.splendy.mapper.ArticleMapper;
 import org.kh.splendy.mapper.BoardMapper;
 import org.kh.splendy.vo.Article;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

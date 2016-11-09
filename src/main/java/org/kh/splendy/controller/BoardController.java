@@ -48,7 +48,7 @@ public class BoardController {
 	/** 게시글 목록
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
-	public String list(@RequestParam("pageNum") String pageNum,@RequestParam String bName, ModelAndView model
+	public String list(@RequestParam("pageNum")String pageNum,@RequestParam String bName, Model model
 						,HttpServletRequest request) throws Exception{
 		/** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
@@ -93,7 +93,7 @@ public class BoardController {
         request.setAttribute("count", new Integer(count));
         request.setAttribute("pageSize", new Integer(pageSize));
 		request.setAttribute("number", new Integer(number));
-		model.addObject("article", article);
+		model.addAttribute("article", article);
 		
 		
 		return "board/list";
