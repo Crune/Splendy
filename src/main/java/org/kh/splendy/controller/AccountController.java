@@ -154,6 +154,18 @@ public class AccountController {
 		return "index";
 	}
 	
+	@RequestMapping("/user/find")
+	public String find() {
+		
+		return "user/findPW";
+	}
+	
+	@RequestMapping("/user/findPW")
+	public String findPW() {
+		
+		return "";
+	}
+	
 	/** TODO 민정.계정: 정보수정 구현
 	* 
 	*/

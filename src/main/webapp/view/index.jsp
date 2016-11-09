@@ -173,6 +173,8 @@ function login_check() {
 									</div>
 									<button type="submit" class="btn btn-default">로그인</button>
 									<input id="btn_join" class="btn btn-default" type="button" value="회원가입" />
+									<input id="btn_join" class="btn btn-default" type="button" 
+									onclick = "window.open('http://location/user/find')" value="비밀번호 찾기" />
 								</form>
 							</div>
 						</div>
