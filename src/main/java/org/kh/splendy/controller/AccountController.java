@@ -40,16 +40,30 @@ public class AccountController {
 		user.setEmail(email);
 		user.setPassword(password);
 		user.setNickname(nickname);
+		UserCore ck_user = null;
+		int result = 0;
 		
 		try {
-			userServ.join(user);
-			userServ.get(user.getEmail());
-		} catch (Exception e) {
-			e.printStackTrace();
+			ck_user = userServ.checkEmail(email);
+			System.out.println("결과 : " + ck_user);
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
-		request.setAttribute("user", user);
 		
-		return "user/join_success";
+		if (ck_user == null){
+			try {
+				userServ.join(user);
+				userServ.get(user.getEmail());
+				result = 1;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			result = 2;
+		}
+		System.out.println(result);
+		request.setAttribute("result", result);
+		return "index";
 	}
 	
 	@RequestMapping("/user/login")
@@ -60,20 +74,21 @@ public class AccountController {
 	@RequestMapping("/user/login_suc")
 	public String login_suc(@RequestParam("email") String email,
 							@RequestParam("password") String password,
-							HttpServletRequest request) {
+							HttpServletRequest request,
+							HttpSession session) {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("email", email);
 		map.put("password", password);
-		int result = 0;
-		HttpSession session = request.getSession();
+		int login_result = 0;
+		/*HttpSession session = request.getSession();*/
 		List<UserCore> user = null;
 		
 		try {
-			result = userServ.checkPassword(map);
+			login_result = userServ.checkPassword(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(result == 1){
+		if(login_result == 1){
 			session.setAttribute("email", email);
 			session.setAttribute("password", password);
 			try {
@@ -83,9 +98,16 @@ public class AccountController {
 			}
 		} 
 		
-		request.setAttribute("result", result);
 		request.setAttribute("user", user);
-		return "user/login_success";
+		/*return "user/login_success";*/
+		return "index";
+	}
+	
+	@RequestMapping("/user/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		
+		return "index";
 	}
 	
 	/** TODO 민정.계정: 정보수정 구현
@@ -142,19 +164,22 @@ public class AccountController {
 	}
 	
 	@RequestMapping("/user/delete_suc")
-	public String remove_suc(@RequestParam("email") String email,
-								@RequestParam("password") String password) {
+	public String remove_suc(HttpSession session) {
+		String email = (String)session.getAttribute("email");
+		String password = (String)session.getAttribute("password");
+		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("email", email);
 		map.put("password", password);
 		
 		try {
 			userServ.deleteUser(map);
+			session.invalidate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return "user/delete_success";
+		return "index";
 	}
 	
 
