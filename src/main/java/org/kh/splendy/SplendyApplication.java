@@ -14,7 +14,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @SpringBootApplication
-@MapperScan(basePackages = { "mappers" })
+@MapperScan(basePackages = { "org.kh.splendy.mapper" })
 public class SplendyApplication {
 
 /*
