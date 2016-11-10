@@ -9,7 +9,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+/**
+ * 
+ * @author 진규
+ *
+ */
 @Controller
 public class MailController {
 	@Autowired
@@ -22,11 +26,10 @@ public class MailController {
 
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-			
-			helper.setFrom("yjku2323@gmail.com", "splendy");
-			helper.setTo("lc5@naver.com");
-			helper.setSubject("제목");
-			helper.setText("합니다 <img src='cid:image'", true);
+			helper.setFrom("yjku2323@gmail.com", "splendy"); // 보내는 사람 주소 정확하게 입력해야 보내짐
+			helper.setTo("lc5@naver.com"); // 받는사람 주소
+			helper.setSubject("제목"); //제목 생략가능
+			helper.setText("합니다 <img src='cid:image'", true); // 내용 + 이미지
 
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			if (classLoader == null) {
