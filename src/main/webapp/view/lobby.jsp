@@ -104,13 +104,22 @@ body {
 			</div>
 			<div class="container lobby_white_line" style="height: 2px"></div>
 		</div>
-		<div class="lobby_cont">
-			<div id="chat">
-				<div class="chat_msg"></div>
-			</div>
-			<div id="rooms">
-				<div class="lobby_room">
-					<div></div>
+		<div class="container lobby_cont">
+			<div class="row">
+				<div id="chat_frame">
+					<div class="chat_msg">메시지</div>
+				</div>
+				<div id="room_frame">
+					<div class="lobby_room">
+						<div class="room_name">방제</div>
+						<div class="room_info">설명</div>
+					</div>
+					<div class="lobby_room empty_room">
+						<img/>+버튼
+					</div>
+					<div id="lobby_players">
+						플레이어1
+					</div>
 				</div>
 			</div>
 		</div>
