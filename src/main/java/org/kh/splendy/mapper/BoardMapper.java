@@ -19,7 +19,7 @@ public interface BoardMapper {
 		
 		public List<Article> getList(String bName) throws Exception;
 		
-
+/*
 		@Results(id ="boardResult", value = {
 			@Result(property = "u_id", column = "U_ID"),
 			@Result(property = "at_id", column = "AT_ID"),
@@ -35,16 +35,15 @@ public interface BoardMapper {
 			@Result(property = "at_readcount", column = "AT_READCOUNT"),
 			@Result(property = "at_category", column = "AT_CATEGORY"),			
 		})
-	
+	*/
 		@Select("select count(*) from KH_ARTICLE")
-		public int boardCount() throws Exception;	
-		
-		
-		@Insert("insert into ARTICLE values (at_id , u_id, at_subject,at_pass,at_content,at_ip,at_reply,at_re_level,at_re_step,at_reg_date) VALUES"
-				+ " (#{id, jdbcType=VARCHAR}, #{AT_SUBJECT, jdbcType=VARCHAR}, #{AT_PASS, jdbcType=VARCHAR}, #{REG_DATE, jdbcType=VARCHAR}, #{AT_RE_STEP, jdbcType=VARCHAR}, #{AT_RE_LEVEL, jdbcType=VARCHAR}, #{AT_CONTENT, jdbcType=VARCHAR}")
+		public int boardCount() throws Exception;
+				
 		public String writePro() throws Exception;
+		
 		@Update("update ARTICLE set AT_RE_STEP=AT_RE_LEVEL+1 where AT_REPLY= #{reply} and AT_RE_STEP> #{re_step}")
 		public void reply(HashMap<String, String> map) throws Exception;
+		
 		@Select("select max(AT_ID) from ARTICLE")
 		public int max() throws Exception;
 		

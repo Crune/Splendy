@@ -13,7 +13,7 @@
 <table width="700">
   <tr>
     <td align="right" bgcolor="${value_c}">
-       <a href="/bbs/write">글쓰기</a>
+       <a href="/bbs/write?bName=1">글쓰기</a>
     </td>
   </tr>
 </table>
@@ -63,7 +63,7 @@
 		  </c:if>
 	</td>
     <td align="center"  width="100"> 
-       <a href="mailto:${article.at_ip}">${article.u_id}</a>
+       <a href="mailto:${article.at_ip}"></a>
 	</td>
     <td align="center"  width="150">${article.at_reg_date}
 	</td>

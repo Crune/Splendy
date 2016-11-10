@@ -135,20 +135,23 @@ public class BoardController {
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
 	public String write(@RequestParam String bName,HttpServletRequest request ) {		
-		  int num=0,ref=1,re_step=0,re_level=0;  
-	        try{  
-	          if(request.getParameter("num")!=null){
-		         num=Integer.parseInt(request.getParameter("num"));
-		         ref=Integer.parseInt(request.getParameter("ref"));
-		         re_step=Integer.parseInt(request.getParameter("re_step"));
-		         re_level=Integer.parseInt(request.getParameter("re_level"));
+		  
+		int at_id=0,reply=1,at_re_step=0,at_re_level=0;  
+	       
+		  try{  
+	          if(request.getParameter("at_id")!=null){
+	        	 at_id=Integer.parseInt(request.getParameter("at_id"));
+	        	 reply=Integer.parseInt(request.getParameter("reply"));
+	        	 at_re_step=Integer.parseInt(request.getParameter("at_re_step"));
+	        	 at_re_level=Integer.parseInt(request.getParameter("at_re_level"));
 		      }
-			}catch(Exception e){e.printStackTrace();}
+			
+		  }catch(Exception e){e.printStackTrace();}
 	        //해당 뷰에서 사용할 속성
-			request.setAttribute("num", new Integer(num));
-	        request.setAttribute("ref", new Integer(ref));
-	        request.setAttribute("re_step", new Integer(re_step));
-	        request.setAttribute("re_level", new Integer(re_level));
+			request.setAttribute("num", new Integer(at_id));
+	        request.setAttribute("ref", new Integer(reply));
+	        request.setAttribute("re_step", new Integer(at_re_step));
+	        request.setAttribute("re_level", new Integer(at_re_level));
 	        
 		return "board/write";
 	}
@@ -163,11 +166,12 @@ public class BoardController {
 		
 		request.setCharacterEncoding("UTF-8");//한글 인코딩
 		String at_reply = request.getParameter("at_reply");
-		String at_re_step = request.getParameter("at_re_step");
+		String at_re_step = request.getParameter("at_re_step");	
 		
-		boardServ.writePro(article, result, rttr);			
+		boardServ.writePro(article, result,rttr);		
 		
 		int number=0;
+		
         int max = boardServ.max();       
 	
 		if( max != 0){
@@ -177,23 +181,26 @@ public class BoardController {
 		}		
 		if(article.getAt_id() != 0){
 			HashMap<String, String> map = new HashMap<String, String>();
+			
 			map.put("at_reply", at_reply);
 			map.put("at_re_step", at_re_step);			
-			boardServ.reply(map);			
+			boardServ.reply(map);
+			
 			article.setAt_re_step(article.getAt_re_step()+1);
-			article.setAt_re_level(article.getAt_re_level() + 1);			
+			article.setAt_re_level(article.getAt_re_level() + 1);
+			
 		}else{
 			article.setAt_reply(number);
 			article.setAt_re_step(0);
 			article.setAt_re_level(0);			
-		}
-		request.setAttribute("reply", at_reply);
-		request.setAttribute("re_step", at_re_step);
+		}		
 		article.setAt_reg_date(new Timestamp(System.currentTimeMillis()) );
 		article.setAt_ip(request.getRemoteAddr());
 		
+		
+		
 		rttr.addFlashAttribute("bName",article.getBd_id());
-		System.out.println(article.getAt_content());
+		
 		return "redirect:/bbs/list";
 	}
 

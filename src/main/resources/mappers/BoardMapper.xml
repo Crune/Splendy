@@ -4,36 +4,36 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.kh.splendy.mapper.BoardMapper">
- 
+
 	<resultMap id="BoardVO" type="org.kh.splendy.vo.Article">
 		<result column="U_ID" property="u_id" />
 		<result column="AT_ID" property="at_id" />
 		<result column="BD_ID" property="bd_id" />
-		<result column="AT_SUBJECT" property="subject" />
-		<result column="AT_CONTENT" property="content" />
-		<result column="AT_PASS" property="pass" />
-		<result column="AT_READCOUNT" property="readcount" />
-		<result column="AT_IP" property="ip" />
-		<result column="AT_REPLY" property="reply" />
-		<result column="AT_RE_STEP" property="re_step" />
-		<result column="AT_RE_LEVEL" property="re_level" />
-		<result column="AT_CATEGORY" property="category" />
-		<result column="AT_REG_DATE" property="reg_date" />
+		<result column="AT_SUBJECT" property="at_subject" />
+		<result column="AT_CONTENT" property="at_content" />
+		<result column="AT_PASS" property="at_pass" />
+		<result column="AT_READCOUNT" property="at_readcount" />
+		<result column="AT_IP" property="at_ip" />
+		<result column="AT_REPLY" property="at_reply" />
+		<result column="AT_RE_STEP" property="at_re_step" />
+		<result column="AT_RE_LEVEL" property="at_re_level" />
+		<result column="AT_CATEGORY" property="at_category" />
+		<result column="AT_REG_DATE" property="at_reg_date" />
 	</resultMap>
 
 	<select id="getList" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
 		select * from KH_ARTICLE
 	</select>
-	
-	<!-- 
-	<update id="modifyUserWithEmail" parameterType="org.kh.splendy.vo.UserCore">
-	<![CDATA[
-		UPDATE KH_USER SET 
-			U_NICK=#{nickname}, U_PW=#{password}, 
-			U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, 
-			U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} 
-		WHERE U_EMAIL=#{email}
-	]]>
-	</update>
-	 -->
+
+	<insert id="writePro" parameterType="org.kh.splendy.vo.Article">
+		<![CDATA[
+		insert into ARTICLE(AT_ID,U_ID,AT_SUBJECT,AT_PASS,AT_CONTENT,AT_IP,AT_REPLY,AT_RE_LEVEL,AT_RE_STEP,AT_REG_DATE)
+		values(#{at_id},#{u_id},#{at_subject},#{at_pass},#{at_content},#{at_ip},#{at_reply},#{at_re_level},#{at_re_step},#{at_reg_date})
+		]]>
+	</insert>
+
+	<!-- <update id="modifyUserWithEmail" parameterType="org.kh.splendy.vo.UserCore"> 
+		<![CDATA[ UPDATE KH_USER SET U_NICK=#{nickname}, U_PW=#{password}, U_ENABLED=#{enabled}, 
+		U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} 
+		WHERE U_EMAIL=#{email} ]]> </update> -->
 </mapper>
