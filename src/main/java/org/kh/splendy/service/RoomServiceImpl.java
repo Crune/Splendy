@@ -23,8 +23,7 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public List<Room> getList() {
-		// TODO 윤.로비: 리스트 서비스 구현
-		return null;
+		return roomMap.getCurrentRooms();
 	}
 	
 }

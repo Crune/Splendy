@@ -49,7 +49,7 @@ public class LobbyController {
 	}
 	
 	/** 로비 첫 화면 */
-	@RequestMapping(value = "/lobby", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String list(Model model) {
 		/** TODO 윤.로비: 로비 입장 화면 구현 */
 		List<Room> rooms = roomServ.getList();
