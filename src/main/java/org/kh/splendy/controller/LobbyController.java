@@ -58,4 +58,9 @@ public class LobbyController {
 		return "lobby";
 	}
 
+	@RequestMapping(value = "/sample", method = RequestMethod.GET)
+	public String sample(Model model) {
+		
+		return "admin/sample";
+	}
 }
