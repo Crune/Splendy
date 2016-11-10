@@ -86,36 +86,42 @@ public class AccountController {
 			value = "/user/requestJoin",
 			method = RequestMethod.POST,
 			produces = "application/json")
-	public @ResponseBody int requestJoin(@RequestParam("email") String email,
-										@RequestParam("password") String password,
-										@RequestParam("nickname") String nickname) {
-		
-		UserCore user = new UserCore(); 
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setNickname(nickname);
-
+	public @ResponseBody int requestJoin(HttpServletRequest request) {
 		int result = -1;
 		UserCore ck_user = null;
 		
-		try {
-			ck_user = userServ.checkEmail(email);
-			System.out.println("결과 : " + ck_user);
-		} catch (Exception e1) {
-			e1.printStackTrace();
+		String email = null;
+		String password = null;
+		String nickname = null;
+		
+		if(request.getParameter("email") != null){
+			email = request.getParameter("email");
+			password = request.getParameter("password");
+			nickname = request.getParameter("nickname");
+			UserCore user = new UserCore(); 
+			user.setEmail(email);
+			user.setPassword(password);
+			user.setNickname(nickname);
+
+			try {
+				ck_user = userServ.checkEmail(email);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+			if (ck_user == null){
+				try {
+					userServ.join(user);
+					userServ.get(email);
+					result = 1;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				result = 2;
+			}
 		}
 		
-		if (ck_user == null){
-			try {
-				userServ.join(user);
-				userServ.get(email);
-				result = 1;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			result = 2;
-		}
 		return result;	
 	}
 	
@@ -182,7 +188,7 @@ public class AccountController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println(credent);
 		return credent;
 	}
 	
@@ -191,14 +197,17 @@ public class AccountController {
 							@RequestParam("password") String password,
 							HttpServletRequest request,
 							HttpSession session) {
+		int result = -1;
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("email", email);
 		map.put("password", password);
-		int login_result = 0;
+		int login_result = -1;
+		int credent = -1;
 		List<UserCore> user = null;
 		
 		try {
 			login_result = userServ.checkPassword(map);
+			credent = userServ.checkCredent(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -211,15 +220,16 @@ public class AccountController {
 				e.printStackTrace();
 			}
 		} 
-		
+		request.setAttribute("credent", credent);
+		request.setAttribute("login_result", login_result);
 		request.setAttribute("user", user);
+		request.setAttribute("result", result);
 		return "index";
 	}
 	
 	@RequestMapping("/user/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		
 		return "index";
 	}
 	
