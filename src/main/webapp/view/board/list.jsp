@@ -47,28 +47,28 @@
 	  <c:set var="number" value="${number - 1}"/>
 	</td>
     <td  width="250" >
-	  <c:if test="${article.re_level > 0}">
-	  	<img src="images/level.gif" width="${5 * article.re_level}" height="16">
+	  <c:if test="${article.at_re_level > 0}">
+	  	<img src="images/level.gif" width="${5 * article.at_re_level}" height="16">
 	    <img src="images/re.gif">
 	  </c:if>
 	  
-	  <c:if test="${article.re_level == 0}">
-	    <img src="images/level.gif" width="${5 * article.re_level}" height="16">
+	  <c:if test="${article.at_re_level == 0}">
+	    <img src="images/level.gif" width="${5 * article.at_re_level}" height="16">
 	  </c:if>
            
-      <a href="content.do?num=${article.at_id}&pageNum=${currentPage}">
-          ${article.subject}</a> 
-          <c:if test="${article.readcount >= 20}">
+      <a href="content.do?bName=${article.at_id}&pageNum=${currentPage}">
+          ${article.at_subject}</a> 
+          <c:if test="${article.at_readcount >= 20}">
             <img src="images/hot.gif" border="0"  height="16">
 		  </c:if>
 	</td>
     <td align="center"  width="100"> 
-       <a href="mailto:${article.ip}">${article.u_id}</a>
+       <a href="mailto:${article.at_ip}">${article.u_id}</a>
 	</td>
-    <td align="center"  width="150">${article.reg_date}
+    <td align="center"  width="150">${article.at_reg_date}
 	</td>
-    <td align="center"  width="50">${article.readcount}</td>
-    <td align="center" width="100" >${article.ip}</td>
+    <td align="center"  width="50">${article.at_readcount}</td>
+    <td align="center" width="100" >${article.at_ip}</td>
   </tr>
   </c:forEach>
 </table>
