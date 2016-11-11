@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,7 +24,6 @@
 <![endif]-->
 </head>
 <body>
-
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -54,7 +54,7 @@
 					<li><a href="#">Export</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="">유저</a></li>
+					<li><a href="">Nav item</a></li>
 					<li><a href="">Nav item again</a></li>
 					<li><a href="">One more nav</a></li>
 					<li><a href="">Another nav item</a></li>
@@ -67,9 +67,26 @@
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header"></h1>
+				<h1 class="page-header">Service 현황</h1>
 				<div class="table-responsive">
-
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>이름</th>
+								<th>상태</th>
+								<th>관리</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="list" items="${list}">
+								<tr>
+									<td>${list.key}</td>
+									<td>${list.value}</td>
+									<td></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
