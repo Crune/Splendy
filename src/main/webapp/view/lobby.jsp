@@ -13,6 +13,7 @@
 body, td, th {
 	color: #777777;
 	font-family: "나눔고딕";
+	_behavior: url(/js/iepngfix.htc)
 }
 
 body {
@@ -106,19 +107,124 @@ body {
 		</div>
 		<div class="container lobby_cont">
 			<div class="row">
-				<div id="chat_frame">
-					<div class="chat_msg">메시지</div>
+				<div class="col-md-4 chat_frame">
+					<div class="chat_msg"><span class="nick_o">손님4885:</span> 이게 대체 뭠미? <span class="msg_time">- 16:52</span></div>
+					<div class="chat_msg"><span class="nick_o">손님4885:</span> 이거 망겜인듯 <span class="msg_time">- 16:53</span></div>
+					<div class="chat_msg"><span class="nick_me">최윤일지도모릅:</span> 개객끼야! <span class="msg_time">- 16:54</span></div>
 				</div>
-				<div id="room_frame">
+				<div class="col-md-8 room_frame">
 					<div class="lobby_room">
-						<div class="room_name">방제</div>
-						<div class="room_info">설명</div>
+						<div class="room_detail col-md-5">
+							<div class="room_name">아무나 들어오세요</div>
+							<div class="room_info">너만 빼고 너만 빼고 너만 빼고 너만 빼고 너만 빼고 너만 빼고 너만 빼고 너만 빼고 너만 빼고 너만 빼고</div>
+						</div>
+						<div class="room_player col-md-7">
+							<div class="player host col-md-3" id="uid">
+								<div class="room_icon">
+									<img src="/img/unnamed.png" width="50px" height="50px" />
+								</div>
+								<div class="room_nickname">닉네임입니다</div>
+								<div class="room_rate">레이팅</div>
+							</div>
+							<div class="player col-md-3" id="uid">
+								<div class="room_icon">
+									<img src="/img/unnamed.png" width="50px" height="50px" />
+								</div>
+								<div class="room_nickname">닉네임</div>
+								<div class="room_rate">레이팅</div>
+							</div>
+							<div class="player col-md-3" id="uid">
+								<div class="room_icon">
+									<img src="/img/unnamed.png" width="50px" height="50px" />
+								</div>
+								<div class="room_nickname">닉네임입니다</div>
+								<div class="room_rate">레이팅</div>
+							</div>
+							<div class="player col-md-3" id="uid">
+								<div class="room_icon">
+									<img src="/img/unnamed.png" width="50px" height="50px" />
+								</div>
+								<div class="room_nickname">닉네임</div>
+								<div class="room_rate">레이팅</div>
+							</div>
+						</div>
 					</div>
 					<div class="lobby_room empty_room">
-						<img/>+버튼
+						<img/>+ 방추가 버튼
 					</div>
-					<div id="lobby_players">
-						플레이어1
+					<div class="lobby_players">
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+					</div>
+					<div class="lobby_players">
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+						<div class="player col-md-2" id="uid">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
 					</div>
 				</div>
 			</div>

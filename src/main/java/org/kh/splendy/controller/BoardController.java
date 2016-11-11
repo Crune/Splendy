@@ -1,10 +1,12 @@
 package org.kh.splendy.controller;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.kh.splendy.sample.SampleController;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,8 +42,8 @@ public class BoardController {
 	public Article article() {
 		Article article = new Article();
 		article.setU_id(-1);
-		article.setSubject("게시글 읽기 실패");
-		article.setContent("게시글 읽기에 실패하였습니다.");
+		article.setAt_subject("게시글 읽기 실패");
+		article.setAt_content("게시글 읽기에 실패하였습니다.");
 		return null;
 	}
 	
@@ -49,11 +52,12 @@ public class BoardController {
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
 	public String list(@RequestParam("pageNum")String pageNum,@RequestParam String bName, Model model
-						,HttpServletRequest request) throws Exception{
+						,HttpServletRequest request,HttpSession session) throws Exception{
 		/** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
 		 * - bName이 설정되어 있지 않을경우 default로 설정
 		 */		
+		
 		
 		String boardName = "default";
 		if (bName==null) {			
@@ -75,8 +79,7 @@ public class BoardController {
         List<Article> article = null;
         //BoardDBBean dbPro = BoardDBBean.getInstance();//DB연동
         //count = dbPro.getArticleCount();//전체 글의 수 
-        count = boardServ.boardCount();
-        
+        count = boardServ.boardCount();        
 	    HashMap map = new HashMap();
 	    map.put("start", startRow);
 	    map.put("end", endRow);
@@ -131,9 +134,25 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String write(@RequestParam("num") String num,@RequestParam String bName ) {	
-		
-	
+	public String write(@RequestParam String bName,HttpServletRequest request ) {		
+		  
+		int at_id=0,reply=1,at_re_step=0,at_re_level=0;  
+	       
+		  try{  
+	          if(request.getParameter("at_id")!=null){
+	        	 at_id=Integer.parseInt(request.getParameter("at_id"));
+	        	 reply=Integer.parseInt(request.getParameter("reply"));
+	        	 at_re_step=Integer.parseInt(request.getParameter("at_re_step"));
+	        	 at_re_level=Integer.parseInt(request.getParameter("at_re_level"));
+		      }
+			
+		  }catch(Exception e){e.printStackTrace();}
+	        //해당 뷰에서 사용할 속성
+			request.setAttribute("num", new Integer(at_id));
+	        request.setAttribute("ref", new Integer(reply));
+	        request.setAttribute("re_step", new Integer(at_re_step));
+	        request.setAttribute("re_level", new Integer(at_re_level));
+	        
 		return "board/write";
 	}
 	
@@ -142,11 +161,46 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String writePro(@ModelAttribute @Valid Article article, BindingResult result, RedirectAttributes rttr) {
-		/** TODO 찬우.게시판: 게시글 쓰기 구현
-		 * - 작성 후 해당 글 보기 화면으로 리다이렉트
-		 */
+	public String writePro(@ModelAttribute @Valid Article article, BindingResult result, RedirectAttributes rttr,
+							HttpServletRequest request )throws Exception{
+		
+		request.setCharacterEncoding("UTF-8");//한글 인코딩
+		String at_reply = request.getParameter("at_reply");
+		String at_re_step = request.getParameter("at_re_step");	
+		
+		boardServ.writePro(article, result,rttr);		
+		
+		int number=0;
+		
+        int max = boardServ.max();       
+	
+		if( max != 0){
+			number = max+1;
+		}else{
+			number = 1;
+		}		
+		if(article.getAt_id() != 0){
+			HashMap<String, String> map = new HashMap<String, String>();
+			
+			map.put("at_reply", at_reply);
+			map.put("at_re_step", at_re_step);			
+			boardServ.reply(map);
+			
+			article.setAt_re_step(article.getAt_re_step()+1);
+			article.setAt_re_level(article.getAt_re_level() + 1);
+			
+		}else{
+			article.setAt_reply(number);
+			article.setAt_re_step(0);
+			article.setAt_re_level(0);			
+		}		
+		article.setAt_reg_date(new Timestamp(System.currentTimeMillis()) );
+		article.setAt_ip(request.getRemoteAddr());
+		
+		
+		
 		rttr.addFlashAttribute("bName",article.getBd_id());
+		
 		return "redirect:/bbs/list";
 	}
 
