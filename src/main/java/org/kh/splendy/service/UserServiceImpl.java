@@ -93,4 +93,9 @@ public class UserServiceImpl implements UserService {
 	public void insertCredent(String credent_code) throws Exception {
 		userMap.insertCredent(credent_code);
 	}
+
+	@Override
+	public void updatePassword(String email, String password) throws Exception {
+		userMap.updatePassword(email, password);
+	}
 }

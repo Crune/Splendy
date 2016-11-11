@@ -175,31 +175,39 @@ public class AccountController {
 		return "index";
 	}
 
-	@RequestMapping("/user/send_pw")
-	public int send_pw() {
+	@RequestMapping(
+			value = "/user/send_pw",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody int send_pw(@RequestParam("email") String email) {
 		
 		int result_pw = -1;
 		/**
 		 * TODO 민정:새 비밀번호 메일 전송
 		 */
+		String new_pw = RandomStringUtils.randomAlphanumeric(9);
+		/*HashMap<String, String> map = new HashMap<String, String>();*/
+		
 		try {
+			userServ.updatePassword(email, new_pw);
+			result_pw = 1;
 			String fileName = "img/unnamed.png"; // src/main/webapp 폴더
 
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 			
-			helper.setFrom("yjku2323@gmail.com", "splendy");
-			helper.setTo("lc5@naver.com");
-			helper.setSubject("제목");
-			helper.setText("합니다 <img src='cid:image'>", true);
+			helper.setFrom("splendy.spd@gmail.com", "splendy");
+			helper.setTo(email);
+			helper.setSubject("Splendy 임시 비밀번호 전송");
+			helper.setText("<img src='cid:image'> <br/> 임시비밀번호 : "+new_pw+"<br/> 임시 비밀번호로 로그인 뒤 꼭 비밀번호를 재설정해주세요.", true);
 			
-			/*ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			if (classLoader == null) {
 				classLoader = this.getClass().getClassLoader();
 			}
 			DataSource ds = new URLDataSource(classLoader.getResource(fileName));
 
-			helper.addInline("image", ds);*/
+			helper.addInline("image", ds);
 			mailSender.send(message);
 
 		} catch (Exception e) {

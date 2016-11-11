@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
@@ -47,7 +48,8 @@ public interface UserMapper {
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void deleteUser(String email) throws Exception;
 	
-	/*@Select("select * from KH_USER where U_CREDENT_CODE=#{code} JOIN ")*/
+	@Update("update KH_USER set U_PW=#{password} where U_EMAIL=#{email}")
+	public void updatePassword(@Param("email") String email, @Param("password") String password) throws Exception;
 	
 	// SQL query in xml
 	public void credentUser(String code) throws Exception;

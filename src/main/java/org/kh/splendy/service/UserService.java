@@ -3,6 +3,7 @@ package org.kh.splendy.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.vo.UserCore;
 
 public interface UserService {
@@ -26,4 +27,6 @@ public interface UserService {
 	void credentUser(String code) throws Exception;
 	
 	UserCore checkEmail(String email) throws Exception;
+	
+	void updatePassword(String email, String password) throws Exception;
 }
