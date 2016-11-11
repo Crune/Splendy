@@ -64,6 +64,7 @@
 	font-weight: 900;
 	font-style: italic;
 	padding-right: 10px;
+	text-shadow:0 0 7px #ffffff;
 }
 
 .lobby_text_level {
@@ -126,9 +127,9 @@
 	height: 120px;
 }
 .room_name {
-	color: #dddddd;
+	color: #ffffff;
 	font-size: 28px;
-	font-weight: 700;
+	font-weight: 500;
 	line-height: 40px;
 }
 .room_info {
@@ -152,4 +153,22 @@
 }
 .lobby_players {
 	height: 100px;
+}
+.chat_msg {
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 20px;
+}
+.nick_o {
+	color: #e3a1ae;
+}
+
+.nick_me {
+	color: #b1c654;
+}
+.msg_time {
+	color: #655146;
+	font-size: 10px;
+	font-weight: 300;
 }

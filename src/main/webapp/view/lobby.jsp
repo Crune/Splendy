@@ -13,6 +13,7 @@
 body, td, th {
 	color: #777777;
 	font-family: "나눔고딕";
+	_behavior: url(/js/iepngfix.htc)
 }
 
 body {
@@ -107,11 +108,9 @@ body {
 		<div class="container lobby_cont">
 			<div class="row">
 				<div class="col-md-4 chat_frame">
-					<div class="chat_msg">메시지</div>
-					<div class="chat_msg">메시지</div>
-					<div class="chat_msg">메시지</div>
-					<div class="chat_msg">메시지</div>
-					<div class="chat_msg">메시지</div>
+					<div class="chat_msg"><span class="nick_o">손님4885:</span> 이게 대체 뭠미? <span class="msg_time">- 16:52</span></div>
+					<div class="chat_msg"><span class="nick_o">손님4885:</span> 이거 망겜인듯 <span class="msg_time">- 16:53</span></div>
+					<div class="chat_msg"><span class="nick_me">최윤일지도모릅:</span> 개객끼야! <span class="msg_time">- 16:54</span></div>
 				</div>
 				<div class="col-md-8 room_frame">
 					<div class="lobby_room">
