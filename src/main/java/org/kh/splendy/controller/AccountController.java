@@ -9,6 +9,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.sample.SampleController;
 import org.kh.splendy.service.UserService;
@@ -94,6 +95,9 @@ public class AccountController {
 		String password = null;
 		String nickname = null;
 		
+		String credent_code = RandomStringUtils.randomAlphanumeric(9);
+		System.out.println(credent_code);
+		
 		if(request.getParameter("email") != null){
 			email = request.getParameter("email");
 			password = request.getParameter("password");
@@ -112,6 +116,33 @@ public class AccountController {
 			if (ck_user == null){
 				try {
 					userServ.join(user);
+					userServ.insertCredent(credent_code);
+					try {
+						String fileName = "img/unnamed.png"; // src/main/webapp 폴더
+
+						MimeMessage message = mailSender.createMimeMessage();
+						MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+						
+						helper.setFrom("splendy.spd@gmail.com", "splendy");
+						helper.setTo(email);
+						helper.setSubject("Splendy 회원 가입 Email 인증");
+						helper.setText("<img src='cid:image'> <br/> 링크를 누르면 인증이 완료됩니다. <br/> "
+										+ "<a href="+"http://localhost/user/join_cert/"+credent_code+">"
+										+"링크"+"</a> 로 이동해 로그인해주세요.", true);
+						
+						ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+						if (classLoader == null) {
+							classLoader = this.getClass().getClassLoader();
+						}
+						DataSource ds = new URLDataSource(classLoader.getResource(fileName));
+
+						helper.addInline("image", ds);
+						mailSender.send(message);
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
 					userServ.get(email);
 					result = 1;
 				} catch (Exception e) {
@@ -126,10 +157,21 @@ public class AccountController {
 	}
 	
 	@RequestMapping("/user/join_cert/{code}")
-	public String join_cert(@PathVariable String code) {
+	public String join_cert(@PathVariable String code, HttpServletRequest request) {
 		/**
 		 * TODO 민정:메일인증 1순위 !
 		 */
+		System.out.println(code);
+		int credent_result = -1;
+		try {
+			userServ.credentUser(code);
+			credent_result = 1;
+		} catch (Exception e) {
+			credent_result = 0;
+			e.printStackTrace();
+		}
+		
+		request.setAttribute("credent_result", credent_result);
 		return "index";
 	}
 
@@ -211,9 +253,8 @@ public class AccountController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(login_result == 1){
+		if(login_result == 1 && credent == 0){
 			session.setAttribute("email", email);
-			session.setAttribute("password", password);
 			try {
 				user = userServ.searchEmail(email);
 			} catch (Exception e) {
@@ -301,14 +342,9 @@ public class AccountController {
 	@RequestMapping("/user/delete_suc")
 	public String remove_suc(HttpSession session) {
 		String email = (String)session.getAttribute("email");
-		String password = (String)session.getAttribute("password");
-		
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("email", email);
-		map.put("password", password);
 		
 		try {
-			userServ.deleteUser(map);
+			userServ.deleteUser(email);
 			session.invalidate();
 		} catch (Exception e) {
 			e.printStackTrace();

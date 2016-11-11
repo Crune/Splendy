@@ -29,16 +29,13 @@ body {
 
 </script>
 <script>
-
+//page 실행(ready도 실행) -> script css link 실행 -> onload(모든 파일이 준비되었을 때)
 var curState = "join";
 var email = "${user[0].email}";
-var login_result;
-var credent;
+var login_result = "${login_result}";
+var credent = "${credent}";
 
-$(document).ready(function(){
-	
-	login_result = "${login_result}";
-	credent = "${credent}";
+window.onload = function(){
 	
 	var source_test = $("#temp_test").html();
 	var temp_test = Handlebars.compile(source_test);	
@@ -54,14 +51,21 @@ $(document).ready(function(){
 		alert("회원가입이 완료되었습니다.")
 	}
 	
-	if(login_result === "0" && credent === "0"){ 
-		console.log("비밀번호틀림");
-		alert("email과 password를 다시 확인해주세요.");
-		return false;
-	} else if(login_result === "0" && credent === "1"){
-		console.log("이메일인증");
-		alert("email인증을 진행해주세요.");
-		return false;
+	if (login_result === "0") {
+		if (credent === "0"){ 
+			console.log("비밀번호틀림");
+			alert("email과 password를 다시 확인해주세요.");
+			return false;
+		} else if(credent === "1"){
+			console.log("이메일인증");
+			alert("email인증을 진행해주세요.");
+			return false;
+		}
+	} else if (login_result === "1"){
+		curState = "login_suc";
+		$("#loginDiv").hide();
+		$("#joinDiv").hide();
+		$("#login_sucDiv").show();
 	}
 	
 	login_result = "";
@@ -70,10 +74,7 @@ $(document).ready(function(){
 	console.log(login_result);
 	console.log(credent);
 	
-});
 
-window.onload = function(){
-	if(login_result === "0" || login_result === "") {
 		$("#btn_login").on('click', function () {
 			curState = "login";
 			$("#joinDiv").hide();
@@ -91,12 +92,6 @@ window.onload = function(){
 		$("#btn_join_prc").on('click', function () {
 			joinRequest();
 		});
-	}else {
-			curState = "login_suc";
-			$("#loginDiv").hide();
-			$("#joinDiv").hide();
-			$("#login_sucDiv").show();
-	}
 	
 }
 
@@ -113,6 +108,7 @@ function joinRequest() {
         		alert("email이 중복되었습니다.");
         	} else if(data == 1) {
         		alert("회원가입이 완료되었습니다.");
+        		alert("email인증을 진행해주세요.");
         		curState = "login";
     			$("#joinDiv").hide();
     			$("#login_sucDiv").hide();
@@ -122,6 +118,29 @@ function joinRequest() {
 			alert("회원가입이 실패했습니다.");
 		}
     }) 
+}
+
+function send_pw() {
+	$.ajax({
+        url:'/user/send_pw',
+        type:'post',
+        data:$("#joinForm").serialize(),
+        success:function(data){
+        	console.log(data);
+        	if(data == 2) {
+        		alert("email이 중복되었습니다.");
+        	} else if(data == 1) {
+        		alert("회원가입이 완료되었습니다.");
+        		alert("email인증을 진행해주세요.");
+        		curState = "login";
+    			$("#joinDiv").hide();
+    			$("#login_sucDiv").hide();
+    			$("#loginDiv").show();
+        	}	
+        },error:function(request,status,error){
+			alert("회원가입이 실패했습니다.");
+		}
+    })
 }
 
 function join_check() {

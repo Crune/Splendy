@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUser(HashMap<String, String> map) throws Exception {
-		userMap.deleteUser(map);
+	public void deleteUser(String email) throws Exception {
+		userMap.deleteUser(email);
 	}
 
 	@Override
@@ -82,5 +82,15 @@ public class UserServiceImpl implements UserService {
 	public int checkCredent(HashMap<String, String> map) throws Exception {
 		int check = userMap.checkCredent(map);
 		return check;
+	}
+
+	@Override
+	public void credentUser(String code) throws Exception {
+		userMap.credentUser(code);
+	}
+
+	@Override
+	public void insertCredent(String credent_code) throws Exception {
+		userMap.insertCredent(credent_code);
 	}
 }

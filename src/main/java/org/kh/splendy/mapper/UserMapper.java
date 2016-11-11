@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
@@ -43,8 +44,16 @@ public interface UserMapper {
 	@Update("update KH_USER set U_PW=#{password}, U_NICK=#{nickname} where U_EMAIL=#{email}")
 	public void updateUser(HashMap<String, String> map) throws Exception;
 	
-	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email} and U_PW=#{password}")
-	public void deleteUser(HashMap<String, String> map) throws Exception;
+	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
+	public void deleteUser(String email) throws Exception;
+	
+	/*@Select("select * from KH_USER where U_CREDENT_CODE=#{code} JOIN ")*/
+	
+	// SQL query in xml
+	public void credentUser(String code) throws Exception;
+	
+	@Insert("insert into KH_USER_CREDENT (U_ID, U_CREDENT_CODE) values (KH_USER_SEQ.CURRVAL, #{credent_code})")
+	public void insertCredent(String credent_code) throws Exception;
 	
 	// SQL query in xml
 	public void createUser(UserCore user) throws Exception;
