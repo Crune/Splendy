@@ -16,7 +16,7 @@
 		chatSock = new SockJS("http://" + window.location.host + "/myHandler");
 		chatSock.onopen = function () {
 
-			message = {};
+			message = {};  
 			message.message = "반갑습니다~";
 			message.type = "all";
 			message.to = "all";
@@ -38,7 +38,6 @@
 				message.message = $("#message").val();
 				message.type = "all";
 				message.to = "all"
-
 				var to = $("#to").val();
 				if (to != "" ) {
 				message.type = "one";

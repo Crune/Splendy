@@ -11,4 +11,9 @@ public class ChatController {
 		return "chat";
 	}
 	
+	@RequestMapping("/canvas")
+	public String canvas() {
+		return "canvas";
+	}
+	
 }
