@@ -1,0 +1,174 @@
+@CHARSET "UTF-8";
+
+.lobby_top {
+	line-height: 50px;
+	vertical-align: middle;
+	font-weight: 900;
+}
+
+.align_left {
+	float: left;
+	text-align: left;
+}
+
+#logo {
+	margin-top: 10px;
+}
+
+.align_right {
+	float: right;
+	text-align: right;
+}
+
+.lobby_profile {
+	margin-top: 5px;
+}
+
+.lobby_profile_innner {
+	padding: 10px 10px 10px 10px;
+}
+
+.lobby_white_line {
+	background-color: #ffffff;
+	opacity: .2;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.lobby_frame {
+	padding: 0px 0px 0px 0px;
+}
+
+.lobby_frame:before {
+	content: " ";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: .1;
+	z-index: -1;
+	background: #000 url("/img/lobby_bg1.jpg") no-repeat center center fixed;
+	background-size: cover;
+}
+
+.lobby_profile_data {
+	background-color: rgba(255, 255, 255, .2);
+	margin: 5px 5px 5px 5px;
+	padding: 5px 5px 5px 5px;
+}
+
+.lobby_text_nick {
+	color: #ffffff;
+	font-size: 24px;
+	font-weight: 900;
+	font-style: italic;
+	padding-right: 10px;z
+	text-shadow:0 0 3px #ffffff;
+}
+
+.lobby_text_level {
+	color: #f5a739;
+	font-size: 48px;
+	font-weight: 600;
+	font-style: italic;
+}
+
+.lobby_text_value {
+	color: #f5a739;
+	font-size: 39px;
+	font-weight: 600;
+	font-style: italic;
+	line-height: 39px;
+}
+
+.lobby_text_biglabel {
+	color: #ffffff;
+	font-size: 20px;
+	font-weight: 900;
+	line-height: 20px;
+}
+
+.lobby_text_sublabel {
+	color: #f5a739;
+	font-size: 14px;
+	font-weight: 200;
+}
+
+.profile_left {
+	display: flex;
+	height: 190px;
+}
+
+.profile_icon {
+	margin-right: 20px;
+	margin-top: auto;
+	margin-bottom: auto;
+	height: 100px;
+	width: 100px;
+	background: url(/img/unnamed.png);
+	background-size: 100px 100px;
+	background-repeat: no-repeat;
+}
+
+.profile_info {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.player {
+	text-align: center; 
+}
+
+.lobby_room {
+	background-color: rgba(255, 255, 255, .2);
+	margin: 5px 5px 20px 5px;
+	padding: 5px 5px 5px 5px;
+	height: 120px;
+}
+.room_name {
+	color: #ffffff;
+	font-size: 28px;
+	font-weight: 500;
+	line-height: 40px;
+}
+.room_info {
+	color: #fec2ba;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 20px;
+}
+
+.room_nickname {
+	color: #dddddd;
+	font-size: 13px;
+	font-weight: 900;
+	line-height: 20px;
+}
+.room_rate {	
+	color: #f5a739;
+	font-size: 10px;
+	font-weight: 200;
+	
+}
+.lobby_players {
+	height: 100px;
+}
+.chat_msg {
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 20px;
+}
+.nick_o {
+	color: #e3a1ae;
+}
+
+.nick_me {
+	color: #b1c654;
+}
+.msg_time {
+	color: #655146;
+	font-size: 10px;
+	font-weight: 300;
+}

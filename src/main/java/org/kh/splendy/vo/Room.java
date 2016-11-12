@@ -10,4 +10,10 @@ public class Room {
 	private String info;
 	private int playerLimits;
 	private int state;
+	private int hostId;
+
+	public final static int ST_INVALID=0;
+	public final static int ST_READY=1;
+	public final static int ST_PROGRESS=2;
+	public final static int ST_END=3;
 }

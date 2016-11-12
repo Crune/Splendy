@@ -1,16 +1,18 @@
 package org.kh.splendy.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.kh.splendy.mapper.ArticleMapper;
 import org.kh.splendy.mapper.BoardMapper;
 import org.kh.splendy.vo.Article;
-import org.kh.splendy.vo.Board;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Service
 @MapperScan(basePackages = { "org.kh.splendy.dao" })
@@ -30,8 +32,8 @@ public class BoardServiceImpl implements BoardService {
 		/** TODO 찬우.게시판: 게시글 목록 반환 구현
 		 * boardMap 이용하여 작성
 		 */
-		List<Article> list = boardMap.getList();
-		return list;
+		List<Article> article = boardMap.getList(bName);
+		return article;
 	}
 
 	@Override
@@ -48,5 +50,26 @@ public class BoardServiceImpl implements BoardService {
 		int result = boardMap.boardCount();
 		return result;
 	}
+
+	@Override
+	public String writePro(Article article, BindingResult result, RedirectAttributes rttr) throws Exception {
+		String insert = boardMap.writePro();
+		return insert;
+	}
+
+	@Override
+	public void reply(HashMap<String, String> map) throws Exception {
+		boardMap.reply(map);
+		
+	}
+
+	@Override
+	public int max() throws Exception {
+		int max = boardMap.max();
+		return max;
+	}
+	
+	
+		
 	
 }

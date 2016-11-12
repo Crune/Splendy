@@ -5,7 +5,7 @@ import java.util.List;
 import org.kh.splendy.vo.Article;
 import org.kh.splendy.vo.Room;
 
-public interface RoomService {
+public interface LobbyService {
 
 	List<Room> getList();
 

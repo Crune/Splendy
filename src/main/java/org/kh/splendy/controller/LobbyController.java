@@ -3,6 +3,8 @@ package org.kh.splendy.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kh.splendy.service.*;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -31,7 +34,7 @@ public class LobbyController {
 	private UserService userServ;
 	
 	@Autowired
-	private RoomService roomServ;
+	private LobbyService serv;
 
 	@ModelAttribute("rooms")
 	/** 뷰어(JSP)에서 room을 요청했을때 선언되지 않을 경우 반환할 값
@@ -48,18 +51,16 @@ public class LobbyController {
 		return rooms;
 	}
 	
+	/** 로비 첫 화면 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	/** 로비 첫 화면
-	 * @param bName 게시판이름
-	 * @return	해당 게시판의 게시글 목록 화면 */
 	public String list(Model model) {
-		/** TODO 윤.로비: 로비 입장 화면 구현
-		 * - 
-		 */
-		List<Room> rooms = roomServ.getList();
-		model.addAttribute("rooms",rooms);
-		
+		/** TODO 윤.로비: 로비 입장 화면 구현 */
 		return "lobby";
 	}
+	
 
+	@RequestMapping(value = "/get_rooms", produces = "application/json")
+	public @ResponseBody List<Room> getRooms() {
+		return serv.getList();
+	}
 }

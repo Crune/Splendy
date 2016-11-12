@@ -11,7 +11,10 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 
 /**
+ * 
+ * @author 진규
  * @EnableWebSocket -> webSocket을 사용하기 위해서 설정
+ * 
  */
 @Configuration
 @EnableWebSocket

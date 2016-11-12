@@ -29,17 +29,22 @@ body {
 
 </script>
 <script>
-
+//page 실행(ready도 실행) -> script css link 실행 -> onload(모든 파일이 준비되었을 때)
+//$(#name)를 쓸 땐 html안에서 한번 정의된 것만 사용하기 때문에 여러번 정의되면 가장 처음 등장한 것만 실행됨. 따라서 여러번 쓸 때에는 class를 사용해야한다.
 var curState = "join";
 var email = "${user[0].email}";
+var login_result = "${login_result}";
+var credent = "${credent}";
 
-$(document).ready(function(){
+window.onload = function(){
+	
 	var source_test = $("#temp_test").html();
 	var temp_test = Handlebars.compile(source_test);	
 	var data = {temp:""};
 	
 	$("#testDiv").html(temp_test(data));
 	
+	/* joinRequest(); */
 	var result = "${result}";
 	if(result == "2") {
 		alert("email이 중복되었습니다.")
@@ -47,35 +52,105 @@ $(document).ready(function(){
 		alert("회원가입이 완료되었습니다.")
 	}
 	
-	if(email == "null" || email == "") {
-		$("#btn_login").on('click', function () {
+	if (login_result === "0") {
+		if (credent === "0"){ 
+			console.log("비밀번호틀림");
+			alert("email과 password를 다시 확인해주세요.");
+			return false;
+		} else if(credent === "1"){
+			console.log("이메일인증");
+			alert("email인증을 진행해주세요.");
+			return false;
+		}
+	} else if (login_result === "1"){
+		curState = "login_suc";
+		$("#loginDiv").hide();
+		$("#joinDiv").hide();
+		$("#sendPwDiv").hide();
+		$("#login_sucDiv").show();
+	}
+	
+	login_result = "";
+	credent = "";
+	
+	console.log(login_result);
+	console.log(credent);
+	
+
+		$(".btn_login").on('click', function () {
 			curState = "login";
 			$("#joinDiv").hide();
 			$("#login_sucDiv").hide();
+			$("#sendPwDiv").hide();
 			$("#loginDiv").show();
 		});
 		
-		$("#btn_join").on('click', function () {
+		$(".btn_join").on('click', function () {
 			curState = "join";
 			$("#loginDiv").hide();
 			$("#login_sucDiv").hide();
+			$("#sendPwDiv").hide();
 			$("#joinDiv").show();
 		});
-	}else {
-			curState = "login_suc";
+		
+		$(".btn_send_pw").on('click', function () {
+			curState = "send_pw";
 			$("#loginDiv").hide();
-			$("#login_sucDiv").show();
+			$("#login_sucDiv").hide();
 			$("#joinDiv").hide();
-	}
-	});
+			$("#sendPwDiv").show();
+		});
+		
+		$(".btn_join_prc").on('click', function () {
+			joinRequest();
+		});
+		
+		$(".btn_send_prc").on('click', function () {
+			sendRequest();
+		});
+	
+}
 
 function joinRequest() {
+	login_result = "-1";
+	credent = "-1";
 	$.ajax({
         url:'/user/requestJoin',
         type:'post',
-        data:$('#joinForm').serialize(),
+        data:$("#joinForm").serialize(),
         success:function(data){
-        }
+        	console.log(data);
+        	if(data == 2) {
+        		alert("email이 중복되었습니다.");
+        	} else if(data == 1) {
+        		alert("회원가입이 완료되었습니다.");
+        		alert("email인증을 진행해주세요.");
+        		curState = "login";
+    			$("#joinDiv").hide();
+    			$("#login_sucDiv").hide();
+    			$("#sendPwDiv").hide();
+    			$("#loginDiv").show();
+        	}	
+        },error:function(request,status,error){
+			alert("회원가입이 실패했습니다.");
+		}
+    }) 
+}
+
+function sendRequest() {
+	console.log("email로 임시 비밀번호를 보냈습니다.");
+	$.ajax({
+        url:'/user/send_pw',
+        type:'post',
+        data:$("#sendPwForm").serialize(),
+        success:function(data){
+        	console.log(data);
+        	if(data == 1) {
+        		alert("email로 임시 비밀번호를 보냈습니다.");
+        	}
+        },error:function(request,status,error){
+			alert("");
+		}
     })
 }
 
@@ -92,23 +167,22 @@ function join_check() {
 			alert("password을 입력해주세요.")
 			document.joinForm.password.focus();
 			return false;
-		}  else {
+		} else {
 			joinRequest();
-			alert("회원가입을 완료하였습니다.")
 			return true;
 		}
 }
 
 function login_check() {
-	if(document.loginForm.email.value == ""){
+	if(document.loginForm.email.value === ""){
 		alert("email을 입력해주세요.")
 		document.loginForm.email.focus();
 		return false;
-	} else if(document.loginForm.password.value == ""){
+	} else if(document.loginForm.password.value === ""){
 		alert("password을 입력해주세요.")
 		document.loginForm.password.focus();
 		return false;
-	}  else {
+	} else {
 		return true;
 	}
 }
@@ -133,15 +207,13 @@ function login_check() {
 							<p class="index-title">회원가입</p>
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
-								<form id="joinForm" name="joinForm" method="post" 
-									onsubmit="return join_check();">
+								<form id="joinForm" name="joinForm" method="post">
 									<div class="form-group">
 										<label for="textfield">이메일 주소</label> <input name="email"
 											type="email" class="form-control" id="email">
 									</div>
 									<div class="form-group">
 										<label for="textfield">닉네임</label> <input name="nickname"
-
 											type="text" class="form-control" id="nickname">
 									</div>
 									<div class="form-group">
@@ -149,8 +221,9 @@ function login_check() {
 											type="password" class="form-control"
 											id="password" placeholder="암호">
 									</div>
-									<button type="submit" class="btn btn-default">회원가입</button>
-									<input id="btn_login" class="btn btn-default" type="button" value="로그인" />
+									<input id="btn_join_prc" class="btn btn-default btn_join_prc" type="button" value="회원가입" />
+									<input id="btn_login" class="btn btn-default btn_login" type="button" value="로그인" />
+									<input id="btn_send_pw" class="btn btn-default btn_send_pw" type="button" value="비밀번호 찾기" />
 								</form>
 							</div>	
 						</div>
@@ -172,9 +245,8 @@ function login_check() {
 
 									</div>
 									<button type="submit" class="btn btn-default">로그인</button>
-									<input id="btn_join" class="btn btn-default" type="button" value="회원가입" />
-									<input id="btn_join" class="btn btn-default" type="button" 
-									onclick = "window.open('http://location/user/find')" value="비밀번호 찾기" />
+									<input id="btn_send_pw" class="btn btn-default btn_send_pw" type="button" value="비밀번호 찾기" />
+									<input id="btn_join" class="btn btn-default btn_join" type="button" value="회원가입" />
 								</form>
 							</div>
 						</div>
@@ -185,13 +257,27 @@ function login_check() {
 									<div class="form-group">
 										<label for="textfield"><b>${user[0].nickname}</b>님 환영합니다.</label>
 									</div>
-									<input id="btn_logout" class="btn btn-default" type="button" 
+									<input id="btn_logout" class="btn btn-default btn_logout" type="button" 
 									onclick="location.href='http://localhost/user/logout'" value="로그아웃" />
-									<input id="btn_logout" class="btn btn-default" type="button" 
+									<input id="btn_delete" class="btn btn-default btn_delete" type="button" 
 									onclick="location.href='http://localhost/user/delete_suc'" value="회원탈퇴" />
 							</div>
 						</div>
-						
+						<div class="index-right-frame" id="sendPwDiv" style="display: none">
+							<p class="index-title">비밀번호 찾기</p>
+							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
+							<div class="index-cont">
+								<form id="sendPwForm" name="sendPwForm" method="post">
+									<div class="form-group">
+										<label for="textfield">이메일 주소</label> <input name="email"
+											type="email" class="form-control" id="email">
+									</div>
+									<input id="btn_send_prc" class="btn btn-default btn_send_prc" type="button" value="비밀번호 찾기" />
+									<input id="btn_join" class="btn btn-default btn_join" type="button" value="회원가입" />
+									<input id="btn_login" class="btn btn-default btn_login" type="button" value="로그인" />
+								</form>
+							</div>	
+						</div>
 					</div>
 				</div>
 			</div>

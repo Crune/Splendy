@@ -68,13 +68,34 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUser(HashMap<String, String> map) throws Exception {
-		userMap.deleteUser(map);
+	public void deleteUser(String email) throws Exception {
+		userMap.deleteUser(email);
 	}
 
 	@Override
 	public UserCore checkEmail(String email) throws Exception {
 		UserCore user = userMap.checkEmail(email);
 		return user;
+	}
+
+	@Override
+	public int checkCredent(HashMap<String, String> map) throws Exception {
+		int check = userMap.checkCredent(map);
+		return check;
+	}
+
+	@Override
+	public void credentUser(String code) throws Exception {
+		userMap.credentUser(code);
+	}
+
+	@Override
+	public void insertCredent(String credent_code) throws Exception {
+		userMap.insertCredent(credent_code);
+	}
+
+	@Override
+	public void updatePassword(String email, String password) throws Exception {
+		userMap.updatePassword(email, password);
 	}
 }
