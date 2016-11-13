@@ -31,6 +31,7 @@ public class GameHandler extends TextWebSocketHandler {
 		logger.info(session.getId() + "님이 접속했습니다.");
 		logger.info("연결 IP :" + session.getRemoteAddress().getHostName());
 		connectedUsers.add(session);
+		
 	}
 
 	/*
@@ -49,7 +50,7 @@ public class GameHandler extends TextWebSocketHandler {
 		String json = gson.toJson(gLog); //TextMessage 타입에 맞춰보낼 수 있도록 Gson을 사용
 		try{
 			for (WebSocketSession webSocketSession : connectedUsers) {	
-					if(gLog.getMode().equals("getJewel")){
+					if(gLog.getAction().equals("getJewelBlue")){
 						webSocketSession.sendMessage(new TextMessage(json));
 					}					
 			}
