@@ -27,8 +27,8 @@
 
 	<insert id="writePro" parameterType="org.kh.splendy.vo.Article">
 		<![CDATA[
-		insert into ARTICLE(AT_ID,U_ID,AT_SUBJECT,AT_PASS,AT_CONTENT,AT_IP,AT_REPLY,AT_RE_LEVEL,AT_RE_STEP,AT_REG_DATE)
-		values(#{at_id},#{u_id},#{at_subject},#{at_pass},#{at_content},#{at_ip},#{at_reply},#{at_re_level},#{at_re_step},#{at_reg_date})
+		INSERT INTO KH_ARTICLE(AT_ID,AT_SUBJECT,AT_PASS,AT_CONTENT,AT_IP,AT_REPLY,AT_RE_LEVEL,AT_RE_STEP,AT_REG_DATE)
+		VALUES(KH_BOARD_SEQ.NEXTVAL, #{at_subject, jdbcType=VARCHAR},#{at_pass, jdbcType=VARCHAR},#{at_content, jdbcType=VARCHAR},#{at_ip, jdbcType=VARCHAR},#{at_reply, jdbcType=VARCHAR},#{at_re_level, jdbcType=VARCHAR},#{at_re_step, jdbcType=VARCHAR},#{at_reg_date, jdbcType=VARCHAR})
 		]]>
 	</insert>
 

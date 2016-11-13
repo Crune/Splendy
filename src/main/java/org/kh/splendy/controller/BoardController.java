@@ -162,14 +162,14 @@ public class BoardController {
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
 	public String writePro(@ModelAttribute @Valid Article article, BindingResult result, RedirectAttributes rttr,
-							HttpServletRequest request )throws Exception{
+							HttpServletRequest request)throws Exception{
 		
 		request.setCharacterEncoding("UTF-8");//한글 인코딩
 		String at_reply = request.getParameter("at_reply");
 		String at_re_step = request.getParameter("at_re_step");	
 		
-		boardServ.writePro(article, result,rttr);		
-		
+				
+		/*
 		int number=0;
 		
         int max = boardServ.max();       
@@ -196,11 +196,11 @@ public class BoardController {
 		}		
 		article.setAt_reg_date(new Timestamp(System.currentTimeMillis()) );
 		article.setAt_ip(request.getRemoteAddr());
-		
-		
+		*/
+		boardServ.writePro(article, result,rttr);
 		
 		rttr.addFlashAttribute("bName",article.getBd_id());
-		
+		System.out.println(article);
 		return "redirect:/bbs/list";
 	}
 

@@ -41,10 +41,10 @@ public interface BoardMapper {
 				
 		public String writePro() throws Exception;
 		
-		@Update("update ARTICLE set AT_RE_STEP=AT_RE_LEVEL+1 where AT_REPLY= #{reply} and AT_RE_STEP> #{re_step}")
+		@Update("update KH_ARTICLE set AT_RE_STEP=AT_RE_LEVEL+1 where AT_REPLY= #{reply} and AT_RE_STEP> #{re_step}")
 		public void reply(HashMap<String, String> map) throws Exception;
 		
-		@Select("select max(AT_ID) from ARTICLE")
+		@Select("select max(AT_ID) from KH_ARTICLE")
 		public int max() throws Exception;
 		
 		
