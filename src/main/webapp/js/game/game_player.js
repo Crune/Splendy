@@ -5,9 +5,9 @@
 function Player(id){
 	
 	this.id = id;
-	this.score;
-	
-	var black_jewel;
+	this.score = 4;
+	this.mode;
+	/*var black_jewel;
 	var green_jewel;
 	var white_jewel;
 	var red_jewel;
@@ -19,7 +19,11 @@ function Player(id){
 	var white_card;
 	var red_card;
 	var blue_card;
-	var gold_card;
-	
-	
+	var gold_card;*/
+	 
+	this.getJewel = function (){		
+		this.score -= 1;
+		this.mode = "getJewel"; //mode는 action 단어로 교체 
+		gameSock.send( JSON.stringify(this) );		
+	}
 }

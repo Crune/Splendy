@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class GameLog {
+	private String id;
 	private String mode;
 	private String score;
 	

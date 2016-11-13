@@ -3,7 +3,6 @@ package org.kh.websocket.handler;
 import java.io.IOException;
 import java.util.HashSet;
 
-import org.kh.splendy.paint.PaintHandler;
 import org.kh.splendy.vo.GameLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,8 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import com.google.gson.Gson;
 
 public class GameHandler extends TextWebSocketHandler {
 	private Logger logger = LoggerFactory.getLogger(GameHandler.class);
@@ -24,12 +25,11 @@ public class GameHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		if(connectedUsers.size() > 4){
-			logger.info(session.getId() + "님이 풀방이라 못들어옴");
+			logger.info(session.getId() + "님이 풀방이라 못들어옴"); 
 			return;
 		}
 		logger.info(session.getId() + "님이 접속했습니다.");
 		logger.info("연결 IP :" + session.getRemoteAddress().getHostName());
-		
 		connectedUsers.add(session);
 	}
 
@@ -45,11 +45,12 @@ public class GameHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		GameLog gLog = GameLog.convert(message.getPayload());
-		
+		Gson gson = new Gson();
+		String json = gson.toJson(gLog); //TextMessage 타입에 맞춰보낼 수 있도록 Gson을 사용
 		try{
 			for (WebSocketSession webSocketSession : connectedUsers) {	
 					if(gLog.getMode().equals("getJewel")){
-						webSocketSession.sendMessage(new TextMessage(gLog.getScore()));
+						webSocketSession.sendMessage(new TextMessage(json));
 					}					
 			}
 		} catch (IOException e) { e.printStackTrace(); }		

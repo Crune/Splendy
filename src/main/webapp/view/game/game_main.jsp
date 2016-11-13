@@ -13,13 +13,6 @@
 
 <link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
 <link rel='stylesheet' href='/css/game_main.css'>
-<script>
-
-var player = new Player('dodo');
-
-console.log(player.score);
-
-</script>
 
 <title>Insert title here</title> 
 
@@ -27,18 +20,20 @@ console.log(player.score);
 <body>
 	<div class="container">
         <div class="container_player">
-            <div class="player">player1
-            	<div id="player1_score">4</div>
+            <div class="player" id="player_name_1">player1</div>
+            <div id="player1_score">4</div>
+            <div class="player" id="player_name_2" >player2</div>
+            <div id="player2_score">4</div>
+            <div class="player" id="player_name_3" >player3
             </div>
-            <div class="player">player2</div>
-            <div class="player">player3</div>
-            <div class="player">player4</div>
+            <div class="player" id="player_name_4" >player4
+            </div>
         </div>
         <div class="jewel_group">
             <div class="jewel">
                 <button type="button" class="btn btn-default" id="jewel_1">Left</button> gold</div>
             <div class="jewel">
-                <button type="button" class="btn btn-default">Left</button> gold</div>
+                <button type="button" class="btn btn-default" id="jewel_2">Left</button> gold</div>
             <div class="jewel">
                 <button type="button" class="btn btn-default">Left</button> gold</div>
             <div class="jewel">
@@ -48,29 +43,29 @@ console.log(player.score);
         </div>
         <div class="cards_container">
             <div class="level">
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
             </div>
 
             <div class="level">
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
             </div>
             <div class="level">
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
             </div>
             <div class="level">
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
-                <div class="card"><img src="imgs/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
+                <div class="card"><img src="img/iron.png" alt=""></div>
             </div>
 
         </div>
