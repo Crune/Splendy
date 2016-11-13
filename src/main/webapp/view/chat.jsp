@@ -12,7 +12,7 @@
 	var chatSock = null;
 
 	$(document).ready(function () {
-		// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
+		// 페이지가 시작됨과 l동시에 소켓 서버 주소로 접속한다.
 		chatSock = new SockJS("http://" + window.location.host + "/myHandler");
 		chatSock.onopen = function () {
 

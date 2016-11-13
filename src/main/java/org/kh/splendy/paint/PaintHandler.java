@@ -3,6 +3,7 @@ package org.kh.splendy.paint;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +17,10 @@ public class PaintHandler extends TextWebSocketHandler {
 	/*
 	 * 서버에 연결한 사용자들을 저장하는 리스트.
 	 */
-	private List<WebSocketSession> connectedUsers;
+	private HashSet<WebSocketSession> connectedUsers;
 
 	public PaintHandler() {
-		connectedUsers = new ArrayList<WebSocketSession>();
+		connectedUsers = new HashSet<WebSocketSession>();
 	}
 	
 	/*

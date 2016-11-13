@@ -2,6 +2,7 @@ package org.kh.splendy;
 
 import org.kh.splendy.paint.PaintHandler;
 import org.kh.splendy.sample.chat.MyHandler;
+import org.kh.websocket.handler.GameHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
@@ -26,7 +27,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(myHandler(),"/myHandler").withSockJS();
-		registry.addHandler(paintHandler(),"/paint").withSockJS();		
+		registry.addHandler(paintHandler(),"/paint").withSockJS();
+		registry.addHandler(gameHandler(), "/game").withSockJS();
 	}
 
 	/**
@@ -40,6 +42,11 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	@Bean
 	public WebSocketHandler paintHandler(){
 		return new PaintHandler();
+	}
+	
+	@Bean
+	public WebSocketHandler gameHandler(){
+		return new GameHandler();
 	}
 
 }
