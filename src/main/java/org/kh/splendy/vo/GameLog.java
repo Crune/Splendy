@@ -6,10 +6,10 @@ import lombok.Data;
 
 @Data
 public class GameLog {
-	private String id;
-	private String websocketId;
-	private String action;
-	private String score;
+	private String userId;
+	private String roomId;
+	private String action;	
+	private String actionVaule; //액션을 사용한 값
 	
 	
 	public static GameLog convert(String source){

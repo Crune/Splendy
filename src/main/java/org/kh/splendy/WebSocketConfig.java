@@ -28,7 +28,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(myHandler(),"/myHandler").withSockJS();
 		registry.addHandler(paintHandler(),"/paint").withSockJS();
-		registry.addHandler(gameHandler(), "/game").withSockJS();
+		registry.addHandler(gameHandler(), "/gameMain").withSockJS();
 	}
 
 	/**

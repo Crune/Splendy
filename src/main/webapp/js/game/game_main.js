@@ -9,7 +9,7 @@ var game_status;
 $(document).ready(function() {
 	
 	// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
-	gameSock = new SockJS("http://" + window.location.host + "/game");
+	gameSock = new SockJS("http://" + window.location.host + "/gameMain");
 	
 	gameSock.onopen = function() {
 		console.log("websocket success");
@@ -17,7 +17,7 @@ $(document).ready(function() {
 		$("#player_name_2").html(player2.id);
 		$("#player_name_3").html(player3.id);
 		$("#player_name_4").html(player4.id);
-
+		
 	};
 
 	gameSock.onmessage = function(evt) {

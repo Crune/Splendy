@@ -14,13 +14,29 @@ public interface CardMapper {
 
 	@Results(id = "cardResult", value = {
 		@Result(property = "id", column = "CD_ID"),
-		@Result(property = "type", column = "CD_TYPE"),
+		@Result(property = "code", column = "CD_TYPE"),
 		@Result(property = "name", column = "CD_NAME"),
 		@Result(property = "img", column = "CD_IMG"),
 		@Result(property = "info", column = "CD_INFO")
 	})
 	@Select("select * from KH_CARD")
 	public List<Card> selectAll() throws Exception;
+	
+	@Select("select * from KH_CARD where cd_type like 'CD1%'")
+	@ResultMap("cardResult")
+	public List<Card> selectLevel_1() throws Exception;
+	
+	@Select("select * from KH_CARD where cd_type like 'CD2%'")
+	@ResultMap("cardResult")
+	public List<Card> selectLevel_2() throws Exception;
+	
+	@Select("select * from KH_CARD where cd_type like 'CD3%'")
+	@ResultMap("cardResult")
+	public List<Card> selectLevel_3() throws Exception;
+	
+	@Select("select * from KH_CARD where cd_type like 'NOBL%'")
+	@ResultMap("cardResult")
+	public List<Card> selectLevel_noble() throws Exception;
 
 	@Select("select * from KH_CARD where CD_ID=#{id}")
 	@ResultMap("cardResult")
