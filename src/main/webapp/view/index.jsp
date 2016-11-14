@@ -35,12 +35,17 @@ var curState = "join";
 var email = "${user.email}";
 var login_result = "${login_result}";
 var credent = "${credent}";
+var msg = ${msg};
 
 window.onload = function(){
 	
 	var source_test = $("#temp_test").html();
 	var temp_test = Handlebars.compile(source_test);	
 	var data = {temp:""};
+	
+	if(msg.length > 0) {
+		//TODO 민정: modal 구현
+	}
 	
 	$("#testDiv").html(temp_test(data));
 	
@@ -230,6 +235,9 @@ function delete_check() {
 	}
 }
 
+/**
+ * TODO 민정: modal
+ */
 </script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
