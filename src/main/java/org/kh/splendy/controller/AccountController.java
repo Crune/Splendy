@@ -227,8 +227,7 @@ public class AccountController {
 			try {
 				user = userServ.checkEmail(email);
 				session.setAttribute("email", user.getEmail());
-				session.setAttribute("u_id", user.getId());
-				System.out.println(user.getId());
+				session.setAttribute("user_id", user.getId());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
