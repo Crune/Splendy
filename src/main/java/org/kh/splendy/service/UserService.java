@@ -20,7 +20,7 @@ public interface UserService {
 	
 	List<UserCore> searchEmail(String email) throws Exception;
 	
-	void updateUser(HashMap<String, String> map) throws Exception;
+	void updateUser(String email, String password, String nickname) throws Exception;
 	
 	void deleteUser(String email) throws Exception;
 	

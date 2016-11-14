@@ -32,7 +32,7 @@ body {
 //page 실행(ready도 실행) -> script css link 실행 -> onload(모든 파일이 준비되었을 때)
 //$(#name)를 쓸 땐 html안에서 한번 정의된 것만 사용하기 때문에 여러번 정의되면 가장 처음 등장한 것만 실행됨. 따라서 여러번 쓸 때에는 class를 사용해야한다.
 var curState = "join";
-var email = "${user[0].email}";
+var email = "${user.email}";
 var login_result = "${login_result}";
 var credent = "${credent}";
 
@@ -44,7 +44,6 @@ window.onload = function(){
 	
 	$("#testDiv").html(temp_test(data));
 	
-	/* joinRequest(); */
 	var result = "${result}";
 	if(result == "2") {
 		alert("email이 중복되었습니다.")
@@ -67,14 +66,12 @@ window.onload = function(){
 		$("#loginDiv").hide();
 		$("#joinDiv").hide();
 		$("#sendPwDiv").hide();
+		$("#modifyDiv").hide();
 		$("#login_sucDiv").show();
 	}
 	
 	login_result = "";
 	credent = "";
-	
-	console.log(login_result);
-	console.log(credent);
 	
 
 		$(".btn_login").on('click', function () {
@@ -82,6 +79,7 @@ window.onload = function(){
 			$("#joinDiv").hide();
 			$("#login_sucDiv").hide();
 			$("#sendPwDiv").hide();
+			$("#modifyDiv").hide();
 			$("#loginDiv").show();
 		});
 		
@@ -90,6 +88,7 @@ window.onload = function(){
 			$("#loginDiv").hide();
 			$("#login_sucDiv").hide();
 			$("#sendPwDiv").hide();
+			$("#modifyDiv").hide();
 			$("#joinDiv").show();
 		});
 		
@@ -98,7 +97,17 @@ window.onload = function(){
 			$("#loginDiv").hide();
 			$("#login_sucDiv").hide();
 			$("#joinDiv").hide();
+			$("#modifyDiv").hide();
 			$("#sendPwDiv").show();
+		});
+		
+		$(".btn_modify").on('click', function () {
+			curState = "modify";
+			$("#loginDiv").hide();
+			$("#login_sucDiv").hide();
+			$("#joinDiv").hide();
+			$("#sendPwDiv").hide();
+			$("#modifyDiv").show();
 		});
 		
 		$(".btn_join_prc").on('click', function () {
@@ -108,6 +117,10 @@ window.onload = function(){
 		$(".btn_send_prc").on('click', function () {
 			sendRequest();
 		});
+		
+		$(".btn_modify_prc").on('click', function () {
+			modifyRequest();
+		})
 	
 }
 
@@ -129,6 +142,7 @@ function joinRequest() {
     			$("#joinDiv").hide();
     			$("#login_sucDiv").hide();
     			$("#sendPwDiv").hide();
+    			$("#modifyDiv").hide();
     			$("#loginDiv").show();
         	}	
         },error:function(request,status,error){
@@ -150,6 +164,27 @@ function sendRequest() {
         	}
         },error:function(request,status,error){
 			alert("");
+		}
+    })
+}
+
+function modifyRequest() {
+	console.log("정보가 수정되었습니다.");
+	$.ajax({
+        url:'/user/modify_suc',
+        type:'post',
+        data:$("#modifyForm").serialize(),
+        success:function(data){
+        	console.log(data);
+        		alert("정보를 수정하였습니다.");
+        		document.location.reload();
+        		$("#loginDiv").hide();
+        		$("#joinDiv").hide();
+        		$("#sendPwDiv").hide();
+        		$("#modifyDiv").hide();
+        		$("#login_sucDiv").show();
+        },error:function(request,status,error){
+			alert("정보 수정에 실패하였습니다. 다시 시도해주세요.");
 		}
     })
 }
@@ -187,6 +222,13 @@ function login_check() {
 	}
 }
 
+function delete_check() {
+	if(confirm("정말 탈퇴하시겠습니까?")){
+		document.location.href='/user/delete_suc';
+	} else {
+		return false;
+	}
+}
 
 </script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -255,12 +297,13 @@ function login_check() {
 							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 							<div class="index-cont">
 									<div class="form-group">
-										<label for="textfield"><b>${user[0].nickname}</b>님 환영합니다.</label>
+										<label for="textfield"><b>${user.nickname}</b>님 환영합니다.</label>
 									</div>
 									<input id="btn_logout" class="btn btn-default btn_logout" type="button" 
-									onclick="location.href='http://localhost/user/logout'" value="로그아웃" />
+									onclick="location.href='/user/logout'" value="로그아웃" />
+									<input id="btn_modify" class="btn btn-default btn_modify" type="button" value="정보수정" />
 									<input id="btn_delete" class="btn btn-default btn_delete" type="button" 
-									onclick="location.href='http://localhost/user/delete_suc'" value="회원탈퇴" />
+									onclick="return delete_check()" value="회원탈퇴" />
 							</div>
 						</div>
 						<div class="index-right-frame" id="sendPwDiv" style="display: none">
@@ -275,6 +318,23 @@ function login_check() {
 									<input id="btn_send_prc" class="btn btn-default btn_send_prc" type="button" value="비밀번호 찾기" />
 									<input id="btn_join" class="btn btn-default btn_join" type="button" value="회원가입" />
 									<input id="btn_login" class="btn btn-default btn_login" type="button" value="로그인" />
+								</form>
+							</div>	
+						</div>
+						<div class="index-right-frame" id="modifyDiv" style="display: none">
+							<p class="index-title">개인정보 수정</p>
+							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
+							<div class="index-cont">
+								<form id="modifyForm" name="modifyForm" method="post">
+									<div class="form-group">
+										<label for="textfield">email : </label> ${user.email} <br/>
+											<input name="email" type="hidden" class="form-control" id="email" value="${user.email}">
+										<label for="textfield">nickname : </label> <input name="nickname"
+											type="text" class="form-control" id="nickname" value="${user.nickname}">
+										<label for="textfield">password : </label> <input name="password"
+											type="password" class="form-control" id="password">
+									</div>
+									<input id="btn_modify_prc" class="btn btn-default btn_modify_prc" type="button" value="정보수정" />
 								</form>
 							</div>	
 						</div>
