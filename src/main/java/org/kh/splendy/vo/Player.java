@@ -11,6 +11,7 @@ public class Player {
 	private int state = ST_LOST;
 	private String chatSessionId= "";
 	private Date joinDate;
+	private String authcode= "";
 
 	public final static int ST_LOST=0;
 	public final static int ST_CONNECT=1;
