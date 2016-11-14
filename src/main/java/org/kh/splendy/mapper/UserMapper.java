@@ -42,8 +42,8 @@ public interface UserMapper {
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void disabling(String email) throws Exception;
 	
-	@Update("update KH_USER set U_PW=#{password}, U_NICK=#{nickname} where U_EMAIL=#{email}")
-	public void updateUser(HashMap<String, String> map) throws Exception;
+	@Update("update KH_USER set U_PW=#{password}, U_NICK=#{nickname} where U_EMAIL=#{email} and U_ENABLED=1")
+	public void updateUser(@Param("email") String email, @Param("password") String password, @Param("nickname") String nickname) throws Exception;
 	
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void deleteUser(String email) throws Exception;
