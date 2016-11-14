@@ -45,8 +45,12 @@ public class AccountController {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
 
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String index() {
+		return "index";
+	}
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String index(@RequestParam("msg") String msg, Model model) {
+	public String indexWithMsg(@RequestParam("msg") String msg, Model model) {
 		if(msg == null){
 			msg = "";
 		}
