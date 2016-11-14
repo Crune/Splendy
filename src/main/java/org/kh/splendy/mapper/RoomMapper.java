@@ -41,10 +41,10 @@ public interface RoomMapper {
 		@Result(property = "hostId", column = "RM_HOST")
 	})
 	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
-	public Player read(int id);
+	public Player read(int id); // 수정: 클래스 명
 
 	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
-	public Player update(Room room); // 수정: 클래스 명
+	public void update(Room room);
 	
 	@Delete("delete from "+TABLE+" where "+KEY+"=#{id}")
 	public void delete(int id);

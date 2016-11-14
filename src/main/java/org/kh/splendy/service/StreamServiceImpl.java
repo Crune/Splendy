@@ -1,22 +1,17 @@
 package org.kh.splendy.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
-import org.kh.splendy.SplendyHandler;
-import org.kh.splendy.mapper.PlayerMapper;
-import org.kh.splendy.mapper.RoomMapper;
-import org.kh.splendy.mapper.UserMapper;
-import org.kh.splendy.vo.Auth;
-import org.kh.splendy.vo.Chat;
-import org.kh.splendy.vo.Msg;
-import org.kh.splendy.vo.Player;
+import org.kh.splendy.annotation.WSReqeust;
+import org.kh.splendy.mapper.*;
+import org.kh.splendy.vo.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -25,6 +20,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.*;
 
 import lombok.Data;
 
@@ -35,6 +31,8 @@ public class StreamServiceImpl implements StreamService {
 	private Logger log = LoggerFactory.getLogger(StreamServiceImpl.class);
 
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
+
+	private static Map<String, Method> webSocketMethods = new HashMap<String, Method>();
 
 	@Autowired private RoomMapper roomMap;
 	@Autowired private PlayerMapper playerMap;
@@ -52,28 +50,49 @@ public class StreamServiceImpl implements StreamService {
 	@Override
 	public void disconnectPro(WebSocketSession session) {
 		log.info(session.getId() + "님이 퇴장했습니다.");
-		
+
+		playerMap.setStateBySid(session.getId(), Player.ST_LOST);
 		sessions.remove(session.getId());
 	}
+	
+	@Data
+	public static class WSMsg {
 
+		@SerializedName("type") @Expose
+		public String type;
+		@SerializedName("cont") @Expose
+		public Object cont;
+		
+		public static WSMsg convert(String source) {
+			return new Gson().fromJson(source, WSMsg.class);
+		}
+	}
+	
 	@Override
-	public void msgPro(WebSocketSession session, TextMessage message) {
+	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
 		log.info(session.getId() + " -> " + message.getPayload());
-		Msg msgVO = Msg.convert(message.getPayload());
-		if(msgVO.getType() == Msg.T_AUTH) {
-			shake(session.getId(), msgVO); // 사용자 인증 전송
-		} else if (msgVO.getType() == Msg.T_WHISPER) {			
-			sendWhisper(session.getId(), msgVO); // 귓속말 전송
-		} else if(msgVO.getType() == Msg.T_EMOTION) {
-			sendEmotion(session.getId(), msgVO); // 감정표현 전송
-		} else {
-			send(session.getId(), msgVO); // 일반 채팅 전송
+		WSMsg raw = WSMsg.convert(message.getPayload());
+
+		if (webSocketMethods.isEmpty()) {
+			Method target[] = this.getClass().getMethods();
+			for (Method m : target) {
+				if (m.isAnnotationPresent(WSReqeust.class)) {
+					webSocketMethods.put(m.getName(),m);
+				}
+			}
+		}
+
+		if (webSocketMethods.containsKey(raw.getType())) {
+			Method m = webSocketMethods.get(raw.getType());
+			m.invoke(this, session.getId(), raw.cont+"");
 		}
 	}
 
-	@Override @Transactional
-	public void shake(String sId, Msg msg) {		
-		Auth auth = Auth.convert(msg.getCont());		
+	@Override @Transactional @WSReqeust
+	public void auth(String sId, String msg) {
+		log.info(sId + "님이 인증 시도 중");
+		
+		Auth auth = Auth.convert(msg);
 		if (auth != null) {
 			int uid = auth.getUid();
 			if (playerMap.checkCode(uid, auth.getCode()) > 0) {
@@ -83,27 +102,59 @@ public class StreamServiceImpl implements StreamService {
 		}
 	}
 
-	@Override //@Transactional
-	public void send(String sId, Msg msg) {
-		// TODO Auto-generated method stub
-		
+	@Override @Transactional @WSReqeust
+	public void chat(String sId, String msg) throws Exception {
+		Player pl = playerMap.readBySid(sId);
+		UserCore user = userMap.read(pl.getId());
+		log.info("chat: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
+
+		int roomId = playerMap.readBySid(sId).getRoomId();
+		List<Player> pls = playerMap.getPlayers(roomId);
+		for (Player cur : pls) {
+			if (cur.getRoomId() == roomId && cur.getState() > 0) {
+				String sid = cur.getChatSessionId();
+				send(sid, msg);
+			}
+		}
 	}
 
-	@Override //@Transactional
-	public void sendEmotion(String sId, Msg msg) {
-		// TODO Auto-generated method stub
-		
+	@Override @Transactional @WSReqeust
+	public void request(String sId, String msg) throws Exception {
+		if (msg.equals("roomList")) {
+			log.info("방목록 요청됨");
+			List<Room> rooms = roomMap.getCurrentRooms();
+			Gson gson = new Gson();
+			send(sId, "init", "room");
+			for (Room cur : rooms) {
+				send(sId, "room", gson.toJson(cur));
+			}
+		} else if (msg.equals("readyList")) {
+			
+		}
 	}
 
-	@Override //@Transactional
-	public void sendWhisper(String sId, Msg msg) {
-		// TODO Auto-generated method stub
-		
+	@Override
+	public void send(String sId, String type, Object cont) throws Exception {
+		Gson gson = new Gson();
+		WSMsg wsmsg = new WSMsg();
+		wsmsg.setType(type);
+		wsmsg.setCont(cont);
+		String msg = gson.toJson(wsmsg);
+		sessions.get(sId).sendMessage(new TextMessage(msg));
+	}
+	
+	@Override
+	public void send(String sId, String msg) throws Exception {
+		sessions.get(sId).sendMessage(new TextMessage(msg));
 	}
 
-	@Override //@Transactional
-	public void sendAll(Msg msg) {
-		
+
+	@Override
+	public void sendAll(String msg) throws Exception {
+		List<String> sids = playerMap.getActiverSid();
+		for (String cur : sids) {
+			sessions.get(cur).sendMessage(new TextMessage(msg));
+		}
 	}
 
 }

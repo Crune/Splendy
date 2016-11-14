@@ -117,7 +117,10 @@
 }
 
 .player {
-	text-align: center; 
+	text-align: center;
+	width: 100px;
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
 .lobby_room {
@@ -125,6 +128,10 @@
 	margin: 5px 5px 20px 5px;
 	padding: 5px 5px 5px 5px;
 	height: 120px;
+	display: flex;
+}
+.lobby_room_hover {
+	background-color: rgba(255, 255, 255, .4);
 }
 .room_name {
 	color: #ffffff;
@@ -151,14 +158,21 @@
 	font-weight: 200;
 	
 }
+.room_player {
+	display:flex;
+	flex-direction:row;
+}
 .lobby_players {
-	height: 100px;
+	display: flex;
+	flex-wrap: wrap;
 }
 .chat_msg {
 	color: #ffffff;
 	font-size: 16px;
 	font-weight: 600;
 	line-height: 20px;
+	margin-top: auto;
+	margin-bottom: auto;
 }
 .nick_o {
 	color: #e3a1ae;
@@ -171,4 +185,10 @@
 	color: #655146;
 	font-size: 10px;
 	font-weight: 300;
+}
+.newroom_text {
+	margin: auto;
+	font-size: 30px;
+	color: #f5a739;
+	font-weight: 600;
 }

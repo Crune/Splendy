@@ -1,9 +1,5 @@
 package org.kh.splendy.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kh.splendy.service.*;
@@ -16,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -51,14 +46,16 @@ public class LobbyController {
 		 * - 플레이어 정보가 없을 경우 생성
 		 * - 플레이어 정보에 계정 인증코드 입력
 		 */
-		int uid = Integer.parseInt((String) session.getAttribute("user_id"));
+		String user_id = session.getAttribute("user_id").toString();
+		int uid = Integer.parseInt(user_id);
 		serv.initPlayer(uid); // 플레이어 정보가 없을경우 생성
 		return "lobby";
 	}
 
 	@RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
 	public @ResponseBody Auth getAuth(HttpSession session) {
-		int uid = Integer.parseInt((String) session.getAttribute("uid"));
+		String user_id = session.getAttribute("user_id").toString();
+		int uid = Integer.parseInt(user_id);
 		return serv.getAuth(uid);
 	}
 }

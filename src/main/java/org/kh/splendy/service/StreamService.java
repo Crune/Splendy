@@ -10,17 +10,19 @@ public interface StreamService {
 
 	void disconnectPro(WebSocketSession session);
 
-	void msgPro(WebSocketSession session, TextMessage message);
+	void msgPro(WebSocketSession session, TextMessage message) throws Exception;
 
-	void sendAll(Msg message);
+	void sendAll(String message) throws Exception;
 
-	void send(String sId, Msg message);
+	void send(String sId, String message) throws Exception;
+	void send(String sId, String type, Object cont) throws Exception;
 
-	void sendEmotion(String sId, Msg message);
+	void auth(String sId, String message);
+	void chat(String sId, String message) throws Exception;
+	void request(String sId, String msg) throws Exception;
 
-	void sendWhisper(String sId, Msg message);
-	
-	void shake(String sId, Msg message);
+
+
 
 
 }

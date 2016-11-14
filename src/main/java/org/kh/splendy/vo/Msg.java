@@ -15,17 +15,10 @@ public class Msg {
 	public static final int T_WHISPER = 1;
 	public static final int T_EMOTION = 2;
 	
-	private int msgId;
-	private int roomId;
+	private int msgId=0;
+	private int roomId=0;
 	private int type;
-	private String author;
+	private String author="";
 	private String cont;
 	private Date reg;
-
-	public static Msg convert(String source) {
-		Msg messge = new Msg();
-		Gson gson = new Gson();
-		messge = gson.fromJson(source, Msg.class);
-		return messge;
-	}
 }

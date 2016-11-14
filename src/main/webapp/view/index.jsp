@@ -35,7 +35,7 @@ var curState = "join";
 var email = "${user.email}";
 var login_result = "${login_result}";
 var credent = "${credent}";
-var msg = ${msg};
+var msg = "${msg}";
 
 window.onload = function(){
 	

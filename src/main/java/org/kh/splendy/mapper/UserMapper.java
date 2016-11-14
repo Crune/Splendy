@@ -11,10 +11,50 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.kh.splendy.vo.Player;
+import org.kh.splendy.vo.Room;
 import org.kh.splendy.vo.UserCore;
 
 public interface UserMapper {
 
+	// BASIC CRUD
+	
+	String TABLE = "KH_USER";
+	
+	String COLUMNS = "U_ID, U_NICK, U_EMAIL, U_PW, U_ENABLED, U_N_LOCKED, U_N_EXPIRED, U_N_CREDENT, U_REG";
+	String C_VALUES = "KH_USER_SEQ.NEXTVAL, #{nickname}, #{email}, #{password}, #{enabled}, #{notLocked}, #{notExpired}, #{notCredential}, sysdate";
+	String UPDATES = "U_NICK=#{nickname}, U_EMAIL=#{email}, U_PW=#{password}"
+			+ ", U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}"
+			+ ", U_N_CREDENT=#{notCredential}";
+	
+	String KEY = "U_ID";
+
+	@Insert("insert into "+TABLE+" ( "+COLUMNS+" ) values ( "+C_VALUES+" )")
+	public void create(UserCore user); // 수정: 클래스 명
+
+	@Results(id = TABLE, value = { // 수정: 컬럼 명, 프로퍼티 명
+			@Result(property = "id", column = "U_ID"),
+			@Result(property = "nickname", column = "U_NICK"),
+			@Result(property = "email", column = "U_EMAIL"),
+			@Result(property = "password", column = "U_PW"),
+			@Result(property = "enabled", column = "U_ENABLED"),
+			@Result(property = "notLocked", column = "U_N_LOCKED"),
+			@Result(property = "notExpired", column = "U_N_EXPIRED"),
+			@Result(property = "notCredential", column = "U_N_CREDENT"),
+			@Result(property = "reg", column = "U_REG"),
+	})
+	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
+	public UserCore read(int id); // 수정: 클래스 명
+
+	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
+	public void update(UserCore user);
+	
+	@Delete("delete from "+TABLE+" where "+KEY+"=#{id}")
+	public void delete(int id);
+	
+	
+	// etc
+	
 	@Results(id = "userResult", value = {
 		@Result(property = "id", column = "U_ID"),
 		@Result(property = "nickname", column = "U_NICK"),

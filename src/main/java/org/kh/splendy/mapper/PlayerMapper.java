@@ -1,6 +1,7 @@
 package org.kh.splendy.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Player;
@@ -35,7 +36,7 @@ public interface PlayerMapper {
 	public Player read(int id);
 
 	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
-	public Player update(Player player);
+	public void update(Player player);
 	
 	@Delete("delete from "+TABLE+" where "+KEY+"=#{id}")
 	public void delete(int id);
@@ -65,11 +66,21 @@ public interface PlayerMapper {
 	@Select("select * from "+TABLE+" where RM_ID=#{roomId}")
 	public List<Player> getPlayers(int roomId);
 
-	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
+	@Select("select PL_AUTHCODE from "+TABLE+" where "+KEY+"=#{id}")
 	public String getCode(int uid);
 
 	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and PL_AUTHCODE=#{authcode}")
 	public int checkCode(@Param("id") int id, @Param("authcode") String code);	
 
+	@ResultMap(TABLE)
+	@Select("select * from "+TABLE+" where PL_SOCK_ID=#{id}")
+	public Player readBySid(String sid);
 	
+
+	@Update("update "+TABLE+" set PL_STATE=#{state} where PL_SOCK_ID=#{id} ")
+	public void setStateBySid(@Param("id") String id, @Param("state") int value);
+	
+
+	@Select("select PL_SOCK_ID from "+TABLE+" where PL_STATE>0")
+	public List<String> getActiverSid();
 }

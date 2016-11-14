@@ -47,6 +47,7 @@ public class LobbyServiceImpl implements LobbyService {
 		Auth auth = new Auth();
 		auth.setUid(uid);
 		auth.setCode(playerMap.getCode(uid));
+		log.info("Auth Info: "+auth);
 		return auth;
 	}
 	
