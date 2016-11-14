@@ -6,9 +6,14 @@ import org.kh.splendy.vo.PropInDB;
 
 public interface AdminService {
 	
-	List<PropInDB> serchServ() throws Exception;
+	List<PropInDB> readAll() throws Exception;
 	
-	void servOn(String key) throws Exception;
+	void create(PropInDB prop) throws Exception;
 	
-	void servOff(String key) throws Exception;
+	PropInDB read(String id) throws Exception;
+	
+	void update(PropInDB prop) throws Exception;
+	
+	void delete(String id) throws Exception;
+	
 }
