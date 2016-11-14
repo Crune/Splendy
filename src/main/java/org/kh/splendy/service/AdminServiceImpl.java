@@ -18,24 +18,36 @@ public class AdminServiceImpl implements AdminService {
 	private AdminMapper adminMap;
 
 	private static final Logger log = LoggerFactory.getLogger(AdminServiceImpl.class);
-	
+
 	@Override
-	public List<PropInDB> serchServ() throws Exception {
-		List<PropInDB> list = adminMap.serchServ();
-		log.info("admin serch service");
+	public List<PropInDB> readAll() throws Exception {
+		List<PropInDB> list = adminMap.readAll();
+		log.info("admin readAll service");
 		return list;
 	}
 
 	@Override
-	public void servOn(String key) throws Exception {
-		adminMap.servOn(key);
-		log.info("admin service on");
+	public void create(PropInDB prop) throws Exception {
+		adminMap.create(prop);
+		log.info("admin create service");
 	}
 
 	@Override
-	public void servOff(String key) throws Exception {
-		adminMap.servOff(key);
-		log.info("admin service off");
+	public PropInDB read(String id) throws Exception {
+		PropInDB prop = adminMap.read(id);
+		log.info("admin read service");
+		return prop;
 	}
-	
+
+	@Override
+	public void update(PropInDB prop) throws Exception {
+		adminMap.update(prop);
+		log.info("admin update service");
+	}
+
+	@Override
+	public void delete(String id) throws Exception {
+		adminMap.delete(id);
+		log.info("admin delete service");
+	}
 }

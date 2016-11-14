@@ -20,11 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 /**
  * 회원가입, 수정, 비밀번호 찾기, 탈퇴
  * @author 민정
@@ -42,46 +44,19 @@ public class AccountController {
 	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
-	
+
+	@RequestMapping(value = "/", method = RequestMethod.POST)
+	public String index(@RequestParam("msg") String msg, Model model) {
+		if(msg == null){
+			msg = "";
+		}
+		model.addAttribute(msg);
+		return "index";
+	}
 	@RequestMapping("/user/join")
 	public String join() {
 		return "user/join";
 	}
-	
-	/*@RequestMapping("/user/joined")
-	public String createUser(@RequestParam("email") String email,
-							@RequestParam("password") String password,
-							@RequestParam("nickname") String nickname,
-								HttpServletRequest request){
-		UserCore user = new UserCore();
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setNickname(nickname);
-		UserCore ck_user = null;
-		int result = 0;
-		
-		try {
-			ck_user = userServ.checkEmail(email);
-			System.out.println("결과 : " + ck_user);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		
-		if (ck_user == null){
-			try {
-				userServ.join(user);
-				userServ.get(user.getEmail());
-				result = 1;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			result = 2;
-		}
-		System.out.println(result);
-		request.setAttribute("result", result);
-		return "index";
-	}*/
 	
 	@RequestMapping(
 			value = "/user/requestJoin",
@@ -127,7 +102,7 @@ public class AccountController {
 						helper.setTo(email);
 						helper.setSubject("Splendy 회원 가입 Email 인증");
 						helper.setText("<img src='cid:image'> <br/> 링크를 누르면 인증이 완료됩니다. <br/> "
-										+ "<a href="+"http://localhost/user/join_cert/"+credent_code+">"
+										+ "<a href="+"http://spd.cu.cc/user/join_cert/"+credent_code+">"
 										+"링크"+"</a> 로 이동해 로그인해주세요.", true);
 						
 						ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -157,11 +132,8 @@ public class AccountController {
 	}
 	
 	@RequestMapping("/user/join_cert/{code}")
-	public String join_cert(@PathVariable String code, HttpServletRequest request) {
-		/**
-		 * TODO 민정:메일인증 1순위 !
-		 */
-		System.out.println(code);
+	public String join_cert(@PathVariable String code, HttpServletRequest request, RedirectAttributes rttr) {
+		
 		int credent_result = -1;
 		try {
 			userServ.credentUser(code);
@@ -172,7 +144,10 @@ public class AccountController {
 		}
 		
 		request.setAttribute("credent_result", credent_result);
-		return "index";
+		
+		rttr.addFlashAttribute("msg","회원가입이 성공하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
+		return "redirect:/";
+
 	}
 
 	@RequestMapping(
@@ -182,11 +157,8 @@ public class AccountController {
 	public @ResponseBody int send_pw(@RequestParam("email") String email) {
 		
 		int result_pw = -1;
-		/**
-		 * TODO 민정:새 비밀번호 메일 전송
-		 */
+		
 		String new_pw = RandomStringUtils.randomAlphanumeric(9);
-		/*HashMap<String, String> map = new HashMap<String, String>();*/
 		
 		try {
 			userServ.updatePassword(email, new_pw);
@@ -253,8 +225,10 @@ public class AccountController {
 		map.put("password", password);
 		int login_result = -1;
 		int credent = -1;
-		List<UserCore> user = null;
-		
+		UserCore user = null;
+		/**
+		 * TODO 민정: 세션에 ID추가하기
+		 */
 		try {
 			login_result = userServ.checkPassword(map);
 			credent = userServ.checkCredent(map);
@@ -262,9 +236,10 @@ public class AccountController {
 			e.printStackTrace();
 		}
 		if(login_result == 1 && credent == 0){
-			session.setAttribute("email", email);
 			try {
-				user = userServ.searchEmail(email);
+				user = userServ.checkEmail(email);
+				session.setAttribute("email", user.getEmail());
+				session.setAttribute("user_id", user.getId());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -282,69 +257,23 @@ public class AccountController {
 		return "index";
 	}
 	
-	@RequestMapping("/user/find")
-	public String find() {
+	@RequestMapping(
+			value = "/user/modify_suc",
+			method = {RequestMethod.GET, RequestMethod.POST},
+			produces = "application/json")
+	public  @ResponseBody List<UserCore> modify_suc(@RequestParam("email") String email,
+											 @RequestParam("nickname") String nickname,
+											 @RequestParam("password") String password) {
 		
-		return "user/findPW";
-	}
-	
-	@RequestMapping("/user/findPW")
-	public String findPW() {
-		
-		return "";
-	}
-	
-	/** TODO 민정.계정: 정보수정 구현
-	* 
-	*/
-	@RequestMapping("/user/modify")
-	public String modify(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		String email = (String) session.getAttribute("email");
 		List<UserCore> user = null;
 		try {
+			userServ.updateUser(email, password, nickname);
 			user = userServ.searchEmail(email);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		request.setAttribute("user", user);
-		return "user/modify";
-	}
-	
-	@RequestMapping("/user/modify_suc")
-	public String modify_suc(@RequestParam("email") String email,
-								@RequestParam("password") String password,
-								@RequestParam("nickname") String nickname,
-								HttpServletRequest request) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("email", email);
-		map.put("password", password);
-		map.put("nickname", nickname);
-		List<UserCore> user = null;
-		try {
-			userServ.updateUser(map);
-			user = userServ.searchEmail(email);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		request.setAttribute("user", user);
-		return "user/modify_success";
-	}
-	
-	@RequestMapping("/user/delete")
-	public String remove(HttpServletRequest request) {
-		List<UserCore> user = null;
-		HttpSession session = request.getSession();
-		String email = (String) session.getAttribute("email");
-		try {
-			user = userServ.searchEmail(email);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		request.setAttribute("user", user);
-		return "user/delete";
+		return user;
 	}
 	
 	@RequestMapping("/user/delete_suc")

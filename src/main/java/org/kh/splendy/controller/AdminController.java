@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -36,20 +38,22 @@ public class AdminController {
 	@RequestMapping("/servList")
 	public String servList(Model model) throws Exception {
 		log.info("admin access servicelist");
-		List<PropInDB> list = adminServ.serchServ();
+		List<PropInDB> list = adminServ.readAll();
 		model.addAttribute("list", list);
 		return "admin/servList";
 	}
 	
-	@RequestMapping("/servOn")
-	public String servOn(@RequestParam("key") String key) throws Exception {
-		adminServ.servOn(key);
-		return "";
+	@RequestMapping(
+			value = "/admin/servState",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody void saveState(@RequestParam("key") String key, @RequestParam("value") String value) {
+		PropInDB prop = new PropInDB();
+		prop.setKey(key);
+		prop.setValue(value);
+		try {
+			adminServ.update(prop);
+		} catch(Exception e) { e.printStackTrace(); }
 	}
 	
-	@RequestMapping("/servOff")
-	public String servOff(@RequestParam("key") String key) throws Exception {
-		adminServ.servOff(key);
-		return "";
-	}
 }

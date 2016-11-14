@@ -63,8 +63,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(HashMap<String, String> map) throws Exception {
-		userMap.updateUser(map);
+	public void updateUser(String email, String password, String nickname) throws Exception {
+		userMap.updateUser(email, password, nickname);
 	}
 
 	@Override
