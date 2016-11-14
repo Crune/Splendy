@@ -39,7 +39,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/admin">메인으로</a></li>
 					<li><a href="/serviceList">서비스</a></li>
-					<li><a href="#">Profile</a></li>
+					<li><a href="/userList">유저</a></li>
 					<li><a href="#">Help</a></li>
 				</ul>
 			</div>
@@ -49,21 +49,13 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li><a href="/serviceList">서비스</a></li>
-					<li><a href="#">Analytics</a></li>
-					<li><a href="#">Export</a></li>
+					<li><a href="/servList">서비스</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="">Nav item</a></li>
-					<li><a href="">Nav item again</a></li>
-					<li><a href="">One more nav</a></li>
-					<li><a href="">Another nav item</a></li>
-					<li><a href="">More navigation</a></li>
+					<li><a href="/userList">유저</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
 					<li><a href="">Nav item again</a></li>
-					<li><a href="">One more nav</a></li>
-					<li><a href="">Another nav item</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -80,9 +72,24 @@
 						<tbody>
 							<c:forEach var="list" items="${list}">
 								<tr>
-									<td>${list.key}</td>
-									<td>${list.value}</td>
-									<td></td>
+									<td>
+										${list.key}
+									</td>
+									<td>
+										<div id="text_value_${list.key}" class="text_value" style="display: none">
+											${list.value}
+										</div>
+										<div id="input_value_${list.key}" class="input_value" style="display: none">
+											<form method="post" id="${list.key}" name="${list.key}">
+												<input name="value" type="text" class="form-control" value="${list.value}" />
+												<input name="key" type="hidden" class="form-control" value="${list.key}" />
+												<input id="btn_updatePro_${list.key}" class="btn btn-default btn_updatePro" type="submit" value="저장" />
+											</form>
+										</div>
+									</td>
+									<td>
+										<input id="btn_update_${list.key}" class="btn btn-default btn_update" type="button" value="수정" />
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -101,5 +108,39 @@
 	<script src="/js/vendor/holder.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
+<script>
+window.onload = function(){
+	$(".text_value").show();
+	$(".input_value").hide();
+	
+	$(".btn_update").on('click', function () {
+		var id = $(this).attr('id');
+		var result = id.split("_");
+		$("#text_value_"+result[2]).hide();
+		$("#input_value_"+result[2]).show();
+	});
+
+	$(".btn_updatePro").on('click', function () {
+		var id = $(this).attr('id');
+		var result = id.split("_");
+		$("#text_value_"+result[2]).show();
+		$("#input_value_"+result[2]).hide();
+		sendRequest(result[2]);
+	});
+	
+}
+
+function sendRequest(result) {
+	$.ajax({
+        url:'/admin/servState',
+        type:'post',
+        data:$("#"+result).serialize(),
+        success:function(){
+        	window.location.reload(true);
+        }
+    })
+}
+
+</script>
 </body>
 </html>

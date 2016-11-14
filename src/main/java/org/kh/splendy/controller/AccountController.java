@@ -102,7 +102,7 @@ public class AccountController {
 						helper.setTo(email);
 						helper.setSubject("Splendy 회원 가입 Email 인증");
 						helper.setText("<img src='cid:image'> <br/> 링크를 누르면 인증이 완료됩니다. <br/> "
-										+ "<a href="+"http://localhost/user/join_cert/"+credent_code+">"
+										+ "<a href="+"http://spd.cu.cc/user/join_cert/"+credent_code+">"
 										+"링크"+"</a> 로 이동해 로그인해주세요.", true);
 						
 						ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
