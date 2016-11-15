@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kh.splendy.mapper.RoomMapper">
+	<resultMap id="roomResult" type="org.kh.splendy.vo.Room">
+		<result column="RM_ID"			property="id"			javaType="int" />
+		<result column="RM_TITLE"		property="title"		javaType="java.lang.String" />
+		<result column="RM_PL_LIMITS"	property="playerLimits"	javaType="int" />
+		<result column="RM_STATE"		property="state"		javaType="int" />
+		<result column="RM_HOST"		property="hostId"		javaType="int" />
+		<result column="RM_PW"			property="password"		javaType="java.lang.String" />
+		<result column="RM_INFO"		property="info"			javaType="java.lang.String" />
+	</resultMap>
+</mapper>

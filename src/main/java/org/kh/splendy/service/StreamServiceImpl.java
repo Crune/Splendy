@@ -123,11 +123,13 @@ public class StreamServiceImpl implements StreamService {
 		if (msg.equals("roomList")) {
 			log.info("방목록 요청됨");
 			List<Room> rooms = roomMap.getCurrentRooms();
-			Gson gson = new Gson();
+			log.info("전송함1");
 			send(sId, "init", "room");
+			log.info("전송함2");
 			for (Room cur : rooms) {
-				send(sId, "room", gson.toJson(cur));
+				send(sId, "room", cur);
 			}
+			log.info("전송함3");
 		} else if (msg.equals("readyList")) {
 			
 		}

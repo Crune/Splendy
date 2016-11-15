@@ -28,8 +28,17 @@ window.onload = function() {
 	};
 
 	// 메시지 이벤트 핸들러 연결
-	chatSock.onmessage = function (evt) {
-		$("#chatMessage").append(evt.data + "<br/>");
+	chatSock.onmessage = function (evt) {	
+		console.log("read.raw: "+evt.data);
+		var data = JSON.parse(evt.data);
+		var k = data.type;
+		var v = data.cont;
+		if (k == 'init') {
+			console.log("initialized.");
+		} else if (k == 'room') {
+			console.log(v.title);
+		}
+		//$("#chatMessage").append(evt.data + "<br/>");
 	};
 
 	// 연결 해제시 핸들러 연결

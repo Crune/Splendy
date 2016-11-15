@@ -22,7 +22,7 @@ public interface RoomMapper {
 	String TABLE = "KH_ROOM";
 	
 	String COLUMNS = "RM_ID, RM_TITLE, RM_PW, RM_INFO, RM_PL_LIMITS, RM_STATE, RM_HOST";
-	String C_VALUES = "#{id}, #{title}, #{password}, #{info}, #{playerLimits}, #{state}, #{hostId}";
+	String C_VALUES = "#{id}, #{title, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{info, jdbcType=CLOB}, #{playerLimits, jdbcType=INTEGER}, #{state, jdbcType=INTEGER}, #{hostId, jdbcType=INTEGER}";
 	String UPDATES = "RM_TITLE=#{title}, RM_PW=#{password}, RM_INFO=#{info}"
 			+ ", RM_PL_LIMITS=#{playerLimits}, RM_STATE=#{state}, RM_HOST=#{hostId}";
 	
@@ -31,15 +31,17 @@ public interface RoomMapper {
 	@Insert("insert into "+TABLE+" ( "+COLUMNS+" ) values ( "+C_VALUES+" )")
 	public void create(Room room); // 수정: 클래스 명
 
-	@Results(id = TABLE, value = { // 수정: 컬럼 명, 프로퍼티 명
+	/* 첫 실행 구문이 아닐경우 사용 불가능 하기에 xml의 resultMap 사용요망
+	@Results(id = "roomResult", value = {
 		@Result(property = "id", column = "RM_ID"),
 		@Result(property = "title", column = "RM_TITLE"),
-		@Result(property = "password", column = "RM_PW"),
-		@Result(property = "info", column = "RM_INFO"),
 		@Result(property = "playerLimits", column = "RM_PL_LIMITS"),
 		@Result(property = "state", column = "RM_STATE"),
-		@Result(property = "hostId", column = "RM_HOST")
-	})
+		@Result(property = "hostId", column = "RM_HOST"),
+		@Result(property = "password", column = "RM_PW"),
+		@Result(property = "info", column = "RM_INFO")
+	})*/
+	@ResultMap("roomResult")
 	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
 	public Player read(int id); // 수정: 클래스 명
 
@@ -75,8 +77,7 @@ public interface RoomMapper {
 
 
 	// Another
-
-	@ResultMap(TABLE)
+	@ResultMap("roomResult")
 	@Select("select * from "+TABLE+" where RM_STATE="+Room.ST_READY+" or RM_STATE ="+Room.ST_PROGRESS)
 	public List<Room> getCurrentRooms();
 

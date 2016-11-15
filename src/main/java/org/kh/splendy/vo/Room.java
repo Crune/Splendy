@@ -6,11 +6,11 @@ import lombok.Data;
 public class Room {
 	private int id;
 	private String title;
-	private String password;
-	private String info;
-	private int playerLimits;
-	private int state;
-	private int hostId;
+	private String password="";
+	private String info="";
+	private int playerLimits=0;
+	private int state=0;
+	private int hostId=0;
 
 	public final static int ST_INVALID=0;
 	public final static int ST_READY=1;
