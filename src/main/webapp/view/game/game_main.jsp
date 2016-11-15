@@ -131,8 +131,8 @@
 			</div>
 			<div class="jewel"><button type="button" class="btn btn-default" id="get_blackJ">get</button>
 				<div class="jewel_kind">black</div> 
-				<div>7</div>
-				</div id="jewel_black_value">
+				<div id="jewel_black_value">7</div>
+				</div>
 
 			<button class="btn" id="popbutton">턴종료</button>
 			<br />
