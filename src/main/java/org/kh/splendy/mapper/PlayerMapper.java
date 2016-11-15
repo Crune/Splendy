@@ -1,6 +1,7 @@
 package org.kh.splendy.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Player;
@@ -13,9 +14,10 @@ public interface PlayerMapper {
 	
 	String TABLE = "KH_PLAYER";
 
-	String COLUMNS = "U_ID, RM_ID, PL_STATE, PL_REG, PL_SOCK_ID";
-	String C_VALUES = "#{id}, #{roomId}, #{state}, sysdate, #{chatSessionId}";
-	String UPDATES = "RM_ID=#{roomId}, PL_STATE=#{state}, PL_SOCK_ID=#{chatSessionId}";
+	String COLUMNS = "U_ID, RM_ID, PL_STATE, PL_REG, PL_SOCK_ID, PL_AUTHCODE";
+	String C_VALUES = "#{id}, #{roomId}, #{state}, sysdate, #{chatSessionId}, #{authcode}";
+	String UPDATES = "RM_ID=#{roomId}, PL_STATE=#{state}, PL_SOCK_ID=#{chatSessionId}"
+			+ ", PL_AUTHCODE=#{authcode}";
 	
 	String KEY = "U_ID";
 
@@ -28,12 +30,13 @@ public interface PlayerMapper {
 		@Result(property = "state", column = "PL_STATE"),
 		@Result(property = "joinDate", column = "PL_REG"),
 		@Result(property = "chatSessionId", column = "PL_SOCK_ID"),
+		@Result(property = "authcode", column = "PL_AUTHCODE")
 	})
 	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
 	public Player read(int id);
 
 	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
-	public Player update(Player player);
+	public void update(Player player);
 	
 	@Delete("delete from "+TABLE+" where "+KEY+"=#{id}")
 	public void delete(int id);
@@ -52,13 +55,32 @@ public interface PlayerMapper {
 
 	@Update("update "+TABLE+" set PL_STATE=#{state} where "+KEY+"=#{id} ")
 	public void setState(@Param("id") int id, @Param("state") int value);
+	
+	@Update("update "+TABLE+" set PL_AUTHCODE=#{authcode} where "+KEY+"=#{id} ")
+	public void setAuthcode(@Param("id") int id, @Param("authcode") String value);
 
 
 	// Another
 
 	@ResultMap(TABLE)
 	@Select("select * from "+TABLE+" where RM_ID=#{roomId}")
-	public List<Player> getPlayers(int roomId);	
+	public List<Player> getPlayers(int roomId);
 
+	@Select("select PL_AUTHCODE from "+TABLE+" where "+KEY+"=#{id}")
+	public String getCode(int uid);
+
+	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and PL_AUTHCODE=#{authcode}")
+	public int checkCode(@Param("id") int id, @Param("authcode") String code);	
+
+	@ResultMap(TABLE)
+	@Select("select * from "+TABLE+" where PL_SOCK_ID=#{id}")
+	public Player readBySid(String sid);
 	
+
+	@Update("update "+TABLE+" set PL_STATE=#{state} where PL_SOCK_ID=#{id} ")
+	public void setStateBySid(@Param("id") String id, @Param("state") int value);
+	
+
+	@Select("select PL_SOCK_ID from "+TABLE+" where PL_STATE>0")
+	public List<String> getActiverSid();
 }

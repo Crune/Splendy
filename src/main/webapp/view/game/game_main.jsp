@@ -8,8 +8,8 @@
 	src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 <script type='text/javascript'
 	src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
-<script type='text/javascript' src="/js/game/game_player.js"></script>
-<script type='text/javascript' src="/js/game/game_field_jewel.js"></script>
+<script type='text/javascript' src="/js/game/Game_player.js"></script>
+<script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
 <script type='text/javascript' src="/js/game/game_main.js"></script>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -70,64 +70,63 @@
 				</div>
 			</div>
 
-
 		</div>
 		<div class="cards_container">
 			<div class="level">
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 			</div>
 
 			<div class="level">
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
-				</div>
-			</div>
-			<div class="level">
-				<div class="card">
-					<img src="img/iron.png" alt="">
-				</div>
-				<div class="card">
-					<img src="img/iron.png" alt="">
-				</div>
-				<div class="card">
-					<img src="img/iron.png" alt="">
-				</div>
-				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 			</div>
 			<div class="level">
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
 				</div>
 				<div class="card">
-					<img src="img/iron.png" alt="">
+					<img src="/img/iron.png" alt="">
+				</div>
+			</div>
+			<div class="level">
+				<div class="card">
+					<img src="/img/iron.png" alt="">
+				</div>
+				<div class="card">
+					<img src="/img/iron.png" alt="">
+				</div>
+				<div class="card">
+					<img src="/img/iron.png" alt="">
+				</div>
+				<div class="card">
+					<img src="/img/iron.png" alt="">
 				</div>
 			</div>
 

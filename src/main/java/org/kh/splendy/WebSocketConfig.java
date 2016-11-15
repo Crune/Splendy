@@ -26,9 +26,11 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	 */
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+		registry.addHandler(splendyHandler(), "/ws").withSockJS();
+		
 		registry.addHandler(myHandler(),"/myHandler").withSockJS();
 		registry.addHandler(paintHandler(),"/paint").withSockJS();
-		registry.addHandler(gameHandler(), "/game").withSockJS();
+		registry.addHandler(gameHandler(), "/gameMain").withSockJS();
 	}
 
 	/**
@@ -47,6 +49,11 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	@Bean
 	public WebSocketHandler gameHandler(){
 		return new GameHandler();
+	}
+	
+	@Bean
+	public WebSocketHandler splendyHandler(){
+		return new SplendyHandler();
 	}
 
 }

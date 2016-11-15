@@ -20,11 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 /**
  * 회원가입, 수정, 비밀번호 찾기, 탈퇴
  * @author 민정
@@ -42,7 +44,19 @@ public class AccountController {
 	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
-	
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String index() {
+		return "index";
+	}
+	@RequestMapping(value = "/", method = RequestMethod.POST)
+	public String indexWithMsg(@RequestParam("msg") String msg, Model model) {
+		if(msg == null){
+			msg = "";
+		}
+		model.addAttribute(msg);
+		return "index";
+	}
 	@RequestMapping("/user/join")
 	public String join() {
 		return "user/join";
@@ -122,9 +136,8 @@ public class AccountController {
 	}
 	
 	@RequestMapping("/user/join_cert/{code}")
-	public String join_cert(@PathVariable String code, HttpServletRequest request) {
+	public String join_cert(@PathVariable String code, HttpServletRequest request, RedirectAttributes rttr) {
 		
-		System.out.println(code);
 		int credent_result = -1;
 		try {
 			userServ.credentUser(code);
@@ -135,7 +148,10 @@ public class AccountController {
 		}
 		
 		request.setAttribute("credent_result", credent_result);
-		return "index";
+		
+		rttr.addFlashAttribute("msg","이메일 인증을 완료하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
+		return "redirect:/";
+
 	}
 
 	@RequestMapping(

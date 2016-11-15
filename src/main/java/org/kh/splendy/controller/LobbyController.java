@@ -1,9 +1,6 @@
 package org.kh.splendy.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.kh.splendy.service.*;
 import org.kh.splendy.vo.*;
@@ -15,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -30,37 +26,36 @@ public class LobbyController {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
 
-	@Autowired
-	private UserService userServ;
+	@Autowired private StreamService stream;
 	
-	@Autowired
-	private LobbyService serv;
+	@Autowired private LobbyService serv;
 
-	@ModelAttribute("rooms")
-	/** 뷰어(JSP)에서 room을 요청했을때 선언되지 않을 경우 반환할 값
-	 * @return 게시글 읽기 실패했다는 id가 -1인 결과를 반환 */
-	public List<Room> defaultRooms() {
-		List<Room> rooms = new ArrayList<Room>();
-		Room room = new Room();
-		room.setId(-1);
-		room.setTitle("무제");
-		room.setInfo("게임방");
-		room.setPlayerLimits(0);
-		room.setState(-1);
-		rooms.add(room);
-		return rooms;
+	@ModelAttribute("profile")
+	/** 뷰어(JSP)에서 profile을 요청했을때 선언되지 않을 경우 반환할 값
+	 * @return 프로필 초기값 전송 */
+	public Profile defaultProfile() {
+		Profile profile = new Profile();
+		return profile;
 	}
-	
+
 	/** 로비 첫 화면 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list(Model model) {
-		/** TODO 윤.로비: 로비 입장 화면 구현 */
+	public String list(Model model, HttpSession session) {
+		/** 윤.로비: 로비 입장 화면 구현
+		 * - 세션에서 유저ID 불러옴
+		 * - 플레이어 정보가 없을 경우 생성
+		 * - 플레이어 정보에 계정 인증코드 입력
+		 */
+		String user_id = session.getAttribute("user_id").toString();
+		int uid = Integer.parseInt(user_id);
+		serv.initPlayer(uid); // 플레이어 정보가 없을경우 생성
 		return "lobby";
 	}
-	
 
-	@RequestMapping(value = "/get_rooms", produces = "application/json")
-	public @ResponseBody List<Room> getRooms() {
-		return serv.getList();
+	@RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
+	public @ResponseBody Auth getAuth(HttpSession session) {
+		String user_id = session.getAttribute("user_id").toString();
+		int uid = Integer.parseInt(user_id);
+		return serv.getAuth(uid);
 	}
 }
