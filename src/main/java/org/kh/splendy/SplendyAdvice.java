@@ -24,4 +24,13 @@ public class SplendyAdvice {
 		log.info(" » Request: ed - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
 		return rst;
 	}
+	
+	@Around("execution(* org.kh.splendy.service.*.*(..))")
+	public Object serviceAOP(ProceedingJoinPoint pjp) throws Throwable {
+		log.info(" » Service: op - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
+		log.info(" » Service: args - "+Arrays.toString(pjp.getArgs()));
+		Object rst = pjp.proceed();
+		log.info(" » Service: ed - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
+		return rst;
+	}
 }
