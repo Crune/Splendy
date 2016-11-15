@@ -97,34 +97,88 @@
 			</div>
 		</div>
 	</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+ 			<div class="modal-body">
+				<table class="table table-hover">
+					<tbody>
+						<tr>
+							<td> ID </td>
+							<td> info </td>
+						</tr>
+						<tr>
+							<td> 닉네임 </td>
+							<td> nickname </td>
+						</tr>
+						<tr>
+							<td> E-Mail </td>
+							<td> email </td>
+						</tr>
+						<tr>
+							<td> 패스워드 </td>
+							<td> password </td>
+						</tr>
+						<tr>
+							<td> enabled </td>
+							<td> enabled </td>
+						</tr>
+						<tr>
+							<td> notLocked </td>
+							<td> notLocked </td>
+						</tr>
+						<tr>
+							<td> notExpired </td>
+							<td> notExpired </td>
+						</tr>
+						<tr>
+							<td> notCredential </td>
+							<td> notCredential </td>
+						</tr>
+						<tr>
+							<td> 등록일 </td>
+							<td> reg </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+	
 <script>
 window.onload = function(){
-
 	$(".btn_update").on('click', function () {
 		var id = $(this).attr('id');
 		sendRequest(id);
 	});
-
 }
-
+var info;
 function sendRequest(id) {
-	var url = "http://spd.cu.cc/admin/userState";
-
-	var vipform = document.createElement("form");
-	vipform.setAttribute("method", "POST");
-	vipform.setAttribute("action", url);
-	vipform.setAttribute("target", "vip125");
-	document.body.appendChild(vipform);
-
-	var vipinput = document.createElement("input");
-	vipinput.setAttribute("type", "hidden");
-	vipinput.setAttribute("name", "email");
-	vipinput.setAttribute("value", id);
-	vipform.appendChild(vipinput);
-
-	window.open('','vip125','width=800,height=500'); // 새창실행
-
-	vipform.submit();
+	text = {};
+	text.email = id;
+	json = JSON.stringify(text);
+	alert(json);
+	$.ajax({
+		url:'/admin/userState',
+		type:'post',
+		data:json,
+		success:function(data){
+			info = data;
+			alert(info.user[0]);
+			$('#myModal').modal('show');
+			$('#myModal').append(info);
+		}
+	})
 }
 
 </script>

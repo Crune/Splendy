@@ -2,6 +2,7 @@ package org.kh.splendy.controller;
 
 import java.util.List;
 
+
 import org.kh.splendy.service.AdminService;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.PropInDB;
@@ -65,12 +66,14 @@ public class AdminController {
 		return "admin/userList";
 	}
 	
-	@RequestMapping("/admin/userState")
-	public String userState(Model model,@RequestParam("email") String email) throws Exception {
+	@RequestMapping(
+			value = "/admin/userState",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody UserCore userState(@RequestParam("email") String email) throws Exception {
 		log.info("admin serch user name : "+email);
 		UserCore user = userServ.selectOne(email);
-		model.addAttribute("user",user);
-		return "admin/userState";
+		return user;
 	}
 	
 }

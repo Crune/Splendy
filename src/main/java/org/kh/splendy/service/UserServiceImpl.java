@@ -108,6 +108,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserCore selectOne(String email) throws Exception {
 		UserCore user = userMap.selectOne(email);
-		return null;
+		return user;
 	}
 }
