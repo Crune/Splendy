@@ -102,4 +102,12 @@ public interface UserMapper {
 
 	// SQL query in xml
 	public void modifyUserWithEmail(UserCore user) throws Exception;
+	
+	@ResultMap("userResult")
+	@Select("select * from KH_USER")
+	public List<UserCore> selectAll() throws Exception;
+	
+	@ResultMap("userResult")
+	@Select("select * from KH_USER where U_EMAIL=#{email}")
+	public UserCore selectOne(@Param("email") String email) throws Exception;
 }

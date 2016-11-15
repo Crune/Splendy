@@ -29,4 +29,8 @@ public interface UserService {
 	UserCore checkEmail(String email) throws Exception;
 	
 	void updatePassword(String email, String password) throws Exception;
+	
+	List<UserCore> selectAll() throws Exception;
+	
+	UserCore selectOne(String email) throws Exception;
 }

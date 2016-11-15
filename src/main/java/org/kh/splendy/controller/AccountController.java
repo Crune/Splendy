@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 /**
- * 회원가입, 수정, 비밀번호 찾기, 탈퇴
+ * 회원가입, 로그인, 수정, 임시 비밀번호 전송, 탈퇴
  * @author 민정
  *
  */
@@ -96,7 +96,8 @@ public class AccountController {
 				try {
 					userServ.join(user);
 					userServ.insertCredent(credent_code);
-					try {
+					
+					
 						String fileName = "img/unnamed.png"; // src/main/webapp 폴더
 
 						MimeMessage message = mailSender.createMimeMessage();
@@ -117,10 +118,6 @@ public class AccountController {
 
 						helper.addInline("image", ds);
 						mailSender.send(message);
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
 					
 					userServ.get(email);
 					result = 1;
@@ -149,7 +146,7 @@ public class AccountController {
 		
 		request.setAttribute("credent_result", credent_result);
 		
-		rttr.addFlashAttribute("msg","회원가입이 성공하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
+		rttr.addFlashAttribute("msg","이메일 인증을 완료하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
 		return "redirect:/";
 
 	}
@@ -161,31 +158,33 @@ public class AccountController {
 	public @ResponseBody int send_pw(@RequestParam("email") String email) {
 		
 		int result_pw = -1;
-		
+		UserCore user = null;
 		String new_pw = RandomStringUtils.randomAlphanumeric(9);
 		
 		try {
-			userServ.updatePassword(email, new_pw);
-			result_pw = 1;
-			String fileName = "img/unnamed.png"; // src/main/webapp 폴더
-
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-			
-			helper.setFrom("splendy.spd@gmail.com", "splendy");
-			helper.setTo(email);
-			helper.setSubject("Splendy 임시 비밀번호 전송");
-			helper.setText("<img src='cid:image'> <br/> 임시비밀번호 : "+new_pw+"<br/> 임시 비밀번호로 로그인 뒤 꼭 비밀번호를 재설정해주세요.", true);
-			
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			if (classLoader == null) {
-				classLoader = this.getClass().getClassLoader();
+			user = userServ.checkEmail(email);
+			if(user != null){
+				userServ.updatePassword(email, new_pw);
+				result_pw = 1;
+				String fileName = "img/unnamed.png"; // src/main/webapp 폴더
+	
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+				
+				helper.setFrom("splendy.spd@gmail.com", "splendy");
+				helper.setTo(email);
+				helper.setSubject("Splendy 임시 비밀번호 전송");
+				helper.setText("<img src='cid:image'> <br/> 임시비밀번호 : "+new_pw+"<br/> 임시 비밀번호로 로그인 뒤 꼭 비밀번호를 재설정해주세요.", true);
+				
+				ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+				if (classLoader == null) {
+					classLoader = this.getClass().getClassLoader();
+				}
+				DataSource ds = new URLDataSource(classLoader.getResource(fileName));
+	
+				helper.addInline("image", ds);
+				mailSender.send(message);
 			}
-			DataSource ds = new URLDataSource(classLoader.getResource(fileName));
-
-			helper.addInline("image", ds);
-			mailSender.send(message);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

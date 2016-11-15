@@ -9,7 +9,7 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="">
 <meta name="author" content="">
-<title>관리자 서비스 리스트 페이지</title>
+<title>관리자 유저목록 페이지</title>
 <!-- Bootstrap core CSS -->
 <link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
 <!-- Custom styles for this template -->
@@ -64,31 +64,30 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>이름</th>
-								<th>상태</th>
-								<th>관리</th>
+								<th>ID</th>
+								<th>닉네임</th>
+								<th>E-MAIL</th>
+								<th>등록일</th>
+								<th>수정</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="list" items="${list}">
 								<tr>
 									<td>
-										${list.key}
+										${list.id}
 									</td>
 									<td>
-										<div id="text_value_${list.key}" class="text_value" style="display: none">
-											${list.value}
-										</div>
-										<div id="input_value_${list.key}" class="input_value" style="display: none">
-											<form method="post" id="${list.key}" name="${list.key}">
-												<input name="value" type="text" class="form-control" value="${list.value}" />
-												<input name="key" type="hidden" class="form-control" value="${list.key}" />
-												<input id="btn_updatePro_${list.key}" class="btn btn-default btn_updatePro" type="submit" value="저장" />
-											</form>
-										</div>
+										${list.nickname}
 									</td>
 									<td>
-										<input id="btn_update_${list.key}" class="btn btn-default btn_update" type="button" value="수정" />
+										${list.email}
+									</td>
+									<td>
+										${list.reg}
+									</td>
+									<td>
+										<input id="${list.email}" class="btn btn-default btn_update" type="button" value="수정" />
 									</td>
 								</tr>
 							</c:forEach>
@@ -99,6 +98,90 @@
 		</div>
 	</div>
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+ 			<div class="modal-body">
+				<table class="table table-hover">
+					<tbody>
+						<tr>
+							<td> ID </td>
+							<td> info </td>
+						</tr>
+						<tr>
+							<td> 닉네임 </td>
+							<td> nickname </td>
+						</tr>
+						<tr>
+							<td> E-Mail </td>
+							<td> email </td>
+						</tr>
+						<tr>
+							<td> 패스워드 </td>
+							<td> password </td>
+						</tr>
+						<tr>
+							<td> enabled </td>
+							<td> enabled </td>
+						</tr>
+						<tr>
+							<td> notLocked </td>
+							<td> notLocked </td>
+						</tr>
+						<tr>
+							<td> notExpired </td>
+							<td> notExpired </td>
+						</tr>
+						<tr>
+							<td> notCredential </td>
+							<td> notCredential </td>
+						</tr>
+						<tr>
+							<td> 등록일 </td>
+							<td> reg </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<script>
+window.onload = function(){
+	$(".btn_update").on('click', function () {
+		var id = $(this).attr('id');
+		sendRequest(id);
+	});
+}
+var info;
+function sendRequest(id) {
+	text = {};
+	text.email = id;
+	json = JSON.stringify(text);
+	alert(json);
+	$.ajax({
+		url:'/admin/userState',
+		type:'post',
+		data:json,
+		success:function(data){
+			info = data;
+			alert(info.user[0]);
+			$('#myModal').modal('show');
+			$('#myModal').append(info);
+		}
+	})
+}
+
+</script>
 	<!-- Bootstrap core JavaScript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -108,39 +191,5 @@
 	<script src="/js/vendor/holder.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
-<script>
-window.onload = function(){
-	$(".text_value").show();
-	$(".input_value").hide();
-	
-	$(".btn_update").on('click', function () {
-		var id = $(this).attr('id');
-		var result = id.split("_");
-		$("#text_value_"+result[2]).hide();
-		$("#input_value_"+result[2]).show();
-	});
-
-	$(".btn_updatePro").on('click', function () {
-		var id = $(this).attr('id');
-		var result = id.split("_");
-		$("#text_value_"+result[2]).show();
-		$("#input_value_"+result[2]).hide();
-		sendRequest(result[2]);
-	});
-	
-}
-
-function sendRequest(result) {
-	$.ajax({
-        url:'/admin/servState',
-        type:'post',
-        data:$("#"+result).serialize(),
-        success:function(){
-        	window.location.reload(true);
-        }
-    })
-}
-
-</script>
 </body>
 </html>
