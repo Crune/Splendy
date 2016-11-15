@@ -2,7 +2,9 @@ package org.kh.splendy.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.mapper.ArticleMapper;
 import org.kh.splendy.mapper.BoardMapper;
 import org.kh.splendy.vo.Article;
@@ -35,7 +37,7 @@ public class BoardServiceImpl implements BoardService {
 		List<Article> article = boardMap.getList(bName);
 		return article;
 	}
-
+	
 	@Override
 	public Article getArticle(int articleId) {
 		/** TODO 찬우.게시판: 게시글 내용 반환 구현
@@ -52,9 +54,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public String writePro(Article article, BindingResult result, RedirectAttributes rttr) throws Exception {
-		String insert = boardMap.writePro();
-		return insert;
+	public void writePro(String at_subject ,String at_content ,String at_pass ) throws Exception {		
+		boardMap.writePro(at_subject,at_content,at_pass);
+		
 	}
 
 	@Override
@@ -68,6 +70,8 @@ public class BoardServiceImpl implements BoardService {
 		int max = boardMap.max();
 		return max;
 	}
+
+
 	
 	
 		

@@ -166,6 +166,8 @@ function sendRequest() {
         	console.log(data);
         	if(data == 1) {
         		alert("email로 임시 비밀번호를 보냈습니다.");
+        	} else if(data == -1) {
+        		alert("가입된 email이 없습니다. 다시 확인해주세요.");
         	}
         },error:function(request,status,error){
 			alert("");

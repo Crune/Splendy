@@ -1,80 +1,53 @@
-<%@ page contentType = "text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 <head>
-<title>게시판</title>
-
+<title>first</title>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 </head>
-
-<body bgcolor="${bodyback_c}">
-<center><b>글목록(전체 글:${count})</b>
-<table width="700">
-  <tr>
-    <td align="right" bgcolor="${value_c}">
-       <a href="/bbs/write?bName=1">글쓰기</a>
-    </td>
-  </tr>
-</table>
-
-
-<c:if test="${count == 0}">
-<table width="700" border="1" cellpadding="0" cellspacing="0">
-  <tr>
-    <td align="center">
-      게시판에 저장된 글이 없습니다.
-    </td>
-  </tr>
-</table>
-</c:if>
-
-<c:if test="${count > 0}">
-<table border="1" width="700" cellpadding="0" cellspacing="0" align="center"> 
-    <tr height="30" bgcolor="${value_c}"> 
-      <td align="center"  width="50"  >번 호</td> 
-      <td align="center"  width="250" >제   목</td> 
-      <td align="center"  width="100" >작성자</td>
-      <td align="center"  width="150" >작성일</td> 
-      <td align="center"  width="50" >조 회</td> 
-      <td align="center"  width="100" >IP</td>    
-    </tr>
-
-   <c:forEach var="article" items="${article}">
-   <tr height="30">
-    <td align="center"  width="50" >
-	  <c:out value="${number}"/>
-	  <c:set var="number" value="${number - 1}"/>
-	</td>
-    <td  width="250" >
-	  <c:if test="${article.at_re_level > 0}">
-	  	<img src="images/level.gif" width="${5 * article.at_re_level}" height="16">
-	    <img src="images/re.gif">
-	  </c:if>
-	  
-	  <c:if test="${article.at_re_level == 0}">
-	    <img src="images/level.gif" width="${5 * article.at_re_level}" height="16">
-	  </c:if>
-           
-      <a href="content.do?bName=${article.at_id}&pageNum=${currentPage}">
-          ${article.at_subject}</a> 
-          <c:if test="${article.at_readcount >= 20}">
-            <img src="images/hot.gif" border="0"  height="16">
-		  </c:if>
-	</td>
-    <td align="center"  width="100"> 
-       <a href="mailto:${article.at_ip}"></a>
-	</td>
-    <td align="center"  width="150">${article.at_reg_date}
-	</td>
-    <td align="center"  width="50">${article.at_readcount}</td>
-    <td align="center" width="100" >${article.at_ip}</td>
-  </tr>
-  </c:forEach>
-</table>
-</c:if>
-
-<c:if test="${count > 0}">
+<body>
+<h2>게시판 목록</h2>
+<table style="border:1px solid #ccc">
+    <colgroup>
+        <col width="5%"/>
+        <col width="*"/>
+        <col width="15%"/>
+        <col width="15%"/>
+        <col width="5%"/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th scope="col">글번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">작성일</th>
+            <th scope="col">조회</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:choose>
+            <c:when test="${fn:length(article) > 0}">
+                <c:forEach items="${article }" var="row">
+                    <tr>
+                        <td>${row.at_id }</td>
+                        <td>${row.at_subject }</td>
+                        <td>${row.u_id }</td>
+                        <td>${row.at_readcount }</td>
+                        <td>${row.at_reg_date }</td>
+                    </tr>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td colspan="4">조회된 결과가 없습니다.</td>
+                </tr>
+            </c:otherwise>
+        </c:choose>
+         
+    </tbody>
+    
+<c:if test="${fn:length(article) > 0}">
    <c:set var="pageCount" value="${count / pageSize + ( count % pageSize == 0 ? 0 : 1)}"/>
    <c:set var="pageBlock" value="${10}"/>
    <fmt:parseNumber var="result" value="${currentPage / 10}" integerOnly="true" />
@@ -97,6 +70,6 @@
    </c:if>
 </c:if>
  
-</center>
+</table>
 </body>
 </html>

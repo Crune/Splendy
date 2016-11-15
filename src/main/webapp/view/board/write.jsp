@@ -13,7 +13,7 @@
 <body bgcolor="${bodyback_c}">  
 <center><b>글쓰기</b>
 <br>
-<form method="post" name="writeform" action="/bbs/writePro" onsubmit="return writeSave()">
+<form method="post" name="writeform" action="/bbs/writePro">
 <input type="hidden" name="num" value="${at_id}">
 <input type="hidden" name="ref" value="${at_reply}">
 <input type="hidden" name="re_step" value="${at_re_step}">
@@ -25,11 +25,7 @@
 	    <a href="/study/ch19/list.do"> 글목록</a> 
    </td>
    </tr>
-   <tr>
-    <td  width="70"  bgcolor="${value_c}" align="center">이 름</td>
-    <td  width="330">
-       <input type="text" size="10" maxlength="10" value="ㅎㅎ"></td>
-  </tr>
+
   <tr>
     <td  width="70"  bgcolor="${value_c}" align="center" >제 목</td>
     <td  width="330">
@@ -37,7 +33,7 @@
        <input type="text" size="40" maxlength="50" name="at_subject"></td>
 	</c:if>
 	<c:if test="${at_id != 0}">
-	   <input type="text" size="40" maxlength="50" name="at_content" value="[답변]"></td>
+	   <input type="text" size="40" maxlength="50" name="at_subject" value="[답변]"></td>
 	</c:if>
   </tr>  
   <tr>

@@ -2,7 +2,9 @@ package org.kh.splendy.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.vo.Article;
 import org.kh.splendy.vo.Board;
 import org.springframework.validation.BindingResult;
@@ -17,10 +19,12 @@ public interface BoardService {
 	
 	int boardCount() throws Exception;
 	
-	String writePro(Article article, BindingResult result, RedirectAttributes rttr) throws Exception;
+	void writePro(String at_subject ,String at_content ,String at_pass ) throws Exception;
 	
 	void reply(HashMap<String, String> map) throws Exception;
 	
 	int max() throws Exception;
+	 
+	 
 	
 }
