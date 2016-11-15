@@ -18,10 +18,10 @@ body {
 }
 </style>
 <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 <script src="/webjars/handlebars/4.0.5/handlebars.js"></script>
 <script src='/js/default.js'></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <script id="temp_test" type="text/x-handlebars-template">
 
@@ -43,8 +43,8 @@ window.onload = function(){
 	var temp_test = Handlebars.compile(source_test);	
 	var data = {temp:""};
 	
-	if(msg.length > 0) {
-		//TODO 민정: modal 구현
+	if(msg !== "") {
+		$('#myModal').modal('show');
 	}
 	
 	$("#testDiv").html(temp_test(data));
@@ -354,5 +354,24 @@ function delete_check() {
 			</div>
 		</div>
 	</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">${msg}</h4>
+      </div>
+      <div class="modal-body">
+        	다시 로그인해주세요.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

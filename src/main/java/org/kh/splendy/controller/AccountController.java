@@ -149,7 +149,7 @@ public class AccountController {
 		
 		request.setAttribute("credent_result", credent_result);
 		
-		rttr.addFlashAttribute("msg","회원가입이 성공하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
+		rttr.addFlashAttribute("msg","이메일 인증을 완료하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
 		return "redirect:/";
 
 	}
