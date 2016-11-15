@@ -5,8 +5,4 @@ function Field_jewel(){
 	this.red_jewel = 7;
 	this.blue_jewel = 7;
 	this.gold_jewel = 7;
-	
-	Field_jewel.prototype.getBlack_jewel = function(){
-		return black_jewel;
-	}
 }

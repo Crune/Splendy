@@ -5,6 +5,7 @@ div {
 .container {
 	display: flex;
 	flex-direction: row;
+	height: 600px;
 }
 
 .container_player {
@@ -20,6 +21,8 @@ div {
 	height: 5rem;
 	width: 15rem;
 	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
 }
 
 .jewel_group {
@@ -70,3 +73,21 @@ btn btn-default ) {
 	border: 2px solid #E2E2E2;
 	z-Index: 9999
 }
+
+.player_value {
+	display: flex;
+	flex-direction: row;
+}
+
+.player_card{
+	margin-left: 10px;
+}
+
+button{
+	margin: 10px;
+}
+
+.jewel_kind{
+	margin: 10px;
+}
+body { line-height:1rem }
