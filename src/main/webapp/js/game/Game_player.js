@@ -61,36 +61,180 @@ Player.prototype = {
 				var num = $("#player1_jewel_white").html();
 				num = parseInt(num);				
 				num = num + 1;
-				console.log(num);
-				$("#player1_jewel_white").html(num);
+				$("#player1_jewel_white").html(num);								
 			} else if (this.order === 2){
-				$("#player2_jewel_white").text() + 1;
+				var num = $("#player2_jewel_white").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player2_jewel_white").html(num);
 			} else if (this.order === 3){
-				$("#player3_jewel_white").text() + 1;
+				var num = $("#player3_jewel_white").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player3_jewel_white").html(num);
 			} else if (this.order === 4){
-				$("#player4_jewel_white").text() + 1;
+				var num = $("#player4_jewel_white").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player4_jewel_white").html(num);
 			}
-			$("#jewel_white_value").text -= 1;
+			var jewelValue = parseInt($("#jewel_white_value").html());
+			jewelValue = jewelValue - 1;
+			$("#jewel_white_value").html(jewelValue);
+			
 		},
 		
 		getBlack : function() {
-			return this.black;
+			if(this.order === 1){
+				var num = $("#player1_jewel_black").html();
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player1_jewel_black").html(num);			
+			} else if (this.order === 2){
+				var num = $("#player2_jewel_black").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player2_jewel_black").html(num);
+			} else if (this.order === 3){
+				var num = $("#player3_jewel_black").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player3_jewel_black").html(num);
+			} else if (this.order === 4){
+				var num = $("#player4_jewel_black").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player4_jewel_black").html(num);
+			}
+			var jewelValue = parseInt($("#jewel_black_value").html());
+			jewelValue = jewelValue - 1;
+			$("#jewel_black_value").html(jewelValue);
 		},
 		
 		getGreen : function() {
-			return this.green;
+			if(this.order === 1){
+				var num = $("#player1_jewel_green").html();
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player1_jewel_green").html(num);			
+			} else if (this.order === 2){
+				var num = $("#player2_jewel_green").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player2_jewel_green").html(num);
+			} else if (this.order === 3){
+				var num = $("#player3_jewel_green").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player3_jewel_green").html(num);
+			} else if (this.order === 4){
+				var num = $("#player4_jewel_green").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player4_jewel_green").html(num);
+			}
+			var jewelValue = parseInt($("#jewel_green_value").html());
+			jewelValue = jewelValue - 1;
+			$("#jewel_green_value").html(jewelValue);
 		},
 						
 		getRed : function(){
-			return this.red;
+			if(this.order === 1){
+				var num = $("#player1_jewel_red").html();
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player1_jewel_red").html(num);			
+			} else if (this.order === 2){
+				var num = $("#player2_jewel_red").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player2_jewel_red").html(num);
+			} else if (this.order === 3){
+				var num = $("#player3_jewel_red").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player3_jewel_red").html(num);
+			} else if (this.order === 4){
+				var num = $("#player4_jewel_red").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player4_jewel_red").html(num);
+			}
+			var jewelValue = parseInt($("#jewel_red_value").html());
+			jewelValue = jewelValue - 1;
+			$("#jewel_red_value").html(jewelValue);
 		},
 		
 		getBlue : function(){
-			return blue;
+			if(this.order === 1){
+				var num = $("#player1_jewel_blue").html();
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player1_jewel_blue").html(num);			
+			} else if (this.order === 2){
+				var num = $("#player2_jewel_blue").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player2_jewel_blue").html(num);
+			} else if (this.order === 3){
+				var num = $("#player3_jewel_blue").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player3_jewel_blue").html(num);
+			} else if (this.order === 4){
+				var num = $("#player4_jewel_blue").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player4_jewel_blue").html(num);
+			}
+			var jewelValue = parseInt($("#jewel_blue_value").html());
+			jewelValue = jewelValue - 1;
+			$("#jewel_blue_value").html(jewelValue);
 		},
 		
 		getGold : function(){
-			return gold;
+			if(this.order === 1){
+				var num = $("#player1_jewel_gold").html();
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player1_jewel_gold").html(num);			
+			} else if (this.order === 2){
+				var num = $("#player2_jewel_gold").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player2_jewel_gold").html(num);
+			} else if (this.order === 3){
+				var num = $("#player3_jewel_gold").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player3_jewel_gold").html(num);
+			} else if (this.order === 4){
+				var num = $("#player4_jewel_gold").html();
+				num = parseInt(num);				
+				num = num + 1;
+				console.log(num);
+				$("#player4_jewel_gold").html(num);
+			}
+			var jewelValue = parseInt($("#jewel_gold_value").html());
+			jewelValue = jewelValue - 1;
+			$("#jewel_gold_value").html(jewelValue);
 		}
 		
 }
