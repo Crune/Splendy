@@ -9,7 +9,7 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="">
 <meta name="author" content="">
-<title>관리자 서비스 리스트 페이지</title>
+<title>관리자 유저목록 페이지</title>
 <!-- Bootstrap core CSS -->
 <link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
 <!-- Custom styles for this template -->
@@ -64,31 +64,30 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>이름</th>
-								<th>상태</th>
-								<th>관리</th>
+								<th>ID</th>
+								<th>닉네임</th>
+								<th>E-MAIL</th>
+								<th>등록일</th>
+								<th>수정</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="list" items="${list}">
 								<tr>
 									<td>
-										${list.key}
+										${list.id}
 									</td>
 									<td>
-										<div id="text_value_${list.key}" class="text_value" style="display: none">
-											${list.value}
-										</div>
-										<div id="input_value_${list.key}" class="input_value" style="display: none">
-											<form method="post" id="${list.key}" name="${list.key}">
-												<input name="value" type="text" class="form-control" value="${list.value}" />
-												<input name="key" type="hidden" class="form-control" value="${list.key}" />
-												<input id="btn_updatePro_${list.key}" class="btn btn-default btn_updatePro" type="submit" value="저장" />
-											</form>
-										</div>
+										${list.nickname}
 									</td>
 									<td>
-										<input id="btn_update_${list.key}" class="btn btn-default btn_update" type="button" value="수정" />
+										${list.email}
+									</td>
+									<td>
+										${list.reg}
+									</td>
+									<td>
+										<input id="${list.email}" class="btn btn-default btn_update" type="button" value="수정" />
 									</td>
 								</tr>
 							</c:forEach>
@@ -98,7 +97,37 @@
 			</div>
 		</div>
 	</div>
+<script>
+window.onload = function(){
 
+	$(".btn_update").on('click', function () {
+		var id = $(this).attr('id');
+		sendRequest(id);
+	});
+
+}
+
+function sendRequest(id) {
+	var url = "http://spd.cu.cc/admin/userState";
+
+	var vipform = document.createElement("form");
+	vipform.setAttribute("method", "POST");
+	vipform.setAttribute("action", url);
+	vipform.setAttribute("target", "vip125");
+	document.body.appendChild(vipform);
+
+	var vipinput = document.createElement("input");
+	vipinput.setAttribute("type", "hidden");
+	vipinput.setAttribute("name", "email");
+	vipinput.setAttribute("value", id);
+	vipform.appendChild(vipinput);
+
+	window.open('','vip125','width=800,height=500'); // 새창실행
+
+	vipform.submit();
+}
+
+</script>
 	<!-- Bootstrap core JavaScript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -108,39 +137,5 @@
 	<script src="/js/vendor/holder.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
-<script>
-window.onload = function(){
-	$(".text_value").show();
-	$(".input_value").hide();
-	
-	$(".btn_update").on('click', function () {
-		var id = $(this).attr('id');
-		var result = id.split("_");
-		$("#text_value_"+result[2]).hide();
-		$("#input_value_"+result[2]).show();
-	});
-
-	$(".btn_updatePro").on('click', function () {
-		var id = $(this).attr('id');
-		var result = id.split("_");
-		$("#text_value_"+result[2]).show();
-		$("#input_value_"+result[2]).hide();
-		sendRequest(result[2]);
-	});
-	
-}
-
-function sendRequest(result) {
-	$.ajax({
-        url:'/admin/servState',
-        type:'post',
-        data:$("#"+result).serialize(),
-        success:function(){
-        	window.location.reload(true);
-        }
-    })
-}
-
-</script>
 </body>
 </html>

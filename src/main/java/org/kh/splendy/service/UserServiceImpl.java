@@ -98,4 +98,16 @@ public class UserServiceImpl implements UserService {
 	public void updatePassword(String email, String password) throws Exception {
 		userMap.updatePassword(email, password);
 	}
+
+	@Override
+	public List<UserCore> selectAll() throws Exception {
+		List<UserCore> list = userMap.selectAll();
+		return list;
+	}
+
+	@Override
+	public UserCore selectOne(String email) throws Exception {
+		UserCore user = userMap.selectOne(email);
+		return null;
+	}
 }

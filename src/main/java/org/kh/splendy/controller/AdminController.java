@@ -5,6 +5,7 @@ import java.util.List;
 import org.kh.splendy.service.AdminService;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.PropInDB;
+import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +55,22 @@ public class AdminController {
 		try {
 			adminServ.update(prop);
 		} catch(Exception e) { e.printStackTrace(); }
+	}
+	
+	@RequestMapping("/userList")
+	public String userList(Model model) throws Exception {
+		log.info("admin access userlist");
+		List<UserCore> list = userServ.selectAll();
+		model.addAttribute("list", list);
+		return "admin/userList";
+	}
+	
+	@RequestMapping("/admin/userState")
+	public String userState(Model model,@RequestParam("email") String email) throws Exception {
+		log.info("admin serch user name : "+email);
+		UserCore user = userServ.selectOne(email);
+		model.addAttribute("user",user);
+		return "admin/userState";
 	}
 	
 }
