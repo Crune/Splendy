@@ -26,12 +26,18 @@
 	</select>
 
 	<insert id="writePro" parameterType="org.kh.splendy.vo.Article">
-		<![CDATA[
-		INSERT INTO KH_ARTICLE(AT_ID,AT_SUBJECT,AT_PASS,AT_CONTENT,AT_IP,AT_REPLY,AT_RE_LEVEL,AT_RE_STEP,AT_REG_DATE)
-		VALUES(KH_BOARD_SEQ.NEXTVAL, #{at_subject, jdbcType=VARCHAR},#{at_pass, jdbcType=VARCHAR},#{at_content, jdbcType=VARCHAR},#{at_ip, jdbcType=VARCHAR},#{at_reply, jdbcType=VARCHAR},#{at_re_level, jdbcType=VARCHAR},#{at_re_step, jdbcType=VARCHAR},#{at_reg_date, jdbcType=VARCHAR})
-		]]>
+	<![CDATA[		
+		INSERT INTO KH_ARTICLE(
+		AT_ID, AT_SUBJECT, AT_PASS, AT_CONTENT, AT_IP, AT_REPLY,
+		AT_RE_LEVEL, AT_RE_STEP, AT_REG_DATE)
+		VALUES(
+		KH_BOARD_SEQ.NEXTVAL, #{at_subject}, #{at_pass},
+		#{at_content}, #{at_ip, jdbcType=VARCHAR}, #{at_reply, jdbcType=VARCHAR},
+		#{at_re_level, jdbcType=VARCHAR}, #{at_re_step, jdbcType=VARCHAR},
+		sysdate)
+	]]>		
 	</insert>
-
+	
 	<!-- <update id="modifyUserWithEmail" parameterType="org.kh.splendy.vo.UserCore"> 
 		<![CDATA[ UPDATE KH_USER SET U_NICK=#{nickname}, U_PW=#{password}, U_ENABLED=#{enabled}, 
 		U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} 

@@ -102,6 +102,7 @@ public class BoardController {
 		return "board/list";
 		
 	}
+	
 
 	@RequestMapping(value = "/bbs/view", method = RequestMethod.GET)
 	/** 게시글 보기
@@ -161,15 +162,21 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String writePro(@ModelAttribute @Valid Article article, BindingResult result, RedirectAttributes rttr,
+	public String writePro(@RequestParam("at_subject") String at_subject ,
+			@RequestParam("at_content") String at_content ,
+			@RequestParam("at_pass") String at_pass ,BindingResult result, RedirectAttributes rttr,
 							HttpServletRequest request)throws Exception{
 		
 		request.setCharacterEncoding("UTF-8");//한글 인코딩
-		String at_reply = request.getParameter("at_reply");
-		String at_re_step = request.getParameter("at_re_step");	
+		//String at_reply = request.getParameter("at_reply");
+		//String at_re_step = request.getParameter("at_re_step");	
+		System.out.println(at_subject);
+		System.out.println(at_content);
+		System.out.println(at_pass);
+		
 		
 				
-		/*
+	/*
 		int number=0;
 		
         int max = boardServ.max();       
@@ -197,11 +204,11 @@ public class BoardController {
 		article.setAt_reg_date(new Timestamp(System.currentTimeMillis()) );
 		article.setAt_ip(request.getRemoteAddr());
 		*/
-		boardServ.writePro(article, result,rttr);
+		boardServ.writePro(at_subject, at_content, at_pass);
 		
-		rttr.addFlashAttribute("bName",article.getBd_id());
-		System.out.println(article);
-		return "redirect:/bbs/list";
+		
+		
+		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}
 
 	@RequestMapping(value = "/bbs/deletePro", method = RequestMethod.GET)
