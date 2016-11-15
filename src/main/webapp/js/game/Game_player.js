@@ -85,6 +85,8 @@ Player.prototype = {
 			jewelValue = jewelValue - 1;
 			$("#jewel_white_value").html(jewelValue);
 			
+			this.action = "getJewelWhite";	//플레이어 객체의 액션 코드 설정
+			
 		},
 		
 		getBlack : function() {
@@ -115,6 +117,7 @@ Player.prototype = {
 			var jewelValue = parseInt($("#jewel_black_value").html());
 			jewelValue = jewelValue - 1;
 			$("#jewel_black_value").html(jewelValue);
+			this.action = "getJewelBlack";
 		},
 		
 		getGreen : function() {
@@ -145,6 +148,8 @@ Player.prototype = {
 			var jewelValue = parseInt($("#jewel_green_value").html());
 			jewelValue = jewelValue - 1;
 			$("#jewel_green_value").html(jewelValue);
+			
+			this.action = "getJewelGreen";
 		},
 						
 		getRed : function(){
@@ -152,7 +157,7 @@ Player.prototype = {
 				var num = $("#player1_jewel_red").html();
 				num = parseInt(num);				
 				num = num + 1;
-				$("#player1_jewel_red").html(num);			
+				$("#player1_jewel_red").html(num);
 			} else if (this.order === 2){
 				var num = $("#player2_jewel_red").html();
 				num = parseInt(num);				
@@ -172,9 +177,12 @@ Player.prototype = {
 				console.log(num);
 				$("#player4_jewel_red").html(num);
 			}
+			
+			
 			var jewelValue = parseInt($("#jewel_red_value").html());
 			jewelValue = jewelValue - 1;
 			$("#jewel_red_value").html(jewelValue);
+			this.action = "getJewelRed";
 		},
 		
 		getBlue : function(){
@@ -205,6 +213,7 @@ Player.prototype = {
 			var jewelValue = parseInt($("#jewel_blue_value").html());
 			jewelValue = jewelValue - 1;
 			$("#jewel_blue_value").html(jewelValue);
+			this.action = "getJewelBlue";
 		},
 		
 		getGold : function(){
@@ -235,6 +244,7 @@ Player.prototype = {
 			var jewelValue = parseInt($("#jewel_gold_value").html());
 			jewelValue = jewelValue - 1;
 			$("#jewel_gold_value").html(jewelValue);
+			this.action = "getJewelGold";
 		}
 		
 }
