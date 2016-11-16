@@ -5,19 +5,19 @@
 
 <mapper namespace="org.kh.splendy.mapper.BoardMapper">
 	<resultMap id="BoardVO" type="org.kh.splendy.vo.Article">
-		<result column="U_ID" property="u_id" />
-		<result column="AT_ID" property="at_id" />
-		<result column="BD_ID" property="bd_id" />
-		<result column="AT_SUBJECT" property="at_subject" />
-		<result column="AT_CONTENT" property="at_content" />
-		<result column="AT_PASS" property="at_pass" />
-		<result column="AT_READCOUNT" property="at_readcount" />
-		<result column="AT_IP" property="at_ip" />
-		<result column="AT_REPLY" property="at_reply" />
-		<result column="AT_RE_STEP" property="at_re_step" />
-		<result column="AT_RE_LEVEL" property="at_re_level" />
-		<result column="AT_CATEGORY" property="at_category" />
-		<result column="AT_REG_DATE" property="at_reg_date" />
+		<result column="U_ID" property="u_id" javaType="int" />
+		<result column="AT_ID" property="at_id" javaType="int" />
+		<result column="BD_ID" property="bd_id" javaType="java.lang.String" />
+		<result column="AT_SUBJECT" property="at_subject" javaType="java.lang.String" />
+		<result column="AT_CONTENT" property="at_content" javaType="java.lang.String" />
+		<result column="AT_PASS" property="at_pass" javaType="java.lang.String" />
+		<result column="AT_READCOUNT" property="at_readcount" javaType="int" />
+		<result column="AT_IP" property="at_ip" javaType="java.lang.String" />
+		<result column="AT_REPLY" property="at_reply" javaType="int" />
+		<result column="AT_RE_STEP" property="at_re_step" javaType="int" />
+		<result column="AT_RE_LEVEL" property="at_re_level" javaType="int" />
+		<result column="AT_CATEGORY" property="at_category" javaType="java.lang.String" />
+		<result column="AT_REG_DATE" property="at_reg_date" javaType="java.sql.Timestamp" />
 	</resultMap>
 
 	<select id="getList" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
@@ -28,12 +28,13 @@
 	<insert id="writePro" parameterType="org.kh.splendy.vo.Article">
 	<![CDATA[		
 		INSERT INTO KH_ARTICLE(
-		AT_ID, AT_SUBJECT, AT_PASS, AT_CONTENT, AT_IP, AT_REPLY,
-		AT_RE_LEVEL, AT_RE_STEP)
+			AT_ID, AT_SUBJECT, AT_PASS,
+			AT_CONTENT, AT_IP, AT_REPLY,
+			AT_RE_LEVEL, AT_RE_STEP, AT_REG_DATE)
 		VALUES(
-		KH_BOARD_SEQ.NEXTVAL, #{at_subject}, #{at_pass},
-		#{at_content}, #{at_ip}, #{at_reply},
-		#{at_re_level}, #{at_re_step}
+			KH_BOARD_SEQ.NEXTVAL, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR},
+			#{at_content, jdbcType=VARCHAR}, #{at_ip, jdbcType=VARCHAR}, #{at_reply, jdbcType=INTEGER},
+			#{at_re_level, jdbcType=INTEGER}, #{at_re_step, jdbcType=INTEGER}, SYSDATE
 		)
 	]]>		
 	</insert>
