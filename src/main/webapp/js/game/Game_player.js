@@ -123,6 +123,10 @@ Player.prototype = {
 		},
 		
 		setActionPoint : function(actionPoint){
+			if(actionPoint === 0){
+				this.actionPoint = 0;
+				return;
+			}
 			this.actionPoint += actionPoint;
 			
 		},

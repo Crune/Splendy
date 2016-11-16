@@ -4,7 +4,7 @@ var player2 = new Player("yoon", 2);
 var player3 = new Player("minjung", 3);
 var player4 = new Player("jinkyu", 4);
 
-var INIT_POINT = -3;
+var INIT_POINT = 0;
 var ONE_POINT = 1;
 var TWO_POINT = 2;
 var THREE_POINT = 3;
@@ -92,6 +92,7 @@ $(document).ready(
 
 			$("#get_whiteJ").click(
 					function() {
+						
 						var player;
 						var nextPlayer;
 						if (orderCount < 3) {
@@ -104,17 +105,23 @@ $(document).ready(
 							// 설정
 
 						}
-
-						player.getWhite();
-
+							
 						if (player.getWhiteJewelStatus() === false) {
+							player.getWhite();
 							player.setActionPoint(ONE_POINT);
 							player.toggleWhiteJewelStatus(); // true
 						} else if (player.getWhiteJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							player.getWhite();
 							player.setActionPoint(TWO_POINT);
 						}
-
-						if (player.getActionPoint() === THREE_POINT) {
+						
+						
+						
+						if (player.getActionPoint() >= THREE_POINT) {
 							player.toggleTurn();
 							player.toggleWhiteJewelStatus(); // false
 							player.setActionPoint(INIT_POINT);
@@ -145,12 +152,16 @@ $(document).ready(
 							// 설정
 						}
 
-						player.getGreen();
-
 						if (player.getGreenJewelStatus() === false) {
+							player.getGreen();
 							player.setActionPoint(ONE_POINT);
 							player.toggleGreenJewelStatus(); // true
 						} else if (player.getGreenJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							player.getGreen();
 							player.setActionPoint(TWO_POINT);
 						}
 
@@ -184,12 +195,16 @@ $(document).ready(
 
 						}
 
-						player.getBlue();
-
 						if (player.getBlueJewelStatus() === false) {
+							player.getBlue();
 							player.setActionPoint(ONE_POINT);
 							player.toggleBlueJewelStatus(); // true
 						} else if (player.getBlueJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							player.getBlue();
 							player.setActionPoint(TWO_POINT);
 						}
 
@@ -222,12 +237,16 @@ $(document).ready(
 
 						}
 
-						player.getRed();
-
 						if (player.getRedJewelStatus() === false) {
+							player.getRed();
 							player.setActionPoint(ONE_POINT);
 							player.toggleRedJewelStatus(); // true
 						} else if (player.getRedJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							player.getRed();
 							player.setActionPoint(TWO_POINT);
 						}
 
@@ -263,12 +282,16 @@ $(document).ready(
 
 						}
 
-						player.getBlack();
-
 						if (player.getBlackJewelStatus() === false) {
+							player.getBlack();
 							player.setActionPoint(ONE_POINT);
 							player.toggleBlackJewelStatus(); // true
 						} else if (player.getBlackJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							player.getBlack();
 							player.setActionPoint(TWO_POINT);
 						}
 
