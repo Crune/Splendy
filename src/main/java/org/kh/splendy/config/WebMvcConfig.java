@@ -1,5 +1,6 @@
-package org.kh.splendy;
+package org.kh.splendy.config;
 
+import org.kh.splendy.aop.SplendyInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
