@@ -4,7 +4,6 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.kh.splendy.mapper.BoardMapper">
-
 	<resultMap id="BoardVO" type="org.kh.splendy.vo.Article">
 		<result column="U_ID" property="u_id" />
 		<result column="AT_ID" property="at_id" />
@@ -24,22 +23,19 @@
 	<select id="getList" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
 		select * from KH_ARTICLE
 	</select>
+	
 
 	<insert id="writePro" parameterType="org.kh.splendy.vo.Article">
 	<![CDATA[		
 		INSERT INTO KH_ARTICLE(
 		AT_ID, AT_SUBJECT, AT_PASS, AT_CONTENT, AT_IP, AT_REPLY,
-		AT_RE_LEVEL, AT_RE_STEP, AT_REG_DATE)
+		AT_RE_LEVEL, AT_RE_STEP)
 		VALUES(
 		KH_BOARD_SEQ.NEXTVAL, #{at_subject}, #{at_pass},
-		#{at_content}, #{at_ip, jdbcType=VARCHAR}, #{at_reply, jdbcType=VARCHAR},
-		#{at_re_level, jdbcType=VARCHAR}, #{at_re_step, jdbcType=VARCHAR},
-		sysdate)
+		#{at_content}, #{at_ip}, #{at_reply},
+		#{at_re_level}, #{at_re_step}
+		)
 	]]>		
 	</insert>
 	
-	<!-- <update id="modifyUserWithEmail" parameterType="org.kh.splendy.vo.UserCore"> 
-		<![CDATA[ UPDATE KH_USER SET U_NICK=#{nickname}, U_PW=#{password}, U_ENABLED=#{enabled}, 
-		U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} 
-		WHERE U_EMAIL=#{email} ]]> </update> -->
 </mapper>

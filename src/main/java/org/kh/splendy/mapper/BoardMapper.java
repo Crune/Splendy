@@ -18,12 +18,46 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 public interface BoardMapper {
+	/*
+	String TABLE = "KH_BOARD";
+	
+	String COLUMNS = "AT_ID, AT_SUBJECT, AT_PASS, AT_CONTENT, AT_IP, AT_REPLY,"
+			+ "AT_RE_LEVEL, AT_RE_STEP";
+	String C_VALUES = "KH_BOARD_SEQ.NEXTVAL, #{at_subject}, #{at_pass},"
+			+ "	#{at_content}, #{at_ip}, #{at_reply},"
+			+ "#{at_re_level}, #{at_re_step}";
+	
+	String UPDATES = "U_NICK=#{nickname}, U_EMAIL=#{email}, U_PW=#{password}"
+			+ ", U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}"
+			+ ", U_N_CREDENT=#{notCredential}";
+	
+	//String KEY = "U_ID";
+
+	@Results(id = TABLE, value = { // 수정: 컬럼 명, 프로퍼티 명		
+		@Result(property = "u_id", column = "U_ID"),
+		@Result(property = "at_id", column = "AT_ID"),
+		@Result(property = "bd_id", column = "BD_ID"),
+		@Result(property = "at_pass", column = "AT_PASS"),
+		@Result(property = "at_subject", column = "AT_SUBJECT"),
+		@Result(property = "at_content", column = "AT_CONTENT"),
+		@Result(property = "at_ip", column = "AT_IP"),
+		@Result(property = "at_reply", column = "AT_REPLY"),
+		@Result(property = "at_re_step", column = "AT_RE_STEP"),
+		@Result(property = "at_re_level", column = "AT_RE_LEVEL"),
+		@Result(property = "at_reg_date", column = "AT_REG_DATE"),
+		@Result(property = "at_readcount", column = "AT_READCOUNT"),
+		@Result(property = "at_category", column = "AT_CATEGORY"),			
+		
+	})
+	*/
+	
+	public void writePro(Article article); // 수정: 클래스 명
 	
 	// SQL query in xml
 		
-		public List<Article> getList(String bName) throws Exception;
+		public List<Article> getList(String bName) throws Exception;		
 /*
-		@Results(id ="article", value = {
+ 		@Results(id ="article", value = {
 			@Result(property = "u_id", column = "U_ID"),
 			@Result(property = "at_id", column = "AT_ID"),
 			@Result(property = "bd_id", column = "BD_ID"),
@@ -40,11 +74,7 @@ public interface BoardMapper {
 		})
 */
 		@Select("select count(*) from KH_ARTICLE")
-		public int boardCount() throws Exception;
-		
-		public void writePro(@Param("at_subject") String at_subject ,
-				@Param("at_content") String at_content ,
-				@Param("at_pass") String at_pass ) throws Exception;
+		public int boardCount() throws Exception;		
 		
 		@Update("update KH_ARTICLE set AT_RE_STEP=AT_RE_LEVEL+1 where AT_REPLY= #{reply} and AT_RE_STEP> #{re_step}")
 		public void reply(HashMap<String, String> map) throws Exception;

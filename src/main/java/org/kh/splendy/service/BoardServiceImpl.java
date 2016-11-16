@@ -54,8 +54,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void writePro(String at_subject ,String at_content ,String at_pass ) throws Exception {		
-		boardMap.writePro(at_subject,at_content,at_pass);
+	public void writePro(Article article) throws Exception {		
+		boardMap.writePro(article);
 		
 	}
 

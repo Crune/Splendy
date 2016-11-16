@@ -19,12 +19,11 @@ public interface BoardService {
 	
 	int boardCount() throws Exception;
 	
-	void writePro(String at_subject ,String at_content ,String at_pass ) throws Exception;
+	void writePro(Article article) throws Exception;
 	
 	void reply(HashMap<String, String> map) throws Exception;
 	
-	int max() throws Exception;
-	 
+	int max() throws Exception;	 
 	 
 	
 }
