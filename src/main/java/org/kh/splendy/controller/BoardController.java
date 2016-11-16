@@ -162,17 +162,13 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String writePro(@RequestParam("at_subject") String at_subject ,
-			@RequestParam("at_content") String at_content ,
-			@RequestParam("at_pass") String at_pass ,BindingResult result, RedirectAttributes rttr,
+	public String writePro(Article article, RedirectAttributes rttr,
 							HttpServletRequest request)throws Exception{
 		
 		request.setCharacterEncoding("UTF-8");//한글 인코딩
 		//String at_reply = request.getParameter("at_reply");
 		//String at_re_step = request.getParameter("at_re_step");	
-		System.out.println(at_subject);
-		System.out.println(at_content);
-		System.out.println(at_pass);
+
 		
 		
 				
@@ -204,9 +200,7 @@ public class BoardController {
 		article.setAt_reg_date(new Timestamp(System.currentTimeMillis()) );
 		article.setAt_ip(request.getRemoteAddr());
 		*/
-		boardServ.writePro(at_subject, at_content, at_pass);
-		
-		
+		boardServ.writePro(article);		
 		
 		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}

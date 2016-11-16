@@ -34,7 +34,7 @@
                         <td>${row.at_subject }</td>
                         <td>${row.u_id }</td>
                         <td>${row.at_readcount }</td>
-                        <td>${row.at_reg_date }</td>
+                        
                     </tr>
                 </c:forEach>
             </c:when>
