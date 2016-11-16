@@ -1,4 +1,4 @@
-package org.kh.splendy;
+package org.kh.splendy.config;
 
 import java.util.Properties;
 

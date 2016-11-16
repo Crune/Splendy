@@ -1,4 +1,4 @@
-package org.kh.splendy;
+package org.kh.splendy.aop;
 
 import java.util.Arrays;
 

@@ -5,7 +5,7 @@
 <html>
 <head>
 <script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
-<script type='text/javascript' src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
+<script type='text/javascript' src="/webjars/sockjs-client/1.0.2/sockjs.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 

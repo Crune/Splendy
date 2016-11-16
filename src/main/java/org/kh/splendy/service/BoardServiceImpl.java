@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Service
@@ -29,13 +30,15 @@ public class BoardServiceImpl implements BoardService {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(CardServiceImpl.class);
 
+	/** TODO 찬우.게시판: 게시글 목록 반환 구현
+	 * boardMap 이용하여 작성
+	 */
 	@Override
 	public List<Article> getList(String bName) throws Exception {
-		/** TODO 찬우.게시판: 게시글 목록 반환 구현
-		 * boardMap 이용하여 작성
-		 */
+		
 		List<Article> article = boardMap.getList(bName);
 		return article;
+		
 	}
 	
 	@Override
@@ -54,7 +57,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void writePro(Article article) throws Exception {		
+	public void writePro(@ModelAttribute("BoardVO") Article article) throws Exception {		
 		boardMap.writePro(article);
 		
 	}
@@ -70,10 +73,5 @@ public class BoardServiceImpl implements BoardService {
 		int max = boardMap.max();
 		return max;
 	}
-
-
-	
-	
-		
 	
 }
