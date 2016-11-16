@@ -23,7 +23,8 @@ body {
 <script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 <script type='text/javascript' src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 <script type='text/javascript' src="/webjars/handlebars/4.0.5/handlebars.js"></script>
-<script type='text/javascript' src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
+<script type='text/javascript' src="/webjars/sockjs-client/1.0.2/sockjs.min.js"></script>
+<script type='text/javascript' src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 <script type='text/javascript' src='/js/default.js'></script>
 <script type='text/javascript' src='/js/lobby.js'></script>
 
