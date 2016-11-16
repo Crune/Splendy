@@ -162,16 +162,12 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String writePro(Article article, RedirectAttributes rttr,
+	public String writePro(@ModelAttribute("BoardVO") Article article, RedirectAttributes rttr,
 							HttpServletRequest request)throws Exception{
 		
 		request.setCharacterEncoding("UTF-8");//한글 인코딩
 		//String at_reply = request.getParameter("at_reply");
-		//String at_re_step = request.getParameter("at_re_step");	
-
-		
-		
-				
+		//String at_re_step = request.getParameter("at_re_step");					
 	/*
 		int number=0;
 		

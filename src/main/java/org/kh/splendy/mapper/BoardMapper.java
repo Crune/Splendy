@@ -13,26 +13,31 @@ import org.junit.runners.Parameterized.Parameters;
 import org.kh.splendy.vo.Article;
 import org.kh.splendy.vo.UserCore;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 
 public interface BoardMapper {
 	/*
-	String TABLE = "KH_BOARD";
+	String TABLE = "KH_ARTICLE";
 	
 	String COLUMNS = "AT_ID, AT_SUBJECT, AT_PASS, AT_CONTENT, AT_IP, AT_REPLY,"
 			+ "AT_RE_LEVEL, AT_RE_STEP";
+	
 	String C_VALUES = "KH_BOARD_SEQ.NEXTVAL, #{at_subject}, #{at_pass},"
 			+ "	#{at_content}, #{at_ip}, #{at_reply},"
 			+ "#{at_re_level}, #{at_re_step}";
 	
-	String UPDATES = "U_NICK=#{nickname}, U_EMAIL=#{email}, U_PW=#{password}"
-			+ ", U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}"
-			+ ", U_N_CREDENT=#{notCredential}";
+	//String UPDATES = "U_NICK=#{nickname}, U_EMAIL=#{email}, U_PW=#{password}"
+	//		+ ", U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}"
+	//		+ ", U_N_CREDENT=#{notCredential}";
 	
 	//String KEY = "U_ID";
 
+	@Insert("insert into "+TABLE+" ( "+COLUMNS+" ) values ( "+C_VALUES+" )")
+	public void writePro(Article article); // 수정: 클래스 명
+	
 	@Results(id = TABLE, value = { // 수정: 컬럼 명, 프로퍼티 명		
 		@Result(property = "u_id", column = "U_ID"),
 		@Result(property = "at_id", column = "AT_ID"),
@@ -48,11 +53,8 @@ public interface BoardMapper {
 		@Result(property = "at_readcount", column = "AT_READCOUNT"),
 		@Result(property = "at_category", column = "AT_CATEGORY"),			
 		
-	})
+	})	
 	*/
-	
-	public void writePro(Article article); // 수정: 클래스 명
-	
 	// SQL query in xml
 		
 		public List<Article> getList(String bName) throws Exception;		
@@ -83,6 +85,7 @@ public interface BoardMapper {
 		public int max() throws Exception;
 		
 		
+		public void writePro(@ModelAttribute("BoardVO") Article article) throws Exception;
 		
 		
 			

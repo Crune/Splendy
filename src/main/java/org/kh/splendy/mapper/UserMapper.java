@@ -22,7 +22,9 @@ public interface UserMapper {
 	String TABLE = "KH_USER";
 	
 	String COLUMNS = "U_ID, U_NICK, U_EMAIL, U_PW, U_ENABLED, U_N_LOCKED, U_N_EXPIRED, U_N_CREDENT, U_REG";
+	
 	String C_VALUES = "KH_USER_SEQ.NEXTVAL, #{nickname}, #{email}, #{password}, #{enabled}, #{notLocked}, #{notExpired}, #{notCredential}, sysdate";
+	
 	String UPDATES = "U_NICK=#{nickname}, U_EMAIL=#{email}, U_PW=#{password}"
 			+ ", U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}"
 			+ ", U_N_CREDENT=#{notCredential}";

@@ -7,7 +7,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 </head>
 <body>
-<h2>게시판 목록</h2>
+<h2>게시판 목록</h2><table width="700">
+	  <tr>
+	    <td align="right" bgcolor="${value_c}">
+	       <a href="/bbs/write?bName=1">글쓰기</a>
+	    </td>
+	  </tr>
+	</table>
 <table style="border:1px solid #ccc">
     <colgroup>
         <col width="5%"/>
@@ -22,7 +28,7 @@
             <th scope="col">제목</th>
             <th scope="col">작성자</th>
             <th scope="col">작성일</th>
-            <th scope="col">조회</th>
+        <!--<th scope="col">조회</th>-->
         </tr>
     </thead>
     <tbody>
@@ -34,6 +40,7 @@
                         <td>${row.at_subject }</td>
                         <td>${row.u_id }</td>
                         <td>${row.at_readcount }</td>
+                        
                         
                     </tr>
                 </c:forEach>
