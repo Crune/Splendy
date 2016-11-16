@@ -201,8 +201,11 @@ public class BoardController {
 		article.setAt_ip(request.getRemoteAddr());
 		*/
 		boardServ.writePro(article);		
+
+		rttr.addFlashAttribute("pageNum", 1);
+		rttr.addFlashAttribute("bName", "1");
 		
-		return "redirect:/bbs/list?pageNum=1&bName=1";
+		return "redirect:/bbs/list";
 	}
 
 	@RequestMapping(value = "/bbs/deletePro", method = RequestMethod.GET)
