@@ -29,50 +29,40 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
-
-    @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");
-    }
-
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").withSockJS()
-		        .setStreamBytesLimit(512 * 1024)
-		        .setHttpMessageCacheSize(1000)
-		        .setDisconnectDelay(30 * 1000);
-    }
-
-}
-/*
-@Configuration
 @EnableWebSocket
 @EnableAsync
-public class WebSocketConfig implements WebSocketConfigurer, AsyncConfigurer  {
+public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer  implements WebSocketConfigurer, AsyncConfigurer {
+
+	@Override
+	public void configureMessageBroker(MessageBrokerRegistry config) {
+		config.enableSimpleBroker("/topic");
+		config.setApplicationDestinationPrefixes("/app");
+	}
+
+	@Override
+	public void registerStompEndpoints(StompEndpointRegistry registry) {
+		registry.addEndpoint("/ws-ep").withSockJS()
+				.setStreamBytesLimit(512 * 1024).setHttpMessageCacheSize(1000).setDisconnectDelay(30 * 1000);
+	}
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(splendyHandler(), "/ws").withSockJS()
-	        .setStreamBytesLimit(512 * 1024)
-	        .setHttpMessageCacheSize(1000)
-	        .setDisconnectDelay(30 * 1000);
+				.setStreamBytesLimit(512 * 1024).setHttpMessageCacheSize(1000).setDisconnectDelay(30 * 1000);
 		
 		registry.addHandler(myHandler(),"/myHandler").withSockJS();
 		registry.addHandler(paintHandler(),"/paint").withSockJS();
 		registry.addHandler(gameHandler(), "/gameMain").withSockJS();
 	}
 
-    @Bean
-    public ServletServerContainerFactoryBean createWebSocketContainer() {
-        ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
-        container.setMaxTextMessageBufferSize(8192);
-        container.setMaxBinaryMessageBufferSize(8192);
-        return container;
-    }
-    
-    
+	@Bean
+	public ServletServerContainerFactoryBean createWebSocketContainer() {
+		ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
+		container.setMaxTextMessageBufferSize(8192);
+		container.setMaxBinaryMessageBufferSize(8192);
+		return container;
+	}
+
 	@Bean @Async
 	public WebSocketHandler myHandler() {
 		return new MyHandler();
@@ -93,21 +83,20 @@ public class WebSocketConfig implements WebSocketConfigurer, AsyncConfigurer  {
 		return new SplendyHandler();
 	}
 
-    @Override
-    public Executor getAsyncExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(7);
-        executor.setMaxPoolSize(42);
-        executor.setQueueCapacity(11);
-        executor.setThreadNamePrefix("MyExecutor-");
-        executor.initialize();
-        return executor;
-    }
+	@Override
+	public Executor getAsyncExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(7);
+		executor.setMaxPoolSize(42);
+		executor.setQueueCapacity(11);
+		executor.setThreadNamePrefix("MyExecutor-");
+		executor.initialize();
+		return executor;
+	}
 
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SplendyAsyncUEHandler();
-    }
+	@Override
+	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+		return new SplendyAsyncUEHandler();
+	}
 
 }
-*/
