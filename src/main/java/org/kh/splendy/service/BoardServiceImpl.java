@@ -13,12 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Service
-@MapperScan(basePackages = { "org.kh.splendy.dao" })
 public class BoardServiceImpl implements BoardService {
 
 	@Autowired
@@ -42,15 +42,6 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public Article getArticle(int articleId) {
-		/** TODO 찬우.게시판: 게시글 내용 반환 구현
-		 * boardMap 이용하여 작성
-		 */
-		
-		return null;
-	}
-
-	@Override
 	public int boardCount() throws Exception {
 		int result = boardMap.boardCount();
 		return result;
@@ -72,6 +63,18 @@ public class BoardServiceImpl implements BoardService {
 	public int max() throws Exception {
 		int max = boardMap.max();
 		return max;
+	}
+
+	@Override
+	public Article getDetail(int at_Id) throws Exception {
+		Article article = boardMap.getDetail(at_Id);
+		return article;
+	}
+
+	@Override @Transactional
+	public void readCount(int at_Id) throws Exception {
+		//boardMap.
+		boardMap.readCount(at_Id);		
 	}
 	
 }

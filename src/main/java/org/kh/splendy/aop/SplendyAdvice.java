@@ -1,5 +1,7 @@
 package org.kh.splendy.aop;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,5 +34,25 @@ public class SplendyAdvice {
 		Object rst = pjp.proceed();
 		log.info(" » Service: ed - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
 		return rst;
+	}
+	
+
+
+	public static String getEncSHA256(String txt) throws NoSuchAlgorithmException {
+		StringBuffer sbuf = new StringBuffer();
+	
+		MessageDigest mDigest = MessageDigest.getInstance("SHA-256");
+		mDigest.update(txt.getBytes());
+	
+		byte[] msgStr = mDigest.digest();
+	
+		for (int i = 0; i < msgStr.length; i++) {
+			byte tmpStrByte = msgStr[i];
+			String tmpEncTxt = Integer.toString((tmpStrByte & 0xff) + 0x100, 16).substring(1);
+	
+			sbuf.append(tmpEncTxt);
+		}
+	
+		return sbuf.toString();
 	}
 }
