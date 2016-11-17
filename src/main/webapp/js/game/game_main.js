@@ -4,7 +4,7 @@ var player2 = new Player("yoon", 2);
 var player3 = new Player("minjung", 3);
 var player4 = new Player("jinkyu", 4);
 
-var INIT_POINT = -3;
+var INIT_POINT = 0;
 var ONE_POINT = 1;
 var TWO_POINT = 2;
 var THREE_POINT = 3;
@@ -12,6 +12,13 @@ var THREE_POINT = 3;
 var orderCount = 0;
 var players = [ player1, player2, player3, player4 ];
 var game_status;
+var jewelWhiteValue;	//플레이어가 보석을 얻어올 때마다 현재 남은 보석 갯수로 초기화 되는 변수
+var jewelGreenValue;
+var jewelBlackValue;
+var jewelRedValue;
+var jewelBlueValue;
+var jewelGoldValue;
+
 
 $(document).ready(
 		function() {
@@ -42,7 +49,7 @@ $(document).ready(
 			};
 
 			$("#popbutton").click(
-					function() {
+					/*function() {
 						if (player1.getTurn() === true) {
 							player1.toggleTurn();
 							player2.toggleTurn();
@@ -88,10 +95,10 @@ $(document).ready(
 										+ players[i].getTurn());
 							}
 						}
-					});
+					}*/);
 
 			$("#get_whiteJ").click(
-					function() {
+					function() {						
 						var player;
 						var nextPlayer;
 						if (orderCount < 3) {
@@ -102,18 +109,24 @@ $(document).ready(
 							player = players[3]; // 네 번째 플레이어가 현재일 때
 							nextPlayer = players[0]; // 다음 플레이어를 첫 번째 플레이어로
 							// 설정
-
 						}
-
-						player.getWhite();
-
-						if (player.getWhiteJewelStatus() === false) {
+						if( jewelWhiteValue === 0){
+							alert('사용가능한 보석이 없습니다');
+							return;
+						}	
+						if (player.getWhiteJewelStatus() === false) {							
+							jewelWhiteValue = player.getWhite();
 							player.setActionPoint(ONE_POINT);
 							player.toggleWhiteJewelStatus(); // true
 						} else if (player.getWhiteJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							jewelWhiteValue = player.getWhite();
 							player.setActionPoint(TWO_POINT);
 						}
-
+																		
 						if (player.getActionPoint() === THREE_POINT) {
 							player.toggleTurn();
 							player.toggleWhiteJewelStatus(); // false
@@ -144,13 +157,21 @@ $(document).ready(
 							nextPlayer = players[0]; // 다음 플레이어를 첫 번째 플레이어로
 							// 설정
 						}
-
-						player.getGreen();
+						if( jewelGreenValue === 0){
+							alert('사용가능한 보석이 없습니다');
+							return;
+						}	
 
 						if (player.getGreenJewelStatus() === false) {
+							jewelGreenValue = player.getGreen();
 							player.setActionPoint(ONE_POINT);
 							player.toggleGreenJewelStatus(); // true
 						} else if (player.getGreenJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							jewelGreenValue = player.getGreen();
 							player.setActionPoint(TWO_POINT);
 						}
 
@@ -183,13 +204,21 @@ $(document).ready(
 							// 설정
 
 						}
-
-						player.getBlue();
+						if( jewelBlueValue === 0){
+							alert('사용가능한 보석이 없습니다');
+							return;
+						}	
 
 						if (player.getBlueJewelStatus() === false) {
+							jewelBlueValue = player.getBlue();
 							player.setActionPoint(ONE_POINT);
 							player.toggleBlueJewelStatus(); // true
 						} else if (player.getBlueJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							jewelBlueValue = player.getBlue();
 							player.setActionPoint(TWO_POINT);
 						}
 
@@ -221,13 +250,21 @@ $(document).ready(
 														// 설정
 
 						}
-
-						player.getRed();
+						if( jewelRedValue === 0){
+							alert('사용가능한 보석이 없습니다');
+							return;
+						}	
 
 						if (player.getRedJewelStatus() === false) {
+							jewelRedValue = player.getRed();
 							player.setActionPoint(ONE_POINT);
 							player.toggleRedJewelStatus(); // true
 						} else if (player.getRedJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							jewelRedValue = player.getRed();
 							player.setActionPoint(TWO_POINT);
 						}
 
@@ -262,13 +299,21 @@ $(document).ready(
 														// 설정
 
 						}
-
-						player.getBlack();
-
+						if( jewelBlackValue === 0){
+							alert('사용가능한 보석이 없습니다');
+							return;
+						}	
+						
 						if (player.getBlackJewelStatus() === false) {
+							jewelBlackValue = player.getBlack();
 							player.setActionPoint(ONE_POINT);
 							player.toggleBlackJewelStatus(); // true
 						} else if (player.getBlackJewelStatus() === true) {
+							if(player.getActionPoint() === TWO_POINT){
+								alert('다른 보석을 고르세요.');
+								return;
+							}
+							jewelBlackValue = player.getBlack();
 							player.setActionPoint(TWO_POINT);
 						}
 
