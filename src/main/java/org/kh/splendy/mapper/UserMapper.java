@@ -76,10 +76,10 @@ public interface UserMapper {
 	public UserCore checkEmail(String email) throws Exception;
 
 	@Select("select count(*) from KH_USER where U_EMAIL=#{email} and U_PW=#{password} and U_ENABLED=1 and U_N_CREDENT=1")
-	public int checkPassword(HashMap<String, String> map) throws Exception;
+	public int checkPassword(@Param("email") String email, @Param("password") String password) throws Exception;
 	
 	@Select("select count(*) from KH_USER where U_EMAIL=#{email} and U_PW=#{password} and U_ENABLED=1 and U_N_CREDENT=0")
-	public int checkCredent(HashMap<String, String> map) throws Exception;
+	public int checkCredent(@Param("email") String email, @Param("password") String password) throws Exception;
 	
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void disabling(String email) throws Exception;
