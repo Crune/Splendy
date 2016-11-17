@@ -16,7 +16,7 @@ public interface UserService {
 	
 	List<UserCore> searchEmail(String email) throws Exception;
 	
-	void updateUser(String email, String password, String nickname) throws Exception;
+	void updateUser(UserCore user) throws Exception;
 	
 	void deleteUser(String email) throws Exception;
 	

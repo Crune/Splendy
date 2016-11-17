@@ -154,7 +154,7 @@ public class AccountController {
 		
 		List<UserCore> user = null;
 		try {
-			userServ.updateUser(user0.getEmail(), user0.getPassword(), user0.getNickname());
+			userServ.updateUser(user0);
 			user = userServ.searchEmail(user0.getEmail());
 		} catch (Exception e) {
 			e.printStackTrace();
