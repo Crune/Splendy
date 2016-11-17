@@ -69,7 +69,7 @@ public interface PlayerMapper {
 	@Select("select PL_AUTHCODE from "+TABLE+" where "+KEY+"=#{id}")
 	public String getCode(int uid);
 
-	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and PL_AUTHCODE=#{authcode}")
+	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id, jdbcType=INTEGER} and PL_AUTHCODE=#{authcode, jdbcType=VARCHAR}")
 	public int checkCode(@Param("id") int id, @Param("authcode") String code);	
 
 	@ResultMap(TABLE)
