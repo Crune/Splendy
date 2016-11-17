@@ -18,21 +18,23 @@ public class GreetingController {
 	@Data
 	public static class WSMsg {
 
-		@SerializedName("type") @Expose
+		@SerializedName("type")
+		@Expose
 		public String type;
-		@SerializedName("cont") @Expose
+		@SerializedName("cont")
+		@Expose
 		public Object cont;
-		
+
 		public static WSMsg convert(String source) {
 			return new Gson().fromJson(source, WSMsg.class);
 		}
 	}
 
-    @MessageMapping("/msg") // 요청할 주소
-    @SendTo("/topic/lobby") // 구독자가 연결된 주소
-    public Greeting greeting(WSMsg message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return new Greeting("Hello, " + message.getCont() + "!");
-    }
+	@MessageMapping("/msg") // 요청할 주소
+	@SendTo("/topic/lobby") // 구독자가 연결된 주소
+	public Greeting greeting(WSMsg message) throws Exception {
+		Thread.sleep(1000); // simulated delay
+		return new Greeting("Hello, " + message.getCont() + "!");
+	}
 
 }

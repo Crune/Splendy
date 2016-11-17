@@ -7,13 +7,13 @@
 <title>Insert title here</title>
 <link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
 <script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
-<script type='text/javascript' src="/webjars/sockjs-client/1.0.2/sockjs.min.js"></script>
+<script type='text/javascript' src="/webjars/sockjs-client/1.1.1/sockjs.min.js"></script>
 <script type="text/javascript">
 	var chatSock = null;
 
 	$(document).ready(function () {
 		// 페이지가 시작됨과 l동시에 소켓 서버 주소로 접속한다.
-		chatSock = new SockJS("http://" + window.location.host + "/myHandler");
+		chatSock = new SockJS("http://"+window.location.host+"/myHandler");
 		chatSock.onopen = function () {
 
 			message = {};  
