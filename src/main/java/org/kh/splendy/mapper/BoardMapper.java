@@ -82,11 +82,12 @@ public interface BoardMapper {
 		public void reply(HashMap<String, String> map) throws Exception;
 		
 		@Select("select max(AT_ID) from KH_ARTICLE")
-		public int max() throws Exception;
-		
+		public int max() throws Exception;		
 		
 		public void writePro(@ModelAttribute("BoardVO") Article article) throws Exception;
 		
+		public Article getDetail(int at_Id) throws Exception;
 		
+		public void readCount(int at_Id) throws Exception; 
 			
 }

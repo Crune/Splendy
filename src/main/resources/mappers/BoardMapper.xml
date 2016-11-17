@@ -24,19 +24,42 @@
 		select * from KH_ARTICLE
 	</select>
 	
-
+	<select id="getDetail" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
+    <![CDATA[
+        SELECT
+            AT_ID,          
+            AT_REG_DATE,
+            AT_SUBJECT,
+            AT_CONTENT
+        FROM
+            KH_ARTICLE
+        WHERE
+            AT_ID = #{AT_ID}        
+    ]]>
+	</select>
+	
 	<insert id="writePro" parameterType="org.kh.splendy.vo.Article">
 	<![CDATA[		
 		INSERT INTO KH_ARTICLE(
 			AT_ID, AT_SUBJECT, AT_PASS,
-			AT_CONTENT, AT_IP, AT_REPLY,
+			AT_CONTENT, AT_IP, AT_REPLY,AT_READCOUNT
 			AT_RE_LEVEL, AT_RE_STEP, AT_REG_DATE)
 		VALUES(
-			KH_BOARD_SEQ.NEXTVAL, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR},
+			KH_BOARD_SEQ.NEXTVAL, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR}, 
 			#{at_content, jdbcType=VARCHAR}, #{at_ip, jdbcType=VARCHAR}, #{at_reply, jdbcType=INTEGER},
-			#{at_re_level, jdbcType=INTEGER}, #{at_re_step, jdbcType=INTEGER}, SYSDATE
+			#{at_readcount, jdbcType=INTEGER},#{at_re_level, jdbcType=INTEGER}, #{at_re_step, jdbcType=INTEGER}, SYSDATE
 		)
 	]]>		
-	</insert>
+	</insert>	
+	
+	<update id="readCount" parameterType="org.kh.splendy.vo.Article">
+    <![CDATA[
+        UPDATE KH_ARTICLE 
+        SET
+            AT_READCOUNT =+ AT_READCOUNT
+        WHERE
+            AT_ID = #{AT_ID}    
+    ]]>
+	</update>
 
 </mapper>

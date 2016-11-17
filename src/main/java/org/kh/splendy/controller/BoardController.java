@@ -47,7 +47,7 @@ public class BoardController {
 		return null;
 	}
 	
-	@RequestMapping(value = "/bbs/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/bbs/list", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 목록
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
@@ -104,17 +104,20 @@ public class BoardController {
 	}
 	
 
-	@RequestMapping(value = "/bbs/view", method = RequestMethod.GET)
+	@RequestMapping(value = "/bbs/view")
 	/** 게시글 보기
 	 * @param aId 게시글 번호
 	 * @return 해당 게시글의 내용보기 화면 */
-	public String view(@RequestParam int aId, Model model) {
+	public String view(@RequestParam int at_Id, Model model) throws Exception {
 		/** TODO 찬우.게시판: 게시글 보기 구현
 		 * - 사용자가 작성한 글이 아니고 해당 사용자가 처음 보는 글이라면 읽기 횟수가 증가해야 함
 		 * - 목록으로 돌아가기엔 해당 게시판이름에 해당하는 목록의 해당 글이 있는 페이지가 보여야 함
 		 */
-		//Article article = boardServ.getArticle(aId);
-		//model.addAttribute("article",article);
+		
+		boardServ.readCount(at_Id);
+		Article article = boardServ.getDetail(at_Id);
+		
+		model.addAttribute("article",article);
 		
 		return "board/view";
 	}
@@ -131,7 +134,7 @@ public class BoardController {
 		return "redirect:/bbs/write";
 	}
 
-	@RequestMapping(value = "/bbs/write", method = RequestMethod.GET)
+	@RequestMapping(value ="/bbs/write", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
