@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @EnableTransactionManagement
-@MapperScan(basePackages = { "org.kh.splendy.dao" })
 public class UserServiceImpl implements UserService {
 
 	@Autowired

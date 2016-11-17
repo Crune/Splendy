@@ -28,13 +28,10 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
-import org.kh.splendy.ws.Greeting;
-import org.kh.splendy.ws.HelloMessage;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GreetingIntegrationTests {
-
+/*
     @LocalServerPort
     private int port;
 
@@ -129,4 +126,5 @@ public class GreetingIntegrationTests {
             this.failure.set(ex);
         }
     }
+    */
 }
