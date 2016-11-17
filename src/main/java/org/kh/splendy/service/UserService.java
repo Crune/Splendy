@@ -33,4 +33,6 @@ public interface UserService {
 	List<UserCore> selectAll() throws Exception;
 	
 	UserCore selectOne(String email) throws Exception;
+	
+
 }

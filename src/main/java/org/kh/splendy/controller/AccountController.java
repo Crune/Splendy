@@ -21,6 +21,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,28 +67,16 @@ public class AccountController {
 			value = "/user/requestJoin",
 			method = RequestMethod.POST,
 			produces = "application/json")
-	public @ResponseBody int requestJoin(HttpServletRequest request) {
+	public @ResponseBody int requestJoin(@ModelAttribute("joinForm") UserCore user ,HttpServletRequest request) {
 		int result = -1;
 		UserCore ck_user = null;
-		
-		String email = null;
-		String password = null;
-		String nickname = null;
 		
 		String credent_code = RandomStringUtils.randomAlphanumeric(9);
 		System.out.println(credent_code);
 		
-		if(request.getParameter("email") != null){
-			email = request.getParameter("email");
-			password = request.getParameter("password");
-			nickname = request.getParameter("nickname");
-			UserCore user = new UserCore(); 
-			user.setEmail(email);
-			user.setPassword(password);
-			user.setNickname(nickname);
-
+		if(user.getEmail() != null){
 			try {
-				ck_user = userServ.checkEmail(email);
+				ck_user = userServ.checkEmail(user.getEmail());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -104,7 +93,7 @@ public class AccountController {
 						MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 						
 						helper.setFrom("splendy.spd@gmail.com", "splendy");
-						helper.setTo(email);
+						helper.setTo(user.getEmail());
 						helper.setSubject("Splendy 회원 가입 Email 인증");
 						helper.setText("<img src='cid:image'> <br/> 링크를 누르면 인증이 완료됩니다. <br/> "
 										+ "<a href="+"http://spd.cu.cc/user/join_cert/"+credent_code+">"
@@ -119,7 +108,7 @@ public class AccountController {
 						helper.addInline("image", ds);
 						mailSender.send(message);
 					
-					userServ.get(email);
+					userServ.get(user.getEmail());
 					result = 1;
 				} catch (Exception e) {
 					e.printStackTrace();
