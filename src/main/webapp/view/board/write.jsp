@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%@ include file="/web/WEB-INF/include/board-include.jspf" %>
+<%@ include file="/view/board/include/boardinclude.jspf" %>
 </head>
 <body>
     <form id="frm">
@@ -29,20 +29,21 @@
         <a href="#this" class="btn" id="list" >목록으로</a>
     </form>
      
-    <%@ include file="/web/WEB-INF/include/body-include.jspf" %>
+    <%@ include file="/view/board/include/boardinclude.jspf" %>
     <script type="text/javascript">
-        $(document).ready(function(){
-       		$(document).ready(function(){
-       			$("#list").on("click",function(e){
+       
+    
+       	$(document).ready(function(){
+       		$("#list").on("click",function(e){
 				e.preventDefault();
 				fn_openBoardList();
        		});
-       			$("#write").on("click", function(e){ 
+       		$("#write").on("click",function(e){ 
        	        e.preventDefault();
        	        fn_insertBoard();
-       	   		});
-       		});
-        }
+       	   	});
+       	});
+    
         
        	function fn_openBoardList(){
        	    var comSubmit = new ComSubmit();
@@ -51,7 +52,7 @@
        	}
        	function fn_insertBoard(){
        	    var comSubmit = new ComSubmit("frm");
-       	    comSubmit.setUrl("<c:url value='/bbs/writePro' />");
+       	    comSubmit.setUrl("<c:url value='/bbs/writePro'/>");       	    
        	    comSubmit.submit();       	
        	}
     </script>
