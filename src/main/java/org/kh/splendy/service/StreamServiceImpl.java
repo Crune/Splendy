@@ -112,22 +112,27 @@ public class StreamServiceImpl implements StreamService {
 		}
 	}
 
+
 	@Override @WSReqeust
 	public void request(String sId, String msg) throws Exception {
 		if (msg.equals("roomList")) {
-			log.info("방목록 요청됨");
 			List<Room> rooms = roomMap.getCurrentRooms();
-			log.info("전송함1");
-			send(sId, "init", "room");
-			log.info("전송함2");
+			send(sId, "room.init", "{}");
 			for (Room cur : rooms) {
 				if (cur.getId() != 0) {
-					send(sId, "room", cur);
+					send(sId, "room.add", cur);
 				}
 			}
-			log.info("전송함3");
-		} else if (msg.equals("readyList")) {
-			
+		}
+		if (msg.equals("playerList")) {
+			/*
+			List<WSPlayer> users = playerMap.getActiver();
+			send(sId, "player.init", "{}");
+			for (WSPlayer cur : users) {
+				if (cur.getRoom() != 0) {
+					send(sId, "player.add", cur);
+				}
+			}*/
 		}
 	}
 
