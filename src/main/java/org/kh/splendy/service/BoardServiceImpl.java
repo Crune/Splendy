@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Service
-@MapperScan(basePackages = { "org.kh.splendy.dao" })
 public class BoardServiceImpl implements BoardService {
 
 	@Autowired

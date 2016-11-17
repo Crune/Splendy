@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.kh.splendy.sample.SampleController;
 import org.kh.splendy.service.BoardService;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BoardController {
 
 	@SuppressWarnings("unused")
-	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
+	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
 	@Autowired
 	private BoardService boardServ;

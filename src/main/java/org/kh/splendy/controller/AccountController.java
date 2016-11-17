@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.ibatis.annotations.Param;
-import org.kh.splendy.sample.SampleController;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
@@ -43,7 +42,7 @@ public class AccountController {
 
 	
 	@SuppressWarnings("unused")
-	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
+	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
