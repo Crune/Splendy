@@ -1,6 +1,7 @@
 package org.kh.splendy.service;
 
-import java.util.HashMap;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.activation.DataSource;
@@ -8,9 +9,9 @@ import javax.activation.URLDataSource;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.ibatis.annotations.Param;
+import org.kh.splendy.aop.SplendyAdvice;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
-	@Override //???
+	@Override
 	public UserCore get(@Param("email") String email) throws Exception {
 		List<UserCore> userList = userMap.searchEmail(email);
 		UserCore lastId = null;
@@ -53,8 +54,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int checkPassword(String email, String password) throws Exception {
-		int result = userMap.checkPassword(email, password);
-		return result;
+		int login_result = userMap.checkEmail(email).isSamePassword(password);
+		return login_result;
 	}
 
 	@Override
@@ -63,9 +64,9 @@ public class UserServiceImpl implements UserService {
 		return list;
 	}
 
-	@Override
-	public void updateUser(String email, String password, String nickname) throws Exception {
-		userMap.updateUser(email, password, nickname);
+	@Override @Transactional
+	public void updateUser(UserCore user) throws Exception {
+		userMap.updateUser(user.getEmail(), user.getPassword(), user.getNickname());
 	}
 
 	@Override
@@ -81,7 +82,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int checkCredent(String email, String password) throws Exception {
-		int check = userMap.checkCredent(email, password);
+		String encryptPw = SplendyAdvice.getEncSHA256(password);
+		int check = userMap.checkCredent(email, encryptPw);
 		return check;
 	}
 
@@ -97,7 +99,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updatePassword(String email, String password) throws Exception {
-		userMap.updatePassword(email, password);
+		String encryptPw = SplendyAdvice.getEncSHA256(password);
+		userMap.updatePassword(email, encryptPw);
 	}
 
 	@Override
