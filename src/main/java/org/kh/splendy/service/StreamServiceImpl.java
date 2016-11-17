@@ -27,7 +27,13 @@ import lombok.Data;
 public class StreamServiceImpl implements StreamService {
 	
 	private Logger log = LoggerFactory.getLogger(StreamServiceImpl.class);
-
+	
+	private List<Card> deck_lev1 = null;
+	private List<Card> deck_lev2 = null;
+	private List<Card> deck_lev3 = null;
+	private List<Card> deck_levN = null;
+	
+	
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
 
 	private static Map<String, Method> webSocketMethods = new HashMap<String, Method>();
@@ -35,6 +41,7 @@ public class StreamServiceImpl implements StreamService {
 	@Autowired private RoomMapper roomMap;
 	@Autowired private PlayerMapper playerMap;
 	@Autowired private UserMapper userMap;
+	@Autowired private CardService cardServ;
 	
 	@Override
 	public void connectPro(WebSocketSession session) {
@@ -111,6 +118,7 @@ public class StreamServiceImpl implements StreamService {
 			}
 		}
 	}
+	
 
 	@Override @WSReqeust
 	public void request(String sId, String msg) throws Exception {
@@ -160,6 +168,25 @@ public class StreamServiceImpl implements StreamService {
 		for (String cur : sids) {
 			sessions.get(cur).sendMessage(new TextMessage(msg));
 		}
+	}
+	
+	@Override
+	public void sendR(String sId, String type, Object cont) throws Exception {
+		send(sId, type, cont);
+	}
+	
+	@Override @WSReqeust
+	public void cardRequest(String sId, String msg) throws Exception {
+		if(msg.equals("init_levN")){			
+			List<Card> initHeroCard = new ArrayList<Card>();
+			deck_levN = cardServ.getLevel_noble();
+			
+			for(int i = 0; i < 5; i++){
+				initHeroCard.add(deck_levN.get(i));
+			}				
+			sendR(sId, "init_levN", initHeroCard);			
+		}
+			
 	}
 
 }

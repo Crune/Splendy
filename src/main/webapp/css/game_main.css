@@ -91,3 +91,7 @@ button{
 	margin: 10px;
 }
 body { line-height:1rem }
+
+.heroCard_define {
+	width: 50 px;
+}
