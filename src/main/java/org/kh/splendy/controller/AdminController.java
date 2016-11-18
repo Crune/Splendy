@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -66,14 +67,31 @@ public class AdminController {
 		return "admin/userList";
 	}
 	
-	@RequestMapping(
-			value = "/admin/userState",
-			method = RequestMethod.POST,
-			produces = "application/json")
-	public @ResponseBody UserCore userState(@RequestParam("email") String email) throws Exception {
+	@RequestMapping("/admin/userState/{email}/")
+	public @ResponseBody UserCore userState(@PathVariable String email) throws Exception {
 		log.info("admin serch user name : "+email);
 		UserCore user = userServ.selectOne(email);
 		return user;
+	}
+	
+	@RequestMapping(
+			value = "/admin/user_modify",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody void saveState(@RequestParam("id") int id, @RequestParam("nickname") String nickname
+										,@RequestParam("enabled") int enabled,@RequestParam("notLocked") int notLocked
+										,@RequestParam("notExpired") int notExpired,@RequestParam("notCredential") int notCredential) {
+		UserCore user = new UserCore();
+		user.setId(id);
+		user.setNickname(nickname);
+		user.setEnabled(enabled);
+		user.setNotLocked(notLocked);
+		user.setNotExpired(notExpired);
+		user.setNotCredential(notCredential);
+		try {
+			log.info("admin modify : "+id);
+			userServ.adminMF(user);
+		} catch(Exception e) { e.printStackTrace(); }
 	}
 	
 }

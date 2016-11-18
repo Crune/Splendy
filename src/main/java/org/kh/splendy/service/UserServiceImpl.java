@@ -199,4 +199,9 @@ public class UserServiceImpl implements UserService {
 		}
 		return result_pw;
 	}
+	
+	@Override
+	public void adminMF(UserCore user) throws Exception {
+		userMap.adminMF(user);
+	}
 }

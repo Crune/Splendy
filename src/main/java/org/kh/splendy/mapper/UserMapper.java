@@ -106,10 +106,14 @@ public interface UserMapper {
 	public void modifyUserWithEmail(UserCore user) throws Exception;
 	
 	@ResultMap("userResult")
-	@Select("select * from KH_USER")
+	@Select("select * from KH_USER order by U_ID asc")
 	public List<UserCore> selectAll() throws Exception;
 	
 	@ResultMap("userResult")
 	@Select("select * from KH_USER where U_EMAIL=#{email}")
 	public UserCore selectOne(@Param("email") String email) throws Exception;
+	
+	@ResultMap("userResult")
+	@Update("update KH_USER set U_NICK=#{nickname}, U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} where "+KEY+"=#{id}")
+	public void adminMF(UserCore user) throws Exception;
 }

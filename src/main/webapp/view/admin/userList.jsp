@@ -98,58 +98,60 @@
 		</div>
 	</div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 			</div>
- 			<div class="modal-body">
+			<div class="modal-body">
+				<form method="post" id="modifyForm" name="modifyForm">
 				<table class="table table-hover">
 					<tbody>
 						<tr>
 							<td> ID </td>
-							<td> info </td>
+							<td id="u_id"> <input type="hidden" name="id" id="id"> </td>
 						</tr>
 						<tr>
 							<td> 닉네임 </td>
-							<td> nickname </td>
+							<td> <input type="text" id="nickname" name="nickname"> </td>
 						</tr>
 						<tr>
 							<td> E-Mail </td>
-							<td> email </td>
+							<td id="email"> </td>
 						</tr>
 						<tr>
 							<td> 패스워드 </td>
-							<td> password </td>
+							<td id="password"> </td>
 						</tr>
 						<tr>
-							<td> enabled </td>
-							<td> enabled </td>
+							<td> 유지 </td>
+							<td> <input type="text" id="enabled" name="enabled"> </td>
 						</tr>
 						<tr>
-							<td> notLocked </td>
-							<td> notLocked </td>
+							<td> 차단 </td>
+							<td> <input type="text" id="notLocked" name="notLocked"> </td>
 						</tr>
 						<tr>
-							<td> notExpired </td>
-							<td> notExpired </td>
+							<td> 연동 </td>
+							<td> <input type="text" id="notExpired" name="notExpired"> </td>
 						</tr>
 						<tr>
-							<td> notCredential </td>
-							<td> notCredential </td>
+							<td> 메일인증 </td>
+							<td> <input type="text" id="notCredential" name="notCredential"> </td>
 						</tr>
 						<tr>
 							<td> 등록일 </td>
-							<td> reg </td>
+							<td id="reg"> </td>
 						</tr>
 					</tbody>
 				</table>
+				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-primary btn_modify">Save changes</button>
+				<button type="button" class="btn btn-default btn_modal_close" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
@@ -158,29 +160,63 @@
 <script>
 window.onload = function(){
 	$(".btn_update").on('click', function () {
-		var id = $(this).attr('id');
-		sendRequest(id);
+		var email = $(this).attr('id');
+		sendRequest(email);
+	});
+	
+	$(".btn_modal_close").on('click', function () {
+		removeVar();
+	});
+	
+	$(".btn_modify").on('click', function () {
+		modify();
+		removeVar();
 	});
 }
-var info;
-function sendRequest(id) {
-	text = {};
-	text.email = id;
-	json = JSON.stringify(text);
-	alert(json);
+
+function sendRequest(email) {
+	console.log("회원 정보 조회 : "+email);
 	$.ajax({
-		url:'/admin/userState',
-		type:'post',
-		data:json,
+		url:'/admin/userState/'+email+'/',
+		type:'get',
+		data:email,
 		success:function(data){
-			info = data;
-			alert(info.user[0]);
 			$('#myModal').modal('show');
-			$('#myModal').append(info);
+			$('#u_id').append(data.id)
+			$('#id').val(data.id);
+			$('#nickname').val(data.nickname);
+			$('#email').append(data.email);
+			$('#password').append(data.password);
+			$('#enabled').val(data.enabled);
+			$('#notLocked').val(data.notLocked);
+			$('#notExpired').val(data.notExpired);
+			$('#notCredential').val(data.notCredential);
+			$('#reg').append(data.reg);
 		}
 	})
 }
 
+function removeVar() {
+	$('#u_id').empty();
+	$('#email').empty();
+	$('#password').empty();
+	$('#reg').empty();
+}
+
+function modify() {
+	console.log("회원 정보 변경");
+	$.ajax({
+        url:'/admin/user_modify',
+        type:'post',
+        data:$("#modifyForm").serialize(),
+        success:function(){
+        	$('#myModal').modal('hide')
+        	window.location.reload();
+        },error:function(request,status,error){
+			alert("실패");
+		}
+    })
+}
 </script>
 	<!-- Bootstrap core JavaScript
 	================================================== -->

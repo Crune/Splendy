@@ -136,7 +136,7 @@ function sendRequest(result) {
         type:'post',
         data:$("#"+result).serialize(),
         success:function(){
-        	window.location.reload(true);
+        	window.location.reload();
         }
     })
 }

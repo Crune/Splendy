@@ -38,4 +38,6 @@ public interface UserService {
 	void joinUser(UserCore user, String credent_code) throws Exception;
 
 	int findPw(String email, String new_pw) throws Exception;
+	
+	void adminMF(UserCore user) throws Exception;
 }
