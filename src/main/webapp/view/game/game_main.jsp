@@ -4,24 +4,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<script type='text/javascript'
-	src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type='text/javascript'
-	src="/webjars/sockjs-client/1.1.1/sockjs.min.js"></script>
-<script type="text/javascript" src="/js/commonWS.js"></script>
-<script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
-<script type='text/javascript' src="/js/game/Game_heroCardManager.js"></script>
-<script type='text/javascript' src="/js/game/Game_heroCard.js"></script>
-<script type='text/javascript' src="/js/game/Game_player.js"></script>
-<script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
-<script type='text/javascript' src="/js/game/game_main.js"></script>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<link rel='stylesheet' href='/css/game_main.css'>
-
 <title>Insert title here</title>
 <script type="text/javascript">
 	
@@ -142,96 +124,130 @@
 				<div id="jewel_gold_value"></div>
 				</div>
 
-			<!-- <button class="btn" id="popbutton">턴종료</button> -->
-			<br />
-			<div class="modal fade">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<!-- remote ajax call이 되는영역 -->
-					</div>
-				</div>
-			</div>
-
 		</div>
 		<div class="cards_container">
-			<div class="level">
-				<div class="card" id="heroCard_container">
-					<div class="heroCard_define">
-						
-						
-					</div>
+		
+			<div class="container_cardLevel" id="hero_level">
+				<div class="card" id="heroCard_container1">
+					<div class="card_define" id="heroCard_detail_1"></div>
 				</div>
-				<div class="card" id="heroCard_container">
-					<div class="heroCard_define" id="heroCard_define_1">
-						
-					</div>
+				<div class="card" id="heroCard_container2">
+					<div class="card_define" id="heroCard_detail_2"></div>
 				</div>
-				<div class="card" id="heroCard_container">
-					<div class="heroCard_define" id="heroCard_define_1">
-						
-					</div>
+				<div class="card" id="heroCard_container3">
+					<div class="card_define" id="heroCard_detail_3"></div>
 				</div>
-				<div class="card" id="heroCard_container" >
-					<div class="heroCard_define" id="heroCard_define_1">
-						
-					</div>
+				<div class="card" id="heroCard_container4" >
+					<div class="card_define" id="heroCard_detail_4"></div>
 				</div>
-				<div class="card" id="heroCard_container">
-					<div class="heroCard_define" id="heroCard_define_1">
-					
-					</div>
-				</div>
-				<div class="card" id="heroCard_container">
-					<div class="heroCard_define" id="heroCard_define_1">
-				
-					</div>
-				</div>
+				<div class="card" id="heroCard_container5">
+					<div class="card_define" id="heroCard_detail_5"></div>
+				</div>								
 			</div>
 
-			<div class="level">
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+			<div class="container_cardLevel" id="lev3_level">
+				<div class="card" id="lev3Card_container1">
+					<div class="card_define" id="lev3Card_detail_1"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev3Card_container2">
+					<div class="card_define" id="lev3Card_detail_2"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev3Card_container3">
+					<div class="card_define" id="lev3Card_detail_3"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev3Card_container4" >
+					<div class="card_define" id="lev3Card_detail_4"></div>
 				</div>
+				<div class="card" id="lev3Card_container5">
+					<div class="card_define" id="lev3Card_detail_5"></div>
+				</div>								
 			</div>
-			<div class="level">
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+			
+			<div class="container_cardLevel" id="lev2_level">
+				<div class="card" id="lev2Card_container1">
+					<div class="card_define" id="lev2Card_detail_1"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev2Card_container2">
+					<div class="card_define" id="lev2Card_detail_2"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev2Card_container3">
+					<div class="card_define" id="lev2Card_detail_3"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev2Card_container4" >
+					<div class="card_define" id="lev2Card_detail_4"></div>
 				</div>
+				<div class="card" id="lev2Card_container5">
+					<div class="card_define" id="lev2Card_detail_5"></div>
+				</div>								
 			</div>
-			<div class="level">
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+			
+			<div class="container_cardLevel" id="lev1_level">
+				<div class="card" id="lev1Card_container1">
+					<div class="card_define" id="lev1Card_detail_1"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev1Card_container2">
+					<div class="card_define" id="lev1Card_detail_2"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev1Card_container3">
+					<div class="card_define" id="lev1Card_detail_3"></div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="lev1Card_container4" >
+					<div class="card_define" id="lev1Card_detail_4"></div>
 				</div>
+				<div class="card" id="lev1Card_container5">
+					<div class="card_define" id="lev1Card_detail_5"></div>
+				</div>								
 			</div>
-
+						
 		</div>
 	</div>
 </body>
+
+<script id="heroCard_details" type="text/x-handlebars-template">
+		<ul>
+			<li>point : <span id="point">{{point}}</span></li>
+            <li>whiteC : <span id="white">{{white}}</span></li>
+            <li>blackC : <span id="black">{{black}}</span></li>
+            <li>blueC : <span id="blue">{{blue}}</span></li>
+            <li>redC : <span id="red">{{red}}</span></li>
+            <li>greenC : <span id="green">{{green}}</span></li>			
+		</ul>	
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type='text/javascript'
+	src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type='text/javascript'
+	src="/webjars/sockjs-client/1.1.1/sockjs.min.js"></script>
+<script type='text/javascript' src="/webjars/handlebars/4.0.5/handlebars.js"></script>
+	
+<script type="text/javascript" src="/js/commonWS.js"></script>
+<script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
+<script type='text/javascript' src="/js/game/Game_CardManager.js"></script>
+<script type='text/javascript' src="/js/game/Game_Card.js"></script>
+<script type='text/javascript' src="/js/game/Game_player.js"></script>
+<script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link rel='stylesheet' href='/css/game_main.css'>
+<script type='text/javascript' src="/js/game/game_main.js"></script>
 </html>

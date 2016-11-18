@@ -36,26 +36,6 @@ public class GameContorller {
 	@RequestMapping("/card")
 	public String cardTest(Model model) throws Exception{
 		
-		List<Card> level_1 = cardServ.getLevel_1();
-		for(Card cd : level_1){
-			System.out.println(" lev_1 : " + cd.getCode());
-		}
-		
-		List<Card> level_2 = cardServ.getLevel_2();
-		for(Card cd : level_2){
-			System.out.println(" lev_2 : " + cd.getCode());
-		}
-		
-		List<Card> level_3 = cardServ.getLevel_3();
-		for(Card cd : level_3){
-			System.out.println(" lev_3 : " + cd.getCode());
-		}
-		
-		List<Card> level_noble = cardServ.getLevel_noble();
-		for(Card cd : level_noble){
-			System.out.println(" lev_noble : " + cd.getCode());
-		}
-		
 		return "game/card_test";
 	}
 }

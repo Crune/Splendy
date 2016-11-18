@@ -184,12 +184,37 @@ public class StreamServiceImpl implements StreamService {
 	public void cardRequest(String sId, String msg) throws Exception {
 		if(msg.equals("init_levN")){			
 			List<Card> initHeroCard = new ArrayList<Card>();
-			deck_levN = cardServ.getLevel_noble();
+			deck_levN = cardServ.getLevel_noble(); //히어로카드 덱
 			
 			for(int i = 0; i < 5; i++){
 				initHeroCard.add(deck_levN.get(i));
 			}				
 			sendR(sId, "init_levN", initHeroCard);			
+		} else if(msg.equals("init_lev1")){
+			List<Card> initLev1Card = new ArrayList<Card>();
+			deck_lev1 = cardServ.getLevel_1();  //1레벨 덱
+			
+			for(int i = 0; i < 5; i++){
+				initLev1Card.add(deck_lev1.get(i));
+			}
+			sendR(sId, "init_lev1", initLev1Card);			
+		} else if(msg.equals("init_lev2")){
+			List<Card> initLev2Card = new ArrayList<Card>();
+			deck_lev2 = cardServ.getLevel_2();  //2레벨 덱
+			
+			for(int i = 0; i < 5; i++){
+				initLev2Card.add(deck_lev2.get(i));
+			}
+			sendR(sId, "init_lev2", initLev2Card);			
+		} else if(msg.equals("init_lev3")){
+			List<Card> initLev3Card = new ArrayList<Card>();
+			deck_lev3 = cardServ.getLevel_3();  //3레벨 덱
+			
+			for(int i = 0; i < 5; i++){
+				
+				initLev3Card.add(deck_lev3.get(i));	
+			}
+			sendR(sId, "init_lev3", initLev3Card);			
 		}
 			
 	}

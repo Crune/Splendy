@@ -4,7 +4,7 @@ var player2 = new Player("yoon", 2);
 var player3 = new Player("minjung", 3);
 var player4 = new Player("jinkyu", 4);
 
-var hereCardManager = new HeroCardManager();
+var cardManager = new CardManager();
 var INIT_POINT = 0;
 var ONE_POINT = 1;
 var TWO_POINT = 2;
@@ -21,6 +21,8 @@ var jewelBlueValue;
 var jewelGoldValue;
 
 
+
+
 $(document).ready(
 		function() {			
 			// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
@@ -34,11 +36,14 @@ $(document).ready(
 			chatSock.onopen = function() {				
 				player1.toggleTurn();
 				$("#player1").css("background-color", "red");
-				for ( var i in players) {
+				/*for ( var i in players) {
 					console.log(players[i].getUserId() + " turn status : " + players[i].getTurn());
-				}
+				}*/
 				
 				wssend('cardRequest', 'init_levN');
+				wssend('cardRequest', 'init_lev3');
+				wssend('cardRequest', 'init_lev2');
+				wssend('cardRequest', 'init_lev1');
 				
 				$("#player1_name").html(player1.getUserId());
 				$("#player2_name").html(player2.getUserId());
@@ -49,8 +54,41 @@ $(document).ready(
 			chatSock.onmessage = function(evt) {
 				
 				var card = JSON.parse(evt.data);
+				
 				if(card.type === "init_levN"){
-					hereCardManager.setInitLevN(card.cont);
+					var initHeroCards = cardManager.setInitLevN(card.cont);
+					for(var i in initHeroCards){
+						i = parseInt(i);
+						var template = Handlebars.compile($("#heroCard_details").html());												
+						$("#heroCard_detail_" + (i+1)).html(template(initHeroCards[i]));
+					}					
+				}
+				
+				if(card.type === "init_lev3"){
+					var lev3Cards = cardManager.setInitLev3(card.cont);
+					for(var i in lev3Cards){						
+						i = parseInt(i);
+						var template = Handlebars.compile($("#heroCard_details").html());												
+						$("#lev3Card_detail_" + (i+1)).html(template(lev3Cards[i]));
+					}					
+				}
+				
+				if(card.type === "init_lev2"){
+					var lev2Cards = cardManager.setInitLev2(card.cont);
+					for(var i in lev2Cards){						
+						i = parseInt(i);
+						var template = Handlebars.compile($("#heroCard_details").html());												
+						$("#lev2Card_detail_" + (i+1)).html(template(lev2Cards[i]));
+					}					
+				}
+				
+				if(card.type === "init_lev1"){
+					var lev1Cards = cardManager.setInitLev1(card.cont);
+					for(var i in lev1Cards){						
+						i = parseInt(i);
+						var template = Handlebars.compile($("#heroCard_details").html());												
+						$("#lev1Card_detail_" + (i+1)).html(template(lev1Cards[i]));
+					}					
 				}
 			};
 
@@ -58,55 +96,7 @@ $(document).ready(
 				alert('연결 종료');
 			};
 
-			$("#popbutton").click(
-					/*function() {
-						if (player1.getTurn() === true) {
-							player1.toggleTurn();
-							player2.toggleTurn();
-
-							$("#player1").css("background-color", "tomato");
-							$("#player2").css("background-color", "red");
-							for ( var i in players) {
-								console.log(players[i].getUserId()
-										+ " turn status : "
-										+ players[i].getTurn());
-							}
-						} else if (player2.getTurn() === true) {
-							player2.toggleTurn();
-							player3.toggleTurn();
-
-							$("#player2").css("background-color", "tomato");
-							$("#player3").css("background-color", "red");
-							for ( var i in players) {
-								console.log(players[i].getUserId()
-										+ " turn status : "
-										+ players[i].getTurn());
-							}
-						} else if (player3.getTurn() === true) {
-							player3.toggleTurn();
-							player4.toggleTurn();
-
-							$("#player3").css("background-color", "tomato");
-							$("#player4").css("background-color", "red");
-							for ( var i in players) {
-								console.log(players[i].getUserId()
-										+ " turn status : "
-										+ players[i].getTurn());
-							}
-						} else if (player4.getTurn() === true) {
-							player4.toggleTurn();
-							player1.toggleTurn();
-
-							$("#player4").css("background-color", "tomato");
-							$("#player1").css("background-color", "red");
-							for ( var i in players) {
-								console.log(players[i].getUserId()
-										+ " turn status : "
-										+ players[i].getTurn());
-							}
-						}
-					}*/);
-
+			
 			$("#get_whiteJ").click(
 					function() {						
 						var player;

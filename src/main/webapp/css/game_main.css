@@ -45,13 +45,12 @@ div {
 	flex-direction: column;
 }
 
-.level {
+.container_cardLevel {
 	display: flex;
-	flex-grow: 1;
-	height: 5rem;
-	width: 15rem;
-	margin: 0.5rem;
+
 }
+
+
 
 img {
 	width: 10rem;
@@ -94,4 +93,32 @@ body { line-height:1rem }
 
 .heroCard_define {
 	width: 50 px;
+}
+
+#hero_level{
+	display: flex;
+	border-bottom: black 1px solid;
+}
+
+#lev3_level{
+	display: flex;
+	border-bottom: black 1px solid;
+}
+
+#lev2_level{
+	display: flex;
+	border-bottom: black 1px solid;
+}
+#lev1_level{
+	display: flex;
+	border-bottom: black 1px solid;
+}
+
+li{
+	margin: 10px;
+}
+
+.card_define{
+	border: 1px blue solid;
+	margin : 2px;
 }
