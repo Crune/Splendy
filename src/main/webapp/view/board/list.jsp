@@ -17,9 +17,9 @@
         <thead>
             <tr>
                 <th scope="col">글번호</th>
-                <th scope="col">제목</th>
-                <th scope="col">조회수</th>
+                <th scope="col">제목</th>                
                 <th scope="col">작성일</th>
+                <th scope="col">조회</th>
             </tr>
         </thead>
         <tbody>

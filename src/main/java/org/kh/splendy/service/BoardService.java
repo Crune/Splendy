@@ -28,5 +28,8 @@ public interface BoardService {
 	 
 	void readCount(int at_Id) throws Exception;
 	
+	void updateBoard(int at_Id) throws Exception;
+	
+	int updateBoard(Article article) throws Exception;
 	
 }
