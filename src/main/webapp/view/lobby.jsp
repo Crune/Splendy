@@ -63,6 +63,19 @@ body {
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+<script>
+window.onload = function(){
+	$("#btn_logout").on('click', function () {
+		document.location.href='/user/logout';
+	})
+	
+	$("#btn_modify").on('click', function () {
+		
+	})
+}
+</script>    
+
 </head>
 <body bgcolor="#191919">
 	<div class="container-fluid lobby_frame">
@@ -74,7 +87,8 @@ body {
 					<div class="lobby_top align_right">
 						<button type="button" class="btn btn-default btn-xs">공지사항</button>
 						<button type="button" class="btn btn-default btn-xs">자유게시판</button>
-						<button type="button" class="btn btn-default btn-xs">로그아웃</button>
+						<button type="button" class="btn btn-default btn-xs" id="btn_modify">정보수정</button>
+						<button type="button" class="btn btn-default btn-xs" id="btn_logout">로그아웃</button>
 					</div>
 				</div>
 			</div>
@@ -227,5 +241,25 @@ body {
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+  
+  <div class="modal fade" id="modify_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">정보 수정</h4>
+      </div>
+      <div class="modal-body">
+        	비밀번호 : 
+         	 닉네임  : 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  
 </body>
 </html>
