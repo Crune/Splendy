@@ -1,55 +1,83 @@
-<%@ page contentType = "text/html; charset=euc-kr" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-<title>°Ô½ÃÆÇ</title>
-<link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="script.js"></script>
+<%@ include file="/view/board/include/boardinclude.jspf" %>
 </head>
-
-<body bgcolor="${bodyback_c}">  
-<center><b>±Û¼öÁ¤</b>
-<br>
-<form method="post" name="writeform" action="/study/ch19/updatePro.do?pageNum=${pageNum}" onsubmit="return writeSave()">
-<table width="400" border="1" cellspacing="0" cellpadding="0" align="center">
-  <tr>
-    <td  width="70"  bgcolor="${value_c}" align="center">ÀÌ ¸§</td>
-    <td align="left" width="330">
-       <input type="text" size="10" maxlength="10" name="writer" value="${article.writer}">
-	   <input type="hidden" name="num" value="${article.num}"></td>
-  </tr>
-  <tr>
-    <td  width="70"  bgcolor="${value_c}" align="center" >Á¦ ¸ñ</td>
-    <td align="left" width="330">
-       <input type="text" size="40" maxlength="50" name="subject" value="${article.subject}"></td>
-  </tr>
-  <tr>
-    <td  width="70"  bgcolor="${value_c}" align="center">Email</td>
-    <td align="left" width="330">
-       <input type="text" size="40" maxlength="30" name="email" value="${article.email}"></td>
-  </tr>
-  <tr>
-    <td  width="70"  bgcolor="${value_c}" align="center" >³» ¿ë</td>
-    <td align="left" width="330">
-     <textarea name="content" rows="13" cols="40">${article.content}</textarea></td>
-  </tr>
-  <tr>
-    <td  width="70"  bgcolor="${value_c}" align="center" >ºñ¹Ğ¹øÈ£</td>
-    <td align="left" width="330" >
-     <input type="password" size="8" maxlength="12" name="passwd">
-	 </td>
-  </tr>
-  <tr>      
-   <td colspan=2 bgcolor="${value_c}" align="center"> 
-     <input type="submit" value="±Û¼öÁ¤" >  
-     <input type="reset" value="´Ù½ÃÀÛ¼º">
-     <input type="button" value="¸ñ·Ïº¸±â" 
-       onclick="document.location.href='/study/ch19/list.do?pageNum=${pageNum}'">
-   </td>
- </tr>
- </table>
-</form>
+<body>
+    <form id="frm">
+        <table class="board_view">
+            <colgroup>
+                <col width="15%"/>
+                <col width="35%"/>
+                <col width="15%"/>
+                <col width="35%"/>
+            </colgroup>
+            <caption>ê²Œì‹œê¸€ ìƒì„¸</caption>
+            <tbody>
+                <tr>
+                    <th scope="row">ê¸€ ë²ˆí˜¸</th>
+                    <td>
+                        ${article.at_id }
+                        <input type="hidden" id="at_id" name="at_id" value="${article.at_id }">
+                    </td>
+                    <th scope="row">ì¡°íšŒìˆ˜</th>
+                    <td>${article.at_readcount }</td>
+                </tr>
+                <tr>
+                    <th scope="row">ì‘ì„±ì</th>
+                    <td>${article.u_id }</td>
+                    <th scope="row">ì‘ì„±ì‹œê°„</th>
+                    <td>${article.at_reg_date }</td>
+                </tr>
+                <tr>
+                    <th scope="row">ì œëª©</th>
+                    <td colspan="3">
+                        <input type="text" id="at_subject" name="at_subject" class="wdp_90" value="${article.at_subject }"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="view_text">
+                        <textarea rows="20" cols="100" title="ë‚´ìš©" id="at_content" name="at_content">${article.at_content }</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+     
+    <a href="#this" class="btn" id="list">ëª©ë¡ìœ¼ë¡œ</a>
+    <a href="#this" class="btn" id="update">ì €ì¥í•˜ê¸°</a>
+    <a href="#this" class="btn" id="delete">ì‚­ì œí•˜ê¸°</a>
+     
+    <%@ include file="/view/board/include/boardinclude.jspf" %>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#list").on("click", function(e){ //ëª©ë¡ìœ¼ë¡œ ë²„íŠ¼
+                e.preventDefault();
+                fn_openBoardList();
+            });
+             
+            $("#update").on("click", function(e){ //ì €ì¥í•˜ê¸° ë²„íŠ¼
+                e.preventDefault();
+                fn_updateBoard();
+            });
+             
+         
+        });
+         
+        function fn_openBoardList(){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+            comSubmit.submit();
+        }
+         
+        function fn_updateBoard(){
+            var comSubmit = new ComSubmit("frm");
+            comSubmit.setUrl("<c:url value='/sample/updateBoard.do' />");
+            comSubmit.submit();
+        }
+         
+       
+    </script>
 </body>
-</html>      
+</html>

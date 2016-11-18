@@ -30,7 +30,8 @@
             AT_ID,          
             AT_REG_DATE,
             AT_SUBJECT,
-            AT_CONTENT
+            AT_CONTENT,
+            AT_READCOUNT
         FROM
             KH_ARTICLE
         WHERE
@@ -42,7 +43,7 @@
 	<![CDATA[		
 		INSERT INTO KH_ARTICLE(
 			AT_ID, AT_SUBJECT, AT_PASS,
-			AT_CONTENT, AT_IP, AT_REPLY,AT_READCOUNT
+			AT_CONTENT, AT_IP, AT_REPLY,AT_READCOUNT,
 			AT_RE_LEVEL, AT_RE_STEP, AT_REG_DATE)
 		VALUES(
 			KH_BOARD_SEQ.NEXTVAL, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR}, 
@@ -56,10 +57,20 @@
     <![CDATA[
         UPDATE KH_ARTICLE 
         SET
-            AT_READCOUNT =+ AT_READCOUNT
+            AT_READCOUNT = NVL(AT_READCOUNT, 0) + 1
         WHERE
             AT_ID = #{AT_ID}    
     ]]>
 	</update>
 
+	<update id="updateBoard" parameterType="org.kh.splendy.vo.Article">
+    <![CDATA[
+        UPDATE TB_BOARD 
+        SET
+            TITLE = #{TITLE},
+            CONTENTS = #{CONTENTS}
+        WHERE
+            IDX = #{IDX}    
+    ]]>
+	</update>
 </mapper>

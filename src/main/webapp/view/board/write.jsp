@@ -15,49 +15,45 @@
             <tbody>
                 <tr>
                     <th scope="row">제목</th>
-                    <td><input type="text" id="TITLE" name="at_subject" class="wdp_90"></input></td>
+                    <td><input type="text" id="at_subject" name="at_subject" class="wdp_90"></input></td>
                 </tr>
                 <tr>
                     <td colspan="2" class="view_text">
-                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="at_content"></textarea>
+                        <textarea rows="20" cols="100" title="내용" id="at_content" name="at_content"></textarea>
                     </td>
                 </tr>
             </tbody>
         </table>
          
         <a href="#this" class="btn" id="write" >작성하기</a>
-        
         <a href="#this" class="btn" id="list" >목록으로</a>
     </form>
      
     <%@ include file="/view/board/include/boardinclude.jspf" %>
     <script type="text/javascript">
-       
-    
-	window.onload=function(){
-    	$("#write").on("click",function(e){ 
-   	        e.preventDefault();
-   	        fn_insertBoard();
-   	   	});
-       		
-    	$("#list").on("click",function(e){
-				e.preventDefault();
-				fn_openBoardList();
-       	});       		
-	};
-    
-        
-       	function fn_openBoardList(){       		
-       	    var comSubmit = new ComSubmit("frm");
-       	    comSubmit.setUrl("<c:url value='/bbs/list?pageNum=1&bName=1'/>");
-       	    comSubmit.submit();
-       	}
-       	
-       	function fn_insertBoard(){
-       	    var comSubmit = new ComSubmit("frm");
-       	    comSubmit.setUrl("<c:url value='/bbs/writePro'/>");       	    
-       	    comSubmit.submit();       	
-       	}
-    </script>
+    $(document).ready(function(){
+        $("#list").on("click", function(e){ //목록으로 버튼
+            e.preventDefault();
+            fn_openBoardList();
+        });
+         
+        $("#write").on("click", function(e){ //작성하기 버튼
+            e.preventDefault();
+            fn_insertBoard();
+        });
+    });
+     
+    function fn_openBoardList(){
+        var comSubmit = new ComSubmit("frm");
+        comSubmit.setUrl("<c:url value='/bbs/list?pageNum=1&bName=1' />");
+        comSubmit.submit();
+    }
+     
+    function fn_insertBoard(){
+        var comSubmit = new ComSubmit("frm");
+        comSubmit.setUrl("<c:url value='/bbs/writePro' />");
+        comSubmit.submit();
+    }
+</script>
 </body>
 </html>
