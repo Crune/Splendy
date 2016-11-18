@@ -266,7 +266,6 @@ Player.prototype = {
 				$("#jewel_blue_value").html(jewelValue);
 				this.action = "getJewelBlue";
 				return jewelValue;
-
 			}
 		},
 		
@@ -293,10 +292,5 @@ Player.prototype = {
 				return jewelValue;
 
 			}
-		},
-		
-		turnChange : function(){
-			
 		}
-		
 }
