@@ -137,13 +137,13 @@ public class AccountController {
 		request.setAttribute("login_result", login_result);
 		request.setAttribute("user", user);
 		request.setAttribute("result", result);
-		return "index";
+		return "redirect:/lobby/";
 	}
 	
 	@RequestMapping("/user/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "index";
+		return "redirect:/";
 	}
 	
 	@RequestMapping(

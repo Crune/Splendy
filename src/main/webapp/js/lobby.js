@@ -20,7 +20,7 @@ window.onload = function() {
 	// 웹소켓 실행 후 인증
 	chatSock = new SockJS("http://" + window.location.host + "/ws");
 	chatSock.onopen = function () {
-		wssend('auth', auth);
+		wssend('auth', auth);	//핸들러에서 구분할 수 있게 
 		wssend('request', 'roomList');
 		wssend('request', 'playerList');
 	};

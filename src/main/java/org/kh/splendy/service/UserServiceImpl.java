@@ -54,7 +54,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int checkPassword(String email, String password) throws Exception {
-		int login_result = userMap.checkEmail(email).isSamePassword(password);
+		UserCore user = userMap.checkEmail(email);
+		int login_result = -1;
+		if(user != null){
+			login_result = userMap.checkEmail(email).isSamePassword(password);
+		} else {
+			login_result = 0;
+		}
 		return login_result;
 	}
 

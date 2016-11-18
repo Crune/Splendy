@@ -144,7 +144,6 @@ Player.prototype = {
 		},
 		
 		getWhite : function() {		
-			
 			var player = null;
 			for(var i in players){
 				if(players[i].getTurn() === true){
@@ -159,14 +158,14 @@ Player.prototype = {
 				num = parseInt(num);			
 				num = num + 1;
 				$("#player" + player.getOrder() + "_jewel_white").html(num);
-				
-				
-							
+								
 				jewelValue = jewelValue - 1;
 				$("#jewel_white_value").html(jewelValue);
 				
-				this.action = "getJewelWhite";	//플레이어 객체의 액션 코드 설정
-			}									
+				this.action = "getJewelWhite";	//플레이어 객체의 액션 코드 설정'
+				return jewelValue;
+			}
+			
 		},
 		
 		getBlack : function() {
@@ -190,6 +189,7 @@ Player.prototype = {
 				$("#jewel_black_value").html(jewelValue);
 				
 				this.action = "getJewelBlack";
+				return jewelValue;
 			}
 		},
 		
@@ -214,6 +214,8 @@ Player.prototype = {
 				$("#jewel_green_value").html(jewelValue);
 				
 				this.action = "getJewelGreen";
+				return jewelValue;
+
 			}
 		},
 						
@@ -237,6 +239,9 @@ Player.prototype = {
 				jewelValue = jewelValue - 1;
 				$("#jewel_red_value").html(jewelValue);
 				this.action = "getJewelRed";
+				return jewelValue;
+
+
 			}
 		},
 		
@@ -260,6 +265,7 @@ Player.prototype = {
 				jewelValue = jewelValue - 1;
 				$("#jewel_blue_value").html(jewelValue);
 				this.action = "getJewelBlue";
+				return jewelValue;
 			}
 		},
 		
@@ -283,11 +289,8 @@ Player.prototype = {
 				jewelValue = jewelValue - 1;
 				$("#jewel_gold_value").html(jewelValue);
 				this.action = "getJewelGold";
+				return jewelValue;
+
 			}
-		},
-		
-		turnChange : function(){
-			
 		}
-		
 }

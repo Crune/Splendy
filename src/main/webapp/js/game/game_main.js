@@ -1,9 +1,10 @@
-var gameSock = null;
+var chatSock = null;
 var player1 = new Player("dohyun", 1);
 var player2 = new Player("yoon", 2);
 var player3 = new Player("minjung", 3);
 var player4 = new Player("jinkyu", 4);
 
+var hereCardManager = new HeroCardManager();
 var INIT_POINT = 0;
 var ONE_POINT = 1;
 var TWO_POINT = 2;
@@ -21,31 +22,40 @@ var jewelGoldValue;
 
 
 $(document).ready(
-		function() {
-
+		function() {			
 			// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
-			gameSock = new SockJS("http://" + window.location.host + "/gameMain");
-
-			gameSock.onopen = function() {
-				console.log('welcome');
+			chatSock = new SockJS("http://" + window.location.host + "/ws");
+			
+			//필드의 보석 초기화
+			field_jewel = new Field_jewel();
+			field_jewel.initJewel();
+			
+			
+			chatSock.onopen = function() {				
 				player1.toggleTurn();
 				$("#player1").css("background-color", "red");
 				for ( var i in players) {
 					console.log(players[i].getUserId() + " turn status : " + players[i].getTurn());
 				}
-
+				
+				wssend('cardRequest', 'init_levN');
+				
 				$("#player1_name").html(player1.getUserId());
 				$("#player2_name").html(player2.getUserId());
 				$("#player3_name").html(player3.getUserId());
 				$("#player4_name").html(player4.getUserId());
 			};
 
-			gameSock.onmessage = function(evt) {
-				game_status = JSON.parse(evt.data);
-				console.log(game_status);
+			chatSock.onmessage = function(evt) {
+				
+				var card = JSON.parse(evt.data);
+				if(card.type === "init_levN"){
+					hereCardManager.setInitLevN(card.cont);
+				}
 			};
 
-			gameSock.onclose = function() {
+			chatSock.onclose = function() {
+				alert('연결 종료');
 			};
 
 			$("#popbutton").click(

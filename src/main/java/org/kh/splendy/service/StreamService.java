@@ -21,6 +21,10 @@ public interface StreamService {
 	void auth(String sId, String message);
 	void chat(String sId, String message) throws Exception;
 	void request(String sId, String msg) throws Exception;
+	
+	void cardRequest(String sId, String msg)throws Exception;
+
+	void sendR(String sId, String type, Object cont) throws Exception;
 
 
 
