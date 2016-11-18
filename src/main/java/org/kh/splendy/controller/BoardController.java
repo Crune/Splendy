@@ -114,8 +114,7 @@ public class BoardController {
 		 */
 		
 		boardServ.readCount(at_Id);
-		Article article = boardServ.getDetail(at_Id);
-		
+		Article article = boardServ.getDetail(at_Id);		
 		model.addAttribute("article",article);
 		
 		return "board/view";
@@ -125,10 +124,13 @@ public class BoardController {
 	/** 게시글 수정
 	 * @param aId
 	 * @return 글쓰기 화면에 해당 게시글 내용이 채워져 있는 화면 */
-	public String modify(@RequestParam int aId, RedirectAttributes rttr) {
+	public String modify(@RequestParam int at_Id, RedirectAttributes rttr,Model model) throws Exception {
 		/** TODO 찬우.게시판: 게시글 수정 구현
 		 * - 게시글 쓰기 화면으로 리다이렉트 하되 글쓰기 내용이 채워져 있어야 함.
 		 */
+		
+		Article article = boardServ.getDetail(at_Id);		
+		model.addAttribute("article",article);
 	
 		return "redirect:/bbs/write";
 	}
@@ -137,10 +139,14 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String write(@RequestParam String bName,HttpServletRequest request ) {		
-		  
+	public String write(@RequestParam String bName,HttpServletRequest request,Model model ) {		
+		
+		
+		
+		
+		/*	
 		int at_id=0,reply=1,at_re_step=0,at_re_level=0;  
-	       
+       
 		  try{  
 	          if(request.getParameter("at_id")!=null){
 	        	 at_id=Integer.parseInt(request.getParameter("at_id"));
@@ -155,7 +161,9 @@ public class BoardController {
 	        request.setAttribute("ref", new Integer(reply));
 	        request.setAttribute("re_step", new Integer(at_re_step));
 	        request.setAttribute("re_level", new Integer(at_re_level));
-	        
+	       
+	       
+	       */ 
 		return "board/write";
 	}
 	
@@ -167,7 +175,7 @@ public class BoardController {
 	public String writePro(@ModelAttribute("BoardVO") Article article, RedirectAttributes rttr,
 							HttpServletRequest request)throws Exception{
 		
-		request.setCharacterEncoding("UTF-8");//한글 인코딩
+		
 		//String at_reply = request.getParameter("at_reply");
 		//String at_re_step = request.getParameter("at_re_step");					
 	/*
@@ -202,6 +210,7 @@ public class BoardController {
 
 		rttr.addFlashAttribute("pageNum", 1);
 		rttr.addFlashAttribute("bName", "1");
+		
 		
 		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}

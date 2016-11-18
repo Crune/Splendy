@@ -143,7 +143,7 @@ Player.prototype = {
 			}
 		},
 		
-		getWhite : function() {					
+		getWhite : function() {		
 			var player = null;
 			for(var i in players){
 				if(players[i].getTurn() === true){
@@ -158,8 +158,7 @@ Player.prototype = {
 				num = parseInt(num);			
 				num = num + 1;
 				$("#player" + player.getOrder() + "_jewel_white").html(num);
-				
-											
+								
 				jewelValue = jewelValue - 1;
 				$("#jewel_white_value").html(jewelValue);
 				
@@ -242,6 +241,7 @@ Player.prototype = {
 				this.action = "getJewelRed";
 				return jewelValue;
 
+
 			}
 		},
 		
@@ -266,7 +266,6 @@ Player.prototype = {
 				$("#jewel_blue_value").html(jewelValue);
 				this.action = "getJewelBlue";
 				return jewelValue;
-
 			}
 		},
 		
@@ -293,10 +292,5 @@ Player.prototype = {
 				return jewelValue;
 
 			}
-		},
-		
-		turnChange : function(){
-			
 		}
-		
 }

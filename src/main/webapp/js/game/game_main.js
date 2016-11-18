@@ -20,6 +20,7 @@ var jewelRedValue;
 var jewelBlueValue;
 var jewelGoldValue;
 
+
 $(document).ready(
 		function() {			
 			// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
