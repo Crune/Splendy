@@ -17,14 +17,17 @@ public interface StreamService {
 	void sendAll(String type, Object cont) throws Exception;
 	void send(String sId, String message) throws Exception;
 	void send(String sId, String type, Object cont) throws Exception;
+	void sendWithoutSender(String sId, String msg) throws Exception;
+	void sendWithoutSender(String sId, String type, Object cont) throws Exception;
 
-	void auth(String sId, String message);
+	void auth(String sId, String message) throws Exception;
 	void chat(String sId, String message) throws Exception;
 	void request(String sId, String msg) throws Exception;
 	
 	void cardRequest(String sId, String msg)throws Exception;
 
 	void sendR(String sId, String type, Object cont) throws Exception;
+
 
 
 

@@ -34,13 +34,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	}
 
 	
-	@Bean @Async
+	@Bean
 	public WebSocketHandler paintHandler(){
 		return new PaintHandler();
 	}
 	
 	
-	@Bean @Async
+	@Bean
 	public WebSocketHandler splendyHandler(){
 		return new SplendyHandler();
 	}

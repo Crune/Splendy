@@ -47,7 +47,6 @@ public class StreamServiceImpl implements StreamService {
 	public void connectPro(WebSocketSession session) {
 		log.info(session.getId() + "님이 접속했습니다.");
 		log.info("연결 IP : " + session.getRemoteAddress().getHostName() );
-		
 		sessions.put(session.getId(), session);
 	}
 
@@ -80,7 +79,7 @@ public class StreamServiceImpl implements StreamService {
 	}
 
 	@Override @WSReqeust
-	public void auth(String sId, String msg) {
+	public void auth(String sId, String msg) throws Exception {
 		log.info(sId + "님이 인증 시도 중");
 		
 		Auth auth = Auth.convert(msg);
@@ -88,7 +87,10 @@ public class StreamServiceImpl implements StreamService {
 			int uid = auth.getUid();
 			if (playerMap.checkCode(uid, auth.getCode()) > 0) {
 				playerMap.setSession(uid, sId);
+				playerMap.setStateBySid(sId, Player.ST_CONNECT);
 				log.info(sId + "님이 인증했습니다.");
+				PlayerListVo me = playerMap.getMeJoinInfo(uid);
+				sendWithoutSender(sId, "player.join", cvPlayer(me));
 			}
 		}
 	}
@@ -97,7 +99,7 @@ public class StreamServiceImpl implements StreamService {
 	public void chat(String sId, String msg) throws Exception {
 		Player pl = playerMap.readBySid(sId);
 		UserCore user = userMap.read(pl.getId());
-		log.info("chat: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
+		log.info("send_chat:start: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
 
 		int roomId = pl.getRoomId();
 		
@@ -117,6 +119,7 @@ public class StreamServiceImpl implements StreamService {
 				send(cur_sid, "chat", rst);
 			}
 		}
+		log.info("send_chat:end: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
 	}
 	
 
@@ -133,15 +136,23 @@ public class StreamServiceImpl implements StreamService {
 			}
 		}
 		if (msg.equals("playerList")) {
-			/*
-			List<WSPlayer> users = playerMap.getActiver();
+			List<PlayerListVo> users = playerMap.getActiver();
 			send(sId, "player.init", "{}");
-			for (WSPlayer cur : users) {
-				if (cur.getRoom() != 0) {
-					send(sId, "player.add", cur);
-				}
-			}*/
+			for (PlayerListVo cur : users) {
+				send(sId, "player.add", cvPlayer(cur));
+			}
 		}
+	}
+	
+	public WSPlayer cvPlayer(PlayerListVo p) {
+		WSPlayer rst = new WSPlayer();
+		rst.setIcon("unnamed.png");
+		rst.setNick(p.getNick());
+		rst.setRating(1500);
+		rst.setRole((p.getUid() == p.getHost()?"host":""));
+		rst.setRoom(p.getRid());
+		rst.setUid(p.getUid());		
+		return rst;		
 	}
 
 	@Override
@@ -155,13 +166,31 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override
 	public void send(String sId, String type, Object cont) throws Exception {
+		log.info("sendeee: "+sId + "/"+type+cont);
 		send(sId, cvMsg(type, cont));
 	}
 	@Override
 	public void send(String sId, String msg) throws Exception {
+		log.info("sendkkk: "+sId + "/"+msg);
 		sessions.get(sId).sendMessage(new TextMessage(msg));
 	}
 
+	@Override
+	public void sendWithoutSender(String sId, String type, Object cont) throws Exception {
+		sendWithoutSender(sId, cvMsg(type, cont));
+	}
+	@Override
+	public void sendWithoutSender(String sId, String msg) throws Exception {
+		List<String> sids = playerMap.getActiverSid();
+		if (sids.size() > 0) {
+			for (String cur : sids) {
+				if (cur.equals(sId)) {
+					sessions.get(cur).sendMessage(new TextMessage(msg));
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void sendAll(String type, Object cont) throws Exception {
 		sendAll(cvMsg(type, cont));
@@ -189,7 +218,7 @@ public class StreamServiceImpl implements StreamService {
 			for(int i = 0; i < 5; i++){
 				initHeroCard.add(deck_levN.get(i));
 			}				
-			sendR(sId, "init_levN", initHeroCard);			
+			sendR(sId, "init_levN", initHeroCard);
 		}
 			
 	}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kh.splendy.mapper.PlayerMapper">
+	<resultMap id="playerList" type="org.kh.splendy.vo.PlayerListVo">
+		<result column="U_ID"			property="uid"			javaType="int" />
+		<result column="U_NICK"			property="nick"			javaType="java.lang.String" />
+		<result column="RM_ID"			property="rid"			javaType="int" />
+		<result column="RM_HOST"		property="host"			javaType="int" />
+		<result column="PL_STATE"		property="state"		javaType="int" />
+	</resultMap>
+</mapper>

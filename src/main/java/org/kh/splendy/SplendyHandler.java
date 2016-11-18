@@ -7,6 +7,7 @@ import org.kh.splendy.vo.Chat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 
@@ -23,7 +24,7 @@ public class SplendyHandler extends TextWebSocketHandler {
 	 * 
 	 * @param WebSocketSession 접속한 사용자
 	 */
-	@Override
+	@Override @Async
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		stream.connectPro(session);
 	}
@@ -39,12 +40,14 @@ public class SplendyHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		stream.msgPro(session, message);
 	}
+	
 	/**
 	 * 클라이언트가 서버와 연결을 끊음.
 	 * 
 	 * @param WebSocketSession 연결을 끊은 클라이언트
 	 * @param CloseStatus 연결 상태
 	 */
+	@Override @Async
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
 		stream.disconnectPro(session);
 	}

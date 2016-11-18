@@ -10,17 +10,17 @@ import lombok.Data;
 public class WSPlayer {
 
 	@SerializedName("uid") @Expose
-	public String uid;
+	public int uid;
 	@SerializedName("nick") @Expose
 	public String nick;
 	@SerializedName("rating") @Expose
-	public String rating;
+	public int rating;
 	@SerializedName("icon") @Expose
 	public String icon;
 	@SerializedName("role") @Expose
 	public String role;
 	@SerializedName("room") @Expose
-	public String room;
+	public int room;
 	
 	public static WSPlayer convert(String source) {
 		return new Gson().fromJson(source, WSPlayer.class);

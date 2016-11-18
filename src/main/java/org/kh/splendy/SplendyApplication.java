@@ -1,5 +1,7 @@
 package org.kh.splendy;
 
+import java.util.concurrent.Executor;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -12,12 +14,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @SpringBootApplication
+@EnableAsync
 @EnableScheduling
 @MapperScan(basePackages = { "org.kh.splendy.mapper" })
-public class SplendyApplication {
+public class SplendyApplication extends AsyncConfigurerSupport {
 
 /*
 
@@ -123,5 +129,16 @@ public class SplendyApplication {
 	@Bean
 	public DataSourceTransactionManager transactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
+	}
+	
+	@Override
+	public Executor getAsyncExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(2);
+		executor.setMaxPoolSize(2);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("GithubLookup-");
+		executor.initialize();
+		return executor;
 	}
 }
