@@ -133,6 +133,8 @@ public class AccountController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		user.openInfo();
 		request.setAttribute("credent", credent);
 		request.setAttribute("login_result", login_result);
 		request.setAttribute("user", user);
@@ -150,16 +152,27 @@ public class AccountController {
 			value = "/user/modify_suc",
 			method = {RequestMethod.GET, RequestMethod.POST},
 			produces = "application/json")
-	public  @ResponseBody List<UserCore> modify_suc(@ModelAttribute("modifyForm") UserCore user0) {
+	public  @ResponseBody UserCore modify_suc(@ModelAttribute("modal_form") UserCore user0, HttpSession session) {
 		
-		List<UserCore> user = null;
+		List<UserCore> user1 = null;
+		String email = (String)session.getAttribute("email");
+		String password = user0.getPassword();
+		String nickname = user0.getNickname(); 
+		
 		try {
-			userServ.updateUser(user0);
-			user = userServ.searchEmail(user0.getEmail());
+			if(!password.isEmpty()) {
+					userServ.updatePassword(email, user0.getPassword());
+					System.out.println("업데이트 패스워드");
+			}
+			if(!nickname.isEmpty()) {
+					userServ.updateNickname(email, user0.getNickname());
+					System.out.println("업데이트 닉네임");
+			}
+			user1 = userServ.searchEmail(user0.getEmail());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		UserCore user = user1.get(0);
 		return user;
 	}
 	
