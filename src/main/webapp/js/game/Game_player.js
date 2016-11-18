@@ -143,25 +143,30 @@ Player.prototype = {
 			}
 		},
 		
-		getWhite : function() {
+		getWhite : function() {		
+			
 			var player = null;
 			for(var i in players){
 				if(players[i].getTurn() === true){
 					player = players[i];
 				}
 			}
-			
-			var num = $("#player" + player.getOrder() + "_jewel_white").html();
-			num = parseInt(num);				
-			num = num + 1;
-			$("#player" + player.getOrder() + "_jewel_white").html(num);
-			
 			var jewelValue = parseInt($("#jewel_white_value").html());
-			jewelValue = jewelValue - 1;
-			$("#jewel_white_value").html(jewelValue);
-			
-			this.action = "getJewelWhite";	//플레이어 객체의 액션 코드 설정
-			
+			var num = $("#player" + player.getOrder() + "_jewel_white").html();
+			if(jewelValue === 0){ 				
+				return 0;
+			} else {
+				num = parseInt(num);			
+				num = num + 1;
+				$("#player" + player.getOrder() + "_jewel_white").html(num);
+				
+				
+							
+				jewelValue = jewelValue - 1;
+				$("#jewel_white_value").html(jewelValue);
+				
+				this.action = "getJewelWhite";	//플레이어 객체의 액션 코드 설정
+			}									
 		},
 		
 		getBlack : function() {
@@ -171,16 +176,21 @@ Player.prototype = {
 					player = players[i];
 				}
 			}
-			
-			var num = $("#player" + player.getOrder() + "_jewel_black").html();
-			num = parseInt(num);				
-			num = num + 1;
-			$("#player" + player.getOrder() + "_jewel_black").html(num);
-			
 			var jewelValue = parseInt($("#jewel_black_value").html());
-			jewelValue = jewelValue - 1;
-			$("#jewel_black_value").html(jewelValue);
-			this.action = "getJewelBlack";
+			var num = $("#player" + player.getOrder() + "_jewel_black").html();
+			if(jewelValue === 0){ 				
+				return 0;
+			} else {
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player" + player.getOrder() + "_jewel_black").html(num);
+				
+				
+				jewelValue = jewelValue - 1;
+				$("#jewel_black_value").html(jewelValue);
+				
+				this.action = "getJewelBlack";
+			}
 		},
 		
 		getGreen : function() {
@@ -190,17 +200,21 @@ Player.prototype = {
 					player = players[i];
 				}
 			}
-			
-			var num = $("#player" + player.getOrder() + "_jewel_green").html();
-			num = parseInt(num);				
-			num = num + 1;
-			$("#player" + player.getOrder() + "_jewel_green").html(num);
-			
 			var jewelValue = parseInt($("#jewel_green_value").html());
-			jewelValue = jewelValue - 1;
-			$("#jewel_green_value").html(jewelValue);
-			
-			this.action = "getJewelGreen";
+			var num = $("#player" + player.getOrder() + "_jewel_green").html();
+			if(jewelValue === 0){ 				
+				return 0;
+			} else {
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player" + player.getOrder() + "_jewel_green").html(num);
+				
+				
+				jewelValue = jewelValue - 1;
+				$("#jewel_green_value").html(jewelValue);
+				
+				this.action = "getJewelGreen";
+			}
 		},
 						
 		getRed : function(){
@@ -210,16 +224,20 @@ Player.prototype = {
 					player = players[i];
 				}
 			}
-			
-			var num = $("#player" + player.getOrder() + "_jewel_red").html();
-			num = parseInt(num);				
-			num = num + 1;
-			$("#player" + player.getOrder() + "_jewel_red").html(num);
-						
 			var jewelValue = parseInt($("#jewel_red_value").html());
-			jewelValue = jewelValue - 1;
-			$("#jewel_red_value").html(jewelValue);
-			this.action = "getJewelRed";
+			var num = $("#player" + player.getOrder() + "_jewel_red").html();
+			if(jewelValue === 0){ 				
+				return 0;
+			} else {
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player" + player.getOrder() + "_jewel_red").html(num);
+							
+				
+				jewelValue = jewelValue - 1;
+				$("#jewel_red_value").html(jewelValue);
+				this.action = "getJewelRed";
+			}
 		},
 		
 		getBlue : function(){
@@ -229,16 +247,20 @@ Player.prototype = {
 					player = players[i];
 				}
 			}
-			
-			var num = $("#player" + player.getOrder() + "_jewel_blue").html();
-			num = parseInt(num);				
-			num = num + 1;
-			$("#player" + player.getOrder() + "_jewel_blue").html(num);
-			
 			var jewelValue = parseInt($("#jewel_blue_value").html());
-			jewelValue = jewelValue - 1;
-			$("#jewel_blue_value").html(jewelValue);
-			this.action = "getJewelBlue";
+			var num = $("#player" + player.getOrder() + "_jewel_blue").html();
+			if(jewelValue === 0){ 				
+				return 0;
+			} else {
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player" + player.getOrder() + "_jewel_blue").html(num);
+				
+				
+				jewelValue = jewelValue - 1;
+				$("#jewel_blue_value").html(jewelValue);
+				this.action = "getJewelBlue";
+			}
 		},
 		
 		getGold : function(){
@@ -248,16 +270,24 @@ Player.prototype = {
 					player = players[i];
 				}
 			}
-			
-			var num = $("#player" + player.getOrder() + "_jewel_gold").html();
-			num = parseInt(num);				
-			num = num + 1;
-			$("#player" + player.getOrder() + "_jewel_gold").html(num);
-			
 			var jewelValue = parseInt($("#jewel_gold_value").html());
-			jewelValue = jewelValue - 1;
-			$("#jewel_gold_value").html(jewelValue);
-			this.action = "getJewelGold";
+			var num = $("#player" + player.getOrder() + "_jewel_gold").html();
+			if(jewelValue === 0){ 				
+				return 0;
+			} else {
+				num = parseInt(num);				
+				num = num + 1;
+				$("#player" + player.getOrder() + "_jewel_gold").html(num);
+				
+				
+				jewelValue = jewelValue - 1;
+				$("#jewel_gold_value").html(jewelValue);
+				this.action = "getJewelGold";
+			}
+		},
+		
+		turnChange : function(){
+			
 		}
 		
 }
