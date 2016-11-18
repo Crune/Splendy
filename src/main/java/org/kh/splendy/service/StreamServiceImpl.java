@@ -87,6 +87,7 @@ public class StreamServiceImpl implements StreamService {
 			int uid = auth.getUid();
 			if (playerMap.checkCode(uid, auth.getCode()) > 0) {
 				playerMap.setSession(uid, sId);
+				playerMap.setStateBySid(sId, Player.ST_CONNECT);
 				log.info(sId + "님이 인증했습니다.");
 				PlayerListVo me = playerMap.getMeJoinInfo(uid);
 				sendWithoutSender(sId, "player.join", cvPlayer(me));
@@ -98,7 +99,7 @@ public class StreamServiceImpl implements StreamService {
 	public void chat(String sId, String msg) throws Exception {
 		Player pl = playerMap.readBySid(sId);
 		UserCore user = userMap.read(pl.getId());
-		log.info("chat: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
+		log.info("send_chat:start: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
 
 		int roomId = pl.getRoomId();
 		
@@ -118,6 +119,7 @@ public class StreamServiceImpl implements StreamService {
 				send(cur_sid, "chat", rst);
 			}
 		}
+		log.info("send_chat:end: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
 	}
 	
 
@@ -164,10 +166,12 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override
 	public void send(String sId, String type, Object cont) throws Exception {
+		log.info("sendeee: "+sId + "/"+type+cont);
 		send(sId, cvMsg(type, cont));
 	}
 	@Override
 	public void send(String sId, String msg) throws Exception {
+		log.info("sendkkk: "+sId + "/"+msg);
 		sessions.get(sId).sendMessage(new TextMessage(msg));
 	}
 
@@ -178,9 +182,11 @@ public class StreamServiceImpl implements StreamService {
 	@Override
 	public void sendWithoutSender(String sId, String msg) throws Exception {
 		List<String> sids = playerMap.getActiverSid();
-		for (String cur : sids) {
-			if (cur.equals(sId)) {
-				sessions.get(cur).sendMessage(new TextMessage(msg));
+		if (sids.size() > 0) {
+			for (String cur : sids) {
+				if (cur.equals(sId)) {
+					sessions.get(cur).sendMessage(new TextMessage(msg));
+				}
 			}
 		}
 	}
@@ -212,7 +218,7 @@ public class StreamServiceImpl implements StreamService {
 			for(int i = 0; i < 5; i++){
 				initHeroCard.add(deck_levN.get(i));
 			}				
-			sendR(sId, "init_levN", initHeroCard);			
+			sendR(sId, "init_levN", initHeroCard);
 		}
 			
 	}

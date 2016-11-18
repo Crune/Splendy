@@ -1,6 +1,4 @@
-var chatSock;
-
-window.onload = function() {
+$( document ).ready(function() {
 	
 	// 웹소켓에 사용자 정보 등록을 위한 인증 코드 획득
 	getAuth();
@@ -11,7 +9,6 @@ window.onload = function() {
 	// 채팅 엔터
 	$('#chat_input').keypress(function(e) {
 		if (e.which == 13) {
-			console.log(this.value);
 			wssend('chat', this.value);
 			this.value = "";
 		}
@@ -50,7 +47,7 @@ window.onload = function() {
 	chatSock.onclose = function () {
 		alert("연결끊김!");
 	};
-}
+});
 
 var temp_chatmsg = Handlebars.compile($("#temp_chatmsg").html());
 var temp_room = Handlebars.compile($("#temp_room").html());

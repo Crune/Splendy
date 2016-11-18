@@ -1,4 +1,6 @@
+var chatSock;
 function wssend(type, msg) {
+	console.log('wssend: '+this.value);
 	chatSock.send( JSON.stringify( new Msg(type, msg)) );
 }
 

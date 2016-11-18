@@ -91,7 +91,7 @@ public interface PlayerMapper {
 			+ " FROM KH_PLAYER pl"
 			+ " INNER JOIN KH_ROOM r ON r.RM_ID = pl.RM_ID"
 			+ " INNER JOIN KH_USER u ON pl.U_ID = u.U_ID"
-			+ " WHERE pl.PL_STATE > 0 AND u.U_NICK IS NOT NULL")
+			+ " WHERE u.U_ID   <> 0 AND pl.PL_STATE > 0 AND u.U_NICK IS NOT NULL")
 	@ResultMap("playerList")
 	public List<PlayerListVo> getActiver();
 
@@ -99,7 +99,7 @@ public interface PlayerMapper {
 			+ " FROM KH_PLAYER pl"
 			+ " INNER JOIN KH_ROOM r ON r.RM_ID = pl.RM_ID"
 			+ " INNER JOIN KH_USER u ON pl.U_ID = u.U_ID"
-			+ " WHERE pl.PL_STATE > 0 AND u.U_ID = #{uid}")
+			+ " WHERE u.U_ID   <> 0 AND pl.PL_STATE > 0 AND u.U_ID = #{uid}")
 	@ResultMap("playerList")
 	public PlayerListVo getMeJoinInfo(@Param("uid") int uid);
 }
