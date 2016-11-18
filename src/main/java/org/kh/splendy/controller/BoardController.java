@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.kh.splendy.sample.SampleController;
 import org.kh.splendy.service.BoardService;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BoardController {
 
 	@SuppressWarnings("unused")
-	private static final Logger log = LoggerFactory.getLogger(SampleController.class);
+	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
 	@Autowired
 	private BoardService boardServ;
@@ -47,7 +46,7 @@ public class BoardController {
 		return null;
 	}
 	
-	@RequestMapping(value = "/bbs/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/bbs/list", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 목록
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
@@ -104,17 +103,20 @@ public class BoardController {
 	}
 	
 
-	@RequestMapping(value = "/bbs/view", method = RequestMethod.GET)
+	@RequestMapping(value = "/bbs/view")
 	/** 게시글 보기
 	 * @param aId 게시글 번호
 	 * @return 해당 게시글의 내용보기 화면 */
-	public String view(@RequestParam int aId, Model model) {
+	public String view(@RequestParam int at_Id, Model model) throws Exception {
 		/** TODO 찬우.게시판: 게시글 보기 구현
 		 * - 사용자가 작성한 글이 아니고 해당 사용자가 처음 보는 글이라면 읽기 횟수가 증가해야 함
 		 * - 목록으로 돌아가기엔 해당 게시판이름에 해당하는 목록의 해당 글이 있는 페이지가 보여야 함
 		 */
-		//Article article = boardServ.getArticle(aId);
-		//model.addAttribute("article",article);
+		
+		boardServ.readCount(at_Id);
+		Article article = boardServ.getDetail(at_Id);
+		
+		model.addAttribute("article",article);
 		
 		return "board/view";
 	}
@@ -131,7 +133,7 @@ public class BoardController {
 		return "redirect:/bbs/write";
 	}
 
-	@RequestMapping(value = "/bbs/write", method = RequestMethod.GET)
+	@RequestMapping(value ="/bbs/write", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
@@ -162,16 +164,12 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String writePro(Article article, RedirectAttributes rttr,
+	public String writePro(@ModelAttribute("BoardVO") Article article, RedirectAttributes rttr,
 							HttpServletRequest request)throws Exception{
 		
 		request.setCharacterEncoding("UTF-8");//한글 인코딩
 		//String at_reply = request.getParameter("at_reply");
-		//String at_re_step = request.getParameter("at_re_step");	
-
-		
-		
-				
+		//String at_re_step = request.getParameter("at_re_step");					
 	/*
 		int number=0;
 		
@@ -205,7 +203,7 @@ public class BoardController {
 		rttr.addFlashAttribute("pageNum", 1);
 		rttr.addFlashAttribute("bName", "1");
 		
-		return "redirect:/bbs/list";
+		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}
 
 	@RequestMapping(value = "/bbs/deletePro", method = RequestMethod.GET)

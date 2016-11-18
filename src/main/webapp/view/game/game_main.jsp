@@ -8,7 +8,11 @@
 	src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type='text/javascript'
-	src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
+	src="/webjars/sockjs-client/1.1.1/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/commonWS.js"></script>
+<script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
+<script type='text/javascript' src="/js/game/Game_heroCardManager.js"></script>
+<script type='text/javascript' src="/js/game/Game_heroCard.js"></script>
 <script type='text/javascript' src="/js/game/Game_player.js"></script>
 <script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
 <script type='text/javascript' src="/js/game/game_main.js"></script>
@@ -112,29 +116,33 @@
 			<div class="jewel">
 				<button type="button" class="btn btn-default" id="get_whiteJ">get</button>
 				<div class="jewel_kind">white</div> 
-				<div id="jewel_white_value">7</div>
+				<div id="jewel_white_value"></div>
 			</div>
 			<div class="jewel">
 				<button type="button" class="btn btn-default" id="get_greenJ">get</button>
 				<div class="jewel_kind">green</div> 
-				<div id="jewel_green_value">7</div>
+				<div id="jewel_green_value"></div>
 			</div>
 			<div class="jewel">
 				<button type="button" class="btn btn-default" id="get_blueJ">get</button>
 				<div class="jewel_kind">blue</div>
-				<div id="jewel_blue_value">7</div>
+				<div id="jewel_blue_value"></div>
 			</div>
 			<div class="jewel">
 				<button type="button" class="btn btn-default" id="get_redJ">get</button>
 				<div class="jewel_kind">red</div> 
-				<div id="jewel_red_value">7</div>
+				<div id="jewel_red_value"></div>
 			</div>
 			<div class="jewel"><button type="button" class="btn btn-default" id="get_blackJ">get</button>
 				<div class="jewel_kind">black</div> 
-				<div id="jewel_black_value">7</div>
+				<div id="jewel_black_value"></div>
+				</div>
+			<div class="jewel"><button type="button" class="btn btn-default" id="get_goldJ">get</button>
+				<div class="jewel_kind">gold</div> 
+				<div id="jewel_gold_value"></div>
 				</div>
 
-			<button class="btn" id="popbutton">턴종료</button>
+			<!-- <button class="btn" id="popbutton">턴종료</button> -->
 			<br />
 			<div class="modal fade">
 				<div class="modal-dialog">
@@ -147,17 +155,36 @@
 		</div>
 		<div class="cards_container">
 			<div class="level">
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="heroCard_container">
+					<div class="heroCard_define">
+						
+						
+					</div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="heroCard_container">
+					<div class="heroCard_define" id="heroCard_define_1">
+						
+					</div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="heroCard_container">
+					<div class="heroCard_define" id="heroCard_define_1">
+						
+					</div>
 				</div>
-				<div class="card">
-					<img src="/img/iron.png" alt="">
+				<div class="card" id="heroCard_container" >
+					<div class="heroCard_define" id="heroCard_define_1">
+						
+					</div>
+				</div>
+				<div class="card" id="heroCard_container">
+					<div class="heroCard_define" id="heroCard_define_1">
+					
+					</div>
+				</div>
+				<div class="card" id="heroCard_container">
+					<div class="heroCard_define" id="heroCard_define_1">
+				
+					</div>
 				</div>
 			</div>
 

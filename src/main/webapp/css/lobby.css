@@ -174,10 +174,21 @@
 	margin-top: auto;
 	margin-bottom: auto;
 }
+.chat_frame {
+	overflow: auto;
+}
+.chat_msg_frame  {
+	height: 500px;
+	margin-bottom: 10px;
+	overflow: auto;
+}
 .nick_o {
 	color: #e3a1ae;
 }
 
+.nick_sys {
+	color: #f5a739;
+}
 .nick_me {
 	color: #b1c654;
 }

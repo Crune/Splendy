@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Player;
+import org.kh.splendy.vo.WSPlayer;
 
 /** 플레이어 참가 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.11) */
@@ -69,7 +70,7 @@ public interface PlayerMapper {
 	@Select("select PL_AUTHCODE from "+TABLE+" where "+KEY+"=#{id}")
 	public String getCode(int uid);
 
-	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and PL_AUTHCODE=#{authcode}")
+	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id, jdbcType=INTEGER} and PL_AUTHCODE=#{authcode, jdbcType=VARCHAR}")
 	public int checkCode(@Param("id") int id, @Param("authcode") String code);	
 
 	@ResultMap(TABLE)
@@ -83,4 +84,19 @@ public interface PlayerMapper {
 
 	@Select("select PL_SOCK_ID from "+TABLE+" where PL_STATE>0")
 	public List<String> getActiverSid();
+	
+/*
+	SELECT u.U_ID,
+	  pl.RM_ID,
+	  u.U_NICK,
+	  r.RM_ID,
+	  r.RM_HOST,
+	  pl.PL_STATE
+	FROM KH_PLAYER pl
+	INNER JOIN KH_ROOM r
+	ON r.RM_ID = pl.RM_ID
+	INNER JOIN KH_USER u
+	ON pl.U_ID = u.U_ID
+*/
+	//public List<WSPlayer> getActiver();
 }

@@ -22,7 +22,9 @@ public interface UserMapper {
 	String TABLE = "KH_USER";
 	
 	String COLUMNS = "U_ID, U_NICK, U_EMAIL, U_PW, U_ENABLED, U_N_LOCKED, U_N_EXPIRED, U_N_CREDENT, U_REG";
+	
 	String C_VALUES = "KH_USER_SEQ.NEXTVAL, #{nickname}, #{email}, #{password}, #{enabled}, #{notLocked}, #{notExpired}, #{notCredential}, sysdate";
+	
 	String UPDATES = "U_NICK=#{nickname}, U_EMAIL=#{email}, U_PW=#{password}"
 			+ ", U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}"
 			+ ", U_N_CREDENT=#{notCredential}";
@@ -74,10 +76,10 @@ public interface UserMapper {
 	public UserCore checkEmail(String email) throws Exception;
 
 	@Select("select count(*) from KH_USER where U_EMAIL=#{email} and U_PW=#{password} and U_ENABLED=1 and U_N_CREDENT=1")
-	public int checkPassword(HashMap<String, String> map) throws Exception;
+	public int checkPassword(@Param("email") String email, @Param("password") String password) throws Exception;
 	
 	@Select("select count(*) from KH_USER where U_EMAIL=#{email} and U_PW=#{password} and U_ENABLED=1 and U_N_CREDENT=0")
-	public int checkCredent(HashMap<String, String> map) throws Exception;
+	public int checkCredent(@Param("email") String email, @Param("password") String password) throws Exception;
 	
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void disabling(String email) throws Exception;
