@@ -70,9 +70,14 @@ public class UserServiceImpl implements UserService {
 		return list;
 	}
 
-	@Override @Transactional
-	public void updateUser(UserCore user) throws Exception {
-		userMap.updateUser(user.getEmail(), user.getPassword(), user.getNickname());
+	@Override
+	public void updatePassword(String email, String password) throws Exception {
+		userMap.updatePassword(email, password);
+	}
+	
+	@Override
+	public void updateNickname(String email, String nickname) throws Exception {
+		userMap.updateNickname(email, nickname);
 	}
 
 	@Override
@@ -103,11 +108,11 @@ public class UserServiceImpl implements UserService {
 		userMap.insertCredent(credent_code);
 	}
 
-	@Override
+	/*@Override
 	public void updatePassword(String email, String password) throws Exception {
 		String encryptPw = SplendyAdvice.getEncSHA256(password);
 		userMap.updatePassword(email, encryptPw);
-	}
+	}*/
 
 	@Override
 	public List<UserCore> selectAll() throws Exception {

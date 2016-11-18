@@ -56,6 +56,7 @@ body {
 </script>
 <script type='text/javascript' src='/js/default.js'></script>
 <script type='text/javascript' src='/js/lobby.js'></script>
+<script type='text/javascript' src='/js/lobby3.js'></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -63,18 +64,7 @@ body {
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-<script>
-window.onload = function(){
-	$("#btn_logout").on('click', function () {
-		document.location.href='/user/logout';
-	})
-	
-	$("#btn_modify").on('click', function () {
-		
-	})
-}
-</script>    
+   
 
 </head>
 <body bgcolor="#191919">
@@ -104,8 +94,7 @@ window.onload = function(){
 						</div>
 						<div class="profile_info">
 							<div>
-								<span class="lobby_text_nick">최윤일지도모릅</span>
-								<button type="button" class="btn btn-default btn-xs">변경</button>
+								<span class="lobby_text_nick">${sessionScope.user.nickname}</span>
 							</div>
 							<div class="lobby_text_level">Lv.7</div>
 							<div class="lobby_text_biglabel">플레이어 레벨</div>
@@ -250,12 +239,23 @@ window.onload = function(){
         <h4 class="modal-title" id="myModalLabel">정보 수정</h4>
       </div>
       <div class="modal-body">
-        	비밀번호 : 
-         	 닉네임  : 
+      		<form method="post" name="modal_form" id="modal_form" >
+        		<table>
+        			<tr>
+        			<input type="hidden" class="form-control" name="email" id="email" value="${user.email}" />
+        				<td>비밀번호</td>
+        				<td><input type="password" name="password" class="form-control" id="password"/></td>
+        			</tr>
+        			<tr>
+        				<td>닉네임</td>
+        				<td><input name="nickname" type="text" class="form-control" id="nickname" value="${user.nickname}"/></td>
+        			</tr>
+        		</table>
+         	</form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" name="btn_modify_prc" id="btn_modify_prc">Save changes</button>
       </div>
     </div>
   </div>

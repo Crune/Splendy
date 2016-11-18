@@ -84,14 +84,14 @@ public interface UserMapper {
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void disabling(String email) throws Exception;
 	
-	@Update("update KH_USER set U_PW=#{password}, U_NICK=#{nickname} where U_EMAIL=#{email} and U_ENABLED=1")
-	public void updateUser(@Param("email") String email, @Param("password") String password, @Param("nickname") String nickname) throws Exception;
+	@Update("update KH_USER set U_PW=#{password} where U_EMAIL=#{email} and U_ENABLED=1")
+	public void updatePassword(@Param("email") String email, @Param("password") String password) throws Exception;
+	
+	@Update("update KH_USER set U_NICK=#{nickname} where U_EMAIL=#{email} and U_ENABLED=1")
+	public void updateNickname(@Param("email") String email, @Param("nickname") String nickname) throws Exception;
 	
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void deleteUser(String email) throws Exception;
-	
-	@Update("update KH_USER set U_PW=#{password} where U_EMAIL=#{email}")
-	public void updatePassword(@Param("email") String email, @Param("password") String password) throws Exception;
 	
 	// SQL query in xml
 	public void credentUser(String code) throws Exception;
