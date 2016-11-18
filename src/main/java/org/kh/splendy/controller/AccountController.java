@@ -156,18 +156,9 @@ public class AccountController {
 		
 		List<UserCore> user1 = null;
 		String email = (String)session.getAttribute("email");
-		String password = user0.getPassword();
-		String nickname = user0.getNickname(); 
-		
+				
 		try {
-			if(!password.isEmpty()) {
-					userServ.updatePassword(email, user0.getPassword());
-					System.out.println("업데이트 패스워드");
-			}
-			if(!nickname.isEmpty()) {
-					userServ.updateNickname(email, user0.getNickname());
-					System.out.println("업데이트 닉네임");
-			}
+			userServ.updateUser(user0, email);
 			user1 = userServ.searchEmail(user0.getEmail());
 		} catch (Exception e) {
 			e.printStackTrace();

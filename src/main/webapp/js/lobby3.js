@@ -11,7 +11,9 @@ window.onload = function(){
 	$("#btn_modify_prc").on('click', function() {
 		modifyRequest();
 		$('#modify_modal').modal('hide');
-		$('.lobby_text_nick').html($('#nickname').prop('value'));
+		if($("#nickname") != '' ){
+			$('.lobby_text_nick').html($('#nickname').prop('value'));
+		}
 		$('#password').val('');
 	})
 }

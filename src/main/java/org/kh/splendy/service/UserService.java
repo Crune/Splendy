@@ -40,4 +40,6 @@ public interface UserService {
 	int findPw(String email, String new_pw) throws Exception;
 	
 	void adminMF(UserCore user) throws Exception;
+
+	void updateUser(UserCore user, String email) throws Exception;
 }

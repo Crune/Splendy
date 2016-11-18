@@ -116,12 +116,6 @@ public class UserServiceImpl implements UserService {
 		userMap.insertCredent(credent_code);
 	}
 
-	/*@Override
-	public void updatePassword(String email, String password) throws Exception {
-		String encryptPw = SplendyAdvice.getEncSHA256(password);
-		userMap.updatePassword(email, encryptPw);
-	}*/
-
 	@Override
 	public List<UserCore> selectAll() throws Exception {
 		List<UserCore> list = userMap.selectAll();
@@ -204,4 +198,22 @@ public class UserServiceImpl implements UserService {
 	public void adminMF(UserCore user) throws Exception {
 		userMap.adminMF(user);
 	}
+
+	@Override @Transactional
+	public void updateUser(UserCore user, String email) throws Exception {
+		String password = user.getPassword();
+		String nickname = user.getNickname();
+		
+		if(password != null){
+			if(!password.isEmpty()){
+				updatePassword(email, password);
+			}
+		}
+		if(nickname != null){
+			if(!nickname.isEmpty()){
+				updateNickname(email, nickname);
+			}
+		}	
+	}
+	
 }
