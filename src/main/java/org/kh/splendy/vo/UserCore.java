@@ -36,11 +36,24 @@ public class UserCore {
 	}	
 	
 	public void setPassword(String password) {		
-		try {
-			this.password = SplendyAdvice.getEncSHA256(password);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+		if(password != null) {
+			if(!password.isEmpty()){
+				try {
+					this.password = SplendyAdvice.getEncSHA256(password);
+				} catch (NoSuchAlgorithmException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}	
 	
+	public void openInfo() {
+		this.id = 0;
+		this.password = "";
+		this.enabled = 0;
+		this.notLocked = 0;
+		this.notExpired = 0;
+		this.notCredential = 0;
+		this.reg = new Date(0);
+	}
 }

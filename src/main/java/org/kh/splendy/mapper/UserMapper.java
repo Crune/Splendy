@@ -84,14 +84,14 @@ public interface UserMapper {
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void disabling(String email) throws Exception;
 	
-	@Update("update KH_USER set U_PW=#{password}, U_NICK=#{nickname} where U_EMAIL=#{email} and U_ENABLED=1")
-	public void updateUser(@Param("email") String email, @Param("password") String password, @Param("nickname") String nickname) throws Exception;
+	@Update("update KH_USER set U_PW=#{password} where U_EMAIL=#{email} and U_ENABLED=1")
+	public void updatePassword(@Param("email") String email, @Param("password") String password) throws Exception;
+	
+	@Update("update KH_USER set U_NICK=#{nickname} where U_EMAIL=#{email} and U_ENABLED=1")
+	public void updateNickname(@Param("email") String email, @Param("nickname") String nickname) throws Exception;
 	
 	@Update("update KH_USER set U_ENABLED=0 where U_EMAIL=#{email}")
 	public void deleteUser(String email) throws Exception;
-	
-	@Update("update KH_USER set U_PW=#{password} where U_EMAIL=#{email}")
-	public void updatePassword(@Param("email") String email, @Param("password") String password) throws Exception;
 	
 	// SQL query in xml
 	public void credentUser(String code) throws Exception;
@@ -106,10 +106,14 @@ public interface UserMapper {
 	public void modifyUserWithEmail(UserCore user) throws Exception;
 	
 	@ResultMap("userResult")
-	@Select("select * from KH_USER")
+	@Select("select * from KH_USER order by U_ID asc")
 	public List<UserCore> selectAll() throws Exception;
 	
 	@ResultMap("userResult")
 	@Select("select * from KH_USER where U_EMAIL=#{email}")
 	public UserCore selectOne(@Param("email") String email) throws Exception;
+	
+	@ResultMap("userResult")
+	@Update("update KH_USER set U_NICK=#{nickname}, U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} where "+KEY+"=#{id}")
+	public void adminMF(UserCore user) throws Exception;
 }

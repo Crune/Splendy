@@ -71,10 +71,17 @@ public class BoardServiceImpl implements BoardService {
 		return article;
 	}
 
-	@Override @Transactional
-	public void readCount(int at_Id) throws Exception {
-		//boardMap.
+	@Override
+	public void readCount(int at_Id) throws Exception {		
 		boardMap.readCount(at_Id);		
 	}
-	
+	public void updateBoard(int at_Id) throws Exception{
+		
+	}
+
+	@Override
+	public int updateBoard(Article article) throws Exception {
+		
+		return 0;
+	}
 }

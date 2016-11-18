@@ -1,10 +1,12 @@
 package org.kh.splendy.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Player;
+import org.kh.splendy.vo.PlayerListVo;
 import org.kh.splendy.vo.WSPlayer;
 
 /** 플레이어 참가 정보 테이블을 관리하는 MyBatis Mapper
@@ -64,7 +66,7 @@ public interface PlayerMapper {
 	// Another
 
 	@ResultMap(TABLE)
-	@Select("select * from "+TABLE+" where RM_ID=#{roomId}")
+	@Select("select * from "+TABLE+" where RM_ID=#{roomId} AND PL_SOCK_ID IS NOT NULL")
 	public List<Player> getPlayers(int roomId);
 
 	@Select("select PL_AUTHCODE from "+TABLE+" where "+KEY+"=#{id}")
@@ -82,21 +84,22 @@ public interface PlayerMapper {
 	public void setStateBySid(@Param("id") String id, @Param("state") int value);
 	
 
-	@Select("select PL_SOCK_ID from "+TABLE+" where PL_STATE>0")
+	@Select("select PL_SOCK_ID from "+TABLE+" where PL_STATE>0 and PL_SOCK_ID IS NOT NULL")
 	public List<String> getActiverSid();
-	
-/*
-	SELECT u.U_ID,
-	  pl.RM_ID,
-	  u.U_NICK,
-	  r.RM_ID,
-	  r.RM_HOST,
-	  pl.PL_STATE
-	FROM KH_PLAYER pl
-	INNER JOIN KH_ROOM r
-	ON r.RM_ID = pl.RM_ID
-	INNER JOIN KH_USER u
-	ON pl.U_ID = u.U_ID
-*/
-	//public List<WSPlayer> getActiver();
+
+	@Select("SELECT u.U_ID, u.U_NICK, r.RM_ID, r.RM_HOST, pl.PL_STATE"
+			+ " FROM KH_PLAYER pl"
+			+ " INNER JOIN KH_ROOM r ON r.RM_ID = pl.RM_ID"
+			+ " INNER JOIN KH_USER u ON pl.U_ID = u.U_ID"
+			+ " WHERE u.U_ID   <> 0 AND pl.PL_STATE > 0 AND u.U_NICK IS NOT NULL")
+	@ResultMap("playerList")
+	public List<PlayerListVo> getActiver();
+
+	@Select("SELECT u.U_ID, u.U_NICK, r.RM_ID, r.RM_HOST, pl.PL_STATE"
+			+ " FROM KH_PLAYER pl"
+			+ " INNER JOIN KH_ROOM r ON r.RM_ID = pl.RM_ID"
+			+ " INNER JOIN KH_USER u ON pl.U_ID = u.U_ID"
+			+ " WHERE u.U_ID   <> 0 AND pl.PL_STATE > 0 AND u.U_ID = #{uid}")
+	@ResultMap("playerList")
+	public PlayerListVo getMeJoinInfo(@Param("uid") int uid);
 }

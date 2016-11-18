@@ -15,12 +15,14 @@ import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @EnableTransactionManagement
@@ -34,6 +36,12 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
+	private final RestTemplate restTemplate;
+
+	public UserServiceImpl(RestTemplateBuilder restTemplateBuilder) {
+		this.restTemplate = restTemplateBuilder.build();
+	}
+	
 	@Override
 	public UserCore get(@Param("email") String email) throws Exception {
 		List<UserCore> userList = userMap.searchEmail(email);
@@ -70,9 +78,14 @@ public class UserServiceImpl implements UserService {
 		return list;
 	}
 
-	@Override @Transactional
-	public void updateUser(UserCore user) throws Exception {
-		userMap.updateUser(user.getEmail(), user.getPassword(), user.getNickname());
+	@Override
+	public void updatePassword(String email, String password) throws Exception {
+		userMap.updatePassword(email, password);
+	}
+	
+	@Override
+	public void updateNickname(String email, String nickname) throws Exception {
+		userMap.updateNickname(email, nickname);
 	}
 
 	@Override
@@ -101,12 +114,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void insertCredent(String credent_code) throws Exception {
 		userMap.insertCredent(credent_code);
-	}
-
-	@Override
-	public void updatePassword(String email, String password) throws Exception {
-		String encryptPw = SplendyAdvice.getEncSHA256(password);
-		userMap.updatePassword(email, encryptPw);
 	}
 
 	@Override
@@ -186,4 +193,27 @@ public class UserServiceImpl implements UserService {
 		}
 		return result_pw;
 	}
+	
+	@Override
+	public void adminMF(UserCore user) throws Exception {
+		userMap.adminMF(user);
+	}
+
+	@Override @Transactional
+	public void updateUser(UserCore user, String email) throws Exception {
+		String password = user.getPassword();
+		String nickname = user.getNickname();
+		
+		if(password != null){
+			if(!password.isEmpty()){
+				updatePassword(email, password);
+			}
+		}
+		if(nickname != null){
+			if(!nickname.isEmpty()){
+				updateNickname(email, nickname);
+			}
+		}	
+	}
+	
 }

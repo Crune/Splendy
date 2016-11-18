@@ -46,7 +46,7 @@ public class LobbyController {
 		 * - 플레이어 정보가 없을 경우 생성
 		 * - 플레이어 정보에 계정 인증코드 입력
 		 */
-		int uid = (int) session.getAttribute("user_id");
+		int uid = ((UserCore) session.getAttribute("user")).getId();
 		serv.initPlayer(uid); // 플레이어 정보가 없을경우 생성
 		return "lobby";
 	}

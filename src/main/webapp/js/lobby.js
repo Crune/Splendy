@@ -1,7 +1,5 @@
-var chatSock;
-
-window.onload = function() {
-
+$( document ).ready(function() {
+	
 	// 웹소켓에 사용자 정보 등록을 위한 인증 코드 획득
 	getAuth();
 
@@ -11,7 +9,6 @@ window.onload = function() {
 	// 채팅 엔터
 	$('#chat_input').keypress(function(e) {
 		if (e.which == 13) {
-			console.log(this.value);
 			wssend('chat', this.value);
 			this.value = "";
 		}
@@ -29,18 +26,18 @@ window.onload = function() {
 	chatSock.onmessage = function (evt) {	
 		console.log("read.raw: "+evt.data);
 		var data = JSON.parse(evt.data);
-		var k = data.type;
+		var k = data.type.split(".");
 		var v = data.cont;
-		if (k == 'init') {
+		if (k[0] == 'init') {
 			console.log("initialized.");
 		}
-		if (k == 'room') {
-			onRoom('add', v);
+		if (k[0] == 'room') {
+			onRoom(k[1], v);
 		}
-		if (k == 'player') {
-			onPlayer('add', v);
+		if (k[0] == 'player') {
+			onPlayer(k[1], v);
 		}
-		if (k == 'chat') {
+		if (k[0] == 'chat') {
 			onChatMsg(v);
 		}
 		//$("#chatMessage").append(evt.data + "<br/>");
@@ -50,7 +47,7 @@ window.onload = function() {
 	chatSock.onclose = function () {
 		alert("연결끊김!");
 	};
-}
+});
 
 var temp_chatmsg = Handlebars.compile($("#temp_chatmsg").html());
 var temp_room = Handlebars.compile($("#temp_room").html());
@@ -63,38 +60,42 @@ function onChatMsg(msg) {
 }
 
 function onPlayer(type, pl) {
-	var room = pl.room;
-	$("#user_"+pl.uid).detach();
-	if (type='in') {
+	if (type=='add') {
 		$(".lobby_players").append(temp_player(pl));
 	}
-	if (type='join') {
+	if (type=='join') {
 		$(".lobby_players").append(temp_player(pl));
 		onChatMsg(new Chat('시스템', pl.nick+'님이 접속하였습니다.','','sys'));
 	}
-	if (type='leave') {
+	if (type=='leave') {
 		onChatMsg(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
 	}
-	if (type='enter') {
+	if (type=='enter') {
+		var room = pl.room;
 		$("#room_"+room).append(temp_player(pl));
 	}
-	if (type='init') {
+	if (type=='init') {
+		console.log("Player initialized!");
 		$(".player").detach();
 	}
 }
 
 function onRoom(type, room) {
-	if (type='init') {
-		$(".lobby_room").detach();
-		$("#roomlist").append(temp_room_empty());
-	}
-	if (type='add') {
-		$(".empty_room").detach();
-		$("#roomlist").append(temp_room(room));
-		$("#roomlist").append(temp_room_empty());
-	}
-	if (type='remove') {
-		$("#room_"+room).detach();
+	if (!room) {
+		if (type=='add') {
+			$(".empty_room").detach();
+			$("#roomlist").append(temp_room(room));
+			$("#roomlist").append(temp_room_empty());
+		}
+		if (type=='remove') {
+			$("#room_"+room).detach();
+		}
+	} else {
+		if (type=='init') {
+			console.log("Room initialized!")
+			$(".lobby_room").detach();
+			$("#roomlist").append(temp_room_empty());
+		}
 	}
 	roomMouseEvt();
 }
@@ -114,33 +115,4 @@ function roomMouseEvt() {
 		}
 		
 	});
-}
-
-function wssend(type, msg) {
-	chatSock.send( JSON.stringify( new Msg(type, msg)) );
-}
-
-function Msg(type, cont) {
-	this.type = type;
-	this.cont = cont;
-}
-
-function Chat(type, cont, time, type) {
-	this.nick = nick;
-	this.cont = cont;
-	this.time = time;
-	this.type = type;
-}
-
-function Auth(uid, code) {
-	this.uid = uid;
-	this.code = code;
-}
-
-var auth = new Auth();
-function getAuth() {
-	$.getJSON("/lobby/getAuthCode", function(data) {
-		auth.code = data.code;
-		auth.uid = data.uid;
-	})
 }
