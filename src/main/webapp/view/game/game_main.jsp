@@ -203,15 +203,8 @@
 	</div>
 </body>
 
-<script id="heroCard_details" type="text/x-handlebars-template">
-		<ul>
-			<li>point : <span id="point">{{point}}</span></li>
-            <li>whiteC : <span id="white">{{white}}</span></li>
-            <li>blackC : <span id="black">{{black}}</span></li>
-            <li>blueC : <span id="blue">{{blue}}</span></li>
-            <li>redC : <span id="red">{{red}}</span></li>
-            <li>greenC : <span id="green">{{green}}</span></li>			
-		</ul>	
+<script class="heroCard_details" type="text/x-handlebars-template">
+		<img src="{{img}}"/>
 </script>
 
 

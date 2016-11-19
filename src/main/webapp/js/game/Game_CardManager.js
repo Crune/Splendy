@@ -98,5 +98,6 @@ CardManager.prototype = {
 			}
 			return initLev3CardList;			
 		}
+		
 }
 

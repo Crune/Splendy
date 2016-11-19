@@ -33,6 +33,11 @@ public class StreamServiceImpl implements StreamService {
 	private List<Card> deck_lev3 = null;
 	private List<Card> deck_levN = null;
 	
+	private static int deck_levN_iter = 5;
+	private static int deck_lev1_iter = 5;
+	private static int deck_lev2_iter = 5;
+	private static int deck_lev3_iter = 5;
+	
 	
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
 
@@ -211,10 +216,17 @@ public class StreamServiceImpl implements StreamService {
 	
 	@Override @WSReqeust
 	public void cardRequest(String sId, String msg) throws Exception {
+		
+		
+		/*
+		 *  처음 카드를 세팅하는 조건문
+		 */
 		if(msg.equals("init_levN")){			
 			List<Card> initHeroCard = new ArrayList<Card>();
 			deck_levN = cardServ.getLevel_noble(); //히어로카드 덱
-			
+			for(int i = 0; i < deck_levN.size(); i++){
+				log.info(deck_levN.get(i)+"");
+			}
 			for(int i = 0; i < 5; i++){
 				initHeroCard.add(deck_levN.get(i));
 			}				
@@ -245,6 +257,17 @@ public class StreamServiceImpl implements StreamService {
 				initLev3Card.add(deck_lev3.get(i));	
 			}
 			sendR(sId, "init_lev3", initLev3Card);			
+		}
+		
+		if(msg.equals("getHeroCard")){			
+			if(deck_levN_iter < deck_levN.size()){
+				sendR(sId, "getHeroCard", deck_levN.get(deck_levN_iter));
+				deck_levN_iter++;
+			} else {
+				log.info(deck_levN_iter+"");
+				return;
+			} 
+			
 		}
 			
 	}

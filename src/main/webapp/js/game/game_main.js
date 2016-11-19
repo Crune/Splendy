@@ -50,7 +50,8 @@ $(document).ready(
 				$("#player3_name").html(player3.getUserId());
 				$("#player4_name").html(player4.getUserId());
 			};
-
+			
+			
 			chatSock.onmessage = function(evt) {
 				
 				var card = JSON.parse(evt.data);
@@ -59,7 +60,7 @@ $(document).ready(
 					var initHeroCards = cardManager.setInitLevN(card.cont);
 					for(var i in initHeroCards){
 						i = parseInt(i);
-						var template = Handlebars.compile($("#heroCard_details").html());												
+						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#heroCard_detail_" + (i+1)).html(template(initHeroCards[i]));
 					}					
 				}
@@ -68,7 +69,7 @@ $(document).ready(
 					var lev3Cards = cardManager.setInitLev3(card.cont);
 					for(var i in lev3Cards){						
 						i = parseInt(i);
-						var template = Handlebars.compile($("#heroCard_details").html());												
+						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev3Card_detail_" + (i+1)).html(template(lev3Cards[i]));
 					}					
 				}
@@ -77,7 +78,7 @@ $(document).ready(
 					var lev2Cards = cardManager.setInitLev2(card.cont);
 					for(var i in lev2Cards){						
 						i = parseInt(i);
-						var template = Handlebars.compile($("#heroCard_details").html());												
+						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev2Card_detail_" + (i+1)).html(template(lev2Cards[i]));
 					}					
 				}
@@ -86,9 +87,13 @@ $(document).ready(
 					var lev1Cards = cardManager.setInitLev1(card.cont);
 					for(var i in lev1Cards){						
 						i = parseInt(i);
-						var template = Handlebars.compile($("#heroCard_details").html());												
+						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev1Card_detail_" + (i+1)).html(template(lev1Cards[i]));
 					}					
+				}
+				
+				if(card.type === "getHeroCard"){
+					console.log(evt);
 				}
 			};
 
@@ -335,15 +340,10 @@ $(document).ready(
 						}
 					});
 
-			function turnPlayer() { // 현재 사용하지 않음
-				if (player1.getTurn() === false) {
-					$("#popbutton").attr("disabled", true);
-				} else if (player2.getTurn() === false) {
-					$("#popbutton").attr("disabled", true);
-				} else if (player3.getTurn() === false) {
-					$("#popbutton").attr("disabled", true);
-				} else if (player4.getTurn() === false) {
-					$("#popbutton").attr("disabled", true);
-				}
-			}
+			
+			
+			$("#heroCard_detail_1").click(function (){
+				wssend('cardRequest', 'getHeroCard');
+			})
+			
 		});
