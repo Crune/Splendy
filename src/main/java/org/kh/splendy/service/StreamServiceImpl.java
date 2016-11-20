@@ -1,6 +1,7 @@
 package org.kh.splendy.service;
 
 import java.lang.reflect.Method;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -12,8 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -46,24 +49,40 @@ public class StreamServiceImpl implements StreamService {
 	@Autowired private RoomMapper roomMap;
 	@Autowired private PlayerMapper playerMap;
 	@Autowired private UserMapper userMap;
+	@Autowired private UserInnerMapper innerMap;
 	@Autowired private CardService cardServ;
 	
 	@Override
 	public void connectPro(WebSocketSession session) {
 		log.info(session.getId() + "님이 접속했습니다.");
 		log.info("연결 IP : " + session.getRemoteAddress().getHostName() );
+		
 		sessions.put(session.getId(), session);
 	}
 
+	@Override @Transactional
+	public void close(int uid) {
+		UserInner inner = innerMap.read(uid);
+		inner.setConnect(0);
+		inner.setWsSession(null);
+		inner.setWsAuthCode(null);
+		innerMap.update(inner);
+		sessions.remove(inner.getWsSession());
+		log.info(inner.getWsSession() + "님이 퇴장했습니다.");
+	}
+	
 	@Override
 	public void disconnectPro(WebSocketSession session) {
-		log.info(session.getId() + "님이 퇴장했습니다.");
-
-		playerMap.setStateBySid(session.getId(), Player.ST_LOST);
-		sessions.remove(session.getId());
+		if (sessions.containsKey(session.getId())) {
+			sessions.remove(session.getId());
+			UserInner inner = innerMap.readByWSId(session.getId());
+			if (inner != null){
+				close(inner.getId());
+			}
+		}
 	}
 
-	@Override
+	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
 		log.info(session.getId() + " -> " + message.getPayload());
 		WSMsg raw = WSMsg.convert(message.getPayload());
@@ -79,52 +98,82 @@ public class StreamServiceImpl implements StreamService {
 
 		if (webSocketMethods.containsKey(raw.getType())) {
 			Method m = webSocketMethods.get(raw.getType());
+
+			log.info("msgProType: "+raw.getType());
 			m.invoke(this, session.getId(), raw.cont+"");
 		}
 	}
 
-	@Override @WSReqeust
+	@Override @WSReqeust @Transactional
 	public void auth(String sId, String msg) throws Exception {
 		log.info(sId + "님이 인증 시도 중");
 		
 		Auth auth = Auth.convert(msg);
 		if (auth != null) {
 			int uid = auth.getUid();
-			if (playerMap.checkCode(uid, auth.getCode()) > 0) {
-				playerMap.setSession(uid, sId);
-				playerMap.setStateBySid(sId, Player.ST_CONNECT);
+			if (innerMap.checkWSCode(uid, auth.getCode()) > 0) {
+				innerMap.setWSId(uid, sId);
+				innerMap.setConnect(uid, 1);
+				updateIp(uid, sId);
 				log.info(sId + "님이 인증했습니다.");
-				PlayerListVo me = playerMap.getMeJoinInfo(uid);
-				sendWithoutSender(sId, "player.join", cvPlayer(me));
+				
+				WSPlayer me = playerMap.getWSPlayer(uid).CanSend();
+				sendWithoutSender(sId, "player.join", me);
 			}
 		}
 	}
 
+	private void updateIp(int uid, String sid) {
+		int rid = 0; // 프로필 읽어온다음엔 수정할것
+		int nuid = (uid<1)?innerMap.readByWSId(sid).getId():uid;
+		String nsid = (sid==null)?innerMap.getWSId(uid):sid;
+		String ip = sessions.get(nsid).getRemoteAddress().getHostName();
+		playerMap.setIp(nuid, rid, ip);
+		
+	}
+
+	private UserTotal getTUserBySid(String sId) {
+		UserTotal user = new UserTotal();
+		
+		user.setInner(innerMap.readByWSId(sId));
+		user.setPl(playerMap.read(user.getInner().getId()));
+		user.setUser(userMap.read(user.getPl().getId()));
+		user.setRoom(roomMap.read(user.getPl().getRoom()));
+		//user.setProf(profMap.read(user.getInner().getId()));
+		return user;
+	}
+	
 	@Override @WSReqeust
 	public void chat(String sId, String msg) throws Exception {
-		Player pl = playerMap.readBySid(sId);
-		UserCore user = userMap.read(pl.getId());
-		log.info("send_chat:start: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
+		
+		UserTotal user = getTUserBySid(sId);
+		
+		log.info("send_chat:start: "+user.getRoom().getTitle()+ "/"+user.getUser().getNickname()+": "+msg);
 
-		int roomId = pl.getRoomId();
+		int room = user.getPl().getRoom();
 		
 		WSChat rst = new WSChat();
-		rst.setNick(user.getNickname());
+		rst.setNick(user.getUser().getNickname());
 		rst.setCont(msg);
-		rst.setTime(new SimpleDateFormat("hh:mm").format(new Date()));
+
+		TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
+		DateFormat df = new SimpleDateFormat("HH:mm:ss");
+		df.setTimeZone(tz);
+		rst.setTime(df.format(new Date()));
+		
 		rst.setType("o");
 		
-		List<Player> pls = playerMap.getPlayers(roomId);
+		List<Player> pls = playerMap.getPlayers(room);
 		for (Player cur : pls) {
-			if (cur.getRoomId() == roomId && cur.getState() > 0) {
-				String cur_sid = cur.getChatSessionId();
+			if (cur.getRoom() == room) {
+				String cur_sid = innerMap.getWSId(cur.getId());
 				if (cur_sid.equals(sId)) {
 					rst.setType("me");
 				}
 				send(cur_sid, "chat", rst);
 			}
 		}
-		log.info("send_chat:end: "+pl.getRoomId() + "/"+user.getNickname()+": "+msg);
+		log.info("send_chat:end: "+user.getRoom().getTitle()+ "/"+user.getUser().getNickname()+": "+msg);
 	}
 	
 
@@ -134,6 +183,7 @@ public class StreamServiceImpl implements StreamService {
 		if (msg.equals("roomList")) {
 			List<Room> rooms = roomMap.getCurrentRooms();
 			send(sId, "room.init", "{}");
+			if (!rooms.isEmpty()) 
 			for (Room cur : rooms) {
 				if (cur.getId() != 0) {
 					send(sId, "room.add", cur);
@@ -141,23 +191,12 @@ public class StreamServiceImpl implements StreamService {
 			}
 		}
 		if (msg.equals("playerList")) {
-			List<PlayerListVo> users = playerMap.getActiver();
+			List<WSPlayer> users = playerMap.getAllWSPlayer();
 			send(sId, "player.init", "{}");
-			for (PlayerListVo cur : users) {
-				send(sId, "player.add", cvPlayer(cur));
+			for (WSPlayer cur : users) {
+				send(sId, "player.add", cur.CanSend());
 			}
 		}
-	}
-	
-	public WSPlayer cvPlayer(PlayerListVo p) {
-		WSPlayer rst = new WSPlayer();
-		rst.setIcon("unnamed.png");
-		rst.setNick(p.getNick());
-		rst.setRating(1500);
-		rst.setRole((p.getUid() == p.getHost()?"host":""));
-		rst.setRoom(p.getRid());
-		rst.setUid(p.getUid());		
-		return rst;		
 	}
 
 	@Override
@@ -271,5 +310,6 @@ public class StreamServiceImpl implements StreamService {
 		}
 			
 	}
+
 
 }

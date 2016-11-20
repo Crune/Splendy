@@ -21,6 +21,11 @@ public class WSPlayer {
 	public String role;
 	@SerializedName("room") @Expose
 	public int room;
+
+	public WSPlayer CanSend() {
+		setRole((getUid() == Integer.parseInt(getRole()))?"host":"");
+		return this;
+	}
 	
 	public static WSPlayer convert(String source) {
 		return new Gson().fromJson(source, WSPlayer.class);

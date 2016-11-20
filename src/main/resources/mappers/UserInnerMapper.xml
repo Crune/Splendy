@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kh.splendy.mapper.UserInnerMapper">
+	<resultMap id="userInnerResult" type="org.kh.splendy.vo.UserInner">
+		<result column="U_ID"			property="id"			javaType="int" />
+		<result column="U_WS_ID"		property="wsSession"	javaType="java.lang.String" />
+		<result column="U_WS_AUTH"		property="wsAuthCode"	javaType="java.lang.String" />
+		<result column="U_REG_CODE"		property="regCode"		javaType="java.lang.String" />
+		<result column="U_CONNECT"		property="connect"		javaType="int" />
+		<result column="U_ROLE"			property="role"			javaType="java.lang.String" />
+	</resultMap>
+</mapper>

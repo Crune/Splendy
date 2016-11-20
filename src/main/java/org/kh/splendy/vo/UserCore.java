@@ -48,7 +48,6 @@ public class UserCore {
 	}	
 	
 	public void openInfo() {
-		this.id = 0;
 		this.password = "";
 		this.enabled = 0;
 		this.notLocked = 0;

@@ -110,12 +110,7 @@ public class UserServiceImpl implements UserService {
 	public void credentUser(String code) throws Exception {
 		userMap.credentUser(code);
 	}
-
-	@Override
-	public void insertCredent(String credent_code) throws Exception {
-		userMap.insertCredent(credent_code);
-	}
-
+	
 	@Override
 	public List<UserCore> selectAll() throws Exception {
 		List<UserCore> list = userMap.selectAll();
@@ -177,7 +172,7 @@ public class UserServiceImpl implements UserService {
 	@Override @Transactional
 	public void joinUser(UserCore user, String credent_code) throws Exception {
 		userMap.createUser(user);
-		userMap.insertCredent(credent_code);
+		userMap.updateCredent(user.getEmail(), credent_code);
 		sendEmail(user, credent_code);
 	}
 

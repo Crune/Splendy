@@ -21,10 +21,11 @@ public interface RoomMapper {
 	
 	String TABLE = "KH_ROOM";
 	
-	String COLUMNS = "RM_ID, RM_TITLE, RM_PW, RM_INFO, RM_PL_LIMITS, RM_STATE, RM_HOST";
-	String C_VALUES = "#{id}, #{title, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{info, jdbcType=CLOB}, #{playerLimits, jdbcType=INTEGER}, #{state, jdbcType=INTEGER}, #{hostId, jdbcType=INTEGER}";
-	String UPDATES = "RM_TITLE=#{title}, RM_PW=#{password}, RM_INFO=#{info}"
-			+ ", RM_PL_LIMITS=#{playerLimits}, RM_STATE=#{state}, RM_HOST=#{hostId}";
+	String COLUMNS = "RM_ID, RM_TITLE, RM_PW, RM_INFO, RM_PL_LIMITS, RM_HOST";
+	String C_VALUES = "#{id}, #{title, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{info, jdbcType=CLOB}, #{playerLimits, jdbcType=INTEGER}, #{host, jdbcType=INTEGER}";
+	String UPDATES = "RM_TITLE=#{title, jdbcType=VARCHAR}, RM_PW=#{password, jdbcType=VARCHAR}, RM_INFO=#{info, jdbcType=CLOB}"
+			+ ", RM_PL_LIMITS=#{playerLimits, jdbcType=INTEGER}, RM_HOST=#{host, jdbcType=INTEGER}"
+			+ ", RM_WINNER=#{winner, jdbcType=INTEGER}, RM_START=#{start, jdbcType=INTEGER}, RM_END=#{end, jdbcType=INTEGER}";
 	
 	String KEY = "RM_ID";
 
@@ -36,14 +37,13 @@ public interface RoomMapper {
 		@Result(property = "id", column = "RM_ID"),
 		@Result(property = "title", column = "RM_TITLE"),
 		@Result(property = "playerLimits", column = "RM_PL_LIMITS"),
-		@Result(property = "state", column = "RM_STATE"),
 		@Result(property = "hostId", column = "RM_HOST"),
 		@Result(property = "password", column = "RM_PW"),
 		@Result(property = "info", column = "RM_INFO")
 	})*/
 	@ResultMap("roomResult")
 	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
-	public Player read(int id); // 수정: 클래스 명
+	public Room read(int id); // 수정: 클래스 명
 
 	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
 	public void update(Room room);
@@ -68,17 +68,14 @@ public interface RoomMapper {
 	
 	@Update("update "+TABLE+" set RM_PL_LIMITS=#{playerLimits} where "+KEY+"=#{id} ")
 	public void setPlayerLimits(@Param("id") int id, @Param("playerLimits") int value);
-	
-	@Update("update "+TABLE+" set RM_STATE=#{state} where "+KEY+"=#{id} ")
-	public void setState(@Param("id") int id, @Param("state") int value);
 
-	@Update("update "+TABLE+" set RM_HOST=#{hostId} where "+KEY+"=#{id} ")
+	@Update("update "+TABLE+" set RM_HOST=#{host} where "+KEY+"=#{id} ")
 	public void setHostId(@Param("id") int id, @Param("hostId") int value);
 
 
 	// Another
 	@ResultMap("roomResult")
-	@Select("select * from "+TABLE+" where RM_STATE="+Room.ST_READY+" or RM_STATE ="+Room.ST_PROGRESS)
+	@Select("select * from "+TABLE+" where RM_END is not null and RM_ID <> 0")
 	public List<Room> getCurrentRooms();
 
 }
