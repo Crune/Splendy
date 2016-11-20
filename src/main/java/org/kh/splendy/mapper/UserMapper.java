@@ -96,7 +96,7 @@ public interface UserMapper {
 	// SQL query in xml
 	public void credentUser(String code) throws Exception;
 	
-	@Insert("insert into KH_USER_CREDENT (U_ID, U_CREDENT_CODE) values (KH_USER_SEQ.CURRVAL, #{credent_code})")
+	@Insert("insert into KH_USER_INNER (U_ID, U_REG_CODE) values (KH_USER_SEQ.CURRVAL, #{credent_code})")
 	public void insertCredent(String credent_code) throws Exception;
 	
 	// SQL query in xml
