@@ -28,6 +28,8 @@ public interface StreamService {
 
 	void sendR(String sId, String type, Object cont) throws Exception;
 
+	void cardCount(String sId, String msg) throws Exception;
+
 
 
 

@@ -33,14 +33,9 @@ public class StreamServiceImpl implements StreamService {
 	private List<Card> deck_lev3 = null;
 	private List<Card> deck_levN = null;
 	
-	private static int deck_levN_iter = 5;
-	private static int deck_lev1_iter = 5;
-	private static int deck_lev2_iter = 5;
-	private static int deck_lev3_iter = 5;
-	
-	
+	private int deck_levN_iter;
+		
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
-
 	private static Map<String, Method> webSocketMethods = new HashMap<String, Method>();
 
 	@Autowired private RoomMapper roomMap;
@@ -259,12 +254,12 @@ public class StreamServiceImpl implements StreamService {
 			sendR(sId, "init_lev3", initLev3Card);			
 		}
 		
-		if(msg.equals("getHeroCard")){			
+		if(msg.equals("getHeroCard")){	
+			
 			if(deck_levN_iter < deck_levN.size()){
 				sendR(sId, "getHeroCard", deck_levN.get(deck_levN_iter));
 				deck_levN_iter++;
 			} else {
-				log.info(deck_levN_iter+"");
 				return;
 			} 
 			
@@ -272,4 +267,16 @@ public class StreamServiceImpl implements StreamService {
 			
 	}
 
+	@Override @WSReqeust
+	public void cardCount(String sId, String msg) throws Exception {
+		/*Gson gson = new Gson();
+		Object obj = gson.fromJson(msg, Object.class);
+		System.out.println(obj);*/
+		
+		if(msg.equals("heroCardCount")){
+			log.info(msg);
+		}
+		
+	}
+	
 }

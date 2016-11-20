@@ -138,3 +138,8 @@ li{
 .jewel_container_M{
 	display: flex;
 }
+
+.card_define:hover { 
+    background-color: gold;
+    cursor: pointer;
+}

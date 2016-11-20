@@ -25,6 +25,15 @@ var lev3CardList = new Array();
 var lev2CardList = new Array();
 var lev1CardList = new Array();
 
+var rest_cardValue = {
+		rest_heroCardValue : 5,
+		rest_lev3CardValue : 15,
+		rest_lev2CardValue : 25,
+		rest_lev1CardValue : 35
+}
+
+
+
 
 $(document).ready(
 		function() {			
@@ -109,6 +118,10 @@ $(document).ready(
 				if(card.type === "getHeroCard"){
 					console.log(evt);
 				}
+				
+				if(card.type === "heroCardCountPro"){
+					
+				}
 			};
 
 			chatSock.onclose = function() {
@@ -160,7 +173,7 @@ $(document).ready(
 								$("#player" + (orderCount + 1)).css("background-color", "red");
 							}
 						}
-
+						
 					});
 
 			$("#jewel_green_img").click(
@@ -360,6 +373,10 @@ $(document).ready(
 			});
 			
 			$("#heroCard_detail_1").click(function (){
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);
+				console.log(json);
+				wssend('cardCount', json);
 				wssend('cardRequest', 'getHeroCard');
 			})
 			
