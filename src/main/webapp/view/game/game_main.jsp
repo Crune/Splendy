@@ -96,40 +96,41 @@
 		</div>
 		<div class="jewel_group">
 			<div class="jewel">
-				<button type="button" class="btn btn-default" id="get_whiteJ">get</button>
-				<div class="jewel_kind">white</div> 
+				<img class="jewel_img"src="/img/cards/jewel_gold.png"/>				
+				<div id="jewel_gold_value"></div>
+			</div>
+			
+			<div class="jewel">
+				<img  class="jewel_img" src="/img/cards/jewel_white.png"/>				
 				<div id="jewel_white_value"></div>
 			</div>
 			<div class="jewel">
-				<button type="button" class="btn btn-default" id="get_greenJ">get</button>
-				<div class="jewel_kind">green</div> 
+				<img  class="jewel_img" src="/img/cards/jewel_green.png"/>		
 				<div id="jewel_green_value"></div>
 			</div>
 			<div class="jewel">
-				<button type="button" class="btn btn-default" id="get_blueJ">get</button>
-				<div class="jewel_kind">blue</div>
+				<img  class="jewel_img" src="/img/cards/jewel_blue.png"/>				
 				<div id="jewel_blue_value"></div>
 			</div>
 			<div class="jewel">
-				<button type="button" class="btn btn-default" id="get_redJ">get</button>
-				<div class="jewel_kind">red</div> 
+				<img  class="jewel_img" src="/img/cards/jewel_red.png"/>				
 				<div id="jewel_red_value"></div>
 			</div>
-			<div class="jewel"><button type="button" class="btn btn-default" id="get_blackJ">get</button>
-				<div class="jewel_kind">black</div> 
+			<div class="jewel">
+				<img  class="jewel_img" src="/img/cards/jewel_black.png"/>				
 				<div id="jewel_black_value"></div>
-				</div>
-			<div class="jewel"><button type="button" class="btn btn-default" id="get_goldJ">get</button>
-				<div class="jewel_kind">gold</div> 
-				<div id="jewel_gold_value"></div>
-				</div>
+			</div>
+			
 		</div>
 		
 		<div class="deck_container">
 			<div class="deck_level">
-				<div id="deck_lev3"><img src="/img/cards/back_card_lev3"/></div>
-				<div id="deck_lev2"><img src="/img/cards/back_card_lev2"/></div>
-				<div id="deck_lev1"><img src="/img/cards/back_card_lev1"/></div>
+				<div id="deck_lev3"><img src="/img/cards/back_card_lev3.png"/></div>
+				<div id="lev3_left">20</div>
+				<div id="deck_lev2"><img src="/img/cards/back_card_lev2.png"/></div>
+				<div id="lev2_left">20</div>
+				<div id="deck_lev1"><img src="/img/cards/back_card_lev1.png"/></div>
+				<div id="lev1_left">20</div>
 			</div>
 		</div>
 		
