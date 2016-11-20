@@ -5,7 +5,7 @@ var player3 = new Player("minjung", 3);
 var player4 = new Player("jinkyu", 4);
 
 var cardManager = new CardManager();
-var INIT_POINT = 0;
+var INIT_POINT = 0;  //소모되는 행동 포인트
 var ONE_POINT = 1;
 var TWO_POINT = 2;
 var THREE_POINT = 3;
@@ -73,9 +73,9 @@ $(document).ready(
 					for(var i in initHeroCards){
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
-						$("#heroCard_detail_" + (i+1)).html(template(initHeroCards[i]));						
+						$("#heroCard_detail_" + (i+1)).html(template(initHeroCards[i]));
+						heroCardList.push(initHeroCards[i]);						
 					}	
-					heroCardList.push(initHeroCards);
 					console.log(heroCardList);
 				}
 				
@@ -85,9 +85,9 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev3Card_detail_" + (i+1)).html(template(lev3Cards[i]));
-						
+						lev3CardList.push(lev3Cards[i]);
 					}	
-					lev3CardList.push(lev3Cards);
+					
 					console.log(lev3CardList);
 				}
 				
@@ -97,9 +97,9 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev2Card_detail_" + (i+1)).html(template(lev2Cards[i]));
-						
+						lev2CardList.push(lev2Cards[i]);
 					}
-					lev2CardList.push(lev2Cards);
+					
 					console.log(lev2CardList);
 				}
 				
@@ -109,9 +109,9 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev1Card_detail_" + (i+1)).html(template(lev1Cards[i]));
-						
+						lev1CardList.push(lev1Cards[i]);
 					}	
-					lev1CardList.push(lev1Cards);
+					
 					console.log(lev1CardList);
 				}
 				
@@ -179,7 +179,9 @@ $(document).ready(
 								$("#player" + (orderCount + 1)).css("background-color", "red");
 							}
 						}
-						
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
 					});
 
 			$("#jewel_green_img").click(
@@ -227,6 +229,9 @@ $(document).ready(
 								$("#player" + (orderCount + 1)).css("background-color", "red");
 							}
 						}
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
 					});
 			$("#jewel_blue_img").click(
 					function() {
@@ -272,6 +277,9 @@ $(document).ready(
 								orderCount = 0; // 플레이어 선택자를 초기화
 								$("#player" + (orderCount + 1)).css("background-color", "red");
 							}
+						}
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
 						}
 					});
 			$("#jewel_red_img").click(
@@ -322,6 +330,9 @@ $(document).ready(
 										"background-color", "red");
 							}
 						}
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
 					});
 			$("#jewel_black_img").click(
 					function() {
@@ -371,6 +382,10 @@ $(document).ready(
 										"background-color", "red");
 							}
 						}
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
+						console.log(players[1]);
 					});
 
 			$(".jewel_img").click(function(){
@@ -379,6 +394,7 @@ $(document).ready(
 			});
 			
 			$("#heroCard_detail_1").click(function (){
+				console.log(heroCardList[0]);
 				if(rest_cardValue.rest_heroCardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -389,6 +405,7 @@ $(document).ready(
 				wssend('cardRequest', 'getHeroCard');
 			});
 			$("#heroCard_detail_2").click(function (){
+				console.log(heroCardList[1]);
 				if(rest_cardValue.rest_heroCardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -399,6 +416,7 @@ $(document).ready(
 				wssend('cardRequest', 'getHeroCard');
 			});
 			$("#heroCard_detail_3").click(function (){
+				console.log(heroCardList[2]);
 				if(rest_cardValue.rest_heroCardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -409,6 +427,7 @@ $(document).ready(
 				wssend('cardRequest', 'getHeroCard');
 			});
 			$("#heroCard_detail_4").click(function (){
+				console.log(heroCardList[3]);
 				if(rest_cardValue.rest_heroCardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -419,6 +438,7 @@ $(document).ready(
 				wssend('cardRequest', 'getHeroCard');
 			});
 			$("#heroCard_detail_5").click(function (){
+				console.log(heroCardList[4]);
 				if(rest_cardValue.rest_heroCardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -430,6 +450,7 @@ $(document).ready(
 			});
 			
 			$("#lev3Card_detail_1").click(function (){
+				console.log(lev3CardList[0]);
 				if(rest_cardValue.rest_lev3CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -441,6 +462,7 @@ $(document).ready(
 			});
 			
 			$("#lev3Card_detail_2").click(function (){
+				console.log(lev3CardList[1]);
 				if(rest_cardValue.rest_lev3CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -451,6 +473,7 @@ $(document).ready(
 				wssend('cardRequest', 'getHeroCard');
 			});
 			$("#lev3Card_detail_3").click(function (){
+				console.log(lev3CardList[2]);
 				if(rest_cardValue.rest_lev3CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -461,6 +484,7 @@ $(document).ready(
 				wssend('cardRequest', 'getHeroCard');
 			});
 			$("#lev3Card_detail_4").click(function (){
+				console.log(lev3CardList[3]);
 				if(rest_cardValue.rest_lev3CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -472,6 +496,7 @@ $(document).ready(
 			});
 						
 			$("#lev3Card_detail_5").click(function (){
+				console.log(lev3CardList[4]);
 				if(rest_cardValue.rest_lev3CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -483,6 +508,7 @@ $(document).ready(
 			});
 			
 			$("#lev2Card_detail_1").click(function (){
+				console.log(lev2CardList[0]);
 				if(rest_cardValue.rest_lev2CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -494,6 +520,7 @@ $(document).ready(
 			});
 			
 			$("#lev2Card_detail_2").click(function (){
+				console.log(lev2CardList[1]);
 				if(rest_cardValue.rest_lev2CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -505,6 +532,7 @@ $(document).ready(
 			});
 			
 			$("#lev2Card_detail_3").click(function (){
+				console.log(lev2CardList[2]);
 				if(rest_cardValue.rest_lev2CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -521,12 +549,14 @@ $(document).ready(
 					return;
 				}
 				rest_cardValue.rest_lev2CardValue--;
+				console.log(lev2CardList[3]);
 				var json = JSON.stringify(rest_cardValue);				
 				wssend('cardCount', json);
 				wssend('cardRequest', 'getHeroCard');
 			});
 			
 			$("#lev2Card_detail_5").click(function (){
+				console.log(lev2CardList[4]);
 				if(rest_cardValue.rest_lev2CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -538,9 +568,15 @@ $(document).ready(
 			});
 			
 			$("#lev1Card_detail_1").click(function (){
+				console.log(lev1CardList[0]);
 				if(rest_cardValue.rest_lev1CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
+				}
+				for(var player in players){
+					if(player.getTurn() === true){
+						
+					}
 				}
 				rest_cardValue.rest_lev1CardValue--;
 				var json = JSON.stringify(rest_cardValue);				
@@ -549,6 +585,7 @@ $(document).ready(
 			});
 			
 			$("#lev1Card_detail_2").click(function (){
+				console.log(lev1CardList[1]);
 				if(rest_cardValue.rest_lev1CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -560,6 +597,7 @@ $(document).ready(
 			});
 			
 			$("#lev1Card_detail_3").click(function (){
+				console.log(lev1CardList[2]);
 				if(rest_cardValue.rest_lev1CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -571,6 +609,7 @@ $(document).ready(
 			});
 			
 			$("#lev1Card_detail_4").click(function (){
+				console.log(lev1CardList[3]);
 				if(rest_cardValue.rest_lev1CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -582,6 +621,7 @@ $(document).ready(
 			});
 			
 			$("#lev1Card_detail_5").click(function (){
+				console.log(lev1CardList[4]);
 				if(rest_cardValue.rest_lev1CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;

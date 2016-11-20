@@ -18,6 +18,13 @@ function Player(userId, order){
 	this.redJewel = false;
 	this.blueJewel = false;
 	this.goldJewel = false;
+	
+	this.blackJewel_value = 0;
+	this.greenJewel_value = 0;
+	this.whiteJewel_value = 0;
+	this.redJewel_value = 0;
+	this.blueJewel_value = 0;
+	this.goldJewel_value = 0;
 	//각 카드 갯수
 	this.black_card = 0;
 	this.green_card = 0;
@@ -131,7 +138,7 @@ Player.prototype = {
 			
 		},
 		
-		getTurn : function(){
+		getTurn : function(){			
 			return this.turn;
 		},
 		
@@ -292,5 +299,14 @@ Player.prototype = {
 				return jewelValue;
 
 			}
+		},
+		
+		getJewelsValue : function(){
+			this.blackJewel_value = $("#player" + this.order + "_jewel_black").html();
+			this.whiteJewel_value = $("#player" + this.order + "_jewel_white").html();
+			this.greenJewel_value = $("#player" + this.order + "_jewel_green").html();
+			this.blueJewel_value = $("#player" + this.order + "_jewel_blue").html();
+			this.redJewel_value = $("#player" + this.order + "_jewel_red").html();
+			this.goldJewel_value = $("#player" + this.order + "_jewel_gold").html();			
 		}
 }
