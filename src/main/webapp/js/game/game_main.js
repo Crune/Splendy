@@ -119,7 +119,13 @@ $(document).ready(
 					console.log(evt);
 				}
 				
-				if(card.type === "heroCardCountPro"){
+				if(card.type === "cardCountPro"){
+					
+					var json = JSON.parse(evt.data);
+					rest_cardValue.rest_heroCardValue = json.cont.rest_heroCardValue;
+					rest_cardValue.rest_lev3CardValue = json.cont.rest_lev3CardValue;
+					rest_cardValue.rest_lev2CardValue = json.cont.rest_lev2CardValue;
+					rest_cardValue.rest_lev1CardValue = json.cont.rest_lev1CardValue;
 					
 				}
 			};
@@ -373,11 +379,55 @@ $(document).ready(
 			});
 			
 			$("#heroCard_detail_1").click(function (){
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 히어로 카드가 없습니다.');
+					return;
+				}
 				rest_cardValue.rest_heroCardValue--;
-				var json = JSON.stringify(rest_cardValue);
-				console.log(json);
+				var json = JSON.stringify(rest_cardValue);				
 				wssend('cardCount', json);
 				wssend('cardRequest', 'getHeroCard');
-			})
+			});
+			$("#heroCard_detail_2").click(function (){
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 히어로 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			$("#heroCard_detail_3").click(function (){
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 히어로 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			$("#heroCard_detail_4").click(function (){
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 히어로 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			$("#heroCard_detail_5").click(function (){
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 히어로 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
 			
 		});

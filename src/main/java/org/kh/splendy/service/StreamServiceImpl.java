@@ -269,14 +269,9 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override @WSReqeust
 	public void cardCount(String sId, String msg) throws Exception {
-		/*Gson gson = new Gson();
-		Object obj = gson.fromJson(msg, Object.class);
-		System.out.println(obj);*/
-		
-		if(msg.equals("heroCardCount")){
-			log.info(msg);
-		}
-		
+		Gson gson = new Gson();
+		GameLog gameLog = gson.fromJson(msg, GameLog.class);
+		sendR(sId, "cardCountPro", gameLog);		
 	}
 	
 }
