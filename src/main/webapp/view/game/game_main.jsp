@@ -123,8 +123,16 @@
 				<div class="jewel_kind">gold</div> 
 				<div id="jewel_gold_value"></div>
 				</div>
-
 		</div>
+		
+		<div class="deck_container">
+			<div class="deck_level">
+				<div id="deck_lev3"><img src="/img/cards/back_card_lev3"/></div>
+				<div id="deck_lev2"><img src="/img/cards/back_card_lev2"/></div>
+				<div id="deck_lev1"><img src="/img/cards/back_card_lev1"/></div>
+			</div>
+		</div>
+		
 		<div class="cards_container">
 		
 			<div class="container_cardLevel" id="hero_level">
