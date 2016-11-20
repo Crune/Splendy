@@ -8,6 +8,7 @@ public interface StreamService {
 
 	void connectPro(WebSocketSession session);
 
+	void close(int uid);
 	void disconnectPro(WebSocketSession session);
 
 	void msgPro(WebSocketSession session, TextMessage message) throws Exception;
@@ -29,13 +30,6 @@ public interface StreamService {
 
 	void sendR(String sId, String type, Object cont) throws Exception;
 
-	void close(int uid);
-
-
-
-
-
-
-
+	void cardCount(String sId, String msg) throws Exception;
 
 }

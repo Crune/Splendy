@@ -10,6 +10,10 @@ public class GameLog {
 	private String roomId;
 	private String action;	
 	private String actionVaule; //액션을 사용한 값
+	private int rest_heroCardValue;
+	private int rest_lev3CardValue;
+	private int rest_lev2CardValue;
+	private int rest_lev1CardValue;
 	
 	
 	public static GameLog convert(String source){
