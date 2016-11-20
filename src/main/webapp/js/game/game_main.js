@@ -116,7 +116,7 @@ $(document).ready(
 			};
 
 			
-			$("#get_whiteJ").click(
+			$("#jewel_white_img").click(
 					function() {						
 						var player;
 						var nextPlayer;
@@ -163,7 +163,7 @@ $(document).ready(
 
 					});
 
-			$("#get_greenJ").click(
+			$("#jewel_green_img").click(
 					function() {
 						var player;
 						var nextPlayer;
@@ -209,7 +209,7 @@ $(document).ready(
 							}
 						}
 					});
-			$("#get_blueJ").click(
+			$("#jewel_blue_img").click(
 					function() {
 						var player;
 						var nextPlayer;
@@ -255,7 +255,7 @@ $(document).ready(
 							}
 						}
 					});
-			$("#get_redJ").click(
+			$("#jewel_red_img").click(
 					function() {
 						var player;
 						var nextPlayer;
@@ -304,7 +304,7 @@ $(document).ready(
 							}
 						}
 					});
-			$("#get_blackJ").click(
+			$("#jewel_black_img").click(
 					function() {
 						var player;
 						var nextPlayer;
@@ -354,7 +354,10 @@ $(document).ready(
 						}
 					});
 
-			
+			$(".jewel_img").click(function(){
+				field_jewel.modalJewel();
+				$('#myModal').modal('show');
+			});
 			
 			$("#heroCard_detail_1").click(function (){
 				wssend('cardRequest', 'getHeroCard');
