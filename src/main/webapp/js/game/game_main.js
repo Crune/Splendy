@@ -12,7 +12,7 @@ var THREE_POINT = 3;
 
 var orderCount = 0;
 var players = [ player1, player2, player3, player4 ];
-var game_status;
+
 var jewelWhiteValue;	//플레이어가 보석을 얻어올 때마다 현재 남은 보석 갯수로 초기화 되는 변수
 var jewelGreenValue;
 var jewelBlackValue;
@@ -20,7 +20,10 @@ var jewelRedValue;
 var jewelBlueValue;
 var jewelGoldValue;
 
-
+var heroCardList = new Array();
+var lev3CardList = new Array();
+var lev2CardList = new Array();
+var lev1CardList = new Array();
 
 
 $(document).ready(
@@ -61,8 +64,10 @@ $(document).ready(
 					for(var i in initHeroCards){
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
-						$("#heroCard_detail_" + (i+1)).html(template(initHeroCards[i]));
-					}					
+						$("#heroCard_detail_" + (i+1)).html(template(initHeroCards[i]));						
+					}	
+					heroCardList.push(initHeroCards);
+					console.log(heroCardList);
 				}
 				
 				if(card.type === "init_lev3"){
@@ -71,7 +76,10 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev3Card_detail_" + (i+1)).html(template(lev3Cards[i]));
-					}					
+						
+					}	
+					lev3CardList.push(lev3Cards);
+					console.log(lev3CardList);
 				}
 				
 				if(card.type === "init_lev2"){
@@ -80,7 +88,10 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev2Card_detail_" + (i+1)).html(template(lev2Cards[i]));
-					}					
+						
+					}
+					lev2CardList.push(lev2Cards);
+					console.log(lev2CardList);
 				}
 				
 				if(card.type === "init_lev1"){
@@ -89,7 +100,10 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev1Card_detail_" + (i+1)).html(template(lev1Cards[i]));
-					}					
+						
+					}	
+					lev1CardList.push(lev1Cards);
+					console.log(lev1CardList);
 				}
 				
 				if(card.type === "getHeroCard"){
