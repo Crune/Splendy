@@ -12,7 +12,7 @@ jdbc.connection : Logs connection open and close events
 	<!-- log4jdbc-log4j2 -->
 	<logger name="jdbc.sqlonly"			level="INFO" />
 	<logger name="jdbc.sqltiming"		level="OFF" />
-	<logger name="jdbc.audit"			level="DEBUG" />
+	<logger name="jdbc.audit"			level="OFF" />
 	<logger name="jdbc.resultset"		level="ERROR" />
 	<logger name="jdbc.resultsettable"	level="INFO" />
 	<logger name="jdbc.connection"		level="ERROR" />

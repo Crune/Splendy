@@ -1,5 +1,6 @@
 package org.kh.splendy.service;
 
+import org.kh.splendy.vo.UserCore;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -7,6 +8,7 @@ public interface StreamService {
 
 	void connectPro(WebSocketSession session);
 
+	void close(int uid);
 	void disconnectPro(WebSocketSession session);
 
 	void msgPro(WebSocketSession session, TextMessage message) throws Exception;
@@ -29,12 +31,5 @@ public interface StreamService {
 	void sendR(String sId, String type, Object cont) throws Exception;
 
 	void cardCount(String sId, String msg) throws Exception;
-
-
-
-
-
-
-
 
 }

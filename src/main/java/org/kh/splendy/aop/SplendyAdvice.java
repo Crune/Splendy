@@ -1,12 +1,17 @@
 package org.kh.splendy.aop;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.kh.splendy.annotation.WSReqeust;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -35,8 +40,27 @@ public class SplendyAdvice {
 		log.info(" » Service: ed - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
 		return rst;
 	}
-	
 
+	public void inject(Object getObj, Object setObj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Method[] methods = getObj.getClass().getMethods();
+		
+		Map<String, Method> getter = new HashMap<String, Method>();
+		Map<String, Method> setter = new HashMap<String, Method>();
+		
+		for (Method m : methods) {
+			if (m.getName().length()>3) {
+				String head = m.getName().substring(0, 3);
+				String name = m.getName().substring(3);
+				if (head.equals("set")) setter.put(name, m);
+				if (head.equals("get")) getter.put(name, m);
+			}
+		}
+		
+		for (String curMethodName : setter.keySet()) {
+			Object data = getter.get(curMethodName).invoke(getObj);
+			setter.get(curMethodName).invoke(setObj,data);
+		}
+	}
 
 	public static String getEncSHA256(String txt) throws NoSuchAlgorithmException {
 		StringBuffer sbuf = new StringBuffer();

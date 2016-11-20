@@ -18,7 +18,9 @@ public class LobbyServiceImpl implements LobbyService {
 
 	@Autowired private RoomMapper roomMap;
 	@Autowired private PlayerMapper playerMap;
-	@Autowired private UserMapper userMap;
+	@Autowired private UserInnerMapper innerMap;
+	
+	@Autowired private StreamService stream;
 
 	private static final Logger log = LoggerFactory.getLogger(LobbyServiceImpl.class);
 
@@ -28,25 +30,22 @@ public class LobbyServiceImpl implements LobbyService {
 	}
 
 	@Override @Transactional
-	public void initPlayer(int id) {
-		Player player = new Player();
-		player.setAuthcode(RandomStringUtils.randomAlphanumeric(9));
-		player.setChatSessionId("");
-		player.setId(id);
-		player.setRoomId(0);
-		player.setState(Player.ST_CONNECT);
-		if (playerMap.count(id)<1) {
-			playerMap.create(player);
-		} else {
-			playerMap.update(player);
+	public void initPlayer(UserCore user) {
+		int uid = user.getId();
+		Player pl = playerMap.read(uid);
+		UserInner inner = innerMap.read(uid);
+		if (inner.getWsSession() != null) {
+			stream.close(uid);
 		}
+		innerMap.setWSCode(user.getId(), RandomStringUtils.randomAlphanumeric(9));
+		playerMap.setIsIn(user.getId(), 0, 1);
 	}
 
 	@Override
 	public Auth getAuth(int uid) {
 		Auth auth = new Auth();
 		auth.setUid(uid);
-		auth.setCode(playerMap.getCode(uid));
+		auth.setCode(innerMap.getWSCode(uid));
 		log.info("Auth Info: "+auth);
 		return auth;
 	}
