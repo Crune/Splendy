@@ -19,6 +19,8 @@ body, td, th {
 body {
 	background-color: #191919;
 }
+
+
 </style>
 <script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 <script type='text/javascript' src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
@@ -151,21 +153,28 @@ body {
 					</div>
 				</div>
 				<div class="col-md-8 room_frame">
-					<div id="roomlist" name="roomlist">
-						<div class="lobby_players">
-						<c:forEach begin="1" end="20">
-							<div class="player" id="uid" style="padding-bottom: 10px">
-								<div class="room_icon">
-									<img src="/img/unnamed.png" width="50px" height="50px" />
+					<div class="row lobby_newroom" id="createRoom">
+						<form id="form_newroom" name="form_newroom">
+							<div class="row">
+								<div class="col-md-8">
+									<span class="newroom_title">방제목</span>
+									<input name="title" id="title" type="text" class="form-control" />
+									<span class="newroom_title">소갯말</span>
+									<textarea name="info" id="info" type="text" class="form-control"></textarea>
 								</div>
-								<div class="room_nickname">닉네임</div>
-								<div class="room_rate">레이팅</div>
+								<div class="col-md-4">
+									<span class="newroom_title">비밀번호</span>
+									<input name="password" id="password" type="text" class="form-control" />
+									<span class="newroom_title">인원제한(2~4명)</span>
+									<input name="playerLimits" id="playerLimits" type="text" class="form-control" />
+								</div>
 							</div>
-						</c:forEach>
-						</div>
-						<div class="lobby_room" id="createRoom">
-							
-						</div>
+							<br/>
+							<button id="btn_create" type="button" class="btn btn-default">방개설</button>
+							<button id="btn_create_cancel" type="button" class="btn btn-default">취소</button>
+						</form>
+					</div>
+					<div id="roomlist" name="roomlist">
 						<div class="lobby_room" id="room_1">
 							<div class="room_detail col-md-5">
 								<div class="room_name">아무나 들어오세요</div>
@@ -206,6 +215,17 @@ body {
 							<span class="newroom_text">여기를 눌러 방을 개설하세요!</span>
 						</div>
 					</div>
+					<div class="lobby_players">
+					<c:forEach begin="1" end="20">
+						<div class="player" id="uid" style="padding-bottom: 10px">
+							<div class="room_icon">
+								<img src="/img/unnamed.png" width="50px" height="50px" />
+							</div>
+							<div class="room_nickname">닉네임</div>
+							<div class="room_rate">레이팅</div>
+						</div>
+					</c:forEach>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -234,7 +254,7 @@ body {
   </div><!-- /.modal -->
   
   <div class="modal fade" id="modify_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="width: 265px;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -245,9 +265,10 @@ body {
         		<table>
         			<tr>
         			<input type="hidden" class="form-control" name="email" id="email" value="${user.email}" />
-        				<td>비밀번호</td>
+        				<td>비밀번호&nbsp;</td>
         				<td><input type="password" name="password" class="form-control" id="password"/></td>
         			</tr>
+        			<tr><td>&nbsp;</td></tr>
         			<tr>
         				<td>닉네임</td>
         				<td><input name="nickname" type="text" class="form-control" id="nickname" value="${user.nickname}"/></td>
@@ -256,8 +277,8 @@ body {
          	</form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" name="btn_modify_prc" id="btn_modify_prc">Save changes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+        <button type="button" class="btn btn-primary" name="btn_modify_prc" id="btn_modify_prc">저장하기</button>
       </div>
     </div>
   </div>

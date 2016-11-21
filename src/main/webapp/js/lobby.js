@@ -50,6 +50,17 @@ $( document ).ready(function() {
 	chatSock.onclose = function () {
 		alert("연결끊김!");
 	};
+	
+	// 방개설시
+
+	$("#btn_create").on("click", function() {
+		alert("방개설");
+	});
+	$("#btn_create_cancel").on("click", function() {
+		$("#createRoom").hide();
+		$("#roomlist").append(temp_room_empty());
+		roomMouseEvt();
+	});
 });
 
 var temp_chatmsg = Handlebars.compile($("#temp_chatmsg").html());
@@ -120,7 +131,8 @@ function roomMouseEvt() {
 	}).on("click", function() {
 
 		if ($(this).attr("id") == "room_0") {
-			alert("방 개설");
+			$("div#createRoom").show();
+			$(".empty_room").detach();
 		} else {
 			alert("방 접속: " + $(this).attr("id"));
 		}
