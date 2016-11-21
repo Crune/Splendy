@@ -99,8 +99,7 @@ $(document).ready(
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev3Card_detail_" + (i+1)).html(template(lev3Cards[i]));
 						lev3CardList.push(lev3Cards[i]);
-					}	
-					
+					}					
 					console.log(lev3CardList);
 				}
 				
@@ -135,7 +134,8 @@ $(document).ready(
 					rest_cardValue.rest_heroCardValue = json.cont.rest_heroCardValue;
 					rest_cardValue.rest_lev3CardValue = json.cont.rest_lev3CardValue;
 					rest_cardValue.rest_lev2CardValue = json.cont.rest_lev2CardValue;
-					rest_cardValue.rest_lev1CardValue = json.cont.rest_lev1CardValue;					
+					rest_cardValue.rest_lev1CardValue = json.cont.rest_lev1CardValue;
+					
 				}
 			};
 
