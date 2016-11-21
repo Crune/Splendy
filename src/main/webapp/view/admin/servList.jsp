@@ -76,19 +76,10 @@
 										${list.key}
 									</td>
 									<td>
-										<div id="text_value_${list.key}" class="text_value" style="display: none">
-											${list.value}
-										</div>
-										<div id="input_value_${list.key}" class="input_value" style="display: none">
-											<form method="post" id="${list.key}" name="${list.key}">
-												<input name="value" type="text" class="form-control" value="${list.value}" />
-												<input name="key" type="hidden" class="form-control" value="${list.key}" />
-												<input id="btn_updatePro_${list.key}" class="btn btn-default btn_updatePro" type="submit" value="저장" />
-											</form>
-										</div>
+										${list.value}
 									</td>
 									<td>
-										<input id="btn_update_${list.key}" class="btn btn-default btn_update" type="button" value="수정" />
+										<input id="${list.key}" class="btn btn-default btn_update" type="button" value="수정" />
 									</td>
 								</tr>
 							</c:forEach>
@@ -98,6 +89,32 @@
 			</div>
 		</div>
 	</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">서비스 상태 변경</h4>
+			</div>
+			<div class="modal-body">
+				<div class="index-cont">
+					<form method="post" id="servMF" name="servMF">
+						<div class="form-group">
+							<label for="textfield" id="s_key"> Key :  </label> <input type="hidden" name="key" id="key" class="form-contorl">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 상태 </label> <input type="text" id="value" name="value" class="form-control">
+						</div>
+					</form>
+				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn_modify">Save changes</button>
+				<button type="button" class="btn btn-default btn_modal_close" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 	<!-- Bootstrap core JavaScript
 	================================================== -->
@@ -110,34 +127,49 @@
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
 <script>
 window.onload = function(){
-	$(".text_value").show();
-	$(".input_value").hide();
-	
 	$(".btn_update").on('click', function () {
-		var id = $(this).attr('id');
-		var result = id.split("_");
-		$("#text_value_"+result[2]).hide();
-		$("#input_value_"+result[2]).show();
-	});
-
-	$(".btn_updatePro").on('click', function () {
-		var id = $(this).attr('id');
-		var result = id.split("_");
-		$("#text_value_"+result[2]).show();
-		$("#input_value_"+result[2]).hide();
-		sendRequest(result[2]);
+		var key = $(this).attr('id');
+		modalShow(key)
 	});
 	
+	$(".btn_modal_close").on('click', function () {
+		removeVar();
+	});
+	
+	$(".btn_modify").on('click', function () {
+		modify();
+		removeVar();
+	});
+	
+	$(".close").on('click', function () {
+		removeVar();
+	});
 }
 
-function sendRequest(result) {
+function modalShow(key) {
+	$('#s_key').append(key)
+	$('#key').val(key);
+	$('#myModal').modal('show');
+}
+
+function removeVar() {
+	$('#s_key').empty();
+}
+
+function modify() {
 	$.ajax({
         url:'/admin/servState',
         type:'post',
-        data:$("#"+result).serialize(),
-        success:function(){
+        data:$("#servMF").serialize(),
+        success:function(data){
+        	if(data == 1) {
+        		alert("실패");
+        	} else if(data == 2){
+        		alert("성공");
+        	}
         	window.location.reload();
-        }
+        },error:function(request,status,error){
+		}
     })
 }
 

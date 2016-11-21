@@ -62,14 +62,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int checkPassword(String email, String password) throws Exception {
-		UserCore user = userMap.checkEmail(email);
-		int login_result = -1;
-		if(user != null){
-			login_result = userMap.checkEmail(email).isSamePassword(password);
-		} else {
-			login_result = 0;
-		}
-		return login_result;
+		int num = 0;
+		num = userMap.checkPassword(email, password);
+		return num;
 	}
 
 	@Override
@@ -189,9 +184,14 @@ public class UserServiceImpl implements UserService {
 		return result_pw;
 	}
 	
-	@Override
+	@Override @Transactional
 	public void adminMF(UserCore user) throws Exception {
-		userMap.adminMF(user);
+		String password = user.getPassword();
+		if(password == null){
+			userMap.adminMF(user);
+		} else {
+			userMap.adminPM(user);
+		}
 	}
 
 	@Override @Transactional
@@ -210,5 +210,4 @@ public class UserServiceImpl implements UserService {
 			}
 		}	
 	}
-	
 }

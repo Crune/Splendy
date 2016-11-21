@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Player;
+import org.kh.splendy.vo.WSChat;
 import org.kh.splendy.vo.WSPlayer;
 
 /** 플레이어 참가 정보 테이블을 관리하는 MyBatis Mapper
@@ -48,15 +49,22 @@ public interface PlayerMapper {
 	public void setIp(@Param("uid") int uid, @Param("rid") int rid, @Param("value") String value);
 
 	// Another
-	
+
+	// SQL query in xml
 	public WSPlayer getWSPlayer(@Param("uid") int uid);
 
+	// SQL query in xml
 	public List<WSPlayer> getAllWSPlayer();
 
+	// SQL query in xml
+	public List<WSPlayer> getInRoomPlayer(@Param("sid") String sid);
+
+	// SQL query in xml
+	public WSPlayer getWSPlayerBySid(@Param("sid") String sid);
+	
 	@ResultMap("player")
 	@Select("select * from "+TABLE+" where RM_ID=#{room} AND PL_IS_IN=1 AND U_ID <> 0")
 	public List<Player> getPlayers(int room);
-
 
 	@Select("select inn.u_ws_id"
 			+ " from kh_player pl"
