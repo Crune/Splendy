@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class WSChat {
 
+	@SerializedName("uid") @Expose
+	public int uid;
 	@SerializedName("nick") @Expose
 	public String nick;
 	@SerializedName("cont") @Expose
