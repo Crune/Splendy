@@ -86,7 +86,7 @@ public class AccountController {
 			e.printStackTrace();
 		}
 		
-		request.setAttribute("credent_result", credent_result);
+		/*request.setAttribute("credent_result", credent_result);*/
 		
 		rttr.addFlashAttribute("msg","이메일 인증을 완료하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
 		return "redirect:/";
@@ -109,14 +109,21 @@ public class AccountController {
 		return result_pw;
 	}
 	
-	@RequestMapping("/user/login_suc")
-	public String login_suc(@ModelAttribute("loginForm") UserCore user0,
+	@RequestMapping(
+			value = "/user/login_suc",
+			method = {RequestMethod.GET, RequestMethod.POST},
+			produces = "application/json")
+	public @ResponseBody String login_suc(@ModelAttribute("loginForm") UserCore user0,
 							HttpServletRequest request,
 							HttpSession session) {
 		int result = -1;
 		int login_result = -1;
 		int credent = -1;
 		UserCore user = null;
+		String text = null;
+		
+		System.out.println("email : " + user0.getEmail());
+		System.out.println("password : " + user0.getPassword());
 		
 		try {
 			login_result = userServ.checkPassword(user0.getEmail(), user0.getPassword());
@@ -128,18 +135,25 @@ public class AccountController {
 					session.setAttribute("user", user);
 					session.setAttribute("email", user.getEmail());
 					session.setAttribute("user_id", user.getId());
-			
+					user.openInfo();
+					text = "true";
+					
+			} else if(login_result == 1 && credent == 1) {
+				text = "credentFalse";
+				
+			} else if(login_result == 0) {
+				text = "loginFalse";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		user.openInfo();
-		request.setAttribute("credent", credent);
+		/*request.setAttribute("credent", credent);
 		request.setAttribute("login_result", login_result);
 		request.setAttribute("user", user);
-		request.setAttribute("result", result);
-		return "redirect:/lobby/";
+		request.setAttribute("result", result);*/
+		
+		return text;
 	}
 	
 	@RequestMapping("/user/logout")
