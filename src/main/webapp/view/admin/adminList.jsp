@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,7 +8,7 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="">
 <meta name="author" content="">
-<title>관리자 유저정보 페이지</title>
+<title>관리자 메인페이지</title>
 <!-- Bootstrap core CSS -->
 <link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
 <!-- Custom styles for this template -->
@@ -24,6 +23,7 @@
 <![endif]-->
 </head>
 <body>
+
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -38,9 +38,9 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/admin">메인으로</a></li>
-					<li><a href="/serviceList">서비스</a></li>
+					<li><a href="/servList">서비스</a></li>
+					<li><a href="adminList">관리자</a></li>
 					<li><a href="/userList">유저</a></li>
-					<li><a href="#">Help</a></li>
 				</ul>
 			</div>
 		</div>
@@ -52,88 +52,34 @@
 					<li><a href="/servList">서비스</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="/userList">유저</a></li>
+					<li><a href="/adminList">관리자</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="">Nav item again</a></li>
+					<li><a href="/userList">유저</a></li>
 				</ul>
 			</div>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header">Service 현황</h1>
+						<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<h1 class="page-header">관리자 현황</h1>
 				<div class="table-responsive">
 					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>직책</th>
+								<th>수정</th>
+							</tr>
+						</thead>
 						<tbody>
-							<c:forEach var="user" items="${user}">
+							<c:forEach var="list" items="${list}">
 								<tr>
 									<td>
-										ID
+										${list.id}
 									</td>
 									<td>
-										${user.id}
-									</td>
-								</tr>
-								<tr>
-									<td>
-										닉네임
+										${list.role}
 									</td>
 									<td>
-										${user.nickname}
-									</td>
-								</tr>
-								<tr>
-									<td>
-										E-Mail
-									</td>
-									<td>
-										${user.email}
-									</td>
-								</tr>
-								<tr>
-									<td>
-										패스워드
-									</td>
-									<td>
-										${user.password}
-									</td>
-								</tr>
-								<tr>
-									<td>
-										enabled
-									</td>
-									<td>
-										${user.enabled}
-									</td>
-								</tr>
-								<tr>
-									<td>
-										notLocked
-									</td>
-									<td>
-										${user.notLocked}
-									</td>
-								</tr>
-								<tr>
-									<td>
-										notExpired
-									</td>
-									<td>
-										${user.notExpired}
-									</td>
-								</tr>
-								<tr>
-									<td>
-										notCredential
-									</td>
-									<td>
-										${user.notCredential}
-									</td>
-								</tr>
-								<tr>
-									<td>
-										등록일
-									</td>
-									<td>
-										${user.reg}
+										<input id="${list.email}" class="btn btn-default btn_update" type="button" value="수정" />
 									</td>
 								</tr>
 							</c:forEach>

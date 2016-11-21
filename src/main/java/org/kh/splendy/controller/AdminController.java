@@ -4,8 +4,10 @@ import java.util.List;
 
 
 import org.kh.splendy.service.AdminService;
+import org.kh.splendy.service.ServService;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.PropInDB;
+import org.kh.splendy.vo.Role;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,9 @@ public class AdminController {
 	@Autowired
 	private AdminService adminServ;
 	
+	@Autowired
+	private ServService servServ;
+	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 	
@@ -41,7 +46,7 @@ public class AdminController {
 	@RequestMapping("/servList")
 	public String servList(Model model) throws Exception {
 		log.info("admin access servicelist");
-		List<PropInDB> list = adminServ.readAll();
+		List<PropInDB> list = servServ.readAll();
 		model.addAttribute("list", list);
 		return "admin/servList";
 	}
@@ -55,7 +60,7 @@ public class AdminController {
 		prop.setKey(key);
 		prop.setValue(value);
 		try {
-			adminServ.update(prop);
+			servServ.update(prop);
 		} catch(Exception e) { e.printStackTrace(); }
 	}
 	
@@ -94,4 +99,11 @@ public class AdminController {
 		} catch(Exception e) { e.printStackTrace(); }
 	}
 	
+	@RequestMapping("/adminList")
+	public String adminList(Model model) throws Exception {
+		log.info("admin access adminlist");
+		List<Role> list = adminServ.readAll();
+		model.addAttribute("list", list);
+		return "admin/adminList";
+	}
 }

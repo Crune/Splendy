@@ -38,9 +38,9 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/admin">메인으로</a></li>
-					<li><a href="/serviceList">서비스</a></li>
+					<li><a href="/servList">서비스</a></li>
+					<li><a href="adminList">관리자</a></li>
 					<li><a href="/userList">유저</a></li>
-					<li><a href="#">Help</a></li>
 				</ul>
 			</div>
 		</div>
@@ -52,10 +52,10 @@
 					<li><a href="/servList">서비스</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="/userList">유저</a></li>
+					<li><a href="/adminList">관리자</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="">Nav item again</a></li>
+					<li><a href="/userList">유저</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

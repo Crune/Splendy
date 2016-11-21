@@ -3,51 +3,49 @@ package org.kh.splendy.mapper;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.kh.splendy.vo.Role;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 
-import org.kh.splendy.vo.PropInDB;
-
 import java.util.List;
 /**
  * 
- * 서비스 테이블 관리
+ * 어드민 테이블 관리
  * @author 진규
  *
  */
 public interface AdminMapper {
 	
 	// BASIC CRUD
+	String TABLE = "KH_ADMIN";
 	
-	String TABLE = "KH_SERV";
+	String COLUMNS = "U_ID, U_ROLE";
+	String C_VALUES = "#{id}, #{role}";
+	String UPDATES = "U_ROLE=#{role}";
 	
-	String COLUMNS = "S_KEY, S_VALUE";
-	String C_VALUES = "#{key}, #{value}";
-	String UPDATES = "S_VALUE=#{value}";
-	
-	String KEY = "S_KEY";
+	String KEY = "U_ID";
 	
 	@Insert("insert into "+TABLE+" ( "+COLUMNS+" ) values ( "+C_VALUES+" )")
-	public void create(PropInDB prop);
+	public void create(Role role);
 	
 	@Results(id = "adminResult", value = {
-		@Result(property = "key", column = "S_KEY"),
-		@Result(property = "value", column = "S_VALUE"),
+		@Result(property = "id", column = "U_ID"),
+		@Result(property = "role", column = "U_ROLE"),
 	})
-	@Select("select * from "+TABLE+" where "+KEY+"=#{key}")
-	public PropInDB read(String key);
+	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
+	public Role read(int id);
 	
-	@Update("update "+TABLE+" set "+ UPDATES +" where "+KEY+"=#{key}")
-	public void update(PropInDB prop);
+	@Update("update "+TABLE+" set "+ UPDATES +" where "+KEY+"=#{id}")
+	public void update(Role role);
 	
-	@Delete("delete from "+TABLE+" where "+KEY+"=#{key}")
-	public void delete(String key);
+	@Delete("delete from "+TABLE+" where "+KEY+"=#{id}")
+	public void delete(int id);
 	
 	// Custom
 	@ResultMap("adminResult")
 	@Select("select * from "+TABLE)
-	public List<PropInDB> readAll() throws Exception;
+	public List<Role> readAll() throws Exception;
 	
 }
