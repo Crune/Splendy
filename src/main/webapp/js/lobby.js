@@ -18,6 +18,7 @@ $( document ).ready(function() {
 	chatSock = new SockJS("http://" + window.location.host + "/ws");
 	chatSock.onopen = function () {
 		wssend('auth', auth);	//핸들러에서 구분할 수 있게 
+		wssend('request', 'oldMsg');
 		wssend('request', 'roomList');
 		wssend('request', 'playerList');
 	};
@@ -38,7 +39,7 @@ $( document ).ready(function() {
 			onPlayer(k[1], v);
 		}
 		if (k[0] == 'chat') {
-			onChatMsg(v);
+			onPlayer(k[1], v);
 		}
 		//$("#chatMessage").append(evt.data + "<br/>");
 	};
@@ -54,9 +55,14 @@ var temp_room = Handlebars.compile($("#temp_room").html());
 var temp_player = Handlebars.compile($("#temp_player").html());
 var temp_room_empty = Handlebars.compile($("#temp_room_empty").html());
 
-function onChatMsg(msg) {
-	$("#chatDiv").append(temp_chatmsg(msg));
-	$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+function onChatMsg(type, msg) {
+	if (type != null) {
+		console.log("Chatting initialized!");
+		$("#chatDiv").detach();
+	} else {
+		$("#chatDiv").append(temp_chatmsg(msg));
+		$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+	}
 }
 
 function onPlayer(type, pl) {

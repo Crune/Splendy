@@ -41,7 +41,10 @@ public class StreamServiceImpl implements StreamService {
 	@Autowired private RoomMapper roomMap;
 	@Autowired private PlayerMapper playerMap;
 	@Autowired private UserMapper userMap;
+	@Autowired private MsgMapper msgMap;
+	
 	@Autowired private UserInnerMapper innerMap;
+	
 	@Autowired private CardService cardServ;
 	
 	@Override
@@ -126,37 +129,43 @@ public class StreamServiceImpl implements StreamService {
 	@Override @WSReqeust
 	public void chat(String sId, String msg) throws Exception {
 
-		List<WSPlayer> pls = playerMap.getInRoomPlayer(sId);
-		
-		String nick = "";
-		for (WSPlayer cur : pls) {
-			if (cur.role.equals(sId)) {
-				nick = cur.getNick();
-			}
-		}
+		WSPlayer reqUser = playerMap.getWSPlayerBySid(sId);
 
 		WSChat rst = new WSChat();
-		rst.setNick(nick);
+		rst.setNick(reqUser.getNick());
 		rst.setCont(msg);
 
 		TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
 		DateFormat df = new SimpleDateFormat("HH:mm:ss");
 		df.setTimeZone(tz);
 		rst.setTime(df.format(new Date()));
-		
+
+		List<WSPlayer> pls = playerMap.getInRoomPlayer(sId);
 		for (WSPlayer cur : pls) {
 			if (cur.role.equals(sId)) {
 				rst.setType("me");
 			} else {
 				rst.setType("o");
 			}
-			send(cur.getRole(), "chat", rst);
+			send(cur.getRole(), "chat.new", rst);
 		}
-		
+		rst.setUid(reqUser.getUid());
+		rst.setType("o");
+		newMsg(sId, "chat.new", new Gson().toJson(rst));
 		log.info("send_chat: "+rst);
 	}
-	
 
+	public void newMsg(String sId, String type, String msg) throws Exception {
+		UserInner inner = innerMap.readByWSId(sId);
+		Player player =  playerMap.read(inner.getId());
+
+		Msg newMsg = new Msg();
+		newMsg.setRid(player.getRoom());
+		newMsg.setUid(player.getId());
+		newMsg.setType(type);
+		newMsg.setCont(msg);
+		msgMap.create(newMsg);
+	}
 
 	@Override @WSReqeust
 	public void request(String sId, String msg) throws Exception {
@@ -175,6 +184,20 @@ public class StreamServiceImpl implements StreamService {
 			send(sId, "player.init", "{}");
 			for (WSPlayer cur : users) {
 				send(sId, "player.add", cur.CanSend());
+			}
+		}
+		if (msg.equals("oldMsg")) {
+			WSPlayer reqUser = playerMap.getWSPlayerBySid(sId);
+			List<Msg> msgs = msgMap.readPrevChat(reqUser.getRoom(), 10);
+			send(sId, "chat.init", "{}");
+			for (Msg cur : msgs) {
+				WSChat curMsg = WSChat.convert(cur.getCont());
+				if (curMsg.getUid() == reqUser.getUid()) {
+					curMsg.setType("me");
+				} else {
+					curMsg.setType("o");
+				}
+				send(sId, "chat.new", curMsg);
 			}
 		}
 	}
@@ -207,7 +230,7 @@ public class StreamServiceImpl implements StreamService {
 		if (sids.size() > 0) {
 			for (String cur : sids) {
 				if (cur.equals(sId)) {
-					sessions.get(cur).sendMessage(new TextMessage(msg));
+					send(cur, msg);
 				}
 			}
 		}
@@ -222,7 +245,7 @@ public class StreamServiceImpl implements StreamService {
 	public void sendAll(String msg) throws Exception {
 		List<String> sids = playerMap.getActiverSid();
 		for (String cur : sids) {
-			sessions.get(cur).sendMessage(new TextMessage(msg));
+			send(cur, msg);
 		}
 	}
 	

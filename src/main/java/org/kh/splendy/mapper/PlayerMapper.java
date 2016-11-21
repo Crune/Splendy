@@ -58,11 +58,13 @@ public interface PlayerMapper {
 
 	// SQL query in xml
 	public List<WSPlayer> getInRoomPlayer(@Param("sid") String sid);
+
+	// SQL query in xml
+	public WSPlayer getWSPlayerBySid(@Param("sid") String sid);
 	
 	@ResultMap("player")
 	@Select("select * from "+TABLE+" where RM_ID=#{room} AND PL_IS_IN=1 AND U_ID <> 0")
 	public List<Player> getPlayers(int room);
-
 
 	@Select("select inn.u_ws_id"
 			+ " from kh_player pl"
