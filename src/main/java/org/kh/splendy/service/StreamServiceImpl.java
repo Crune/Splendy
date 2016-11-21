@@ -33,6 +33,7 @@ public class StreamServiceImpl implements StreamService {
 	private List<Card> deck_lev3 = null;
 	private List<Card> deck_levN = null;
 	
+	
 	private int deck_levN_iter;
 		
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
@@ -202,12 +203,10 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override
 	public void send(String sId, String type, Object cont) throws Exception {
-		log.info("sendeee: "+sId + "/"+type+cont);
 		send(sId, cvMsg(type, cont));
 	}
 	@Override
 	public void send(String sId, String msg) throws Exception {
-		log.info("sendkkk: "+sId + "/"+msg);
 		sessions.get(sId).sendMessage(new TextMessage(msg));
 	}
 
@@ -245,10 +244,9 @@ public class StreamServiceImpl implements StreamService {
 		send(sId, type, cont);
 	}
 	
-	@Override @WSReqeust
+	@Override @WSReqeust @Async
 	public void cardRequest(String sId, String msg) throws Exception {
-		
-		
+			
 		/*
 		 *  처음 카드를 세팅하는 조건문
 		 */
@@ -303,7 +301,7 @@ public class StreamServiceImpl implements StreamService {
 			
 	}
 
-	@Override @WSReqeust
+	@Override @WSReqeust @Async
 	public void cardCount(String sId, String msg) throws Exception {
 		Gson gson = new Gson();
 		GameLog gameLog = gson.fromJson(msg, GameLog.class);

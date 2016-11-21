@@ -158,6 +158,7 @@ Player.prototype = {
 				}
 			}
 			var jewelValue = parseInt($("#jewel_white_value").html());
+			
 			var num = $("#player" + player.getOrder() + "_jewel_white").html();
 			if(jewelValue === 0){ 				
 				return 0;
@@ -308,5 +309,14 @@ Player.prototype = {
 			this.blueJewel_value = $("#player" + this.order + "_jewel_blue").html();
 			this.redJewel_value = $("#player" + this.order + "_jewel_red").html();
 			this.goldJewel_value = $("#player" + this.order + "_jewel_gold").html();			
+		},
+		
+		setAllJewelStatusFalse(){
+			this.blackJewel = false;
+			this.greenJewel = false;
+			this.whiteJewel = false;
+			this.redJewel = false;
+			this.blueJewel = false;
+			this.goldJewel = false;
 		}
 }

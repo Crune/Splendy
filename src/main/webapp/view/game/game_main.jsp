@@ -242,7 +242,7 @@
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Modal 제목</h4>
 				</div>
-				<div class="modal-body">					
+				<div class="modal-body">
 					<div class="jewel">
 						<div class="jewel_container_M">
 							<img class="jewel_img" id="jewel_white_img"
@@ -312,8 +312,9 @@
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type='text/javascript'
 	src="/webjars/sockjs-client/1.1.1/sockjs.min.js"></script>
-<script type='text/javascript' src="/webjars/handlebars/4.0.5/handlebars.js"></script>
-	
+<script type='text/javascript'
+	src="/webjars/handlebars/4.0.5/handlebars.js"></script>
+
 <script type="text/javascript" src="/js/commonWS.js"></script>
 <script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
 <script type='text/javascript' src="/js/game/Game_CardManager.js"></script>
@@ -322,9 +323,12 @@
 <script type='text/javascript' src="/js/game/Game_field_jewel.js"></script>
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <link rel='stylesheet' href='/css/game_main.css'>
 <script type='text/javascript' src="/js/game/game_main.js"></script>
 </html>

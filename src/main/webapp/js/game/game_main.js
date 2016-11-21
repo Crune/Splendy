@@ -33,8 +33,6 @@ var rest_cardValue = {
 }
 
 
-
-
 $(document).ready(
 		function() {			
 			// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
@@ -119,8 +117,7 @@ $(document).ready(
 					console.log(evt);
 				}
 				
-				if(card.type === "cardCountPro"){
-					
+				if(card.type === "cardCountPro"){					
 					var json = JSON.parse(evt.data);
 					rest_cardValue.rest_heroCardValue = json.cont.rest_heroCardValue;
 					rest_cardValue.rest_lev3CardValue = json.cont.rest_lev3CardValue;
@@ -152,6 +149,22 @@ $(document).ready(
 							alert('사용가능한 보석이 없습니다');
 							return;
 						}	
+						
+						if (player.getActionPoint() === THREE_POINT) {
+							player.setAllJewelStatusFalse();
+							player.toggleTurn();
+							player.setActionPoint(INIT_POINT);
+							nextPlayer.toggleTurn();
+							orderCount++;
+							$("#player" + (orderCount)).css("background-color",
+									"tomato");
+							$("#player" + (orderCount + 1)).css("background-color", "red");
+							if (orderCount === 4) {
+								orderCount = 0; // 플레이어 선택자를 초기화
+								$("#player" + (orderCount + 1)).css("background-color", "red");
+							}
+							return;
+						}
 						if (player.getWhiteJewelStatus() === false) {							
 							jewelWhiteValue = player.getWhite();
 							player.setActionPoint(ONE_POINT);
@@ -165,22 +178,10 @@ $(document).ready(
 							player.setActionPoint(TWO_POINT);
 						}
 																		
-						if (player.getActionPoint() === THREE_POINT) {
-							player.toggleTurn();
-							player.toggleWhiteJewelStatus(); // false
-							player.setActionPoint(INIT_POINT);
-							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color",
-									"tomato");
-							$("#player" + (orderCount + 1)).css("background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css("background-color", "red");
-							}
-						}
+						
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+							console.log(players[i]);
 						}
 					});
 
@@ -201,6 +202,22 @@ $(document).ready(
 							alert('사용가능한 보석이 없습니다');
 							return;
 						}	
+						
+						if (player.getActionPoint() === THREE_POINT) {
+							player.setAllJewelStatusFalse();
+							player.toggleTurn();
+							player.setActionPoint(INIT_POINT);
+							nextPlayer.toggleTurn();
+							orderCount++;
+							$("#player" + (orderCount)).css("background-color","tomato");
+							$("#player" + (orderCount + 1)).css(
+									"background-color", "red");
+							if (orderCount === 4) {
+								orderCount = 0; // 플레이어 선택자를 초기화
+								$("#player" + (orderCount + 1)).css("background-color", "red");
+							}
+							return;
+						}
 
 						if (player.getGreenJewelStatus() === false) {
 							jewelGreenValue = player.getGreen();
@@ -215,22 +232,10 @@ $(document).ready(
 							player.setActionPoint(TWO_POINT);
 						}
 
-						if (player.getActionPoint() === THREE_POINT) {
-							player.toggleTurn();
-							player.toggleGreenJewelStatus(); // false
-							player.setActionPoint(INIT_POINT);
-							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color","tomato");
-							$("#player" + (orderCount + 1)).css(
-									"background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css("background-color", "red");
-							}
-						}
+						
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+							console.log(players[i]);
 						}
 					});
 			$("#jewel_blue_img").click(
@@ -251,7 +256,23 @@ $(document).ready(
 							alert('사용가능한 보석이 없습니다');
 							return;
 						}	
-
+						
+						
+						if (player.getActionPoint() === THREE_POINT) {
+							player.setAllJewelStatusFalse();
+							player.toggleTurn();
+							player.setActionPoint(INIT_POINT);
+							nextPlayer.toggleTurn();
+							orderCount++;
+							$("#player" + (orderCount)).css("background-color", "tomato");
+							$("#player" + (orderCount + 1)).css("background-color", "red");
+							if (orderCount === 4) {
+								orderCount = 0; // 플레이어 선택자를 초기화
+								$("#player" + (orderCount + 1)).css("background-color", "red");
+							}
+							return;
+						}
+						
 						if (player.getBlueJewelStatus() === false) {
 							jewelBlueValue = player.getBlue();
 							player.setActionPoint(ONE_POINT);
@@ -265,21 +286,10 @@ $(document).ready(
 							player.setActionPoint(TWO_POINT);
 						}
 
-						if (player.getActionPoint() === THREE_POINT) {
-							player.toggleTurn();
-							player.toggleBlueJewelStatus(); // false
-							player.setActionPoint(INIT_POINT);
-							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color", "tomato");
-							$("#player" + (orderCount + 1)).css("background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css("background-color", "red");
-							}
-						}
+						
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+							console.log(players[i]);
 						}
 					});
 			$("#jewel_red_img").click(
@@ -300,6 +310,24 @@ $(document).ready(
 							alert('사용가능한 보석이 없습니다');
 							return;
 						}	
+						
+						if (player.getActionPoint() === THREE_POINT) {
+							player.setAllJewelStatusFalse();
+							player.toggleTurn();
+							player.setActionPoint(INIT_POINT);
+							nextPlayer.toggleTurn();
+							orderCount++;
+							$("#player" + (orderCount)).css("background-color",
+									"tomato");
+							$("#player" + (orderCount + 1)).css(
+									"background-color", "red");
+							if (orderCount === 4) {
+								orderCount = 0; // 플레이어 선택자를 초기화
+								$("#player" + (orderCount + 1)).css(
+										"background-color", "red");
+							}
+							return;
+						}
 
 						if (player.getRedJewelStatus() === false) {
 							jewelRedValue = player.getRed();
@@ -314,24 +342,10 @@ $(document).ready(
 							player.setActionPoint(TWO_POINT);
 						}
 
-						if (player.getActionPoint() === THREE_POINT) {
-							player.toggleTurn();
-							player.toggleRedJewelStatus(); // false
-							player.setActionPoint(INIT_POINT);
-							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color",
-									"tomato");
-							$("#player" + (orderCount + 1)).css(
-									"background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css(
-										"background-color", "red");
-							}
-						}
+						
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+							console.log(players[i]);
 						}
 					});
 			$("#jewel_black_img").click(
@@ -346,12 +360,29 @@ $(document).ready(
 							player = players[3]; // 네 번째 플레이어가 현재일 때
 							nextPlayer = players[0]; // 다음 플레이어를 첫 번째 플레이어로
 														// 설정
-
 						}
 						if( jewelBlackValue === 0){
 							alert('사용가능한 보석이 없습니다');
 							return;
 						}	
+						
+						if (player.getActionPoint() === THREE_POINT) {
+							player.setAllJewelStatusFalse();
+							player.toggleTurn();
+							player.setActionPoint(INIT_POINT);
+							nextPlayer.toggleTurn();
+							orderCount++;
+							$("#player" + (orderCount)).css("background-color",
+									"tomato");
+							$("#player" + (orderCount + 1)).css(
+									"background-color", "red");
+							if (orderCount === 4) {
+								orderCount = 0; // 플레이어 선택자를 초기화
+								$("#player" + (orderCount + 1)).css(
+										"background-color", "red");
+							}
+							return;
+						}
 						
 						if (player.getBlackJewelStatus() === false) {
 							jewelBlackValue = player.getBlack();
@@ -366,26 +397,11 @@ $(document).ready(
 							player.setActionPoint(TWO_POINT);
 						}
 
-						if (player.getActionPoint() === THREE_POINT) {
-							player.toggleTurn();
-							player.toggleBlackJewelStatus(); // false
-							player.setActionPoint(INIT_POINT);
-							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color",
-									"tomato");
-							$("#player" + (orderCount + 1)).css(
-									"background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css(
-										"background-color", "red");
-							}
-						}
+						
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+							console.log(players[i]);
 						}
-						console.log(players[1]);
 					});
 
 			$(".jewel_img").click(function(){
@@ -568,16 +584,14 @@ $(document).ready(
 			});
 			
 			$("#lev1Card_detail_1").click(function (){
-				console.log(lev1CardList[0]);
+				
+				var card = lev1CardList[0];
+				console.log(card);
 				if(rest_cardValue.rest_lev1CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
 				}
-				for(var player in players){
-					if(player.getTurn() === true){
-						
-					}
-				}
+				
 				rest_cardValue.rest_lev1CardValue--;
 				var json = JSON.stringify(rest_cardValue);				
 				wssend('cardCount', json);
