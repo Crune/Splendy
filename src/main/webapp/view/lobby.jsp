@@ -152,6 +152,20 @@ body {
 				</div>
 				<div class="col-md-8 room_frame">
 					<div id="roomlist" name="roomlist">
+						<div class="lobby_players">
+						<c:forEach begin="1" end="20">
+							<div class="player" id="uid" style="padding-bottom: 10px">
+								<div class="room_icon">
+									<img src="/img/unnamed.png" width="50px" height="50px" />
+								</div>
+								<div class="room_nickname">닉네임</div>
+								<div class="room_rate">레이팅</div>
+							</div>
+						</c:forEach>
+						</div>
+						<div class="lobby_room" id="createRoom">
+							
+						</div>
 						<div class="lobby_room" id="room_1">
 							<div class="room_detail col-md-5">
 								<div class="room_name">아무나 들어오세요</div>
@@ -191,17 +205,6 @@ body {
 						<div class="lobby_room empty_room" id="room_0">
 							<span class="newroom_text">여기를 눌러 방을 개설하세요!</span>
 						</div>
-					</div>
-					<div class="lobby_players">
-					<c:forEach begin="1" end="20">
-						<div class="player" id="uid" style="padding-bottom: 10px">
-							<div class="room_icon">
-								<img src="/img/unnamed.png" width="50px" height="50px" />
-							</div>
-							<div class="room_nickname">닉네임</div>
-							<div class="room_rate">레이팅</div>
-						</div>
-					</c:forEach>
 					</div>
 				</div>
 			</div>

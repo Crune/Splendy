@@ -70,15 +70,15 @@ public interface MsgMapper {
 	// Another
 
 	@ResultMap("msgRst")
-	@Select("select * from "+TABLE+" where RM_ID=${rId} and RM_ID=${rId} and rownum < ${num} order by M_ID DESC")
+	@Select("select * from "+TABLE+" where RM_ID=#{rId} and RM_ID=#{rId} and rownum < #{num} order by M_ID DESC")
 	public List<Msg> readPrev(@Param("rId") int roomId, @Param("num") int count);
 
 	@ResultMap("msgRst")
-	@Select("select * from "+TABLE+" where RM_ID=${rId}")
+	@Select("select * from "+TABLE+" where RM_ID=#{rId}")
 	public List<Msg> readAll(@Param("rId") int roomId);
 
 	@ResultMap("msgRst")
-	@Select("select * from "+TABLE+" where RM_ID=${rId} and M_TYPE = 'chat' order by M_ID DESC")
+	@Select("select * from (select * from "+TABLE+" where RM_ID=#{rId} and M_TYPE = 'chat.new' order by M_ID DESC) where rownum < #{num} order by M_ID ASC")
 	public List<Msg> readPrevChat(@Param("rId") int roomId, @Param("num") int count);
 
 	

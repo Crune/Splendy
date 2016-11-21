@@ -5,7 +5,7 @@
 
 <mapper namespace="org.kh.splendy.mapper.UserProfileMapper">
 	<resultMap id="userProfile" type="org.kh.splendy.vo.UserProfile">
-		<result column="U_ID"			property="id"			javaType="int" />
+		<result column="U_ID"			property="userId"			javaType="int" />
 		<result column="U_LAST_RID"		property="lastRId"	javaType="int" />
 		<result column="U_ICON"			property="icon"	javaType="java.lang.String" />
 		<result column="U_TOTAL_TIME"	property="totalTime"		javaType="java.sql.Date" />

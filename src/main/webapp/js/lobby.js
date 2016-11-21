@@ -18,9 +18,6 @@ $( document ).ready(function() {
 	chatSock = new SockJS("http://" + window.location.host + "/ws");
 	chatSock.onopen = function () {
 		wssend('auth', auth);	//핸들러에서 구분할 수 있게 
-		wssend('request', 'oldMsg');
-		wssend('request', 'roomList');
-		wssend('request', 'playerList');
 	};
 
 	// 메시지 이벤트 핸들러 연결
@@ -32,6 +29,11 @@ $( document ).ready(function() {
 		if (k[0] == 'init') {
 			console.log("initialized.");
 		}
+		if (k[0] == 'auth' && v == 'ok') {
+			wssend('request', 'prevMsg');
+			wssend('request', 'roomList');
+			wssend('request', 'playerList');
+		}
 		if (k[0] == 'room') {
 			onRoom(k[1], v);
 		}
@@ -39,7 +41,7 @@ $( document ).ready(function() {
 			onPlayer(k[1], v);
 		}
 		if (k[0] == 'chat') {
-			onPlayer(k[1], v);
+			onChatMsg(k[1], v);
 		}
 		//$("#chatMessage").append(evt.data + "<br/>");
 	};
@@ -56,12 +58,15 @@ var temp_player = Handlebars.compile($("#temp_player").html());
 var temp_room_empty = Handlebars.compile($("#temp_room_empty").html());
 
 function onChatMsg(type, msg) {
-	if (type != null) {
+	if (type =='init') {
 		console.log("Chatting initialized!");
-		$("#chatDiv").detach();
+		$(".chat_msg").detach();
 	} else {
-		$("#chatDiv").append(temp_chatmsg(msg));
-		$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+		if (type =='new') {
+			console.log("chat.add!");
+			$("#chatDiv").append(temp_chatmsg(msg));
+			$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+		}
 	}
 }
 
@@ -89,7 +94,11 @@ function onPlayer(type, pl) {
 }
 
 function onRoom(type, room) {
-	if (!room) {
+	if (type=='init') {
+		console.log("Room initialized!")
+		$(".lobby_room").detach();
+		$("#roomlist").append(temp_room_empty());
+	} else {
 		if (type=='add') {
 			$(".empty_room").detach();
 			$("#roomlist").append(temp_room(room));
@@ -97,12 +106,6 @@ function onRoom(type, room) {
 		}
 		if (type=='remove') {
 			$("#room_"+room).detach();
-		}
-	} else {
-		if (type=='init') {
-			console.log("Room initialized!")
-			$(".lobby_room").detach();
-			$("#roomlist").append(temp_room_empty());
 		}
 	}
 	roomMouseEvt();

@@ -77,7 +77,7 @@ public class StreamServiceImpl implements StreamService {
 		}
 	}
 
-	@Override @Async
+	@Override
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
 		log.info(session.getId() + " -> " + message.getPayload());
 		WSMsg raw = WSMsg.convert(message.getPayload());
@@ -108,6 +108,8 @@ public class StreamServiceImpl implements StreamService {
 				innerMap.setConnect(uid, 1);
 				String ip = sessions.get(sId).getRemoteAddress().getHostName();
 				playerMap.setIp(uid, 0, ip);
+				
+				send(sId, "auth", "ok");
 				
 				WSPlayer me = playerMap.getWSPlayer(uid).CanSend();
 				sendWithoutSender(sId, "player.join", me);
@@ -186,9 +188,10 @@ public class StreamServiceImpl implements StreamService {
 				send(sId, "player.add", cur.CanSend());
 			}
 		}
-		if (msg.equals("oldMsg")) {
+		if (msg.equals("prevMsg")) {
 			WSPlayer reqUser = playerMap.getWSPlayerBySid(sId);
-			List<Msg> msgs = msgMap.readPrevChat(reqUser.getRoom(), 10);
+			int rid = reqUser.getRoom();
+			List<Msg> msgs = msgMap.readPrevChat(rid, 26);
 			send(sId, "chat.init", "{}");
 			for (Msg cur : msgs) {
 				WSChat curMsg = WSChat.convert(cur.getCont());
@@ -218,6 +221,7 @@ public class StreamServiceImpl implements StreamService {
 	@Override
 	public void send(String sId, String msg) throws Exception {
 		sessions.get(sId).sendMessage(new TextMessage(msg));
+		log.info(sId+" <- "+msg);
 	}
 
 	@Override

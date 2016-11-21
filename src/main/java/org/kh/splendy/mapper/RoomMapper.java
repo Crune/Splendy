@@ -75,7 +75,7 @@ public interface RoomMapper {
 
 	// Another
 	@ResultMap("roomResult")
-	@Select("select * from "+TABLE+" where RM_END is not null and RM_ID <> 0")
+	@Select("select * from "+TABLE+" where RM_END is null and RM_ID <> 0")
 	public List<Room> getCurrentRooms();
 
 }
