@@ -80,8 +80,7 @@ public class StreamServiceImpl implements StreamService {
 		WSMsg raw = WSMsg.convert(message.getPayload());
 
 		if (webSocketMethods.isEmpty()) {
-			Method target[] = this.getClass().getMethods();
-			for (Method m : target) {
+			for (Method m : this.getClass().getMethods()) {
 				if (m.isAnnotationPresent(WSReqeust.class)) {
 					webSocketMethods.put(m.getName(),m);
 				}
@@ -98,30 +97,19 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override @WSReqeust @Transactional
 	public void auth(String sId, String msg) throws Exception {
-		log.info(sId + "님이 인증 시도 중");
-		
 		Auth auth = Auth.convert(msg);
 		if (auth != null) {
 			int uid = auth.getUid();
 			if (innerMap.checkWSCode(uid, auth.getCode()) > 0) {
 				innerMap.setWSId(uid, sId);
 				innerMap.setConnect(uid, 1);
-				updateIp(uid, sId);
-				log.info(sId + "님이 인증했습니다.");
+				String ip = sessions.get(sId).getRemoteAddress().getHostName();
+				playerMap.setIp(uid, 0, ip);
 				
 				WSPlayer me = playerMap.getWSPlayer(uid).CanSend();
 				sendWithoutSender(sId, "player.join", me);
 			}
 		}
-	}
-
-	private void updateIp(int uid, String sid) {
-		int rid = 0; // 프로필 읽어온다음엔 수정할것
-		int nuid = (uid<1)?innerMap.readByWSId(sid).getId():uid;
-		String nsid = (sid==null)?innerMap.getWSId(uid):sid;
-		String ip = sessions.get(nsid).getRemoteAddress().getHostName();
-		playerMap.setIp(nuid, rid, ip);
-		
 	}
 
 	private UserTotal getTUserBySid(String sId) {
