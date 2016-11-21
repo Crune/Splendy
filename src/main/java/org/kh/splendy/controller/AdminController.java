@@ -2,25 +2,28 @@ package org.kh.splendy.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import org.kh.splendy.service.AdminService;
 import org.kh.splendy.service.ServService;
+import org.kh.splendy.service.UserInnerService;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.PropInDB;
-import org.kh.splendy.vo.Role;
 import org.kh.splendy.vo.UserCore;
+import org.kh.splendy.vo.UserInner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 public class AdminController {
@@ -29,10 +32,10 @@ public class AdminController {
 	private UserService userServ;
 	
 	@Autowired
-	private AdminService adminServ;
+	private ServService servServ;
 	
 	@Autowired
-	private ServService servServ;
+	private UserInnerService innerServ;
 	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
@@ -55,13 +58,10 @@ public class AdminController {
 			value = "/admin/servState",
 			method = RequestMethod.POST,
 			produces = "application/json")
-	public @ResponseBody void saveState(@RequestParam("key") String key, @RequestParam("value") String value) {
-		PropInDB prop = new PropInDB();
-		prop.setKey(key);
-		prop.setValue(value);
-		try {
-			servServ.update(prop);
-		} catch(Exception e) { e.printStackTrace(); }
+	public @ResponseBody int saveState(@ModelAttribute("servMF") PropInDB prop) throws Exception {
+		int result = servServ.update(prop);
+		log.info("admin access servicelist"+prop);
+		return result;
 	}
 	
 	@RequestMapping("/userList")
@@ -83,27 +83,31 @@ public class AdminController {
 			value = "/admin/user_modify",
 			method = RequestMethod.POST,
 			produces = "application/json")
-	public @ResponseBody void saveState(@RequestParam("id") int id, @RequestParam("nickname") String nickname
-										,@RequestParam("enabled") int enabled,@RequestParam("notLocked") int notLocked
-										,@RequestParam("notExpired") int notExpired,@RequestParam("notCredential") int notCredential) {
-		UserCore user = new UserCore();
-		user.setId(id);
-		user.setNickname(nickname);
-		user.setEnabled(enabled);
-		user.setNotLocked(notLocked);
-		user.setNotExpired(notExpired);
-		user.setNotCredential(notCredential);
+	public @ResponseBody void saveState(@ModelAttribute("modifyForm") UserCore user, HttpSession session) {
+		String id = (String)session.getAttribute("id");
 		try {
-			log.info("admin modify : "+id);
 			userServ.adminMF(user);
 		} catch(Exception e) { e.printStackTrace(); }
+		log.info("admin modify : "+id);
 	}
 	
 	@RequestMapping("/adminList")
-	public String adminList(Model model) throws Exception {
-		log.info("admin access adminlist");
-		List<Role> list = adminServ.readAll();
+	public String readAdmin(Model model) throws Exception {
+		log.info("admin list read");
+		List<UserInner> list = innerServ.readAdmin();
 		model.addAttribute("list", list);
 		return "admin/adminList";
 	}
+	
+	@RequestMapping(
+			value = "/admin/admin_modify",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody void saveAdmin(@ModelAttribute("adminMF") UserInner inner, HttpSession session) throws Exception {
+		int id = inner.getId();
+		String role = inner.getRole();
+		innerServ.setRole(id,role);
+		log.info("admin authority : "+id+","+role);
+	}
+
 }

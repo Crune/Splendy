@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -59,7 +60,7 @@
 				</ul>
 			</div>
 						<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header">관리자 현황</h1>
+				<h1 class="page-header">유저 권한 현황</h1>
 				<div class="table-responsive">
 					<table class="table table-hover">
 						<thead>
@@ -79,7 +80,7 @@
 										${list.role}
 									</td>
 									<td>
-										<input id="${list.email}" class="btn btn-default btn_update" type="button" value="수정" />
+										<input id="${list.id}" class="btn btn-default btn_update" type="button" value="수정" />
 									</td>
 								</tr>
 							</c:forEach>
@@ -89,6 +90,32 @@
 			</div>
 		</div>
 	</div>
+	
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">관리자 권한 부여</h4>
+			</div>
+			<div class="modal-body">
+				<div class="index-cont">
+					<form method="post" id="adminMF" name="adminMF">
+						<div class="form-group">
+							<label for="textfield" id="u_id"> ID :  </label> <input type="hidden" name="id" id="id" class="form-contorl">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 직책 </label> <input type="text" id="role" name="role" class="form-control">
+						</div>
+					</form>
+				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn_modify">Save changes</button>
+				<button type="button" class="btn btn-default btn_modal_close" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 	<!-- Bootstrap core JavaScript
 	================================================== -->
@@ -99,5 +126,52 @@
 	<script src="/js/vendor/holder.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
+<script>
+window.onload = function(){
+	$(".btn_update").on('click', function () {
+		var id = $(this).attr('id');
+		modalShow(id)
+	});
+	
+	$(".btn_modal_close").on('click', function () {
+		removeVar();
+	});
+	
+	$(".btn_modify").on('click', function () {
+		modify();
+		removeVar();
+	});
+	
+	$(".close").on('click', function () {
+		removeVar();
+	});
+}
+
+function modalShow(id) {
+	$('#u_id').append(id)
+	$('#id').val(id);
+	$('#myModal').modal('show');
+}
+
+function removeVar() {
+	$('#u_id').empty();
+}
+
+function modify() {
+	console.log("관리자 권한 부여");
+	$.ajax({
+        url:'/admin/admin_modify',
+        type:'post',
+        data:$("#adminMF").serialize(),
+        success:function(){
+        	alert("변경 완료");
+        	$('#myModal').modal('hide')
+        	window.location.reload();
+        },error:function(request,status,error){
+		}
+    })
+}
+
+</script>
 </body>
 </html>

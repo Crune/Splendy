@@ -103,51 +103,40 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+				<h4 class="modal-title" id="myModalLabel">유저 정보</h4>
 			</div>
 			<div class="modal-body">
-				<form method="post" id="modifyForm" name="modifyForm">
-				<table class="table table-hover">
-					<tbody>
-						<tr>
-							<td> ID </td>
-							<td id="u_id"> <input type="hidden" name="id" id="id"> </td>
-						</tr>
-						<tr>
-							<td> 닉네임 </td>
-							<td> <input type="text" id="nickname" name="nickname"> </td>
-						</tr>
-						<tr>
-							<td> E-Mail </td>
-							<td id="email"> </td>
-						</tr>
-						<tr>
-							<td> 패스워드 </td>
-							<td id="password"> </td>
-						</tr>
-						<tr>
-							<td> 유지 </td>
-							<td> <input type="text" id="enabled" name="enabled"> </td>
-						</tr>
-						<tr>
-							<td> 차단 </td>
-							<td> <input type="text" id="notLocked" name="notLocked"> </td>
-						</tr>
-						<tr>
-							<td> 연동 </td>
-							<td> <input type="text" id="notExpired" name="notExpired"> </td>
-						</tr>
-						<tr>
-							<td> 메일인증 </td>
-							<td> <input type="text" id="notCredential" name="notCredential"> </td>
-						</tr>
-						<tr>
-							<td> 등록일 </td>
-							<td id="reg"> </td>
-						</tr>
-					</tbody>
-				</table>
-				</form>
+				<div class="index-cont">
+					<form method="post" id="modifyForm" name="modifyForm">
+						<div class="form-group">
+							<label for="textfield" id="u_id"> ID :  </label> <input type="hidden" name="id" id="id" class="form-contorl">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 닉네임 </label> <input type="text" id="nickname" name="nickname" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield" id="email"> E-Mail :  </label>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputPassword1"> 암호 </label> <input name="password" type="password" id="password" placeholder="암호" class="form-control">						
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 유지 </label> <input type="text" id="enabled" name="enabled" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 차단 </label> <input type="text" id="notLocked" name="notLocked" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 연동 </label> <input type="text" id="notExpired" name="notExpired" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 메일인증 </label> <input type="text" id="notCredential" name="notCredential" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield" id="reg"> 등록일 :  </label>
+						</div>
+					</form>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn_modify">Save changes</button>
@@ -172,6 +161,10 @@ window.onload = function(){
 		modify();
 		removeVar();
 	});
+	
+	$(".close").on('click', function () {
+		removeVar();
+	});
 }
 
 function sendRequest(email) {
@@ -186,7 +179,6 @@ function sendRequest(email) {
 			$('#id').val(data.id);
 			$('#nickname').val(data.nickname);
 			$('#email').append(data.email);
-			$('#password').append(data.password);
 			$('#enabled').val(data.enabled);
 			$('#notLocked').val(data.notLocked);
 			$('#notExpired').val(data.notExpired);
@@ -199,7 +191,6 @@ function sendRequest(email) {
 function removeVar() {
 	$('#u_id').empty();
 	$('#email').empty();
-	$('#password').empty();
 	$('#reg').empty();
 }
 
@@ -210,6 +201,7 @@ function modify() {
         type:'post',
         data:$("#modifyForm").serialize(),
         success:function(){
+        	alert("수정 완료");
         	$('#myModal').modal('hide')
         	window.location.reload();
         },error:function(request,status,error){

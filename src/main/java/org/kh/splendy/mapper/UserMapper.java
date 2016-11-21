@@ -116,6 +116,12 @@ public interface UserMapper {
 	public UserCore selectOne(@Param("email") String email) throws Exception;
 	
 	@ResultMap("userResult")
-	@Update("update KH_USER set U_NICK=#{nickname}, U_ENABLED=#{enabled}, U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} where "+KEY+"=#{id}")
+	@Update("update KH_USER set U_NICK=#{nickname}, U_ENABLED=#{enabled}"
+			+ ", U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} where "+KEY+"=#{id}")
 	public void adminMF(UserCore user) throws Exception;
+	
+	@ResultMap("userResult")
+	@Update("update KH_USER set U_NICK=#{nickname}, U_PW=#{password}, U_ENABLED=#{enabled}"
+			+ ", U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} where "+KEY+"=#{id}")
+	public void adminPM(UserCore user) throws Exception;
 }
