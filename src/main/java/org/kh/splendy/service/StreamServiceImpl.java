@@ -34,7 +34,6 @@ public class StreamServiceImpl implements StreamService {
 	private List<Card> deck_levN = null;
 	
 	
-	private int deck_levN_iter;
 		
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
 	private static Map<String, Method> webSocketMethods = new HashMap<String, Method>();
@@ -268,49 +267,45 @@ public class StreamServiceImpl implements StreamService {
 		if(msg.equals("init_levN")){			
 			List<Card> initHeroCard = new ArrayList<Card>();
 			deck_levN = cardServ.getLevel_noble(); //히어로카드 덱
-			for(int i = 0; i < deck_levN.size(); i++){
-				log.info(deck_levN.get(i)+"");
-			}
+			
+			List<Card> copyDeck = deck_levN;
+			
 			for(int i = 0; i < 5; i++){
-				initHeroCard.add(deck_levN.get(i));
-			}				
-
+				initHeroCard.add(copyDeck.remove(0));
+			}
 			sendR(sId, "init_levN", initHeroCard);			
 		} else if(msg.equals("init_lev1")){
 			List<Card> initLev1Card = new ArrayList<Card>();
 			deck_lev1 = cardServ.getLevel_1();  //1레벨 덱
+			List<Card> copyDeck = deck_lev1;
 			
 			for(int i = 0; i < 4; i++){
-				initLev1Card.add(deck_lev1.get(i));
+				initLev1Card.add(copyDeck.remove(0));
 			}
 			sendR(sId, "init_lev1", initLev1Card);			
 		} else if(msg.equals("init_lev2")){
 			List<Card> initLev2Card = new ArrayList<Card>();
 			deck_lev2 = cardServ.getLevel_2();  //2레벨 덱
+			List<Card> copyDeck = deck_lev1;
 			
 			for(int i = 0; i < 4; i++){
-				initLev2Card.add(deck_lev2.get(i));
+				initLev2Card.add(copyDeck.remove(0));
 			}
 			sendR(sId, "init_lev2", initLev2Card);			
 		} else if(msg.equals("init_lev3")){
 			List<Card> initLev3Card = new ArrayList<Card>();
 			deck_lev3 = cardServ.getLevel_3();  //3레벨 덱
+			List<Card> copyDeck = deck_lev1;
 			
-			for(int i = 0; i < 4; i++){
-				
-				initLev3Card.add(deck_lev3.get(i));	
+			for(int i = 0; i < 4; i++){			
+				initLev3Card.add(copyDeck.remove(0));
 			}
 			sendR(sId, "init_lev3", initLev3Card);			
 		}
 		
 		if(msg.equals("getHeroCard")){	
 			
-			if(deck_levN_iter < deck_levN.size()){
-				sendR(sId, "getHeroCard", deck_levN.get(deck_levN_iter));
-				deck_levN_iter++;
-			} else {
-				return;
-			} 
+		
 			
 		}
 			
