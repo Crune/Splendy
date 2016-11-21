@@ -11,7 +11,7 @@ public interface LobbyService {
 
 	List<Room> getList();
 
-	void initPlayer(UserCore user);
+	UserCore initPlayer(UserCore user);
 
 	Auth getAuth(int uid);
 
