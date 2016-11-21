@@ -8,9 +8,7 @@ import org.kh.splendy.vo.UserCore;
 public interface UserService {
 
 	UserCore get(String email) throws Exception;
-	
-	void insertCredent(String credent_code) throws Exception;
-	
+		
 	int checkPassword(String email, String password) throws Exception;
 	
 	int checkCredent(String email, String password) throws Exception;

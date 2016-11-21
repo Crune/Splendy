@@ -7,10 +7,12 @@
 	<resultMap id="roomResult" type="org.kh.splendy.vo.Room">
 		<result column="RM_ID"			property="id"			javaType="int" />
 		<result column="RM_TITLE"		property="title"		javaType="java.lang.String" />
-		<result column="RM_PL_LIMITS"	property="playerLimits"	javaType="int" />
-		<result column="RM_STATE"		property="state"		javaType="int" />
-		<result column="RM_HOST"		property="hostId"		javaType="int" />
 		<result column="RM_PW"			property="password"		javaType="java.lang.String" />
+		<result column="RM_HOST"		property="host"			javaType="int" />
 		<result column="RM_INFO"		property="info"			javaType="java.lang.String" />
+		<result column="RM_PL_LIMITS"	property="playerLimits"	javaType="int" />
+		<result column="RM_WINNER"		property="winner"		javaType="int" />
+		<result column="RM_START"		property="start"		javaType="java.sql.Date" />
+		<result column="RM_END"			property="end"			javaType="java.sql.Date" />
 	</resultMap>
 </mapper>

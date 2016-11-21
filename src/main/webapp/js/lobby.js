@@ -60,23 +60,25 @@ function onChatMsg(msg) {
 }
 
 function onPlayer(type, pl) {
-	if (type=='add') {
-		$(".lobby_players").append(temp_player(pl));
-	}
-	if (type=='join') {
-		$(".lobby_players").append(temp_player(pl));
-		onChatMsg(new Chat('시스템', pl.nick+'님이 접속하였습니다.','','sys'));
-	}
-	if (type=='leave') {
-		onChatMsg(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
-	}
-	if (type=='enter') {
-		var room = pl.room;
-		$("#room_"+room).append(temp_player(pl));
-	}
 	if (type=='init') {
 		console.log("Player initialized!");
 		$(".player").detach();
+	} else {
+		$("#user_"+pl.uid).detach();	
+		if (type=='add') {
+			$(".lobby_players").append(temp_player(pl));
+		}
+		if (type=='join') {
+			$(".lobby_players").append(temp_player(pl));
+			onChatMsg(new Chat('시스템', pl.nick+'님이 접속하였습니다.','','sys'));
+		}
+		if (type=='leave') {
+			onChatMsg(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
+		}
+		if (type=='enter') {
+			var room = pl.room;
+			$("#room_"+room).append(temp_player(pl));
+		}
 	}
 }
 

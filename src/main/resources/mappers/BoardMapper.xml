@@ -13,9 +13,6 @@
 		<result column="AT_PASS" property="at_pass" javaType="java.lang.String" />
 		<result column="AT_READCOUNT" property="at_readcount" javaType="int" />
 		<result column="AT_IP" property="at_ip" javaType="java.lang.String" />
-		<result column="AT_REPLY" property="at_reply" javaType="int" />
-		<result column="AT_RE_STEP" property="at_re_step" javaType="int" />
-		<result column="AT_RE_LEVEL" property="at_re_level" javaType="int" />
 		<result column="AT_CATEGORY" property="at_category" javaType="java.lang.String" />
 		<result column="AT_REG_DATE" property="at_reg_date" javaType="java.sql.Timestamp" />
 	</resultMap>
@@ -43,15 +40,15 @@
 	<![CDATA[		
 		INSERT INTO KH_ARTICLE(
 			AT_ID, AT_SUBJECT, AT_PASS,
-			AT_CONTENT, AT_IP, AT_REPLY,AT_READCOUNT,
-			AT_RE_LEVEL, AT_RE_STEP, AT_REG_DATE)
+			AT_CONTENT, AT_IP, AT_READCOUNT,
+			AT_REG_DATE)
 		VALUES(
 			KH_BOARD_SEQ.NEXTVAL, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR}, 
-			#{at_content, jdbcType=VARCHAR}, #{at_ip, jdbcType=VARCHAR}, #{at_reply, jdbcType=INTEGER},
-			#{at_readcount, jdbcType=INTEGER},#{at_re_level, jdbcType=INTEGER}, #{at_re_step, jdbcType=INTEGER}, SYSDATE
+			#{at_content, jdbcType=VARCHAR}, #{at_ip, jdbcType=VARCHAR},
+			#{at_readcount, jdbcType=INTEGER}, SYSDATE
 		)
 	]]>		
-	</insert>	
+	</insert>
 	
 	<update id="readCount" parameterType="org.kh.splendy.vo.Article">
     <![CDATA[

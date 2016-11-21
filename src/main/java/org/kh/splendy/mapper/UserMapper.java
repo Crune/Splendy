@@ -96,8 +96,10 @@ public interface UserMapper {
 	// SQL query in xml
 	public void credentUser(String code) throws Exception;
 	
-	@Insert("insert into KH_USER_CREDENT (U_ID, U_CREDENT_CODE) values (KH_USER_SEQ.CURRVAL, #{credent_code})")
-	public void insertCredent(String credent_code) throws Exception;
+	@Update("update KH_USER_INNER set U_REG_CODE=#{credent_code} where U_ID =("
+			+ "select KH_USER_INNER.U_ID from KH_USER inner join KH_USER_INNER on KH_USER.U_ID = KH_USER_INNER.U_ID "
+			+ "where KH_USER_INNER.U_REG_CODE is null and KH_USER.U_EMAIL = #{email})")
+	public void updateCredent(@Param("email") String email, @Param("credent_code") String credent_code) throws Exception;
 	
 	// SQL query in xml
 	public void createUser(UserCore user) throws Exception;

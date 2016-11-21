@@ -5,20 +5,32 @@ var player3 = new Player("minjung", 3);
 var player4 = new Player("jinkyu", 4);
 
 var cardManager = new CardManager();
-var INIT_POINT = 0;
+var INIT_POINT = 0;  //소모되는 행동 포인트
 var ONE_POINT = 1;
 var TWO_POINT = 2;
 var THREE_POINT = 3;
 
 var orderCount = 0;
 var players = [ player1, player2, player3, player4 ];
-var game_status;
+
 var jewelWhiteValue;	//플레이어가 보석을 얻어올 때마다 현재 남은 보석 갯수로 초기화 되는 변수
 var jewelGreenValue;
 var jewelBlackValue;
 var jewelRedValue;
 var jewelBlueValue;
 var jewelGoldValue;
+
+var heroCardList = new Array();
+var lev3CardList = new Array();
+var lev2CardList = new Array();
+var lev1CardList = new Array();
+
+var rest_cardValue = {
+		rest_heroCardValue : 5,
+		rest_lev3CardValue : 15,
+		rest_lev2CardValue : 25,
+		rest_lev1CardValue : 35
+}
 
 
 
@@ -62,7 +74,9 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#heroCard_detail_" + (i+1)).html(template(initHeroCards[i]));
-					}					
+						heroCardList.push(initHeroCards[i]);						
+					}	
+					console.log(heroCardList);
 				}
 				
 				if(card.type === "init_lev3"){
@@ -71,7 +85,10 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev3Card_detail_" + (i+1)).html(template(lev3Cards[i]));
-					}					
+						lev3CardList.push(lev3Cards[i]);
+					}	
+					
+					console.log(lev3CardList);
 				}
 				
 				if(card.type === "init_lev2"){
@@ -80,7 +97,10 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev2Card_detail_" + (i+1)).html(template(lev2Cards[i]));
-					}					
+						lev2CardList.push(lev2Cards[i]);
+					}
+					
+					console.log(lev2CardList);
 				}
 				
 				if(card.type === "init_lev1"){
@@ -89,11 +109,24 @@ $(document).ready(
 						i = parseInt(i);
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev1Card_detail_" + (i+1)).html(template(lev1Cards[i]));
-					}					
+						lev1CardList.push(lev1Cards[i]);
+					}	
+					
+					console.log(lev1CardList);
 				}
 				
 				if(card.type === "getHeroCard"){
 					console.log(evt);
+				}
+				
+				if(card.type === "cardCountPro"){
+					
+					var json = JSON.parse(evt.data);
+					rest_cardValue.rest_heroCardValue = json.cont.rest_heroCardValue;
+					rest_cardValue.rest_lev3CardValue = json.cont.rest_lev3CardValue;
+					rest_cardValue.rest_lev2CardValue = json.cont.rest_lev2CardValue;
+					rest_cardValue.rest_lev1CardValue = json.cont.rest_lev1CardValue;
+					
 				}
 			};
 
@@ -102,7 +135,7 @@ $(document).ready(
 			};
 
 			
-			$("#get_whiteJ").click(
+			$("#jewel_white_img").click(
 					function() {						
 						var player;
 						var nextPlayer;
@@ -146,10 +179,12 @@ $(document).ready(
 								$("#player" + (orderCount + 1)).css("background-color", "red");
 							}
 						}
-
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
 					});
 
-			$("#get_greenJ").click(
+			$("#jewel_green_img").click(
 					function() {
 						var player;
 						var nextPlayer;
@@ -194,8 +229,11 @@ $(document).ready(
 								$("#player" + (orderCount + 1)).css("background-color", "red");
 							}
 						}
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
 					});
-			$("#get_blueJ").click(
+			$("#jewel_blue_img").click(
 					function() {
 						var player;
 						var nextPlayer;
@@ -240,8 +278,11 @@ $(document).ready(
 								$("#player" + (orderCount + 1)).css("background-color", "red");
 							}
 						}
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
 					});
-			$("#get_redJ").click(
+			$("#jewel_red_img").click(
 					function() {
 						var player;
 						var nextPlayer;
@@ -289,8 +330,11 @@ $(document).ready(
 										"background-color", "red");
 							}
 						}
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
 					});
-			$("#get_blackJ").click(
+			$("#jewel_black_img").click(
 					function() {
 						var player;
 						var nextPlayer;
@@ -338,12 +382,254 @@ $(document).ready(
 										"background-color", "red");
 							}
 						}
+						for(var i in players){
+							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
+						}
+						console.log(players[1]);
 					});
 
-			
+			$(".jewel_img").click(function(){
+				field_jewel.modalJewel();
+				$('#myModal').modal('show');
+			});
 			
 			$("#heroCard_detail_1").click(function (){
+				console.log(heroCardList[0]);
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
 				wssend('cardRequest', 'getHeroCard');
-			})
+			});
+			$("#heroCard_detail_2").click(function (){
+				console.log(heroCardList[1]);
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			$("#heroCard_detail_3").click(function (){
+				console.log(heroCardList[2]);
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			$("#heroCard_detail_4").click(function (){
+				console.log(heroCardList[3]);
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			$("#heroCard_detail_5").click(function (){
+				console.log(heroCardList[4]);
+				if(rest_cardValue.rest_heroCardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_heroCardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev3Card_detail_1").click(function (){
+				console.log(lev3CardList[0]);
+				if(rest_cardValue.rest_lev3CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev3CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev3Card_detail_2").click(function (){
+				console.log(lev3CardList[1]);
+				if(rest_cardValue.rest_lev3CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev3CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			$("#lev3Card_detail_3").click(function (){
+				console.log(lev3CardList[2]);
+				if(rest_cardValue.rest_lev3CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev3CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			$("#lev3Card_detail_4").click(function (){
+				console.log(lev3CardList[3]);
+				if(rest_cardValue.rest_lev3CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev3CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+						
+			$("#lev3Card_detail_5").click(function (){
+				console.log(lev3CardList[4]);
+				if(rest_cardValue.rest_lev3CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev3CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev2Card_detail_1").click(function (){
+				console.log(lev2CardList[0]);
+				if(rest_cardValue.rest_lev2CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev2CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev2Card_detail_2").click(function (){
+				console.log(lev2CardList[1]);
+				if(rest_cardValue.rest_lev2CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev2CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev2Card_detail_3").click(function (){
+				console.log(lev2CardList[2]);
+				if(rest_cardValue.rest_lev2CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev2CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev2Card_detail_4").click(function (){
+				if(rest_cardValue.rest_lev2CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev2CardValue--;
+				console.log(lev2CardList[3]);
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev2Card_detail_5").click(function (){
+				console.log(lev2CardList[4]);
+				if(rest_cardValue.rest_lev2CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev2CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev1Card_detail_1").click(function (){
+				console.log(lev1CardList[0]);
+				if(rest_cardValue.rest_lev1CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				for(var player in players){
+					if(player.getTurn() === true){
+						
+					}
+				}
+				rest_cardValue.rest_lev1CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev1Card_detail_2").click(function (){
+				console.log(lev1CardList[1]);
+				if(rest_cardValue.rest_lev1CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev1CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev1Card_detail_3").click(function (){
+				console.log(lev1CardList[2]);
+				if(rest_cardValue.rest_lev1CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev1CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev1Card_detail_4").click(function (){
+				console.log(lev1CardList[3]);
+				if(rest_cardValue.rest_lev1CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev1CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
+			
+			$("#lev1Card_detail_5").click(function (){
+				console.log(lev1CardList[4]);
+				if(rest_cardValue.rest_lev1CardValue == 0){
+					alert('더이상 카드가 없습니다.');
+					return;
+				}
+				rest_cardValue.rest_lev1CardValue--;
+				var json = JSON.stringify(rest_cardValue);				
+				wssend('cardCount', json);
+				wssend('cardRequest', 'getHeroCard');
+			});
 			
 		});

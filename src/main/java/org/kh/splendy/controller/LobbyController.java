@@ -33,8 +33,8 @@ public class LobbyController {
 	@ModelAttribute("profile")
 	/** 뷰어(JSP)에서 profile을 요청했을때 선언되지 않을 경우 반환할 값
 	 * @return 프로필 초기값 전송 */
-	public Profile defaultProfile() {
-		Profile profile = new Profile();
+	public UserProfile defaultProfile() {
+		UserProfile profile = new UserProfile();
 		return profile;
 	}
 
@@ -46,8 +46,8 @@ public class LobbyController {
 		 * - 플레이어 정보가 없을 경우 생성
 		 * - 플레이어 정보에 계정 인증코드 입력
 		 */
-		int uid = ((UserCore) session.getAttribute("user")).getId();
-		serv.initPlayer(uid); // 플레이어 정보가 없을경우 생성
+		UserCore user = (UserCore) session.getAttribute("user");
+		serv.initPlayer(user); // 플레이어 인증 정보 생성
 		return "lobby";
 	}
 

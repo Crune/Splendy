@@ -40,7 +40,7 @@
 	<update id="credentUser" parameterType="org.kh.splendy.vo.UserCore">
 	<![CDATA[
 		UPDATE KH_USER SET U_N_CREDENT=1
-		WHERE U_ID=(SELECT U_ID FROM KH_USER_CREDENT WHERE U_CREDENT_CODE=#{code})
+		WHERE U_ID=(SELECT U_ID FROM KH_USER_INNER WHERE U_REG_CODE=#{code})
 	]]>
 	</update>
 </mapper>
