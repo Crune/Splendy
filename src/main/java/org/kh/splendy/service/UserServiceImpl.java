@@ -189,9 +189,14 @@ public class UserServiceImpl implements UserService {
 		return result_pw;
 	}
 	
-	@Override
+	@Override @Transactional
 	public void adminMF(UserCore user) throws Exception {
-		userMap.adminMF(user);
+		String password = user.getPassword();
+		if(password == null){
+			userMap.adminMF(user);
+		} else {
+			userMap.adminPM(user);
+		}
 	}
 
 	@Override @Transactional
@@ -210,5 +215,4 @@ public class UserServiceImpl implements UserService {
 			}
 		}	
 	}
-	
 }
