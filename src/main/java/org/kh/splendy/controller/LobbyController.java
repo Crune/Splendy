@@ -43,11 +43,11 @@ public class LobbyController {
 	public String list(Model model, HttpSession session) {
 		/** 윤.로비: 로비 입장 화면 구현
 		 * - 세션에서 유저ID 불러옴
-		 * - 플레이어 정보가 없을 경우 생성
 		 * - 플레이어 정보에 계정 인증코드 입력
 		 */
 		UserCore user = (UserCore) session.getAttribute("user");
-		serv.initPlayer(user); // 플레이어 인증 정보 생성
+		user = serv.initPlayer(user); // 플레이어 인증 정보 생성
+		session.setAttribute("user", user);
 		return "lobby";
 	}
 

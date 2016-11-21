@@ -19,6 +19,7 @@ public class LobbyServiceImpl implements LobbyService {
 	@Autowired private RoomMapper roomMap;
 	@Autowired private PlayerMapper playerMap;
 	@Autowired private UserInnerMapper innerMap;
+	@Autowired private UserMapper userMap;
 	
 	@Autowired private StreamService stream;
 
@@ -30,15 +31,18 @@ public class LobbyServiceImpl implements LobbyService {
 	}
 
 	@Override @Transactional
-	public void initPlayer(UserCore user) {
-		int uid = user.getId();
-		Player pl = playerMap.read(uid);
+	public UserCore initPlayer(UserCore inUser) {
+		int uid = inUser.getId();
+		
 		UserInner inner = innerMap.read(uid);
 		if (inner.getWsSession() != null) {
 			stream.close(uid);
 		}
-		innerMap.setWSCode(user.getId(), RandomStringUtils.randomAlphanumeric(9));
-		playerMap.setIsIn(user.getId(), 0, 1);
+		innerMap.setWSCode(uid, RandomStringUtils.randomAlphanumeric(9));
+		playerMap.setIsIn(uid, 0, 1);
+		
+		UserCore user = userMap.read(uid);
+		return user;
 	}
 
 	@Override

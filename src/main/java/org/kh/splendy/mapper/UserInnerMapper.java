@@ -1,16 +1,12 @@
 package org.kh.splendy.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.kh.splendy.vo.Room;
 import org.kh.splendy.vo.UserInner;
-import org.kh.splendy.vo.Player;
 
 /** 내부 사용 용도의 개인 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.20) */
@@ -20,10 +16,18 @@ public interface UserInnerMapper {
 	
 	String TABLE = "KH_USER_INNER";
 	
-	String COLUMNS = "U_ID, U_WS_ID, U_WS_AUTH, U_REG_CODE, "
-			+ "U_CONNECT, U_ROLE";
-	String C_VALUES = "#{id}, #{wsSession, jdbcType=VARCHAR}, #{wsAuthCode, jdbcType=VARCHAR}, #{regCode, jdbcType=VARCHAR}, "
-			+ "#{connect, jdbcType=INTEGER}, #{role, jdbcType=VARCHAR}";
+	String COLUMNS = "U_ID, "
+			+ "U_WS_ID, "
+			+ "U_WS_AUTH, "
+			+ "U_REG_CODE, "
+			+ "U_CONNECT, "
+			+ "U_ROLE";
+	String C_VALUES = "#{id}, "
+			+ "#{wsSession, jdbcType=VARCHAR}, "
+			+ "#{wsAuthCode, jdbcType=VARCHAR}, "
+			+ "#{regCode, jdbcType=VARCHAR}, "
+			+ "#{connect, jdbcType=INTEGER}, "
+			+ "#{role, jdbcType=VARCHAR}";
 	
 	String UPDATES = "U_WS_ID=#{wsSession, jdbcType=VARCHAR}, "
 			+ "U_WS_AUTH=#{wsAuthCode, jdbcType=VARCHAR}, "

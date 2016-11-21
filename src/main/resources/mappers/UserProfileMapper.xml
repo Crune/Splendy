@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kh.splendy.mapper.UserProfileMapper">
+	<resultMap id="userProfile" type="org.kh.splendy.vo.UserProfile">
+		<result column="U_ID"			property="id"			javaType="int" />
+		<result column="U_LAST_RID"		property="lastRId"	javaType="int" />
+		<result column="U_ICON"			property="icon"	javaType="java.lang.String" />
+		<result column="U_TOTAL_TIME"	property="totalTime"		javaType="java.sql.Date" />
+		<result column="U_WIN"			property="win"		javaType="int" />
+		<result column="U_LOSE"			property="lose"	javaType="int" />
+		<result column="U_DRAW"			property="draw"	javaType="int" />
+		<result column="U_RATE"			property="rate"		javaType="int" />
+		<result column="U_INFO"			property="info"			javaType="java.lang.String" />
+	</resultMap>
+</mapper>

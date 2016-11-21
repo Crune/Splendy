@@ -19,6 +19,11 @@
 		<result column="RM_ID"			property="room"			javaType="int" />
 		<result column="U_ID"			property="uid"			javaType="int" />
 	</resultMap>
+	<resultMap id="inRoomPlayer" type="org.kh.splendy.vo.WSPlayer">
+		<result column="U_WS_ID"		property="role"			javaType="java.lang.String" />
+		<result column="U_NICK"			property="nick"			javaType="java.lang.String" />
+		<result column="U_ID"			property="uid"			javaType="int" />
+	</resultMap>
 	
 	<select
 		id="getWSPlayer" 
@@ -33,15 +38,15 @@
 			KH_ROOM.RM_ID,
 			KH_ROOM.RM_HOST
 		FROM KH_USER
-		INNER JOIN KH_USER_PROFILE
-			ON KH_USER.U_ID = KH_USER_PROFILE.U_ID
-		INNER JOIN KH_PLAYER
-			ON KH_USER.U_ID = KH_PLAYER.U_ID
-		INNER JOIN KH_ROOM
-			ON KH_ROOM.RM_ID  = KH_USER_PROFILE.U_LAST_RID
-			AND KH_ROOM.RM_ID = KH_PLAYER.RM_ID
-		INNER JOIN KH_USER_INNER
-			ON KH_USER.U_ID = KH_USER_INNER.U_ID
+			INNER JOIN KH_USER_PROFILE
+				ON KH_USER.U_ID = KH_USER_PROFILE.U_ID
+			INNER JOIN KH_PLAYER
+				ON KH_USER.U_ID = KH_PLAYER.U_ID
+			INNER JOIN KH_ROOM
+				ON KH_ROOM.RM_ID  = KH_USER_PROFILE.U_LAST_RID
+				AND KH_ROOM.RM_ID = KH_PLAYER.RM_ID
+			INNER JOIN KH_USER_INNER
+				ON KH_USER.U_ID = KH_USER_INNER.U_ID
 		WHERE KH_USER.U_ID = #{uid}
 			AND KH_USER_INNER.U_CONNECT > 0
 			AND KH_PLAYER.PL_IS_IN      > 0
@@ -61,19 +66,44 @@
 			KH_ROOM.RM_ID,
 			KH_ROOM.RM_HOST
 		FROM KH_USER
-		INNER JOIN KH_USER_PROFILE
-			ON KH_USER.U_ID = KH_USER_PROFILE.U_ID
-		INNER JOIN KH_PLAYER
-			ON KH_USER.U_ID = KH_PLAYER.U_ID
-		INNER JOIN KH_ROOM
-			ON KH_ROOM.RM_ID  = KH_USER_PROFILE.U_LAST_RID
-			AND KH_ROOM.RM_ID = KH_PLAYER.RM_ID
-		INNER JOIN KH_USER_INNER
-			ON KH_USER.U_ID = KH_USER_INNER.U_ID
+			INNER JOIN KH_USER_PROFILE
+				ON KH_USER.U_ID = KH_USER_PROFILE.U_ID
+			INNER JOIN KH_PLAYER
+				ON KH_USER.U_ID = KH_PLAYER.U_ID
+			INNER JOIN KH_ROOM
+				ON KH_ROOM.RM_ID  = KH_USER_PROFILE.U_LAST_RID
+				AND KH_ROOM.RM_ID = KH_PLAYER.RM_ID
+			INNER JOIN KH_USER_INNER
+				ON KH_USER.U_ID = KH_USER_INNER.U_ID
 		WHERE KH_USER.U_ID              <> 0
 			AND KH_USER_INNER.U_CONNECT > 0
 			AND KH_PLAYER.PL_IS_IN      > 0
 			AND KH_USER_INNER.U_WS_ID  IS NOT NULL
+	]]>
+	</select>
+	
+	<select
+		id="getInRoomPlayer"
+		resultMap="inRoomPlayer">
+	<![CDATA[
+		SELECT KH_PLAYER.U_ID,
+			KH_USER_INNER.U_WS_ID,
+			KH_USER.U_NICK
+		FROM KH_USER_INNER
+			INNER JOIN KH_USER
+				ON KH_USER.U_ID = KH_USER_INNER.U_ID
+			INNER JOIN KH_PLAYER
+				ON KH_USER.U_ID              = KH_PLAYER.U_ID
+		WHERE KH_USER_INNER.U_WS_ID IS NOT NULL
+			AND KH_USER_INNER.U_CONNECT  > 0
+			AND KH_PLAYER.PL_IS_IN       > 0
+			AND KH_PLAYER.RM_ID          = (
+				SELECT KH_PLAYER.RM_ID
+				FROM KH_PLAYER
+					INNER JOIN KH_USER_INNER
+						ON KH_USER_INNER.U_ID       = KH_PLAYER.U_ID
+				WHERE KH_USER_INNER.U_WS_ID = #{sid}
+			)
 	]]>
 	</select>
 </mapper>

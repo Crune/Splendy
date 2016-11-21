@@ -80,8 +80,7 @@ public class StreamServiceImpl implements StreamService {
 		WSMsg raw = WSMsg.convert(message.getPayload());
 
 		if (webSocketMethods.isEmpty()) {
-			Method target[] = this.getClass().getMethods();
-			for (Method m : target) {
+			for (Method m : this.getClass().getMethods()) {
 				if (m.isAnnotationPresent(WSReqeust.class)) {
 					webSocketMethods.put(m.getName(),m);
 				}
@@ -98,30 +97,19 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override @WSReqeust @Transactional
 	public void auth(String sId, String msg) throws Exception {
-		log.info(sId + "님이 인증 시도 중");
-		
 		Auth auth = Auth.convert(msg);
 		if (auth != null) {
 			int uid = auth.getUid();
 			if (innerMap.checkWSCode(uid, auth.getCode()) > 0) {
 				innerMap.setWSId(uid, sId);
 				innerMap.setConnect(uid, 1);
-				updateIp(uid, sId);
-				log.info(sId + "님이 인증했습니다.");
+				String ip = sessions.get(sId).getRemoteAddress().getHostName();
+				playerMap.setIp(uid, 0, ip);
 				
 				WSPlayer me = playerMap.getWSPlayer(uid).CanSend();
 				sendWithoutSender(sId, "player.join", me);
 			}
 		}
-	}
-
-	private void updateIp(int uid, String sid) {
-		int rid = 0; // 프로필 읽어온다음엔 수정할것
-		int nuid = (uid<1)?innerMap.readByWSId(sid).getId():uid;
-		String nsid = (sid==null)?innerMap.getWSId(uid):sid;
-		String ip = sessions.get(nsid).getRemoteAddress().getHostName();
-		playerMap.setIp(nuid, rid, ip);
-		
 	}
 
 	private UserTotal getTUserBySid(String sId) {
@@ -137,15 +125,18 @@ public class StreamServiceImpl implements StreamService {
 	
 	@Override @WSReqeust
 	public void chat(String sId, String msg) throws Exception {
-		
-		UserTotal user = getTUserBySid(sId);
-		
-		log.info("send_chat:start: "+user.getRoom().getTitle()+ "/"+user.getUser().getNickname()+": "+msg);
 
-		int room = user.getPl().getRoom();
+		List<WSPlayer> pls = playerMap.getInRoomPlayer(sId);
 		
+		String nick = "";
+		for (WSPlayer cur : pls) {
+			if (cur.role.equals(sId)) {
+				nick = cur.getNick();
+			}
+		}
+
 		WSChat rst = new WSChat();
-		rst.setNick(user.getUser().getNickname());
+		rst.setNick(nick);
 		rst.setCont(msg);
 
 		TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
@@ -153,19 +144,16 @@ public class StreamServiceImpl implements StreamService {
 		df.setTimeZone(tz);
 		rst.setTime(df.format(new Date()));
 		
-		rst.setType("o");
-		
-		List<Player> pls = playerMap.getPlayers(room);
-		for (Player cur : pls) {
-			if (cur.getRoom() == room) {
-				String cur_sid = innerMap.getWSId(cur.getId());
-				if (cur_sid.equals(sId)) {
-					rst.setType("me");
-				}
-				send(cur_sid, "chat", rst);
+		for (WSPlayer cur : pls) {
+			if (cur.role.equals(sId)) {
+				rst.setType("me");
+			} else {
+				rst.setType("o");
 			}
+			send(cur.getRole(), "chat", rst);
 		}
-		log.info("send_chat:end: "+user.getRoom().getTitle()+ "/"+user.getUser().getNickname()+": "+msg);
+		
+		log.info("send_chat: "+rst);
 	}
 	
 
@@ -202,12 +190,10 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override
 	public void send(String sId, String type, Object cont) throws Exception {
-		log.info("sendeee: "+sId + "/"+type+cont);
 		send(sId, cvMsg(type, cont));
 	}
 	@Override
 	public void send(String sId, String msg) throws Exception {
-		log.info("sendkkk: "+sId + "/"+msg);
 		sessions.get(sId).sendMessage(new TextMessage(msg));
 	}
 
