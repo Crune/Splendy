@@ -32,6 +32,27 @@ var rest_cardValue = {
 		rest_lev1CardValue : 35
 }
 
+var getTurnPlayer = function (){
+	for(var i in players){
+		if(players[i].getTurn() === true) {
+			return players[i];
+		}			
+	}
+	return;
+}
+
+var getNextPlayer = function(){
+	for(var i in players){
+		if(players[i].getTurn() === true){
+			i = parseInt(i);
+			if(i === 3){
+				return players[0];
+			}
+			return players[i+1];
+		}
+	}
+	return;
+}
 
 $(document).ready(
 		function() {			
@@ -46,9 +67,6 @@ $(document).ready(
 			chatSock.onopen = function() {				
 				player1.toggleTurn();
 				$("#player1").css("background-color", "red");
-				/*for ( var i in players) {
-					console.log(players[i].getUserId() + " turn status : " + players[i].getTurn());
-				}*/
 				
 				wssend('cardRequest', 'init_levN');
 				wssend('cardRequest', 'init_lev3');
@@ -60,12 +78,9 @@ $(document).ready(
 				$("#player3_name").html(player3.getUserId());
 				$("#player4_name").html(player4.getUserId());
 			};
-			
-			
-			chatSock.onmessage = function(evt) {
-				
-				var card = JSON.parse(evt.data);
-				
+					
+			chatSock.onmessage = function(evt) {				
+				var card = JSON.parse(evt.data);				
 				if(card.type === "init_levN"){
 					var initHeroCards = cardManager.setInitLevN(card.cont);
 					for(var i in initHeroCards){
@@ -96,8 +111,7 @@ $(document).ready(
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev2Card_detail_" + (i+1)).html(template(lev2Cards[i]));
 						lev2CardList.push(lev2Cards[i]);
-					}
-					
+					}					
 					console.log(lev2CardList);
 				}
 				
@@ -108,8 +122,7 @@ $(document).ready(
 						var template = Handlebars.compile($(".heroCard_details").html());												
 						$("#lev1Card_detail_" + (i+1)).html(template(lev1Cards[i]));
 						lev1CardList.push(lev1Cards[i]);
-					}	
-					
+					}						
 					console.log(lev1CardList);
 				}
 				
@@ -122,8 +135,7 @@ $(document).ready(
 					rest_cardValue.rest_heroCardValue = json.cont.rest_heroCardValue;
 					rest_cardValue.rest_lev3CardValue = json.cont.rest_lev3CardValue;
 					rest_cardValue.rest_lev2CardValue = json.cont.rest_lev2CardValue;
-					rest_cardValue.rest_lev1CardValue = json.cont.rest_lev1CardValue;
-					
+					rest_cardValue.rest_lev1CardValue = json.cont.rest_lev1CardValue;					
 				}
 			};
 
@@ -134,17 +146,9 @@ $(document).ready(
 			
 			$("#jewel_white_img").click(
 					function() {						
-						var player;
-						var nextPlayer;
-						if (orderCount < 3) {
-							player = players[orderCount]; // 현재 턴의 플레이어 설정
-							nextPlayer = players[orderCount + 1]; // 다음 턴 플레이어
-							// 설정
-						} else {
-							player = players[3]; // 네 번째 플레이어가 현재일 때
-							nextPlayer = players[0]; // 다음 플레이어를 첫 번째 플레이어로
-							// 설정
-						}
+						var player = getTurnPlayer();
+						var nextPlayer = getNextPlayer();
+	
 						if( jewelWhiteValue === 0){
 							alert('사용가능한 보석이 없습니다');
 							return;
@@ -155,14 +159,8 @@ $(document).ready(
 							player.toggleTurn();
 							player.setActionPoint(INIT_POINT);
 							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color",
-									"tomato");
-							$("#player" + (orderCount + 1)).css("background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css("background-color", "red");
-							}
+							$("#player" + (player.getOrder())).css("background-color", "tomato");
+							$("#player" + (nextPlayer.getOrder())).css("background-color", "red");							
 							return;
 						}
 						if (player.getWhiteJewelStatus() === false) {							
@@ -177,8 +175,7 @@ $(document).ready(
 							jewelWhiteValue = player.getWhite();
 							player.setActionPoint(TWO_POINT);
 						}
-																		
-						
+																								
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
 							console.log(players[i]);
@@ -187,17 +184,8 @@ $(document).ready(
 
 			$("#jewel_green_img").click(
 					function() {
-						var player;
-						var nextPlayer;
-						if (orderCount < 3) {
-							player = players[orderCount]; // 현재 턴의 플레이어 설정
-							nextPlayer = players[orderCount + 1]; // 다음 턴 플레이어
-							// 설정
-						} else {
-							player = players[3]; // 네 번째 플레이어가 현재일 때
-							nextPlayer = players[0]; // 다음 플레이어를 첫 번째 플레이어로
-							// 설정
-						}
+						var player = getTurnPlayer();
+						var nextPlayer = getNextPlayer();
 						if( jewelGreenValue === 0){
 							alert('사용가능한 보석이 없습니다');
 							return;
@@ -208,14 +196,8 @@ $(document).ready(
 							player.toggleTurn();
 							player.setActionPoint(INIT_POINT);
 							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color","tomato");
-							$("#player" + (orderCount + 1)).css(
-									"background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css("background-color", "red");
-							}
+							$("#player" + (player.getOrder())).css("background-color", "tomato");
+							$("#player" + (nextPlayer.getOrder())).css("background-color", "red");	
 							return;
 						}
 
@@ -231,7 +213,6 @@ $(document).ready(
 							jewelGreenValue = player.getGreen();
 							player.setActionPoint(TWO_POINT);
 						}
-
 						
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
@@ -240,36 +221,21 @@ $(document).ready(
 					});
 			$("#jewel_blue_img").click(
 					function() {
-						var player;
-						var nextPlayer;
-						if (orderCount < 3) {
-							player = players[orderCount]; // 현재 턴의 플레이어 설정
-							nextPlayer = players[orderCount + 1]; // 다음 턴 플레이어
-							// 설정
-						} else {
-							player = players[3]; // 네 번째 플레이어가 현재일 때
-							nextPlayer = players[0]; // 다음 플레이어를 첫 번째 플레이어로
-							// 설정
-
-						}
+						var player = getTurnPlayer();
+						var nextPlayer = getNextPlayer();
+					
 						if( jewelBlueValue === 0){
 							alert('사용가능한 보석이 없습니다');
 							return;
 						}	
-						
-						
+												
 						if (player.getActionPoint() === THREE_POINT) {
 							player.setAllJewelStatusFalse();
 							player.toggleTurn();
 							player.setActionPoint(INIT_POINT);
 							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color", "tomato");
-							$("#player" + (orderCount + 1)).css("background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css("background-color", "red");
-							}
+							$("#player" + (player.getOrder())).css("background-color", "tomato");
+							$("#player" + (nextPlayer.getOrder())).css("background-color", "red");	
 							return;
 						}
 						
@@ -285,8 +251,7 @@ $(document).ready(
 							jewelBlueValue = player.getBlue();
 							player.setActionPoint(TWO_POINT);
 						}
-
-						
+					
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
 							console.log(players[i]);
@@ -294,18 +259,9 @@ $(document).ready(
 					});
 			$("#jewel_red_img").click(
 					function() {
-						var player;
-						var nextPlayer;
-						if (orderCount < 3) {
-							player = players[orderCount]; // 현재 턴의 플레이어 설정
-							nextPlayer = players[orderCount + 1]; // 다음 턴 플레이어
-							// 설정
-						} else {
-							player = players[3]; // 네 번째 플레이어가 현재일 때
-							nextPlayer = players[0]; // 다음 플레이어를 첫 번째 플레이어로
-														// 설정
-
-						}
+						var player = getTurnPlayer();
+						var nextPlayer = getNextPlayer();
+						
 						if( jewelRedValue === 0){
 							alert('사용가능한 보석이 없습니다');
 							return;
@@ -316,16 +272,8 @@ $(document).ready(
 							player.toggleTurn();
 							player.setActionPoint(INIT_POINT);
 							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color",
-									"tomato");
-							$("#player" + (orderCount + 1)).css(
-									"background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css(
-										"background-color", "red");
-							}
+							$("#player" + (player.getOrder())).css("background-color", "tomato");
+							$("#player" + (nextPlayer.getOrder())).css("background-color", "red");	
 							return;
 						}
 
@@ -341,7 +289,6 @@ $(document).ready(
 							jewelRedValue = player.getRed();
 							player.setActionPoint(TWO_POINT);
 						}
-
 						
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
@@ -350,37 +297,16 @@ $(document).ready(
 					});
 			$("#jewel_black_img").click(
 					function() {
-						var player;
-						var nextPlayer;
-						if (orderCount < 3) {
-							player = players[orderCount]; // 현재 턴의 플레이어 설정
-							nextPlayer = players[orderCount + 1]; // 다음 턴 플레이어
-							// 설정
-						} else {
-							player = players[3]; // 네 번째 플레이어가 현재일 때
-							nextPlayer = players[0]; // 다음 플레이어를 첫 번째 플레이어로
-														// 설정
-						}
-						if( jewelBlackValue === 0){
-							alert('사용가능한 보석이 없습니다');
-							return;
-						}	
+						var player = getTurnPlayer();
+						var nextPlayer = getNextPlayer();
 						
 						if (player.getActionPoint() === THREE_POINT) {
 							player.setAllJewelStatusFalse();
 							player.toggleTurn();
 							player.setActionPoint(INIT_POINT);
 							nextPlayer.toggleTurn();
-							orderCount++;
-							$("#player" + (orderCount)).css("background-color",
-									"tomato");
-							$("#player" + (orderCount + 1)).css(
-									"background-color", "red");
-							if (orderCount === 4) {
-								orderCount = 0; // 플레이어 선택자를 초기화
-								$("#player" + (orderCount + 1)).css(
-										"background-color", "red");
-							}
+							$("#player" + (player.getOrder())).css("background-color", "tomato");
+							$("#player" + (nextPlayer.getOrder())).css("background-color", "red");	
 							return;
 						}
 						
@@ -396,7 +322,6 @@ $(document).ready(
 							jewelBlackValue = player.getBlack();
 							player.setActionPoint(TWO_POINT);
 						}
-
 						
 						for(var i in players){
 							players[i].getJewelsValue();  //버튼을 누를 때 마다 각 플레이어 객체의 보석 값을 가져온다.
@@ -466,7 +391,7 @@ $(document).ready(
 			});
 			
 			$("#lev3Card_detail_1").click(function (){
-				console.log(lev3CardList[0]);
+				card
 				if(rest_cardValue.rest_lev3CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;
@@ -584,9 +509,9 @@ $(document).ready(
 			});
 			
 			$("#lev1Card_detail_1").click(function (){
-				
+				var player = getTurnPlayer();
 				var card = lev1CardList[0];
-				console.log(card);
+				console.log(cardManager.checkCardSpec(player, card));
 				if(rest_cardValue.rest_lev1CardValue == 0){
 					alert('더이상 카드가 없습니다.');
 					return;

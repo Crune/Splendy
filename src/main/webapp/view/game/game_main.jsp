@@ -185,9 +185,7 @@
 				<div class="card" id="lev3Card_container4">
 					<div class="card_define" id="lev3Card_detail_4"></div>
 				</div>
-				<div class="card" id="lev3Card_container5">
-					<div class="card_define" id="lev3Card_detail_5"></div>
-				</div>
+				
 			</div>
 
 			<div class="container_cardLevel" id="lev2_level">
@@ -203,9 +201,7 @@
 				<div class="card" id="lev2Card_container4">
 					<div class="card_define" id="lev2Card_detail_4"></div>
 				</div>
-				<div class="card" id="lev2Card_container5">
-					<div class="card_define" id="lev2Card_detail_5"></div>
-				</div>
+				
 			</div>
 
 			<div class="container_cardLevel" id="lev1_level">
@@ -221,9 +217,7 @@
 				<div class="card" id="lev1Card_container4">
 					<div class="card_define" id="lev1Card_detail_4"></div>
 				</div>
-				<div class="card" id="lev1Card_container5">
-					<div class="card_define" id="lev1Card_detail_5"></div>
-				</div>
+				
 			</div>
 
 		</div>

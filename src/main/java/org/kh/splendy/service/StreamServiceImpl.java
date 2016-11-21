@@ -280,7 +280,7 @@ public class StreamServiceImpl implements StreamService {
 			List<Card> initLev1Card = new ArrayList<Card>();
 			deck_lev1 = cardServ.getLevel_1();  //1레벨 덱
 			
-			for(int i = 0; i < 5; i++){
+			for(int i = 0; i < 4; i++){
 				initLev1Card.add(deck_lev1.get(i));
 			}
 			sendR(sId, "init_lev1", initLev1Card);			
@@ -288,7 +288,7 @@ public class StreamServiceImpl implements StreamService {
 			List<Card> initLev2Card = new ArrayList<Card>();
 			deck_lev2 = cardServ.getLevel_2();  //2레벨 덱
 			
-			for(int i = 0; i < 5; i++){
+			for(int i = 0; i < 4; i++){
 				initLev2Card.add(deck_lev2.get(i));
 			}
 			sendR(sId, "init_lev2", initLev2Card);			
@@ -296,7 +296,7 @@ public class StreamServiceImpl implements StreamService {
 			List<Card> initLev3Card = new ArrayList<Card>();
 			deck_lev3 = cardServ.getLevel_3();  //3레벨 덱
 			
-			for(int i = 0; i < 5; i++){
+			for(int i = 0; i < 4; i++){
 				
 				initLev3Card.add(deck_lev3.get(i));	
 			}

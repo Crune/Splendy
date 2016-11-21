@@ -311,6 +311,26 @@ Player.prototype = {
 			this.goldJewel_value = $("#player" + this.order + "_jewel_gold").html();			
 		},
 		
+		getWhiteJewel_value : function(){
+			return this.whiteJewel_value;
+		},
+		
+		getBlueJewel_value : function(){
+			return this.blueJewel_value;
+		},
+		
+		getGreenJewel_value : function(){
+			return this.greenJewel_value;
+		},
+		
+		getRedJewel_value : function(){
+			return this.redJewel_value;
+		},
+		
+		getBlackJewel_value : function(){
+			return this.blackJewel_value;
+		},
+								
 		setAllJewelStatusFalse(){
 			this.blackJewel = false;
 			this.greenJewel = false;
