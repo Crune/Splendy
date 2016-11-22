@@ -77,7 +77,7 @@ public class StreamServiceImpl implements StreamService {
 		}
 	}
 
-	@Override
+	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
 		log.info(session.getId() + " -> " + message.getPayload());
 		WSMsg raw = WSMsg.convert(message.getPayload());
@@ -258,7 +258,7 @@ public class StreamServiceImpl implements StreamService {
 		send(sId, type, cont);
 	}
 	
-	@Override @WSReqeust @Async
+	@Override @WSReqeust
 	public void cardRequest(String sId, String msg) throws Exception {
 			
 		/*
@@ -311,7 +311,7 @@ public class StreamServiceImpl implements StreamService {
 			
 	}
 
-	@Override @WSReqeust @Async
+	@Override @WSReqeust
 	public void cardCount(String sId, String msg) throws Exception {
 		Gson gson = new Gson();
 		GameLog gameLog = gson.fromJson(msg, GameLog.class);

@@ -104,7 +104,7 @@ CardManager.prototype = {
 		
 		checkCardSpec : function(player, card){
 			console.log(player.getWhiteJewel_value());
-			if(player.getWhiteJewel_value() == card.white){
+			if(player.getWhiteJewel_value() >= card.white){
 				return true;
 			}
 			return false;
