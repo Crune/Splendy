@@ -66,16 +66,16 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Article getDetail(int at_Id) throws Exception {
-		Article article = boardMap.getDetail(at_Id);
+	public Article getDetail(int at_id) throws Exception {
+		Article article = boardMap.getDetail(at_id);
 		return article;
 	}
 
 	@Override
-	public void readCount(int at_Id) throws Exception {		
-		boardMap.readCount(at_Id);		
+	public void readCount(int at_id) throws Exception {		
+		boardMap.readCount(at_id);		
 	}
-	public void updateBoard(int at_Id) throws Exception{
+	public void updateBoard(int at_id) throws Exception{
 		
 	}
 

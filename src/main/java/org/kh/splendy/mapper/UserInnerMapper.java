@@ -1,5 +1,7 @@
 package org.kh.splendy.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -103,4 +105,8 @@ public interface UserInnerMapper {
 	@ResultMap("userInnerResult")
 	@Select("select * from "+TABLE+" where U_WS_ID=#{wsid, jdbcType=VARCHAR}")
 	public UserInner readByWSId(String wsid); // 수정: 클래스 명
+	
+	@ResultMap("userInnerResult")
+	@Select("select * from "+TABLE+" order by U_ID asc")
+	public List<UserInner> readAdmin();
 }

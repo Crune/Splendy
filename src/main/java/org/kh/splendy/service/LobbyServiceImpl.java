@@ -32,17 +32,21 @@ public class LobbyServiceImpl implements LobbyService {
 
 	@Override @Transactional
 	public UserCore initPlayer(UserCore inUser) {
-		int uid = inUser.getId();
-		
-		UserInner inner = innerMap.read(uid);
-		if (inner.getWsSession() != null) {
-			stream.close(uid);
+		if (inUser != null) {
+			int uid = inUser.getId();
+			
+			UserInner inner = innerMap.read(uid);
+			if (inner.getWsSession() != null) {
+				stream.close(uid);
+			}
+			innerMap.setWSCode(uid, RandomStringUtils.randomAlphanumeric(9));
+			playerMap.setIsIn(uid, 0, 1);
+			
+			UserCore user = userMap.read(uid);
+			return user;
+		} else {
+			return null;
 		}
-		innerMap.setWSCode(uid, RandomStringUtils.randomAlphanumeric(9));
-		playerMap.setIsIn(uid, 0, 1);
-		
-		UserCore user = userMap.read(uid);
-		return user;
 	}
 
 	@Override

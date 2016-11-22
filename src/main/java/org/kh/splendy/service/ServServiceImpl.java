@@ -17,7 +17,7 @@ public class ServServiceImpl implements ServService {
 	@Autowired
 	private ServMapper servMap;
 
-	private static final Logger log = LoggerFactory.getLogger(AdminServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(ServServiceImpl.class);
 
 	@Override
 	public List<PropInDB> readAll() throws Exception {
@@ -40,9 +40,17 @@ public class ServServiceImpl implements ServService {
 	}
 
 	@Override
-	public void update(PropInDB prop) throws Exception {
-		servMap.update(prop);
+	public int update(PropInDB prop) throws Exception {
+		int result = 0;
+		PropInDB ser = servMap.read(prop.getKey());
+		if(prop.getValue().equals(ser.getValue())) {
+			result = 1;
+		} else {
+			servMap.update(prop);
+			result = 2;
+		}
 		log.info("admin update service : "+prop.getKey());
+		return result;
 	}
 
 	@Override

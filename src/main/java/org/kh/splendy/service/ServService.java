@@ -12,7 +12,7 @@ public interface ServService {
 	
 	PropInDB read(String id) throws Exception;
 	
-	void update(PropInDB prop) throws Exception;
+	int update(PropInDB prop) throws Exception;
 	
 	void delete(String id) throws Exception;
 	

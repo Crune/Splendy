@@ -4,6 +4,9 @@ function CardManager(){
 	this.initLev2;
 	this.initLev3;
 	this.initLevN;
+	this.playerSpec;
+	this.cardSpec;
+	
 } 
 
 CardManager.prototype = {
@@ -97,6 +100,14 @@ CardManager.prototype = {
 				initLev3CardList.push(lev3Card);
 			}
 			return initLev3CardList;			
+		},
+		
+		checkCardSpec : function(player, card){
+			console.log(player.getWhiteJewel_value());
+			if(player.getWhiteJewel_value() >= card.white){
+				return true;
+			}
+			return false;
 		}
 		
 }
