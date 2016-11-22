@@ -53,26 +53,18 @@ public class LoginController {
 			method = {RequestMethod.GET, RequestMethod.POST},
 			produces = "application/json")
 	public @ResponseBody String google_logined(@ModelAttribute("googleForm") UserCore user, HttpSession session) {
-		/**
-		 * sql문을 통해 디비에 구글 아이디 저장 후 로비로 이동
-		 * 디비에 정보가 없으면 저장 후 로그인, 있으면 바로 로그인 진행
-		 * 
-		 */
-		System.out.println(user.getEmail());
+		
 		String email = "G"+user.getEmail();
 		user.setEmail(email);
 		user.setPassword("0");
-		System.out.println(user.getEmail());
-		System.out.println(user.getNickname());
 		try {
 			UserCore searchUser = userServ.checkEmail(email);
 			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
 				userServ.createUser(user);
 			}
-			session.setAttribute("user", user);
-			session.setAttribute("email", user.getEmail());
-			session.setAttribute("user_id", user.getId());
+			user = userServ.checkEmail(email);
 			user.openInfo();
+			session.setAttribute("user", user);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
