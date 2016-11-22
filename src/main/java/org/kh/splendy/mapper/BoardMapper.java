@@ -86,10 +86,10 @@ public interface BoardMapper {
 		
 		public void writePro(@ModelAttribute("BoardVO") Article article) throws Exception;
 		
-		public Article getDetail(int at_Id) throws Exception;
+		public Article getDetail(int at_id) throws Exception;
 		
-		public void readCount(int at_Id) throws Exception; 
+		public void readCount(int at_id) throws Exception; 
 		
-		public void updateBoard(int at_Id) throws Exception;
+		public void updateBoard(int at_id) throws Exception;
 			
 }
