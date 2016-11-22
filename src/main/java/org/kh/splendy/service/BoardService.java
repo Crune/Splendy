@@ -16,7 +16,7 @@ public interface BoardService {
 
 	List<Article> getList(String bName) throws Exception;
 
-	Article getDetail(int at_Id) throws Exception;
+	Article getDetail(int at_id) throws Exception;
 	
 	int boardCount() throws Exception;
 	
@@ -26,9 +26,9 @@ public interface BoardService {
 	
 	int max() throws Exception;	 
 	 
-	void readCount(int at_Id) throws Exception;
+	void readCount(int at_id) throws Exception;
 	
-	void updateBoard(int at_Id) throws Exception;
+	void updateBoard(int at_id) throws Exception;
 	
 	int updateBoard(Article article) throws Exception;
 	

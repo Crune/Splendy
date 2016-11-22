@@ -295,7 +295,7 @@ public class StreamServiceImpl implements StreamService {
 		send(sId, type, cont);
 	}
 	
-	@Override @WSReqeust @Async
+	@Override @WSReqeust
 	public void cardRequest(String sId, String msg) throws Exception {
 			
 		/*
@@ -348,7 +348,7 @@ public class StreamServiceImpl implements StreamService {
 			
 	}
 
-	@Override @WSReqeust @Async
+	@Override @WSReqeust
 	public void cardCount(String sId, String msg) throws Exception {
 		Gson gson = new Gson();
 		GameLog gameLog = gson.fromJson(msg, GameLog.class);

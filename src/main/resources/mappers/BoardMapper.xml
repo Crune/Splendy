@@ -7,7 +7,7 @@
 	<resultMap id="BoardVO" type="org.kh.splendy.vo.Article">
 		<result column="U_ID" property="u_id" javaType="int" />
 		<result column="AT_ID" property="at_id" javaType="int" />
-		<result column="BD_ID" property="bd_id" javaType="java.lang.String" />
+		<result column="BD_ID" property="bd_id" javaType="int" />
 		<result column="AT_SUBJECT" property="at_subject" javaType="java.lang.String" />
 		<result column="AT_CONTENT" property="at_content" javaType="java.lang.String" />
 		<result column="AT_PASS" property="at_pass" javaType="java.lang.String" />
@@ -39,11 +39,11 @@
 	<insert id="writePro" parameterType="org.kh.splendy.vo.Article">
 	<![CDATA[		
 		INSERT INTO KH_ARTICLE(
-			AT_ID, AT_SUBJECT, AT_PASS,
+			AT_ID,BD_ID, AT_SUBJECT, AT_PASS,
 			AT_CONTENT, AT_IP, AT_READCOUNT,
 			AT_REG_DATE)
 		VALUES(
-			KH_BOARD_SEQ.NEXTVAL, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR}, 
+			KH_BOARD_SEQ.NEXTVAL,1, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR}, 
 			#{at_content, jdbcType=VARCHAR}, #{at_ip, jdbcType=VARCHAR},
 			#{at_readcount, jdbcType=INTEGER}, SYSDATE
 		)
@@ -62,12 +62,12 @@
 
 	<update id="updateBoard" parameterType="org.kh.splendy.vo.Article">
     <![CDATA[
-        UPDATE TB_BOARD 
+        UPDATE KH_ARTICLE 
         SET
-            TITLE = #{TITLE},
-            CONTENTS = #{CONTENTS}
+            AT_SUBJECT = #{at_subject},
+            AT_CONTENT = #{at_content}
         WHERE
-            IDX = #{IDX}    
+            AT_ID = #{AT_ID}    
     ]]>
 	</update>
 </mapper>

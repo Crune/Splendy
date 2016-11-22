@@ -5,7 +5,7 @@
 <%@ include file="/view/board/include/boardinclude.jspf"%>
 </head>
 <body>
-	 <form id="frm">
+	  <form id="frm">
 	    <table class="board_view">
 	        <colgroup>
 	            <col width="15%"/>
@@ -37,49 +37,48 @@
 	        </tbody>
 	    </table>
 	     
-	    <a href="#this" class="btn" id="list">목록으로</a>
+	    <a href="#this" class="btn" id="list" >목록으로</a>
 	    <a href="#this" class="btn" id="update">수정하기</a>
 	    <a href="#this" class="btn" id="delete">삭제하기</a>
-	     
-	</form>
+	</form>     
+
  
     <%@ include file="/view/board/include/boardinclude.jspf" %>
-    <script type="text/javascript">
+	    <script type="text/javascript">
     $(document).ready(function(){
-    	
-    	  $("#list").on("click", function(e){ //목록으로 버튼
-              e.preventDefault();
-              fn_openBoardList();
-          });
-             
-            $("#update").on("click", function(e){
-                e.preventDefault();
-                fn_openBoardUpdate();
-            });
-            $("#delete").on("click", function(e){ //삭제하기 버튼
-                e.preventDefault();
-                fn_deleteBoard();
-            });
+        $("#list").on("click", function(e){ //목록으로 버튼
+            e.preventDefault();
+            fn_openBoardList();
         });
          
+        $("#update").on("click", function(e){
+            e.preventDefault();
+            fn_openBoardUpdate();
+        });
+        
+        $("#delete").on("click", function(e){ //삭제하기 버튼
+            e.preventDefault();
+            fn_deleteBoard();
+        });
+    });
+     
     function fn_openBoardList(){
         var comSubmit = new ComSubmit("frm");
         comSubmit.setUrl("<c:url value='/bbs/list?pageNum=1&bName=1' />");
         comSubmit.submit();
     }
-         
-        function fn_openBoardUpdate(){
-        	ar comSubmit = new ComSubmit("frm");
-            comSubmit.setUrl("<c:url value='/bbs/mod' />");
-            comSubmit.addParam("at_Id", obj.parent().find("#at_Id").val());
-            comSubmit.submit();
-        }
-        function fn_deleteBoard(){
-            var comSubmit = new ComSubmit("frm");
-            comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
-            comSubmit.addParam("at_Id", $("#at_Id").val());
-            comSubmit.submit();             
-        }
-    </script>
+    function fn_openBoardUpdate(){
+       	var comSubmit = new ComSubmit("frm");
+        comSubmit.setUrl("<c:url value='/bbs/mod' />");
+        comSubmit.addParam("at_id", $("#at_id").val());
+        comSubmit.submit();
+    } 
+    function fn_deleteBoard(){
+        var comSubmit = new ComSubmit("frm");
+        comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
+        comSubmit.addParam("at_id", $("#at_id").val());
+        comSubmit.submit();             
+    }
+</script>
 </body>
 </html>   

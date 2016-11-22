@@ -30,7 +30,7 @@
                             <td>${row.at_id }</td>
                             <td class="at_subject">
                                 <a href="#this" name="at_subject">${row.at_subject }</a>
-                                <input type="hidden" id="at_Id" value="${row.at_id }">
+                                <input type="hidden" id="at_id" value="${row.at_id }">
                             </td>
                             <td>${row.u_id }</td>
                             <td>${row.at_readcount }</td>
@@ -72,7 +72,7 @@
         function fn_openBoardDetail(obj){
             var comSubmit = new ComSubmit();
             comSubmit.setUrl("<c:url value='/bbs/view' />");
-            comSubmit.addParam("at_Id", obj.parent().find("#at_Id").val());
+            comSubmit.addParam("at_id", obj.parent().find("#at_id").val());
             comSubmit.submit();
         }
     </script> 
