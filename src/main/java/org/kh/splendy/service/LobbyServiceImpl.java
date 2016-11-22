@@ -57,5 +57,30 @@ public class LobbyServiceImpl implements LobbyService {
 		log.info("Auth Info: "+auth);
 		return auth;
 	}
-	
+
+	@Override
+	public int createRoom(Room reqRoom, UserCore user) {
+		
+		int rst = -1;
+		
+		reqRoom.setHost(user.getId());
+		
+		boolean isTitle = !reqRoom.getTitle().isEmpty();
+		boolean isInfo = !reqRoom.getInfo().isEmpty();
+		boolean isPlLimit = (reqRoom.getPlayerLimits() >= 2 && reqRoom.getPlayerLimits() <= 4);
+		
+		boolean isNotHaveRoom = true;
+		for (Room cur : roomMap.getCurrentRooms()) {
+			if (cur.getHost() == user.getId()) {
+				isNotHaveRoom = false;
+			}
+		}
+		
+		if (isTitle && isInfo && isPlLimit && isNotHaveRoom) {
+			roomMap.create(reqRoom);
+			rst = roomMap.getMyRoom(user.getId());
+		}
+		
+		return rst;
+	}
 }

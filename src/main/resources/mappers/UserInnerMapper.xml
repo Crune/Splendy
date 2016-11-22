@@ -11,5 +11,6 @@
 		<result column="U_REG_CODE"		property="regCode"		javaType="java.lang.String" />
 		<result column="U_CONNECT"		property="connect"		javaType="int" />
 		<result column="U_ROLE"			property="role"			javaType="java.lang.String" />
+		<result column="U_WAS"			property="was"			javaType="java.lang.String" />
 	</resultMap>
 </mapper>

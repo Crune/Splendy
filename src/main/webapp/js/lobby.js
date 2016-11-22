@@ -54,7 +54,25 @@ $( document ).ready(function() {
 	// 방개설시
 
 	$("#btn_create").on("click", function() {
-		alert("방개설");
+		$.ajax({
+			url : '/lobby/room_new',
+			type : 'post',
+			data : $("#form_newroom").serialize(),
+			success : function(data) {
+				if (data == -1) {
+					alert("방 정보가 잘못 되었습니다.");
+				} else if (data > 0) {
+					console.log("방개설 성공!");
+					var joinRoom = new Msg();
+					joinRoom.type = data;
+					joinRoom.cont = $("#password").prop("value");
+					wssend('join', joinRoom);
+				}
+			},
+			error : function(request, status, error) {
+				alert("방 개설에 실패하였습니다.");
+			}
+		});
 	});
 	$("#btn_create_cancel").on("click", function() {
 		$("#createRoom").hide();
@@ -75,6 +93,11 @@ function onChatMsg(type, msg) {
 		$(".chat_msg").detach();
 	} else {
 		if (type =='new') {
+			if (msg.uid == auth.uid) {
+				msg.type = 'me'
+			} else if (msg.type == 'me') {
+				msg.type = 'o'
+			}
 			$("#chatDiv").append(temp_chatmsg(msg));
 			$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
 		}
@@ -117,6 +140,9 @@ function onRoom(type, room) {
 		}
 		if (type=='remove') {
 			$("#room_"+room).detach();
+		}
+		if (type=='accept') {
+			location.replace("/game/" + room);
 		}
 	}
 	roomMouseEvt();

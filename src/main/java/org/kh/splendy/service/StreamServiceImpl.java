@@ -39,8 +39,9 @@ public class StreamServiceImpl implements StreamService {
 		
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
 	private static Map<String, WSPlayer> wsplayers = new HashMap<String, WSPlayer>();
+	private static Map<String, Queue<String>> msgs = new HashMap<String, Queue<String>>();
 	private static Map<String, Method> webSocketMethods = new HashMap<String, Method>();
-
+	
 	@Autowired private RoomMapper roomMap;
 	@Autowired private PlayerMapper playerMap;
 	@Autowired private UserMapper userMap;
@@ -96,16 +97,17 @@ public class StreamServiceImpl implements StreamService {
 				UserInner inner = innerMap.read(uid);
 				if (inner.getWsSession().equals(sid)) {
 					// 재접속이 아닐경우의 처리
+					// DB에서 비접속으로 변경한다.
 					inner.setConnect(0);
 					inner.setWsAuthCode(null);
 					inner.setWsSession(null);
 					innerMap.update(inner);
 				} else {
-					// 재접속일 경우의 처리
 					isReconnected = true;
 				}
 			}
 			
+			// 재접속일 경우의 처리
 			if (!isReconnected) {
 				try {
 					sendWithoutSender(sid, "player.leave", curPl);
@@ -115,12 +117,14 @@ public class StreamServiceImpl implements StreamService {
 			}
 			
 			try {
+				// 접속 상태일 경우 연결 끊음.
 				if (sessions.get(sid).isOpen()) {
 					sessions.get(sid).close();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
+				// 목록에서 삭제
 				wsplayers.remove(sid);
 				sessions.remove(sid);
 				log.info(rid+"/"+nick+"(uid:"+uid+"/sid:"+sid + ") 님이 퇴장했습니다.");
@@ -162,30 +166,22 @@ public class StreamServiceImpl implements StreamService {
 			if (innerMap.checkWSCode(uid, auth.getCode()) > 0) {
 				innerMap.setWSId(uid, sId);
 				innerMap.setConnect(uid, 1);
+				
 				String ip = sessions.get(sId).getRemoteAddress().getHostName();
 				playerMap.setIp(uid, 0, ip);
-				
-				send(sId, "auth", "ok");
 				
 				WSPlayer me = playerMap.getWSPlayer(uid).CanSend();
 				wsplayers.remove(sId);
 				wsplayers.put(sId, me);
 				
 				sendWithoutSender(sId, "player.join", me);
+				
+				send(sId, "auth", "ok");
+				
 			}
 		}
 	}
 
-	private UserTotal getTUserBySid(String sId) {
-		UserTotal user = new UserTotal();
-		
-		user.setInner(innerMap.readByWSId(sId));
-		user.setPl(playerMap.read(user.getInner().getId()));
-		user.setUser(userMap.read(user.getPl().getId()));
-		user.setRoom(roomMap.read(user.getPl().getRoom()));
-		//user.setProf(profMap.read(user.getInner().getId()));
-		return user;
-	}
 	private String getCurrentTime() {
 		TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
 		DateFormat df = new SimpleDateFormat("HH:mm:ss");
@@ -244,6 +240,7 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override @WSReqeust
 	public void request(String sId, String msg) throws Exception {
+		WSPlayer reqUser = wsplayers.get(sId);
 		if (msg.equals("roomList")) {
 			List<Room> rooms = roomMap.getCurrentRooms();
 			send(sId, "room.init", "{}");
@@ -266,7 +263,7 @@ public class StreamServiceImpl implements StreamService {
 			}
 		}
 		if (msg.equals("prevMsg")) {
-			WSPlayer reqUser = playerMap.getWSPlayerBySid(sId);
+			
 			int rid = reqUser.getRoom();
 			List<Msg> msgs = msgMap.readPrevChat(rid, 31);
 			send(sId, "chat.init", "{}");
@@ -306,32 +303,21 @@ public class StreamServiceImpl implements StreamService {
 	}
 
 	@Override
-	public void sendWithoutSender(String sId, String type, Object cont) throws Exception {
-		sendWithoutSender(sId, cvMsg(type, cont));
-	}
-	@Override
-	public void sendWithoutSender(String sId, String msg) throws Exception {
-		List<String> sids = playerMap.getActiverSid();
-		if (sids.size() > 0) {
-			for (String cur : sids) {
-				if (cur.equals(sId)) {
-					send(cur, msg);
+	public void sendWithoutSender(String sId, String type, Object cont) {
+		for (String cur : wsplayers.keySet()) {
+			if (!cur.equals(sId) && sessions.get(cur) != null) {
+				try {
+					send(cur, type, cont);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
 	}
 	
 	@Override
-	public void sendAll(String type, Object cont) throws Exception {
-		sendAll(cvMsg(type, cont));
-	}
-	
-	@Override
-	public void sendAll(String msg) throws Exception {
-		List<String> sids = playerMap.getActiverSid();
-		for (String cur : sids) {
-			send(cur, msg);
-		}
+	public void sendAll(String type, Object cont){
+		sendWithoutSender("", type, cont);
 	}
 	
 	@Override
@@ -397,6 +383,29 @@ public class StreamServiceImpl implements StreamService {
 		Gson gson = new Gson();
 		GameLog gameLog = gson.fromJson(msg, GameLog.class);
 		sendR(sId, "cardCountPro", gameLog);		
+	}
+
+	@Override
+	public void refreshConnector() {
+		// 접속 상태를 확인후 끊어졌을 경우 추방
+		for (String cur : sessions.keySet()) {
+			if (!sessions.get(cur).isOpen()) {
+				kick(cur);
+			}
+		}
+		// 접속이 끊어졌지만 참가자목록에 남아있을 경우 추방
+		for (String cur : wsplayers.keySet()) {
+			if (sessions.get(cur) == null) {
+				kick(cur);
+			}
+		}
+		// 서버 비정상 종료로 잔여할 경우 DB수정
+		for (String cur : innerMap.getConnector()) {
+			if (!wsplayers.containsKey(cur)) {
+				innerMap.setConnectBySid(cur, 0);
+			}
+		}
+		
 	}
 	
 }

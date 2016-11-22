@@ -1,7 +1,9 @@
 package org.kh.splendy.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.service.*;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -61,5 +63,16 @@ public class LobbyController {
 	public @ResponseBody Auth getAuth(HttpSession session) {
 		UserCore user = (UserCore) session.getAttribute("user");
 		return serv.getAuth(user.getId());
+	}
+	
+
+	@RequestMapping(value = "/room_new", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody int requestJoin(@ModelAttribute Room reqRoom, HttpSession session) {
+		int result = -1;
+
+		UserCore user = (UserCore) session.getAttribute("user");
+		result = serv.createRoom(reqRoom, user);
+
+		return result;
 	}
 }

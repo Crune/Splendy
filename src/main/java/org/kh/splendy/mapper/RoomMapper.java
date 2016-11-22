@@ -22,7 +22,7 @@ public interface RoomMapper {
 	String TABLE = "KH_ROOM";
 	
 	String COLUMNS = "RM_ID, RM_TITLE, RM_PW, RM_INFO, RM_PL_LIMITS, RM_HOST";
-	String C_VALUES = "#{id}, #{title, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{info, jdbcType=CLOB}, #{playerLimits, jdbcType=INTEGER}, #{host, jdbcType=INTEGER}";
+	String C_VALUES = "KH_ROOM_SEQ.NEXTVAL, #{title, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{info, jdbcType=CLOB}, #{playerLimits, jdbcType=INTEGER}, #{host, jdbcType=INTEGER}";
 	String UPDATES = "RM_TITLE=#{title, jdbcType=VARCHAR}, RM_PW=#{password, jdbcType=VARCHAR}, RM_INFO=#{info, jdbcType=CLOB}"
 			+ ", RM_PL_LIMITS=#{playerLimits, jdbcType=INTEGER}, RM_HOST=#{host, jdbcType=INTEGER}"
 			+ ", RM_WINNER=#{winner, jdbcType=INTEGER}, RM_START=#{start, jdbcType=INTEGER}, RM_END=#{end, jdbcType=INTEGER}";
@@ -77,5 +77,11 @@ public interface RoomMapper {
 	@ResultMap("roomResult")
 	@Select("select * from "+TABLE+" where RM_END is null and RM_ID <> 0")
 	public List<Room> getCurrentRooms();
+
+	@Select("select RM_ID from "+TABLE+" where RM_END is null and RM_HOST = #{uid}")
+	public int getMyRoom(@Param("uid") int uid);
+
+	// SQL query is in xml
+	public List<Integer> getNotEmptyRoom();
 
 }
