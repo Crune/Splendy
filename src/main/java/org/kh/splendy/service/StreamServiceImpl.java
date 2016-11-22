@@ -83,7 +83,7 @@ public class StreamServiceImpl implements StreamService {
 	}
 	
 	private void kick(String sid) {
-		if (sid != null) {
+		if (wsplayers.get(sid) != null) {
 			WSPlayer curPl = wsplayers.get(sid);
 			int uid = wsplayers.get(sid).getUid();
 			String nick = wsplayers.get(sid).getNick();
