@@ -20,6 +20,7 @@ public class LobbyServiceImpl implements LobbyService {
 	@Autowired private PlayerMapper playerMap;
 	@Autowired private UserInnerMapper innerMap;
 	@Autowired private UserMapper userMap;
+	@Autowired private UserProfileMapper profMap;
 	
 	@Autowired private StreamService stream;
 
@@ -58,7 +59,7 @@ public class LobbyServiceImpl implements LobbyService {
 		return auth;
 	}
 
-	@Override
+	@Override @Transactional
 	public int createRoom(Room reqRoom, UserCore user) {
 		
 		int rst = -1;
@@ -82,5 +83,17 @@ public class LobbyServiceImpl implements LobbyService {
 		}
 		
 		return rst;
+	}
+
+	@Override
+	public int getLastRoom(int uid) {
+		int rid = profMap.getLastRoom(uid);
+		if (roomMap.read(rid).getEnd() == null) {
+			return rid;
+		} else {
+			playerMap.setIsIn(uid, rid, 0);
+			profMap.setLastRoom(uid, 0);
+			return 0;
+		}
 	}
 }

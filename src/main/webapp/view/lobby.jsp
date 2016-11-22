@@ -39,11 +39,23 @@ body {
 </script>
 <script id="temp_room" type="text/x-handlebars-template">
 	<div class="lobby_room" id="room_{{ id }}" name="room_{{ id }}">
-		<div class="room_detail col-md-5">
-			<div class="room_name">{{ title }}</div>
-			<div class="room_info">{{ info }}</div>
+		<div class="row">
+			<div class="room_detail col-md-5">
+				<div class="room_name">{{ title }}</div>
+				<div class="room_info">{{ info }}</div>
+			</div>
+			<div class="room_player col-md-7">
+			</div>
 		</div>
-		<div class="room_player col-md-7">
+		<div name="ispw_{{ id }}" id="ispw_{{ id }}" class="row" style="display: none;">
+			<div class="col-md-12 room_pw">
+				<div class="input-group">
+					<input name="rpw_{{ id }}" id="rpw_{{ id }}" type="password" class="form-control" placeholder="비밀번호를 입력하여 주세요.">
+					<span class="input-group-btn">
+						<button name="btn_pwroom_{{ id }}" id="btn_pwroom_{{ id }}" class="btn btn-default btn_joinroom" type="button">접속!</button>
+					</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </script>

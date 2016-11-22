@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.annotation.WSReqeust;
 import org.kh.splendy.aop.SplendyAdvice;
 import org.kh.splendy.mapper.*;
@@ -28,15 +29,15 @@ import com.google.gson.Gson;
 @EnableTransactionManagement
 public class StreamServiceImpl implements StreamService {
 	
+	private static final String currentWasId = RandomStringUtils.randomAlphanumeric(9);
+
 	private Logger log = LoggerFactory.getLogger(StreamServiceImpl.class);
 	
 	private List<Card> deck_lev1 = null;
 	private List<Card> deck_lev2 = null;
 	private List<Card> deck_lev3 = null;
 	private List<Card> deck_levN = null;
-	
-	
-		
+
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
 	private static Map<String, WSPlayer> wsplayers = new HashMap<String, WSPlayer>();
 	private static Map<String, Queue<String>> msgs = new HashMap<String, Queue<String>>();
@@ -44,6 +45,7 @@ public class StreamServiceImpl implements StreamService {
 	
 	@Autowired private RoomMapper roomMap;
 	@Autowired private PlayerMapper playerMap;
+	@Autowired private UserProfileMapper profMap;
 	@Autowired private UserMapper userMap;
 	@Autowired private MsgMapper msgMap;
 	
@@ -72,7 +74,8 @@ public class StreamServiceImpl implements StreamService {
 		kick(findSid(uid));
 	}
 	
-	private String findSid(int uid) {
+	@Override
+	public String findSid(int uid) {
 		String rst = null;
 		for (String cur : wsplayers.keySet()) {
 			WSPlayer curPl = wsplayers.get(cur);
@@ -83,40 +86,35 @@ public class StreamServiceImpl implements StreamService {
 		return rst;
 	}
 	
-	private void kick(String sid) {
+	@Override
+	public int findUid(String sid) {
+		return wsplayers.get(sid).getUid();
+	}
+	
+	@Override
+	public void kick(String sid) {
 		if (wsplayers.get(sid) != null) {
 			WSPlayer curPl = wsplayers.get(sid);
-			int uid = wsplayers.get(sid).getUid();
-			String nick = wsplayers.get(sid).getNick();
-			int rid = wsplayers.get(sid).getRoom();
-			
-			boolean isReconnected = false;
-			
-			// 비회원이 아닐경우 DB의 접속해제 처리
-			if (uid > 0) {
-				UserInner inner = innerMap.read(uid);
-				if (inner.getWsSession().equals(sid)) {
-					// 재접속이 아닐경우의 처리
-					// DB에서 비접속으로 변경한다.
-					inner.setConnect(0);
-					inner.setWsAuthCode(null);
-					inner.setWsSession(null);
-					innerMap.update(inner);
-				} else {
-					isReconnected = true;
-				}
-			}
-			
-			// 재접속일 경우의 처리
-			if (!isReconnected) {
-				try {
-					sendWithoutSender(sid, "player.leave", curPl);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			int uid = curPl.getUid();
+			String nick = curPl.getNick();
+			int rid = curPl.getRoom();
 			
 			try {
+				// 비회원이 아닐경우 DB정보 불러옴
+				UserInner inner = (uid > 0)?innerMap.read(uid):null;
+				
+				// 현재 사용자가 접속중으로 되어 있을 경우
+				if (inner != null) {
+					if (inner.getConnect() > 0) {
+						// DB상 사용자를 비접속으로 변경한다.
+						inner.setConnect(0);
+						inner.setWsAuthCode(null);
+						inner.setWsSession(null);
+						innerMap.update(inner);
+						sendWithoutSender(sid, "player.leave", curPl);
+					}
+				}
+				
 				// 접속 상태일 경우 연결 끊음.
 				if (sessions.get(sid).isOpen()) {
 					sessions.get(sid).close();
@@ -124,10 +122,32 @@ public class StreamServiceImpl implements StreamService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				// 목록에서 삭제
+				// 무슨일이 벌어지건 목록에서 삭제
 				wsplayers.remove(sid);
 				sessions.remove(sid);
 				log.info(rid+"/"+nick+"(uid:"+uid+"/sid:"+sid + ") 님이 퇴장했습니다.");
+			}
+		}
+	}
+
+	@Override
+	public void refreshConnector() {
+		// 접속 상태를 확인후 끊어졌을 경우 추방
+		for (String cur : sessions.keySet()) {
+			if (!sessions.get(cur).isOpen()) {
+				kick(cur);
+			}
+		}
+		// 접속이 끊어졌지만 참가자목록에 남아있을 경우 추방
+		for (String cur : wsplayers.keySet()) {
+			if (sessions.get(cur) == null) {
+				kick(cur);
+			}
+		}
+		// 서버 비정상 종료로 잔여할 경우 DB수정
+		for (String cur : innerMap.getConnector()) {
+			if (!wsplayers.containsKey(cur)) {
+				innerMap.setConnectBySid(cur, 0);
 			}
 		}
 	}
@@ -140,22 +160,33 @@ public class StreamServiceImpl implements StreamService {
 	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
 		log.info(session.getId() + " -> " + message.getPayload());
+		
+		// 입력받은 메시지를 JSON -> WSMsg로 변경
 		WSMsg raw = WSMsg.convert(message.getPayload());
 
+		// 메시지를 처리할 메서드 목록이 비어있을 경우 목록 생성
 		if (webSocketMethods.isEmpty()) {
+			// 현재 클래스에서 메서드 추출
 			for (Method m : this.getClass().getMethods()) {
+				// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
 				if (m.isAnnotationPresent(WSReqeust.class)) {
 					webSocketMethods.put(m.getName(),m);
 				}
 			}
 		}
 
+		// 입력받은 메시지의 type과 일치하는 메서드가 있을 경우
 		if (webSocketMethods.containsKey(raw.getType())) {
+			// 해당 메서드를 꺼내서
 			Method m = webSocketMethods.get(raw.getType());
 
 			log.info("msgProType: "+raw.getType());
+			
+			// 해당 메서드를 실행함
 			m.invoke(this, session.getId(), raw.cont+"");
 		}
+		
+		
 	}
 
 	@Override @WSReqeust @Transactional
@@ -163,21 +194,32 @@ public class StreamServiceImpl implements StreamService {
 		Auth auth = Auth.convert(msg);
 		if (auth != null) {
 			int uid = auth.getUid();
-			if (innerMap.checkWSCode(uid, auth.getCode()) > 0) {
-				innerMap.setWSId(uid, sId);
-				innerMap.setConnect(uid, 1);
-				
-				String ip = sessions.get(sId).getRemoteAddress().getHostName();
-				playerMap.setIp(uid, 0, ip);
-				
-				WSPlayer me = playerMap.getWSPlayer(uid).CanSend();
-				wsplayers.remove(sId);
-				wsplayers.put(sId, me);
-				
-				sendWithoutSender(sId, "player.join", me);
-				
-				send(sId, "auth", "ok");
-				
+			UserInner inner = innerMap.read(uid);
+			// 해당 유저의 인증값이 DB와 일치하는지 확인
+			if (inner != null) {
+				if (inner.getWsAuthCode().equals(auth.getCode())) {
+					
+					// 현재 세션ID를 DB에 입력
+					inner.setWsSession(sId);
+					inner.setConnect(1);
+					inner.setWas(currentWasId);
+					innerMap.update(inner);
+					
+					// 접속 세션의 사용자 정보를 서버에 저장
+					WSPlayer me = playerMap.getWSPlayer(uid).CanSend();
+					wsplayers.remove(sId);
+					wsplayers.put(sId, me);
+
+					// 현재 IP를 해당 플레이어 정보에 기입
+					String ip = sessions.get(sId).getRemoteAddress().getHostName();
+					playerMap.setIp(uid, me.room, ip);
+					
+					// 입장 알림
+					sendWithoutSender(sId, "player.join", me);
+					
+					send(sId, "auth", "ok");
+					
+				}
 			}
 		}
 	}
@@ -238,6 +280,67 @@ public class StreamServiceImpl implements StreamService {
 		msgMap.create(newMsg);
 	}
 
+
+	@Override @WSReqeust
+	public void join(String sId, String msg) {
+		Room input = new Gson().fromJson(msg, Room.class);
+		int rid = input.getId();
+		int uid = findUid(sId);
+		String pw = input.getPassword();
+		String ip = sessions.get(sId).getRemoteAddress().getHostName();
+		boolean canJoin = false;
+		
+		// 비밀번호가 일치하거나 없을 경우만 참가가능
+		Room reqRoom = roomMap.read(rid);
+		if (reqRoom.getPassword() == null) {
+			canJoin = true;
+		} else if (reqRoom.getPassword().equals(pw)) {
+			canJoin = true;
+		}
+
+		// 인원제한 보다 참가자 수가 적을 경우만 참가가능
+		int countLimits = playerMap.getInRoomPlayerByRid(rid).size();
+		canJoin = (canJoin && reqRoom.getPlayerLimits() > countLimits)?true:false;
+		
+		// 참가하고 있는 방이 없을 경우만 참가가능
+		int countIsIn = playerMap.countIsIn(findUid(sId));
+		canJoin = (canJoin && countIsIn == 0)?true:false;
+		
+		if (canJoin) {
+			// DB에 접속 정보 입력
+			Player player = null;
+			if (playerMap.count(uid, rid) == 0) {
+				player = new Player();
+				player.setId(uid);
+				player.setRoom(rid);
+				player.setIsIn(1);
+				player.setIp(ip);
+				playerMap.create(player);
+			} else {
+				player = playerMap.read(uid);
+				player.setIp(ip);
+				player.setIsIn(1);
+				playerMap.update(player);
+			}
+			playerMap.setIsIn(findUid(sId), 0, 0);
+			profMap.setLastRoom(findUid(sId), rid);
+			
+			try {
+				send(sId, "room.accept", rid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override @WSReqeust
+	public void left(String sId, String msg) {
+		int uid = findUid(sId);
+		int rid = Integer.parseInt(msg);
+		playerMap.setIsIn(uid, rid, 0);
+		profMap.setLastRoom(uid, 0);
+	}
+	
 	@Override @WSReqeust
 	public void request(String sId, String msg) throws Exception {
 		WSPlayer reqUser = wsplayers.get(sId);
@@ -247,6 +350,11 @@ public class StreamServiceImpl implements StreamService {
 			if (!rooms.isEmpty()) 
 			for (Room cur : rooms) {
 				if (cur.getId() != 0) {
+					if (cur.getPassword() != null) {
+						if (!cur.getPassword().isEmpty()) {
+							cur.setPassword("true");
+						}
+					}
 					send(sId, "room.add", cur);
 				}
 			}
@@ -385,27 +493,4 @@ public class StreamServiceImpl implements StreamService {
 		sendR(sId, "cardCountPro", gameLog);		
 	}
 
-	@Override
-	public void refreshConnector() {
-		// 접속 상태를 확인후 끊어졌을 경우 추방
-		for (String cur : sessions.keySet()) {
-			if (!sessions.get(cur).isOpen()) {
-				kick(cur);
-			}
-		}
-		// 접속이 끊어졌지만 참가자목록에 남아있을 경우 추방
-		for (String cur : wsplayers.keySet()) {
-			if (sessions.get(cur) == null) {
-				kick(cur);
-			}
-		}
-		// 서버 비정상 종료로 잔여할 경우 DB수정
-		for (String cur : innerMap.getConnector()) {
-			if (!wsplayers.containsKey(cur)) {
-				innerMap.setConnectBySid(cur, 0);
-			}
-		}
-		
-	}
-	
 }

@@ -84,4 +84,7 @@ public interface RoomMapper {
 	// SQL query is in xml
 	public List<Integer> getNotEmptyRoom();
 
+	@Update("update "+TABLE+" set RM_END=sysdate where "+KEY+"=#{id} ")
+	public void close(@Param("id") int id);
+
 }

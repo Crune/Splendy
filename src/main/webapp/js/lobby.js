@@ -63,10 +63,7 @@ $( document ).ready(function() {
 					alert("방 정보가 잘못 되었습니다.");
 				} else if (data > 0) {
 					console.log("방개설 성공!");
-					var joinRoom = new Msg();
-					joinRoom.type = data;
-					joinRoom.cont = $("#password").prop("value");
-					wssend('join', joinRoom);
+					joinRoom(data, $("#password").val());
 				}
 			},
 			error : function(request, status, error) {
@@ -87,6 +84,14 @@ var temp_room = Handlebars.compile($("#temp_room").html());
 var temp_player = Handlebars.compile($("#temp_player").html());
 var temp_room_empty = Handlebars.compile($("#temp_room_empty").html());
 
+function joinRoom(rid, password) {
+	var room = new Object();
+	room.id = rid;
+	if (password != '') {
+		room.password = password;
+	}
+	wssend('join', room);
+}
 function onChatMsg(type, msg) {
 	if (type =='init') {
 		console.log("Chatting initialized!");
@@ -137,6 +142,9 @@ function onRoom(type, room) {
 			$(".empty_room").detach();
 			$("#roomlist").append(temp_room(room));
 			$("#roomlist").append(temp_room_empty());
+			if (room.password != 'true') {
+				$('#ispw_'+room.id).detach();
+			}
 		}
 		if (type=='remove') {
 			$("#room_"+room).detach();
@@ -155,14 +163,21 @@ function roomMouseEvt() {
 	}).on("mouseleave", function() {
 		$(this).removeClass("lobby_room_hover");
 	}).on("click", function() {
-
-		if ($(this).attr("id") == "room_0") {
+		var rid = $(this).attr("id").split('_')[1];
+		if (rid == '0') {
 			$("div#createRoom").show();
 			$(".empty_room").detach();
 			$("#roomlist").css('height','calc(100% - 366px)');
+		} else if ($('#ispw_'+rid)) {
+			$('#ispw_'+rid).show();
 		} else {
-			alert("방 접속: " + $(this).attr("id"));
+			joinRoom(rid, null);
 		}
 		
+	});
+	$(".btn_joinroom").on("click", function() {
+		var rid = $(this).attr("id").split('_')[2];
+		var pw = $('#rpw_'+rid).val();
+		joinRoom(rid, pw);
 	});
 }

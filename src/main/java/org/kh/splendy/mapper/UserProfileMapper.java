@@ -70,7 +70,7 @@ public interface UserProfileMapper {
 	public void setLastRoom(@Param("id") int id, @Param("value") int value);
 	
 	@Select("select U_LAST_RID from "+TABLE+" where "+KEY+"=#{id}")
-	public String getLastRoom(int id);
+	public int getLastRoom(int id);
 	
 	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and U_LAST_RID=#{value}")
 	public int checkLastRoom(@Param("id") int id, @Param("value") int value);

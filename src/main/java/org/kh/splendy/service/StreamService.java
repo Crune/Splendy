@@ -32,4 +32,14 @@ public interface StreamService {
 
 	void refreshConnector();
 
+	void join(String sId, String msg);
+
+	void left(String sId, String msg);
+
+	String findSid(int uid);
+
+	int findUid(String sid);
+
+	void kick(String sid);
+
 }

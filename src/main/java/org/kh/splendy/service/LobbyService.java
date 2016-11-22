@@ -17,5 +17,7 @@ public interface LobbyService {
 
 	int createRoom(Room reqRoom, UserCore user);
 
+	int getLastRoom(int uid);
+
 
 }
