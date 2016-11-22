@@ -104,6 +104,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void credentUser(String code) throws Exception {
 		userMap.credentUser(code);
+		/**
+		 * TODO 민정 : REG_CODE 지우기. 얘 일회용
+		 */
 	}
 	
 	@Override
@@ -177,7 +180,8 @@ public class UserServiceImpl implements UserService {
 		UserCore user = null;
 		user = checkEmail(email);
 		if(user != null){
-			updatePassword(email, new_pw);
+			String encryptPw = SplendyAdvice.getEncSHA256(new_pw);
+			updatePassword(email, encryptPw);
 			sendPw(email, new_pw);
 			result_pw = 1;
 		}
@@ -204,6 +208,15 @@ public class UserServiceImpl implements UserService {
 				updateNickname(email, nickname);
 			}
 		}	
+	}
+	
+	@Override
+	public void createUser(UserCore user) throws Exception {
+		userMap.createUser(user);
+	}
+	
+	public void socialLogin(UserCore user) throws Exception {
+		
 	}
 	
 }

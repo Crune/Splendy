@@ -4,9 +4,19 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.kh.splendy.mapper.UserMapper;
+import org.kh.splendy.service.UserService;
+import org.kh.splendy.vo.UserCore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 로그인 페이지로 이동
  * @author 민정
@@ -14,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class LoginController {
+	
+	@Autowired
+	private UserService userServ;
 	
 	String storedState;
 	
@@ -29,11 +42,44 @@ public class LoginController {
 	public String google() {
 		return "user/google_login";
 	}
-	/*@RequestMapping("/main/google")
+	@RequestMapping("/main/google2")
 	public String google_login() {
 		
-		return "user/hello";
-	}*/
+		return "user/googleLogin";
+	}
+	
+	@RequestMapping(
+			value = "/user/google",
+			method = {RequestMethod.GET, RequestMethod.POST},
+			produces = "application/json")
+	public @ResponseBody String google_logined(@ModelAttribute("googleForm") UserCore user, HttpSession session) {
+		/**
+		 * sql문을 통해 디비에 구글 아이디 저장 후 로비로 이동
+		 * 디비에 정보가 없으면 저장 후 로그인, 있으면 바로 로그인 진행
+		 * 
+		 */
+		System.out.println(user.getEmail());
+		String email = "G"+user.getEmail();
+		user.setEmail(email);
+		user.setPassword("0");
+		System.out.println(user.getEmail());
+		System.out.println(user.getNickname());
+		try {
+			UserCore searchUser = userServ.checkEmail(email);
+			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
+				userServ.createUser(user);
+			}
+			session.setAttribute("user", user);
+			session.setAttribute("email", user.getEmail());
+			session.setAttribute("user_id", user.getId());
+			user.openInfo();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "success";
+	}
+	
 	@RequestMapping("login/naver")
 	public String naver(HttpServletRequest request){
 		String state = generateState();

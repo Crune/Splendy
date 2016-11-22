@@ -100,6 +100,7 @@ public class AccountController {
 		
 		int result_pw = -1;
 		String new_pw = RandomStringUtils.randomAlphanumeric(9);
+		
 		try {
 			result_pw = userServ.findPw(email, new_pw);
 		} catch (Exception e) {
@@ -114,8 +115,7 @@ public class AccountController {
 			method = {RequestMethod.GET, RequestMethod.POST},
 			produces = "application/json")
 	public @ResponseBody String login_suc(@ModelAttribute("loginForm") UserCore user0,
-							HttpServletRequest request,
-							HttpSession session) {
+							HttpServletRequest request, HttpSession session) {
 		int result = -1;
 		int login_result = -1;
 		int credent = -1;

@@ -23,6 +23,8 @@ public interface UserService {
 	
 	void credentUser(String code) throws Exception;
 	
+	public void createUser(UserCore user) throws Exception;
+	
 	UserCore checkEmail(String email) throws Exception;
 	
 	List<UserCore> selectAll() throws Exception;

@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com">
 <title>Splendy - 환영합니다!</title>
 <link rel='stylesheet' href='/css/default.css'>
 <link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
@@ -22,6 +24,7 @@ body {
 <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 <script src="/webjars/handlebars/4.0.5/handlebars.js"></script>
 <script src='/js/default.js'></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <script id="temp_test" type="text/x-handlebars-template">
 
@@ -29,6 +32,16 @@ body {
 
 </script>
 <script type='text/javascript' src='/js/index.js'></script>
+
+<script>
+var msg = "${msg}";
+
+$(document).ready(function() {
+	if(msg !== "") {
+		$('#myModal').modal('show');
+	}
+});
+</script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -87,7 +100,14 @@ body {
 									<input id="btn_login_prc" class="btn btn-default btn_login_prc" type="button" onclick ="return login_check();" value="로그인" />
 									<input id="btn_send_pw" class="btn btn-default btn_send_pw" type="button" value="비밀번호 찾기" />
 									<input id="btn_join" class="btn btn-default btn_join" type="button" value="회원가입" />
+									<input id="btn_facebook" class="btn btn-default btn_facebook" type="button" value="페이스북으로 로그인" />
+									<div class="g-signin2" id="google" data-onsuccess="onSignIn" ></div>
+									<input id="btn_naver" class="btn btn-default btn_naver" type="button" value="네이버로 로그인" />
 								</form>
+								<form name="googleForm" id="googleForm" method="post" >
+							   		<input type="hidden" name="email" value="">
+							   		<input type="hidden" name="nickname" value="">
+							   	</form>
 							</div>
 						</div>
 						<div class="index-right-frame" id="login_sucDiv" style="display: none">

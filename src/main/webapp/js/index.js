@@ -101,6 +101,14 @@ window.onload = function(){
 		$(".btn_login_prc").on('click', function () {
 			loginRequest();
 		})
+		
+		$(".btn_facebook").on('click', function () {
+			loginFacebook();
+		})
+		
+		$(".btn_google").on('click', function () {
+			loginGoogle();
+		})
 	
 }
 
@@ -151,7 +159,7 @@ function sendRequest() {
 }
 
 function loginRequest() {
-	console.log("로그인이 완료되었습니다.");
+	console.log("로그인이 시도되었습니다.");
 	$.ajax({
 		url:'/user/login_suc',
 		type:'post',
@@ -234,4 +242,47 @@ function delete_check() {
 	} else {
 		return false;
 	}
+}
+
+function loginFacebook() {
+	window.open("/login/facebook", "페이스북 로그인", "left=300, top=100 width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );
+}
+
+function loginGoogle() {
+	window.open("/login/google", "구글 로그인", "left=300, top=100 width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );
+}
+
+function onSignIn(googleUser) {
+    // Useful data for your client-side scripts:
+    var profile = googleUser.getBasicProfile();
+    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    console.log('Full Name: ' + profile.getName());
+    console.log('Given Name: ' + profile.getGivenName());
+    console.log('Family Name: ' + profile.getFamilyName());
+    console.log("Image URL: " + profile.getImageUrl());
+    console.log("Email: " + profile.getEmail());
+
+    // The ID token you need to pass to your backend:
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log("ID Token: " + id_token);
+    
+    document.googleForm.email.value = profile.getId(); //구글의 id:디비의 email
+    document.googleForm.nickname.value = profile.getName();
+   
+    google();
+}
+
+function google() {
+	$.ajax({
+        url:'/user/google',
+        type:'post',
+        data:$("#googleForm").serialize(),
+        dataType: 'text', 
+        success:function(data){
+        	alert(data);
+        		document.location.href="lobby/";
+        },error:function(request,status,error){
+			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+		}
+    })
 }

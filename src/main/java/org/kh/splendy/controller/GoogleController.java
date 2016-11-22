@@ -22,7 +22,7 @@ public class GoogleController {
 	public String helloGoogle(HttpServletRequest request) {
 		String appKey        = "768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com";
 		String appSecret     = "VR7RGj1x7ET3dG8eMUlMn_jj";
-		String redirect_uri = "http://localhost/main/google";
+		String redirect_uri = "http://localhost/main/google2";
 		
 		String code = request.getParameter("code");
 		
@@ -98,8 +98,8 @@ public class GoogleController {
 		String personFamilyName = acct.getFamilyName();
 		String personEmail = acct.getEmail();
 		String personId = acct.getId();
-		Uri personPhoto = acct.getPhotoUrl();
-		*/
+		Uri personPhoto = acct.getPhotoUrl();*/
+		
 		return "user/hello";
 	}
 	
