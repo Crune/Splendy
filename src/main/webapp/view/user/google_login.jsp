@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%    
 String appKey = "768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com";
@@ -23,3 +23,4 @@ function process()
 	<!-- <input type="hidden" name="name" value="profile.name"/> -->
 </form>
 </body>
+ --%>

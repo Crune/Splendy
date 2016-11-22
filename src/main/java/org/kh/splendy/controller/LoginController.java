@@ -34,19 +34,6 @@ public class LoginController {
 	public String facebook() {
 		return "user/facebookLogin";
 	}
-	/*@RequestMapping("/login/google")
-	public String google() {
-		return "user/googleLogin";
-	}*/
-	@RequestMapping("/login/google")
-	public String google() {
-		return "user/google_login";
-	}
-	@RequestMapping("/main/google2")
-	public String google_login() {
-		
-		return "user/googleLogin";
-	}
 	
 	@RequestMapping(
 			value = "/user/google",

@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%-- <%    
+<%    
 String appKey = "768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com";
 String redirect_uri = "http://localhost/main/google";
 String uri = "https://accounts.google.com/o/oauth2/auth?scope=profile&redirect_uri="+
 		redirect_uri+"&response_type=code&client_id="+appKey;
-%> --%>
+%>
 
 <html lang="en">
   <head>
@@ -69,4 +69,4 @@ String uri = "https://accounts.google.com/o/oauth2/auth?scope=profile&redirect_u
    		<input type="hidden" name="name" value="">
    	</form>
   </body>
-</html>
+</html> --%>
