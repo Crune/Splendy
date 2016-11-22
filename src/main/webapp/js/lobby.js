@@ -75,7 +75,6 @@ function onChatMsg(type, msg) {
 		$(".chat_msg").detach();
 	} else {
 		if (type =='new') {
-			console.log("chat.add!");
 			$("#chatDiv").append(temp_chatmsg(msg));
 			$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
 		}

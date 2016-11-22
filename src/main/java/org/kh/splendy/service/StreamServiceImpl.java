@@ -1,5 +1,6 @@
 package org.kh.splendy.service;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -54,38 +55,82 @@ public class StreamServiceImpl implements StreamService {
 		log.info(session.getId() + "님이 접속했습니다.");
 		log.info("연결 IP : " + session.getRemoteAddress().getHostName() );
 		
-		
 		sessions.put(session.getId(), session);
 		
 		WSPlayer me = new WSPlayer();
 		me.setIcon("unnamed.png");
 		me.setNick("비회원"+session.getId());
 		me.setRating(0);
-		me.setRoom(0);
+		me.setRoom(-1);
 		me.setUid(-1);
 		wsplayers.put(session.getId(), me);
 	}
 
 	@Override @Transactional
 	public void close(int uid) {
-		UserInner inner = innerMap.read(uid);
-		inner.setConnect(0);
-		inner.setWsSession(null);
-		inner.setWsAuthCode(null);
-		innerMap.update(inner);
-		sessions.remove(inner.getWsSession());
-		log.info(inner.getWsSession() + "님이 퇴장했습니다.");
+		kick(findSid(uid));
+	}
+	
+	private String findSid(int uid) {
+		String rst = null;
+		for (String cur : wsplayers.keySet()) {
+			WSPlayer curPl = wsplayers.get(cur);
+			if (curPl.getUid() == uid) {
+				rst = cur;
+			}
+		}
+		return rst;
+	}
+	
+	private void kick(String sid) {
+		if (sid != null) {
+			WSPlayer curPl = wsplayers.get(sid);
+			int uid = wsplayers.get(sid).getUid();
+			String nick = wsplayers.get(sid).getNick();
+			int rid = wsplayers.get(sid).getRoom();
+			
+			boolean isReconnected = false;
+			
+			// 비회원이 아닐경우 DB의 접속해제 처리
+			if (uid > 0) {
+				UserInner inner = innerMap.read(uid);
+				if (inner.getWsSession().equals(sid)) {
+					// 재접속이 아닐경우의 처리
+					inner.setConnect(0);
+					inner.setWsAuthCode(null);
+					inner.setWsSession(null);
+					innerMap.update(inner);
+				} else {
+					// 재접속일 경우의 처리
+					isReconnected = true;
+				}
+			}
+			
+			if (!isReconnected) {
+				try {
+					sendWithoutSender(sid, "player.leave", curPl);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			try {
+				if (sessions.get(sid).isOpen()) {
+					sessions.get(sid).close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				wsplayers.remove(sid);
+				sessions.remove(sid);
+				log.info(rid+"/"+nick+"(uid:"+uid+"/sid:"+sid + ") 님이 퇴장했습니다.");
+			}
+		}
 	}
 	
 	@Override
 	public void disconnectPro(WebSocketSession session) {
-		if (sessions.containsKey(session.getId())) {
-			sessions.remove(session.getId());
-			UserInner inner = innerMap.readByWSId(session.getId());
-			if (inner != null){
-				close(inner.getId());
-			}
-		}
+		kick(session.getId());
 	}
 
 	@Override @Async
@@ -141,43 +186,48 @@ public class StreamServiceImpl implements StreamService {
 		//user.setProf(profMap.read(user.getInner().getId()));
 		return user;
 	}
-	
-	@Override @WSReqeust
-	public void chat(String sId, String msg) throws Exception {
-
-		WSPlayer reqUser = playerMap.getWSPlayerBySid(sId);
-
-		WSChat rst = new WSChat();
-		rst.setUid(reqUser.getUid());
-		rst.setNick(reqUser.getNick());
-		rst.setCont(msg);
-
+	private String getCurrentTime() {
 		TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
 		DateFormat df = new SimpleDateFormat("HH:mm:ss");
 		df.setTimeZone(tz);
-		rst.setTime(df.format(new Date()));
-
-		List<WSPlayer> pls = playerMap.getInRoomPlayer(sId);
-		for (WSPlayer cur : pls) {
-			if (cur.role.equals(sId)) {
-				rst.setType("me");
-			} else {
-				rst.setType("o");
-			}
-			if (rst != null) {
-				String type;
-				if (cur.getRole() == null) {
-					type = "o";
-				} else {
-					type = cur.getRole();
+		return df.format(new Date());
+	}
+	
+	private void sendChat(int rid, WSPlayer sender, String msg) throws Exception {
+		WSChat rst = new WSChat();
+		rst.setUid(sender.getUid());
+		rst.setNick(sender.getNick());
+		rst.setCont(msg);
+		rst.setTime(getCurrentTime());		
+		rst.setType("o");
+		
+		for (String cur : wsplayers.keySet()) {
+			WSPlayer target = wsplayers.get(cur);
+			if (sessions.get(cur) != null) {
+				if (target.getRoom() == rid) {
+					if (target.uid == sender.getUid()) {
+						rst.setType("me");
+					} else if (sender.getUid() == 0) {
+						rst.setType("sys");
+					}
+					send(cur, "chat.new", rst);
 				}
-				send(type, "chat.new", rst);
 			}
 		}
-		rst.setUid(reqUser.getUid());
-		rst.setType("o");
-		newMsg(sId, "chat.new", new Gson().toJson(rst));
+
+		Msg newMsg = new Msg();
+		newMsg.setRid(rid);
+		newMsg.setUid(sender.getUid());
+		newMsg.setType("chat.new");
+		newMsg.setCont(new Gson().toJson(rst));
+		msgMap.create(newMsg);
+		
 		log.info("send_chat: "+rst);
+	}
+	
+	@Override @WSReqeust
+	public void chat(String sId, String msg) throws Exception {
+		sendChat(0, wsplayers.get(sId), msg);
 	}
 
 	public void newMsg(String sId, String type, String msg) throws Exception {
@@ -205,12 +255,6 @@ public class StreamServiceImpl implements StreamService {
 			}
 		}
 		if (msg.equals("playerList")) {
-			/*
-			List<WSPlayer> users = playerMap.getAllWSPlayer();
-			for (WSPlayer cur : users) {
-				send(sId, "player.add", cur.CanSend());
-			}
-			*/
 			send(sId, "player.init", "{}");
 			for (String cur : wsplayers.keySet()) {
 				if (sessions.containsKey(cur)) {
