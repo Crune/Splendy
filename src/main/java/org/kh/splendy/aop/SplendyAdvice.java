@@ -41,7 +41,7 @@ public class SplendyAdvice {
 		return rst;
 	}
 
-	public void inject(Object getObj, Object setObj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void inject(Object getObj, Object setObj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Method[] methods = getObj.getClass().getMethods();
 		
 		Map<String, Method> getter = new HashMap<String, Method>();

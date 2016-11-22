@@ -59,6 +59,7 @@ $( document ).ready(function() {
 	$("#btn_create_cancel").on("click", function() {
 		$("#createRoom").hide();
 		$("#roomlist").append(temp_room_empty());
+		$("#roomlist").css('height','calc(100% - 99px)');
 		roomMouseEvt();
 	});
 });
@@ -133,6 +134,7 @@ function roomMouseEvt() {
 		if ($(this).attr("id") == "room_0") {
 			$("div#createRoom").show();
 			$(".empty_room").detach();
+			$("#roomlist").css('height','calc(100% - 366px)');
 		} else {
 			alert("방 접속: " + $(this).attr("id"));
 		}

@@ -37,8 +37,12 @@
 
 .lobby_frame {
 	padding: 0px 0px 0px 0px;
+	height: 100%;
 }
-
+.lobby_cont {	
+    min-height: 300px;
+    height: 100%;
+}
 .lobby_frame:before {
 	content: " ";
 	position: absolute;
@@ -167,10 +171,13 @@ div#createRoom {
 }
 .room_player {
 	display:flex;
+	display: -ms-flexbox;
 	flex-direction:row;
+	overflow-x: auto; 
 }
 .lobby_players {
 	display: flex;
+	display: -ms-flexbox;
 	flex-wrap: wrap;
 }
 .chat_msg {
@@ -185,7 +192,7 @@ div#createRoom {
 	overflow: auto;
 }
 .chat_msg_frame  {
-	height: 500px;
+	height: calc(100% - 50px);
 	margin-bottom: 10px;
 	overflow: auto;
 }

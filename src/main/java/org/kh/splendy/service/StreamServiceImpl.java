@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.kh.splendy.annotation.WSReqeust;
+import org.kh.splendy.aop.SplendyAdvice;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
 
@@ -36,6 +37,7 @@ public class StreamServiceImpl implements StreamService {
 	
 		
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
+	private static Map<String, WSPlayer> wsplayers = new HashMap<String, WSPlayer>();
 	private static Map<String, Method> webSocketMethods = new HashMap<String, Method>();
 
 	@Autowired private RoomMapper roomMap;
@@ -52,7 +54,16 @@ public class StreamServiceImpl implements StreamService {
 		log.info(session.getId() + "님이 접속했습니다.");
 		log.info("연결 IP : " + session.getRemoteAddress().getHostName() );
 		
+		
 		sessions.put(session.getId(), session);
+		
+		WSPlayer me = new WSPlayer();
+		me.setIcon("unnamed.png");
+		me.setNick("비회원"+session.getId());
+		me.setRating(0);
+		me.setRoom(0);
+		me.setUid(-1);
+		wsplayers.put(session.getId(), me);
 	}
 
 	@Override @Transactional
@@ -77,7 +88,7 @@ public class StreamServiceImpl implements StreamService {
 		}
 	}
 
-	@Override
+	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
 		log.info(session.getId() + " -> " + message.getPayload());
 		WSMsg raw = WSMsg.convert(message.getPayload());
@@ -112,6 +123,9 @@ public class StreamServiceImpl implements StreamService {
 				send(sId, "auth", "ok");
 				
 				WSPlayer me = playerMap.getWSPlayer(uid).CanSend();
+				wsplayers.remove(sId);
+				wsplayers.put(sId, me);
+				
 				sendWithoutSender(sId, "player.join", me);
 			}
 		}
@@ -134,6 +148,7 @@ public class StreamServiceImpl implements StreamService {
 		WSPlayer reqUser = playerMap.getWSPlayerBySid(sId);
 
 		WSChat rst = new WSChat();
+		rst.setUid(reqUser.getUid());
 		rst.setNick(reqUser.getNick());
 		rst.setCont(msg);
 
@@ -149,7 +164,15 @@ public class StreamServiceImpl implements StreamService {
 			} else {
 				rst.setType("o");
 			}
-			send(cur.getRole(), "chat.new", rst);
+			if (rst != null) {
+				String type;
+				if (cur.getRole() == null) {
+					type = "o";
+				} else {
+					type = cur.getRole();
+				}
+				send(type, "chat.new", rst);
+			}
 		}
 		rst.setUid(reqUser.getUid());
 		rst.setType("o");
@@ -182,16 +205,26 @@ public class StreamServiceImpl implements StreamService {
 			}
 		}
 		if (msg.equals("playerList")) {
+			/*
 			List<WSPlayer> users = playerMap.getAllWSPlayer();
-			send(sId, "player.init", "{}");
 			for (WSPlayer cur : users) {
 				send(sId, "player.add", cur.CanSend());
+			}
+			*/
+			send(sId, "player.init", "{}");
+			for (String cur : wsplayers.keySet()) {
+				if (sessions.containsKey(cur)) {
+					WSPlayer curPl = wsplayers.get(cur);
+					if (curPl.getRoom() == 0 && curPl != null) {
+						send(sId, "player.add", curPl);
+					}
+				}
 			}
 		}
 		if (msg.equals("prevMsg")) {
 			WSPlayer reqUser = playerMap.getWSPlayerBySid(sId);
 			int rid = reqUser.getRoom();
-			List<Msg> msgs = msgMap.readPrevChat(rid, 26);
+			List<Msg> msgs = msgMap.readPrevChat(rid, 31);
 			send(sId, "chat.init", "{}");
 			for (Msg cur : msgs) {
 				WSChat curMsg = WSChat.convert(cur.getCont());
@@ -220,8 +253,12 @@ public class StreamServiceImpl implements StreamService {
 	}
 	@Override
 	public void send(String sId, String msg) throws Exception {
-		sessions.get(sId).sendMessage(new TextMessage(msg));
-		log.info(sId+" <- "+msg);
+		if (sessions.get(sId) != null) {
+			sessions.get(sId).sendMessage(new TextMessage(msg));
+			log.info(sId+" <- "+msg);
+		} else {
+			log.info(sId+" <-/- "+msg);
+		}
 	}
 
 	@Override
