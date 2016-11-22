@@ -59,8 +59,7 @@ public class LobbyController {
 
 	@RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
 	public @ResponseBody Auth getAuth(HttpSession session) {
-		String user_id = session.getAttribute("user_id").toString();
-		int uid = Integer.parseInt(user_id);
-		return serv.getAuth(uid);
+		UserCore user = (UserCore) session.getAttribute("user");
+		return serv.getAuth(user.getId());
 	}
 }
