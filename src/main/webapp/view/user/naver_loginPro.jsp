@@ -55,7 +55,7 @@
      // 창닫기 및 로그인입력
      $(opener.document).find("#dvLogin").empty();
      
-     $(opener.document).find("#dvLogin").append(naver_id_login.getProfileData('age') + "님 로그인("+ naver_id_login.getProfileData('nickname') +","+ naver_id_login.getAccessToken() +")");
+     $(opener.document).find("#dvLogin").append(naver_id_login.getProfileData('birthday') + "님 로그인("+ naver_id_login.getProfileData('nickname') +","+ naver_id_login.getAccessToken() +")");
 	  console.log(naver_id_login);
      
     }

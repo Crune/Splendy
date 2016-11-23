@@ -356,6 +356,11 @@ public class StreamServiceImpl implements StreamService {
 		int rid = Integer.parseInt(msg);
 		playerMap.setIsIn(uid, rid, 0);
 		profMap.setLastRoom(uid, 0);
+		try {
+			send(sId, "left", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override @WSReqeust

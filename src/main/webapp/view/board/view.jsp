@@ -18,6 +18,7 @@
 	            <tr>
 	                <th scope="row">글 번호</th>
 	                <td>${article.at_id }</td>
+	                 <input type="hidden" id="at_id" value="${article.at_id }">
 	                <th scope="row">조회수</th>
 	            	<td>${article.at_readcount }</td>
 	            </tr>

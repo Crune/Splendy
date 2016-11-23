@@ -10,6 +10,9 @@
 </script>
 </head>
 <body>
+	<div>
+		<button id="left_btn">Go lobby</button>
+		</div>
 	<div class="container">
 		<div class="container_player">
 			<div class="player" id="player1">
@@ -279,6 +282,7 @@
 			</div>
 		</div>
 		<!-- //보석 가져오는 모달창 -->
+		
 </body>
 
 <script class="heroCard_details" type="text/x-handlebars-template">
