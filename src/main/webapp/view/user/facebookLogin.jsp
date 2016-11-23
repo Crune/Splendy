@@ -9,7 +9,7 @@
 <body>
 
 <form action="/connect/facebook" method="POST">
-    <input type="hidden" name="scope" value="user_posts" />
+    <input type="text" name="scope" value="user_posts" />
     <div class="formInfo">
         <p>You aren't connected to Facebook yet. <br/>
         Click the button to connect this application with your Facebook account.</p>

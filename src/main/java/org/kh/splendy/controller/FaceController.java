@@ -1,4 +1,4 @@
-package org.kh.splendy.controller;
+/*package org.kh.splendy.controller;
 
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
@@ -7,15 +7,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/**
+*//**
  * 로그인 후 프로필 정보 전달
  * 
  * @author 민정
  *
- */
+ *//*
 
 @Controller
-@RequestMapping("/main/facebook")
+@RequestMapping("/user/facebook")
 public class FaceController {
 	private Facebook facebook;
 	private ConnectionRepository connectionRepository;
@@ -34,10 +34,9 @@ public class FaceController {
 		model.addAttribute("facebookProfile", facebook.userOperations().getUserProfile());
 		
 		System.out.println(facebook.userOperations().getUserProfile().getId());
-		/*
-		 * PagedList<Post> feed = facebook.feedOperations().getFeed();
-		 * model.addAttribute("feed", feed);
-		 */
+		
 		return "user/hello";
 	}
 }
+
+*/

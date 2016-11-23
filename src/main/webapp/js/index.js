@@ -245,11 +245,7 @@ function delete_check() {
 }
 
 function loginFacebook() {
-	window.open("/login/facebook", "페이스북 로그인", "left=300, top=100 width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );
-}
-
-function loginGoogle() {
-	window.open("/login/google", "구글 로그인", "left=300, top=100 width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );
+	window.open("/user/facebook", "Facebook Login", "left=300, top=100 width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );
 }
 
 function onSignIn(googleUser) {

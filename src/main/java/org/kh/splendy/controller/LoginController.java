@@ -6,8 +6,6 @@ import java.security.SecureRandom;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.kh.splendy.mapper.UserMapper;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.UserCore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * 로그인 페이지로 이동
  * @author 민정
@@ -30,9 +33,41 @@ public class LoginController {
 	
 	String storedState;
 	
-	@RequestMapping("/login/facebook")
-	public String facebook() {
-		return "user/facebookLogin";
+	@RequestMapping("/user/facebook")
+	public class FaceController {
+		private Facebook facebook;
+		private ConnectionRepository connectionRepository;
+
+		public FaceController(Facebook facebook, ConnectionRepository connectionRepository) {
+			this.facebook = facebook;
+			this.connectionRepository = connectionRepository;
+		}
+
+		@GetMapping
+		public String helloFacebook(HttpSession session) throws Exception {
+			if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
+				return "redirect:/connect/facebook";
+			}
+
+			UserCore user = new UserCore();
+			user.setEmail("F"+facebook.userOperations().getUserProfile().getId());
+			user.setNickname(facebook.userOperations().getUserProfile().getName());
+			user.setPassword("0");
+			try {
+				UserCore searchUser = userServ.checkEmail(user.getEmail());
+				if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
+					userServ.createUser(user);
+				}
+				user = userServ.checkEmail(user.getEmail());
+				user.openInfo();
+				session.setAttribute("user", user);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return "user/hello";
+		} 
 	}
 	
 	@RequestMapping(
