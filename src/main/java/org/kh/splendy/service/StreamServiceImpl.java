@@ -25,11 +25,13 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.google.gson.Gson;
 
+import lombok.Getter;
+
 @Service
 @EnableTransactionManagement
 public class StreamServiceImpl implements StreamService {
-	
-	private static final String currentWasId = RandomStringUtils.randomAlphanumeric(9);
+
+	private static final String cWasId = SplendyAdvice.WAS_ID;
 
 	private Logger log = LoggerFactory.getLogger(StreamServiceImpl.class);
 	
@@ -37,7 +39,9 @@ public class StreamServiceImpl implements StreamService {
 	private List<Card> deck_lev2 = null;
 	private List<Card> deck_lev3 = null;
 	private List<Card> deck_levN = null;
-
+	
+	private static Map<Integer, GameRoom> rooms = new HashMap<Integer, GameRoom>();
+	
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
 	private static Map<String, WSPlayer> wsplayers = new HashMap<String, WSPlayer>();
 	private static Map<String, Queue<String>> msgs = new HashMap<String, Queue<String>>();
@@ -52,6 +56,15 @@ public class StreamServiceImpl implements StreamService {
 	@Autowired private UserInnerMapper innerMap;
 	
 	@Autowired private CardService cardServ;
+
+	@Override
+	public void createRoom(int rid) {
+		GameRoom room = new GameRoom();
+		room.setRoom(rid);
+		/*PLCard[][] cards = {(PLCard[]) cardServ.getLevel_1().toArray()};
+		room.setCards(cards);*/
+		rooms.put(room.getRoom(), room);
+	}
 	
 	@Override
 	public void connectPro(WebSocketSession session) {
@@ -159,7 +172,7 @@ public class StreamServiceImpl implements StreamService {
 
 	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
-		log.info(session.getId() + " -> " + message.getPayload());
+		log.info(cWasId+"/"+session.getId() + " -> " + message.getPayload());
 		
 		// 입력받은 메시지를 JSON -> WSMsg로 변경
 		WSMsg raw = WSMsg.convert(message.getPayload());
@@ -202,7 +215,7 @@ public class StreamServiceImpl implements StreamService {
 					// 현재 세션ID를 DB에 입력
 					inner.setWsSession(sId);
 					inner.setConnect(1);
-					inner.setWas(currentWasId);
+					inner.setWas(cWasId);
 					innerMap.update(inner);
 					
 					// 접속 세션의 사용자 정보를 서버에 저장
@@ -215,7 +228,11 @@ public class StreamServiceImpl implements StreamService {
 					playerMap.setIp(uid, me.room, ip);
 					
 					// 입장 알림
-					sendWithoutSender(sId, "player.join", me);
+					if (me.room > 0) {
+						sendWithoutSender(sId, "player.enter", wsplayers.get(sId));
+					} else {
+						sendWithoutSender(sId, "player.join", me);
+					}
 					
 					send(sId, "auth", "ok");
 					
@@ -364,8 +381,12 @@ public class StreamServiceImpl implements StreamService {
 			for (String cur : wsplayers.keySet()) {
 				if (sessions.containsKey(cur)) {
 					WSPlayer curPl = wsplayers.get(cur);
-					if (curPl.getRoom() == 0 && curPl != null) {
-						send(sId, "player.add", curPl);
+					if (curPl != null) {
+						if (curPl.getRoom() == 0) {
+							send(sId, "player.add", curPl);
+						} else {
+							send(sId, "player.enter", curPl);
+						}
 					}
 				}
 			}
@@ -404,9 +425,9 @@ public class StreamServiceImpl implements StreamService {
 	public void send(String sId, String msg) throws Exception {
 		if (sessions.get(sId) != null) {
 			sessions.get(sId).sendMessage(new TextMessage(msg));
-			log.info(sId+" <- "+msg);
+			log.info(cWasId+"/"+sId+" <- "+msg);
 		} else {
-			log.info(sId+" <-/- "+msg);
+			log.info(cWasId+"/"+sId+" <-/- "+msg);
 		}
 	}
 
@@ -492,5 +513,6 @@ public class StreamServiceImpl implements StreamService {
 		GameLog gameLog = gson.fromJson(msg, GameLog.class);
 		sendR(sId, "cardCountPro", gameLog);		
 	}
+
 
 }

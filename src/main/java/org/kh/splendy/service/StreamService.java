@@ -1,5 +1,7 @@
 package org.kh.splendy.service;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.kh.splendy.vo.GameRoom;
 import org.kh.splendy.vo.UserCore;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -41,5 +43,7 @@ public interface StreamService {
 	int findUid(String sid);
 
 	void kick(String sid);
+
+	void createRoom(int rst);
 
 }

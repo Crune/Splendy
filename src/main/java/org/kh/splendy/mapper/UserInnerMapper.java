@@ -105,6 +105,13 @@ public interface UserInnerMapper {
 	@Select("select U_ROLE from "+TABLE+" where "+KEY+"=#{id}")
 	public String getRole(int id);
 	
+	
+	@Update("update "+TABLE+" set U_WAS=#{value, jdbcType=VARCHAR} where "+KEY+"=#{id} ")
+	public void setWAS(@Param("id") int id, @Param("value") String value);
+
+	@Select("select U_WAS from "+TABLE+" where "+KEY+"=#{id}")
+	public String getWAS(int id);
+	
 
 	// Another
 

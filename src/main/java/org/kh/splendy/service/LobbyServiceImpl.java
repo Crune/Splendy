@@ -21,6 +21,7 @@ public class LobbyServiceImpl implements LobbyService {
 	@Autowired private UserInnerMapper innerMap;
 	@Autowired private UserMapper userMap;
 	@Autowired private UserProfileMapper profMap;
+	@Autowired private CardMapper cardMap;
 	
 	@Autowired private StreamService stream;
 
@@ -80,6 +81,7 @@ public class LobbyServiceImpl implements LobbyService {
 		if (isTitle && isInfo && isPlLimit && isNotHaveRoom) {
 			roomMap.create(reqRoom);
 			rst = roomMap.getMyRoom(user.getId());
+			stream.createRoom(rst);
 		}
 		
 		return rst;

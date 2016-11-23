@@ -61,7 +61,7 @@ public class ScheduledTasks {
 	}
 	
 	// http://kanetami.tistory.com/entry/Schedule-Spring-%EC%8A%A4%ED%94%84%EB%A7%81-%EC%8A%A4%EC%BC%80%EC%A5%B4-%EC%84%A4%EC%A0%95%EB%B2%95-CronTab
-	@Scheduled(fixedRate = 1000 * 60 * 5)
+	@Scheduled(fixedRate = 1000 * 60 * 60)
 	public void checker() {
 		log.info("빈방 제거 및 접속자 갱신 시작");
 		clearRoom();
