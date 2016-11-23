@@ -11,13 +11,13 @@ public interface LobbyService {
 
 	List<Room> getList();
 
-	UserCore initPlayer(UserCore user);
-
 	Auth getAuth(int uid);
 
 	int createRoom(Room reqRoom, UserCore user);
 
 	int getLastRoom(int uid);
+
+	UserCore initPlayer(UserCore inUser, int rid);
 
 
 }

@@ -56,13 +56,16 @@ public class StreamServiceImpl implements StreamService {
 	@Autowired private UserInnerMapper innerMap;
 	
 	@Autowired private CardService cardServ;
-
+	@Autowired private CompService compServ;
+	
 	@Override
 	public void createRoom(int rid) {
 		GameRoom room = new GameRoom();
 		room.setRoom(rid);
-		/*PLCard[][] cards = {(PLCard[]) cardServ.getLevel_1().toArray()};
-		room.setCards(cards);*/
+		room.setCards(compServ.getNewDeck(rid));
+		room.setCurrentPl(0);
+		room.setTurn(0);
+		compServ.initCompDB(rid);
 		rooms.put(room.getRoom(), room);
 	}
 	

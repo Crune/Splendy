@@ -3,9 +3,9 @@ package org.kh.splendy.vo;
 import lombok.Data;
 
 @Data
-public class PLCard {
+public class PLCoin {
 	int rm_id=0;
 	int u_id=0;
-	int cd_id=0;
-	int n_hold=0;
+	int cn_id=0;
+	int cn_count=0;
 }
