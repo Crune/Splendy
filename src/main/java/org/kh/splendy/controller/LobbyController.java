@@ -1,7 +1,9 @@
 package org.kh.splendy.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.service.*;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -47,13 +49,20 @@ public class LobbyController {
 		 * - 플레이어 정보에 계정 인증코드 입력
 		 */
 		UserCore user = (UserCore) session.getAttribute("user");
-		if (user != null) {
-			user = serv.initPlayer(user); // 플레이어 인증 정보 생성
-			session.setAttribute("user", user);
-			return "lobby";
-		} else {
+		if (user == null) {
+			// 로그인 정보가 없을 경우는 로그인 페이지로 이동
 			rttr.addFlashAttribute("msg","로그인이 필요합니다!");
 			return "redirect:/";
+		} else {
+			int lastRoom = serv.getLastRoom(user.getId());
+			if (lastRoom > 0) {
+				// 게임 중 재접속시에는 해당 게임방으로 이동. 
+				return "redirect:/game/"+lastRoom;
+			} else {
+				user = serv.initPlayer(user); // 플레이어 인증 정보 생성
+				session.setAttribute("user", user);
+				return "lobby";				
+			}
 		}
 	}
 
@@ -61,5 +70,16 @@ public class LobbyController {
 	public @ResponseBody Auth getAuth(HttpSession session) {
 		UserCore user = (UserCore) session.getAttribute("user");
 		return serv.getAuth(user.getId());
+	}
+	
+
+	@RequestMapping(value = "/room_new", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody int requestJoin(@ModelAttribute Room reqRoom, HttpSession session) {
+		int result = -1;
+
+		UserCore user = (UserCore) session.getAttribute("user");
+		result = serv.createRoom(reqRoom, user);
+
+		return result;
 	}
 }

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -79,4 +80,6 @@ public class SplendyAdvice {
 	
 		return sbuf.toString();
 	}
+
+	public static final String WAS_ID = RandomStringUtils.randomAlphanumeric(9);
 }

@@ -131,4 +131,39 @@
 			)
 	]]>
 	</select>
+	
+	
+	<select
+		id="getInRoomPlayerByRid"
+		resultMap="inRoomPlayer">
+	<![CDATA[
+		SELECT KH_PLAYER.U_ID,
+			KH_USER_INNER.U_WS_ID,
+			KH_USER.U_NICK
+		FROM KH_USER_INNER
+			INNER JOIN KH_USER
+				ON KH_USER.U_ID = KH_USER_INNER.U_ID
+			INNER JOIN KH_PLAYER
+				ON KH_USER.U_ID              = KH_PLAYER.U_ID
+		WHERE KH_USER_INNER.U_WS_ID IS NOT NULL
+			AND KH_USER_INNER.U_CONNECT  > 0
+			AND KH_PLAYER.PL_IS_IN       > 0
+			AND KH_PLAYER.RM_ID          = #{rid}
+	]]>
+	</select>
+	
+	<select
+		id="countIsIn"
+		resultType="int">
+	<![CDATA[
+		SELECT COUNT(KH_PLAYER.U_ID)
+		FROM KH_PLAYER
+			INNER JOIN KH_ROOM
+				ON KH_ROOM.RM_ID       = KH_PLAYER.RM_ID
+		WHERE KH_ROOM.RM_END  IS NULL
+			AND KH_PLAYER.U_ID     = #{uid}
+			AND KH_PLAYER.PL_IS_IN > 0
+			AND KH_PLAYER.RM_ID <> 0
+	]]>
+	</select>
 </mapper>

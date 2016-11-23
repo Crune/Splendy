@@ -20,6 +20,8 @@ public class LobbyServiceImpl implements LobbyService {
 	@Autowired private PlayerMapper playerMap;
 	@Autowired private UserInnerMapper innerMap;
 	@Autowired private UserMapper userMap;
+	@Autowired private UserProfileMapper profMap;
+	@Autowired private CardMapper cardMap;
 	
 	@Autowired private StreamService stream;
 
@@ -57,5 +59,43 @@ public class LobbyServiceImpl implements LobbyService {
 		log.info("Auth Info: "+auth);
 		return auth;
 	}
-	
+
+	@Override @Transactional
+	public int createRoom(Room reqRoom, UserCore user) {
+		
+		int rst = -1;
+		
+		reqRoom.setHost(user.getId());
+		
+		boolean isTitle = !reqRoom.getTitle().isEmpty();
+		boolean isInfo = !reqRoom.getInfo().isEmpty();
+		boolean isPlLimit = (reqRoom.getPlayerLimits() >= 2 && reqRoom.getPlayerLimits() <= 4);
+		
+		boolean isNotHaveRoom = true;
+		for (Room cur : roomMap.getCurrentRooms()) {
+			if (cur.getHost() == user.getId()) {
+				isNotHaveRoom = false;
+			}
+		}
+		
+		if (isTitle && isInfo && isPlLimit && isNotHaveRoom) {
+			roomMap.create(reqRoom);
+			rst = roomMap.getMyRoom(user.getId());
+			stream.createRoom(rst);
+		}
+		
+		return rst;
+	}
+
+	@Override
+	public int getLastRoom(int uid) {
+		int rid = profMap.getLastRoom(uid);
+		if (roomMap.read(rid).getEnd() == null) {
+			return rid;
+		} else {
+			playerMap.setIsIn(uid, rid, 0);
+			profMap.setLastRoom(uid, 0);
+			return 0;
+		}
+	}
 }
