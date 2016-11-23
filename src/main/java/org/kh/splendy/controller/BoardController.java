@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.kh.splendy.service.BoardService;
@@ -19,14 +18,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /** TODO 찬우.게시판: 컨트롤러 구현
  * @author 찬우 */
 @Controller
-@SessionAttributes("article")
+
 public class BoardController {
 
 	@SuppressWarnings("unused")
@@ -53,7 +51,7 @@ public class BoardController {
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
 	public String list(@RequestParam("pageNum")String pageNum,@RequestParam String bName, Model model
-						,HttpServletRequest request,HttpSession session) throws Exception{
+						,HttpServletRequest request) throws Exception{
 		/** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
 		 * - bName이 설정되어 있지 않을경우 default로 설정
@@ -126,28 +124,25 @@ public class BoardController {
 	/** 게시글 수정
 	 * @param aId
 	 * @return 글쓰기 화면에 해당 게시글 내용이 채워져 있는 화면 */
-	public String modify(@RequestParam int at_id, @RequestParam String bName, RedirectAttributes rttr) throws Exception {
+	public String modify(@RequestParam int at_id,@RequestParam String bName,RedirectAttributes rttr,Model model) throws Exception {
 		/** TODO 찬우.게시판: 게시글 수정 구현
 		 * - 게시글 쓰기 화면으로 리다이렉트 하되 글쓰기 내용이 채워져 있어야 함.
 		 */
 			
 		if (at_id > -1) {
-			Article article = boardServ.getDetail(at_id);
-			rttr.addFlashAttribute("article", article);
-			rttr.addFlashAttribute("bName", bName);
+			Article article = boardServ.getDetail(at_id);			
+			model.addAttribute("article",article);
 		}		
-
+		
+		
 		return "redirect:/bbs/write";
 	}
 
-	@RequestMapping(value ="/bbs/write", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value ="/bbs/write")
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String write(@RequestParam String bName,RedirectAttributes rttr,Model model) {		
-		
-		
-		
+	public String write(@RequestParam String bName,RedirectAttributes rttr) {
 		
 		/*	
 		int at_id=0,reply=1,at_re_step=0,at_re_level=0;  
@@ -169,7 +164,7 @@ public class BoardController {
 	       
 	       
 	       */
-		rttr.addFlashAttribute("bName", bName);
+		rttr.addFlashAttribute("bName", "1");
 		
 		return "board/write";
 	}
