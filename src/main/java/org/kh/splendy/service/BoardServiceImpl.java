@@ -75,13 +75,11 @@ public class BoardServiceImpl implements BoardService {
 	public void readCount(int at_id) throws Exception {		
 		boardMap.readCount(at_id);		
 	}
+	
+	@Override
 	public void updateBoard(int at_id) throws Exception{
-		
+		boardMap.updateBoard(at_id);
 	}
 
-	@Override
-	public int updateBoard(Article article) throws Exception {
-		
-		return 0;
-	}
+	
 }

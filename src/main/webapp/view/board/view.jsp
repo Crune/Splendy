@@ -70,7 +70,7 @@
     }
     function fn_openBoardUpdate(){
        	var comSubmit = new ComSubmit("frm");
-        comSubmit.setUrl("<c:url value='/bbs/mod' />");
+        comSubmit.setUrl("<c:url value='/bbs/mod?bName=1' />");
         comSubmit.addParam("at_id", $("#at_id").val());
         comSubmit.submit();
     } 

@@ -129,13 +129,13 @@ public class BoardController {
 		 * - 게시글 쓰기 화면으로 리다이렉트 하되 글쓰기 내용이 채워져 있어야 함.
 		 */
 			
-		if (at_id > -1) {
-			Article article = boardServ.getDetail(at_id);			
-			model.addAttribute("article",article);
-		}		
+	
+		Article article = boardServ.getDetail(at_id);	
+		rttr.addFlashAttribute(article);
+		//rttr.
+		//model.addAttribute("article",article);		
 		
-		
-		return "redirect:/bbs/write";
+		return "redirect:/bbs/write?bName=1";
 	}
 
 	@RequestMapping(value ="/bbs/write")
@@ -160,10 +160,9 @@ public class BoardController {
 			request.setAttribute("num", new Integer(at_id));
 	        request.setAttribute("ref", new Integer(reply));
 	        request.setAttribute("re_step", new Integer(at_re_step));
-	        request.setAttribute("re_level", new Integer(at_re_level));
-	       
-	       
+	        request.setAttribute("re_level", new Integer(at_re_level));	       
 	       */
+		rttr.addFlashAttribute("pageNum", 1);
 		rttr.addFlashAttribute("bName", "1");
 		
 		return "board/write";
@@ -175,43 +174,15 @@ public class BoardController {
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
 	public String writePro(@ModelAttribute("BoardVO") Article article, @RequestParam String bName,
-							RedirectAttributes rttr)throws Exception{
+							@RequestParam int at_id,RedirectAttributes rttr)throws Exception{
 		
 		
-		//String at_reply = request.getParameter("at_reply");
-		//String at_re_step = request.getParameter("at_re_step");					
-	/*
-		int number=0;
-		
-        int max = boardServ.max();       
-	
-		if( max != 0){
-			number = max+1;
-		}else{
-			number = 1;
-		}		
-		if(article.getAt_id() != 0){
-			HashMap<String, String> map = new HashMap<String, String>();
-			
-			map.put("at_reply", at_reply);
-			map.put("at_re_step", at_re_step);			
-			boardServ.reply(map);
-			
-			article.setAt_re_step(article.getAt_re_step()+1);
-			article.setAt_re_level(article.getAt_re_level() + 1);
-			
-		}else{
-			article.setAt_reply(number);
-			article.setAt_re_step(0);
-			article.setAt_re_level(0);			
-		}		
-		article.setAt_reg_date(new Timestamp(System.currentTimeMillis()) );
-		article.setAt_ip(request.getRemoteAddr());
-		*/
-		boardServ.writePro(article);		
+		if(at_id == 0){
+			boardServ.writePro(article);
+		}else{			
+			boardServ.updateBoard(at_id);
+		}
 
-		rttr.addFlashAttribute("pageNum", 1);
-		rttr.addFlashAttribute("bName", "1");
 		
 		
 		return "redirect:/bbs/list";

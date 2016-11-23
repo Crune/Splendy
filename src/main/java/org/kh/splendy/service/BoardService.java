@@ -30,6 +30,6 @@ public interface BoardService {
 	
 	void updateBoard(int at_id) throws Exception;
 	
-	int updateBoard(Article article) throws Exception;
+	
 	
 }
