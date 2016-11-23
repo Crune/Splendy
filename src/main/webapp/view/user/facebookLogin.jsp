@@ -3,20 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script>
+window.onload = function(){
+	document.getElementById("faceForm").submit();
+}
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>facebook_Login</title>
 </head>
 <body>
-
-<form action="/connect/facebook" method="POST">
-    <input type="text" name="scope" value="user_posts" />
-    <div class="formInfo">
-        <p>You aren't connected to Facebook yet. <br/>
-        Click the button to connect this application with your Facebook account.</p>
-    </div>
-    <p>
-        <button type="submit">Connect to Facebook</button>
-    </p>
+<form id="faceForm" action="/connect/facebook" method="POST">
+    <input type="hidden" name="scope" value="user_posts" />
 </form>
 
 </body>

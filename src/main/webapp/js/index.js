@@ -109,6 +109,8 @@ window.onload = function(){
 		$(".btn_google").on('click', function () {
 			loginGoogle();
 		})
+		
+		self.opener = self;
 	
 }
 
@@ -245,9 +247,9 @@ function delete_check() {
 }
 
 function loginFacebook() {
-	window.open("/user/facebook", "Facebook Login", "left=300, top=100 width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );
-}
-
+	window.open("/login/facebook", "Facebook Login", "left=300, top=100, width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, location=1, resizable=yes" );
+} 
+   
 function onSignIn(googleUser) {
     // Useful data for your client-side scripts:
     var profile = googleUser.getBasicProfile();
@@ -275,8 +277,7 @@ function google() {
         data:$("#googleForm").serialize(),
         dataType: 'text', 
         success:function(data){
-        	alert(data);
-        		document.location.href="lobby/";
+        	document.location.href="lobby/";
         },error:function(request,status,error){
 			alert("로그인에 실패했습니다. 다시 시도해주세요.");
 		}
