@@ -33,7 +33,7 @@ public class LobbyServiceImpl implements LobbyService {
 	}
 
 	@Override @Transactional
-	public UserCore initPlayer(UserCore inUser) {
+	public UserCore initPlayer(UserCore inUser, int rid) {
 		if (inUser != null) {
 			int uid = inUser.getId();
 			
@@ -42,7 +42,7 @@ public class LobbyServiceImpl implements LobbyService {
 				stream.close(uid);
 			}
 			innerMap.setWSCode(uid, RandomStringUtils.randomAlphanumeric(9));
-			playerMap.setIsIn(uid, 0, 1);
+			playerMap.setIsIn(uid, rid, 1);
 			
 			UserCore user = userMap.read(uid);
 			return user;
