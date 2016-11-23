@@ -60,6 +60,7 @@ public class LobbyServiceImpl implements LobbyService {
 		return auth;
 	}
 
+	//여기서 부터 방생성
 	@Override @Transactional
 	public int createRoom(Room reqRoom, UserCore user) {
 		
