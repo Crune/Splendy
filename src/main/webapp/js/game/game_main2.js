@@ -60,16 +60,28 @@ $(document).ready(
 			// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
 			chatSock = new SockJS("http://" + window.location.host + "/ws");
 			
-			getAuth();
+			
 			//필드의 보석 초기화
 			field_jewel = new Field_jewel();
 			field_jewel.initJewel();
 			
 			roomId = (window.location.href).split('/')[4];
 			console.log(roomId);
+			
 			chatSock.onopen = function() {
 				
-				wssend('auth', auth);
+				player1.toggleTurn();
+				$("#player1").css("background-color", "red");
+				
+				wssend('cardRequest', 'init_levN');
+				wssend('cardRequest', 'init_lev3');
+				wssend('cardRequest', 'init_lev2');
+				wssend('cardRequest', 'init_lev1');
+				
+				$("#player1_name").html(player1.getUserId());
+				$("#player2_name").html(player2.getUserId());
+				$("#player3_name").html(player3.getUserId());
+				$("#player4_name").html(player4.getUserId());
 				
 				
 			};
@@ -82,18 +94,7 @@ $(document).ready(
 				var v = data.cont;
 				
 				if (k[0] == 'auth' && v == 'ok') {
-					player1.toggleTurn();
-					$("#player1").css("background-color", "red");
 					
-					wssend('cardRequest', 'init_levN');
-					wssend('cardRequest', 'init_lev3');
-					wssend('cardRequest', 'init_lev2');
-					wssend('cardRequest', 'init_lev1');
-					
-					$("#player1_name").html(player1.getUserId());
-					$("#player2_name").html(player2.getUserId());
-					$("#player3_name").html(player3.getUserId());
-					$("#player4_name").html(player4.getUserId());
 				}
 				if (k[0] == 'left') {
 					location.replace("/lobby/");
@@ -146,7 +147,7 @@ $(document).ready(
 				if(card.type === "getHeroCard"){
 					console.log(evt);
 				}
-				
+
 				if(card.type === "cardCountPro"){					
 					var json = JSON.parse(evt.data);
 					rest_cardValue.rest_heroCardValue = json.cont.rest_heroCardValue;
@@ -161,12 +162,8 @@ $(document).ready(
 				alert('연결 종료');
 			};
 			
-			$("#left_btn").click(function(){				
-				
-				wssend("left", roomId);
-				
-				
-				
+			$("#left_btn").click(function(){								
+				wssend("left", roomId);												
 			});
 
 			

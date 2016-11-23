@@ -11,11 +11,11 @@ public class GameRoom {
 	
 	private int room;
 	
-	private List<Msg> logs;
+	private List<Msg> logs = new ArrayList<Msg>();
 	
-	private int[] pls = new int[4];
-	private PLCard[][] cards;
-	private int[][] coins = new int[6][7];
+	private List<Integer> pls = new ArrayList<Integer>();
+	private List<PLCard> cards = new ArrayList<PLCard>();
+	private List<PLCoin> coins = new ArrayList<PLCoin>();
 	
 	private int turn = 0;
 	private int currentPl = 0;

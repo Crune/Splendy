@@ -222,3 +222,8 @@ div#createRoom {
 	font-weight: 500;
 	line-height: 30px;
 }
+
+.icon {
+	width : 30px;
+	height: 30px;
+}

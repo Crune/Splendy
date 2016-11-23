@@ -285,6 +285,17 @@ body {
         				<td>닉네임</td>
         				<td><input name="nickname" type="text" class="form-control" id="nickname" value="${user.nickname}"/></td>
         			</tr>
+        			<tr>
+        				<td>아이콘</td>
+        			</tr>
+        			<tr>
+        				<td>
+        				</td>
+        				<td><img src="/img/top_icon3.png" id="icon3" class="icon"/>
+        				<img src="/img/top_icon4.png" id="icon4" class="icon"/>
+        				<img src="/img/top_icon.png" id="icon1" class="icon"/>
+        				<img src="/img/top_icon2.png" id="icon2" class="icon"/></td>
+        			</tr>
         		</table>
          	</form>
       </div>
