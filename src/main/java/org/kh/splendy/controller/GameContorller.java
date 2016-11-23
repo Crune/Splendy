@@ -36,6 +36,6 @@ public class GameContorller {
 	@RequestMapping("/card")
 	public String cardTest(Model model) throws Exception{
 		
-		return "game/card_test";
+		return "game/main";
 	}
 }

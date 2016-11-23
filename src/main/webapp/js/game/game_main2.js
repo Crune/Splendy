@@ -147,7 +147,7 @@ $(document).ready(
 				if(card.type === "getHeroCard"){
 					console.log(evt);
 				}
-				
+
 				if(card.type === "cardCountPro"){					
 					var json = JSON.parse(evt.data);
 					rest_cardValue.rest_heroCardValue = json.cont.rest_heroCardValue;

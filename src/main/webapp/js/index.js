@@ -96,19 +96,23 @@ window.onload = function(){
 		
 		$(".btn_modify_prc").on('click', function () {
 			modifyRequest();
-		})
+		});
 		
 		$(".btn_login_prc").on('click', function () {
 			loginRequest();
-		})
+		});
 		
 		$(".btn_facebook").on('click', function () {
 			loginFacebook();
-		})
+		});
 		
 		$(".btn_google").on('click', function () {
 			loginGoogle();
-		})
+		});
+		
+		$(".btn_naver").on('click', function(){
+			
+		});
 	
 }
 

@@ -77,6 +77,11 @@ $( document ).ready(function() {
 		$("#roomlist").css('height','calc(100% - 99px)');
 		roomMouseEvt();
 	});
+	
+	
+	$("#icon1").click(function (){
+		$(".profile_icon").css("background", "url(/img/top_icon.png)");		
+	});
 });
 
 var temp_chatmsg = Handlebars.compile($("#temp_chatmsg").html());

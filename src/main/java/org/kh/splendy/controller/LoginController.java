@@ -74,28 +74,15 @@ public class LoginController {
 	
 	@RequestMapping("login/naver")
 	public String naver(HttpServletRequest request){
-		String state = generateState();
-		// 세션 또는 별도의 저장 공간에 상태 토큰을 저장
-		request.setAttribute("state", state);
 		
-		System.out.println(state);
-		
-
 		return "user/naver_login";
 	}
 	
 	@RequestMapping("/login/naver_loginPro")
 	public String naverLoginPro(HttpServletRequest request){
-		String code = request.getParameter("code");
-		String state = request.getParameter("state");
-		request.setAttribute("code", code);
-		request.setAttribute("state", state);
+		
 		return "user/naver_loginPro";
 	}
 
-	public String generateState()
-	{
-	    SecureRandom random = new SecureRandom();
-	    return new BigInteger(130, random).toString(32);
-	}
+
 }
