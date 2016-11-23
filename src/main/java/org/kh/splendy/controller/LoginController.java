@@ -40,7 +40,9 @@ public class LoginController {
 			method = {RequestMethod.GET, RequestMethod.POST},
 			produces = "application/json")
 	public @ResponseBody String google_logined(@ModelAttribute("googleForm") UserCore user, HttpSession session) {
-		
+		/**
+		 * 소셜로그인 로그아웃
+		 */
 		String email = "G"+user.getEmail();
 		user.setEmail(email);
 		user.setPassword("0");
