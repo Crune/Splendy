@@ -148,11 +148,6 @@ public class AccountController {
 			e.printStackTrace();
 		}
 		
-		/*request.setAttribute("credent", credent);
-		request.setAttribute("login_result", login_result);
-		request.setAttribute("user", user);
-		request.setAttribute("result", result);*/
-		
 		return text;
 	}
 	
@@ -169,7 +164,7 @@ public class AccountController {
 	public  @ResponseBody UserCore modify_suc(@ModelAttribute("modal_form") UserCore user0, HttpSession session) {
 		
 		List<UserCore> user1 = null;
-		String email = (String)session.getAttribute("email");
+		String email = ((UserCore)session.getAttribute("user")).getEmail();
 				
 		try {
 			userServ.updateUser(user0, email);
@@ -183,7 +178,7 @@ public class AccountController {
 	
 	@RequestMapping("/user/delete_suc")
 	public String remove_suc(HttpSession session) {
-		String email = (String)session.getAttribute("email");
+		String email = ((UserCore)session.getAttribute("user")).getEmail();
 		
 		try {
 			userServ.deleteUser(email);
