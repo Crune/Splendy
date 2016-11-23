@@ -54,13 +54,13 @@ public class LobbyController {
 			rttr.addFlashAttribute("msg","로그인이 필요합니다!");
 			return "redirect:/";
 		} else {
+			user = serv.initPlayer(user); // 플레이어 인증 정보 생성
+			session.setAttribute("user", user);
 			int lastRoom = serv.getLastRoom(user.getId());
 			if (lastRoom > 0) {
 				// 게임 중 재접속시에는 해당 게임방으로 이동. 
 				return "redirect:/game/"+lastRoom;
 			} else {
-				user = serv.initPlayer(user); // 플레이어 인증 정보 생성
-				session.setAttribute("user", user);
 				return "lobby";				
 			}
 		}
