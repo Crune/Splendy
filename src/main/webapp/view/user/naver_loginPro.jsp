@@ -9,7 +9,7 @@
 </head>
 <body>
 <script type="text/javascript">
-  var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp", "http://52.78.218.73/login/naver_loginPro");
+  var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp", "http://spd.cu.cc/login/naver_loginPro");
   // 접근 토큰 값 출력
   //alert(naver_id_login.oauthParams.access_token);
   // 네이버 사용자 프로필 조회
@@ -23,7 +23,7 @@
     	url:("/naver_loginPro?email="+email+"&nickname="+nickname),
     	method:"post",
     	success:function(data){
-    		window.opener.location.replace("http://52.78.218.73/lobby/");
+    		window.opener.location.replace("http://spd.cu.cc/lobby/");
     		window.close();
     	},
     	error:function(request, status, error){

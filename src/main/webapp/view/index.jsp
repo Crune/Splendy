@@ -210,10 +210,10 @@ body {
 	</div>
 	<script type="text/javascript">
 		var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp",
-				"http://127.0.0.1/login/naver_loginPro");
+				"http://spd.cu.cc/login/naver_loginPro");
 		var state = naver_id_login.getUniqState();
-		naver_id_login.setButton("white", 2, 40);
-		naver_id_login.setDomain("http://127.0.0.1/");
+		naver_id_login.setButton("green", 3, 40);
+		naver_id_login.setDomain("http://spd.cu.cc/");
 		naver_id_login.setState(state);
 		naver_id_login.setPopup();
 		naver_id_login.init_naver_id_login();
