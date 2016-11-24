@@ -13,10 +13,10 @@
   <div id="naver_id_login"></div>
   <!-- //네이버아이디로로그인 버튼 노출 영역 -->
   <script type="text/javascript">
-  	var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp", "http://www.spd.cu.cc/login/naver_loginPro");
+  	var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp", "http://52.78.218.73/login/naver_loginPro");
   	var state = naver_id_login.getUniqState();
-  	naver_id_login.setButton("white", 2,40);
-  	naver_id_login.setDomain("http://www.spd.cu.cc/");
+  	naver_id_login.setButton("green", 3,40);
+  	naver_id_login.setDomain("http://52.78.218.73/");
   	naver_id_login.setState(state);
   	naver_id_login.setPopup();
   	naver_id_login.init_naver_id_login();
