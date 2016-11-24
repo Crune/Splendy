@@ -4,7 +4,6 @@ window.onload = function(){
 	$.ajax({
 		url:"/prof/iconModify",		
 		success:function(data){
-			console.log(data);
 			$("#userProfIcon").attr("src", data);			
 		},
 		error:function(request, status, error){

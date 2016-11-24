@@ -15,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.social.connect.ConnectionRepository;
@@ -117,10 +119,28 @@ public class LoginController {
 		return "success";
 	}
 	
-	@RequestMapping("login/naver")
-	public String naver(HttpServletRequest request){
-		
-		return "user/naver_login";
+	@RequestMapping(
+			value = "/naver_loginPro",
+			method = {RequestMethod.POST})
+	public @ResponseBody String naverLoginPro(@RequestParam("email") String emailParam, 
+									@RequestParam("nickname") String nicknameParam,HttpSession session){
+		UserCore user = new UserCore();				
+		user.setEmail("N" + emailParam.toLowerCase() + "N");
+		user.setNickname(nicknameParam);
+		String email = user.getEmail();
+		user.setPassword("0");
+		try{
+			UserCore searchUser = userServ.checkEmail(email);
+			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
+				userServ.createUser(user);
+			}
+			user = userServ.checkEmail(email);
+			user.openInfo();
+			session.setAttribute("user", user);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return "success";
 	}
 	
 	@RequestMapping("/login/naver_loginPro")
