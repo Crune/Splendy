@@ -2,6 +2,9 @@
 window.onload = function(){
 	$("#btn_logout").on('click', function () {
 		document.location.href='/user/logout';
+		var revokeAllScopes = function() {
+			  auth2.disconnect();
+			}
 	})
 	
 	$("#btn_modify").on('click', function () {
