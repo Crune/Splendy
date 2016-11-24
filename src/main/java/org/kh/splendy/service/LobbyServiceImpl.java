@@ -126,6 +126,7 @@ public class LobbyServiceImpl implements LobbyService {
 	@Override @WSReqeust
 	public void request(String sId, String msg) {
 		WSPlayer reqUser = stream.getWsplayers().get(sId);
+		log.info("테스트3426");
 		if (msg.equals("roomList")) {
 			List<Room> rooms = roomMap.getCurrentRooms();
 			stream.send(sId, "room.init", "{}");
