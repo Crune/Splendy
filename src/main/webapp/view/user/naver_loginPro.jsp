@@ -23,7 +23,7 @@
     	url:("/naver_loginPro?email="+email+"&nickname="+nickname),
     	method:"post",
     	success:function(data){
-    		window.opener.location.replace("http://127.0.0.1/lobby/");
+    		window.opener.location.replace("http://spd.cu.cc/lobby/");
     		window.close();
     	},
     	error:function(request, status, error){
