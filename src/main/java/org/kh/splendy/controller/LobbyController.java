@@ -30,7 +30,7 @@ public class LobbyController {
 	private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
 
 	@Autowired private StreamService stream;
-	
+	@Autowired private UserProfileService profServ;
 	@Autowired private LobbyService serv;
 
 	@ModelAttribute("profile")
@@ -61,7 +61,7 @@ public class LobbyController {
 				// 게임 중 재접속시에는 해당 게임방으로 이동. 
 				return "redirect:/game/"+lastRoom;
 			} else {
-				
+				profServ.refreshUserProf(session);
 				return "lobby";				
 			}
 		}

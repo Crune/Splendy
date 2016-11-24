@@ -123,7 +123,7 @@ body {
 							</div>
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">151:31</div>
+									<div class="lobby_text_value">${sessionScope.profile.totalTime}</div>
 									<div class="lobby_text_biglabel">총 플레이 시간</div>
 									<div class="lobby_text_sublabel">마지막: 0:12:31</div>
 								</div>
@@ -132,14 +132,14 @@ body {
 						<div class="row">
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">5-14-4</div>
+									<div class="lobby_text_value">${sessionScope.profile.win}-${sessionScope.profile.lose}-${sessionScope.profile.draw}</div>
 									<div class="lobby_text_biglabel">전적(승-패-무)</div>
 									<div class="lobby_text_sublabel">마지막: 무승부</span></div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">1524</div>
+									<div class="lobby_text_value">${sessionScope.profile.rate}</div>
 									<div class="lobby_text_biglabel">게임 레이팅</div>
 									<div class="lobby_text_sublabel">최근 증감: +20</div>
 								</div>

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.kh.splendy.mapper.UserProfileMapper;
 import org.kh.splendy.vo.UserCore;
+import org.kh.splendy.vo.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,12 @@ public class UserProfileServiceImpl implements UserProfileService{
 		String icon = profMap.getIcon(id);
 		return icon;
 	}
-
+	
+	@Override
+	public void refreshUserProf(HttpSession session){
+		int id = ((UserCore)session.getAttribute("user")).getId();
+		UserProfile ups = profMap.read(id);
+		session.setAttribute("profile", ups);		
+	}
+	
 }
