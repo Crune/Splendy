@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class WSMsg {
 
+	@SerializedName("protocol") @Expose
+	public String protocol;
 	@SerializedName("type") @Expose
 	public String type;
 	@SerializedName("cont") @Expose

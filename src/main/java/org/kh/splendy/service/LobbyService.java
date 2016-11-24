@@ -19,5 +19,11 @@ public interface LobbyService {
 
 	UserCore initPlayer(UserCore inUser, int rid);
 
+	void join(String sId, String msg);
+
+	void request(String sId, String msg);
+
+	void left(String sId, String msg);
+
 
 }
