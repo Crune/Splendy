@@ -7,6 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @WSController
 public abstract class ProtocolHelper {
 	
-	@Autowired private StreamService stream;
+	@Autowired protected StreamService stream;
 	
 }

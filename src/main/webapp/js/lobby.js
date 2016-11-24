@@ -22,7 +22,7 @@ $( document ).ready(function() {
 
 	// 메시지 이벤트 핸들러 연결
 	chatSock.onmessage = function (evt) {	
-		//console.log("read.raw: "+evt.data);
+		console.log("read.raw: "+evt.data);
 		var data = JSON.parse(evt.data);
 		var k = data.type.split(".");
 		var v = data.cont;
@@ -30,9 +30,7 @@ $( document ).ready(function() {
 			console.log("initialized.");
 		}
 		if (k[0] == 'auth' && v == 'ok') {
-			lSend('request', 'prevMsg');
-			lSend('request', 'roomList');
-			lSend('request', 'playerList');
+			wssend('request', 'prevMsg');
 		}
 		if (k[0] == 'room') {
 			onRoom(k[1], v);
@@ -48,7 +46,9 @@ $( document ).ready(function() {
 
 	// 연결 해제시 핸들러 연결
 	chatSock.onclose = function () {
-		alert("연결끊김!");
+		if (isPageMove == false) {
+			alert("연결끊김!");
+		}
 	};
 	
 	// 방개설시
@@ -87,10 +87,7 @@ var temp_room = Handlebars.compile($("#temp_room").html());
 var temp_player = Handlebars.compile($("#temp_player").html());
 var temp_room_empty = Handlebars.compile($("#temp_room_empty").html());
 
-function lSend(type, msg) {
-	console.log('lSend: '+this.value);
-	chatSock.send( JSON.stringify( new Msg('LobbyP', type, msg)) );
-}
+var isPageMove = false;
 
 function joinRoom(rid, password) {
 	var room = new Object();
@@ -98,7 +95,7 @@ function joinRoom(rid, password) {
 	if (password != '') {
 		room.password = password;
 	}
-	lSend('join', room);
+	wssend('join', room);
 }
 function onChatMsg(type, msg) {
 	if (type =='init') {
@@ -113,6 +110,20 @@ function onChatMsg(type, msg) {
 			}
 			$("#chatDiv").append(temp_chatmsg(msg));
 			$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+		}
+		if (type =='prev') {
+			msgLen = msg.length;
+			for (i = 0; i < msgLen; i++) {
+				var curMsg = msg[i];
+				if (curMsg.uid == auth.uid) {
+					curMsg.type = 'me'
+				} else if (curMsg.type == 'me') {
+					curMsg.type = 'o'
+				}
+				$("#chatDiv").append(temp_chatmsg(curMsg));
+				$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+			}
+			wssend('request', 'roomList');
 		}
 	}
 }
@@ -134,8 +145,18 @@ function onPlayer(type, pl) {
 			onChatMsg(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
 		}
 		if (type=='enter') {
-			var room = pl.room;
-			$("#room_"+room).append(temp_player(pl));
+			$("#room_"+pl.room+" .row .room_player").append(temp_player(pl));
+		}
+		if (type=='prev') {
+			plLen = pl.length;
+			for (i = 0; i < plLen; i++) {
+				var curPl = pl[i];
+				if (curPl.room == 0) {
+					$(".lobby_players").append(temp_player(curPl));
+				} else {
+					$("#room_"+curPl.room+" .row .room_player").append(temp_player(curPl));
+				}
+			}
 		}
 	}
 }
@@ -144,22 +165,36 @@ function onRoom(type, room) {
 	if (type=='init') {
 		console.log("Room initialized!")
 		$(".lobby_room").detach();
-		$("#roomlist").append(temp_room_empty());
 	} else {
+		$(".empty_room").detach();
+		
 		if (type=='add') {
-			$(".empty_room").detach();
 			$("#roomlist").append(temp_room(room));
-			$("#roomlist").append(temp_room_empty());
 			if (room.password != 'true') {
 				$('#ispw_'+room.id).detach();
 			}
 		}
 		if (type=='remove') {
-			$("#room_"+room).detach();
+			$("#room_"+room.id).detach();
 		}
 		if (type=='accept') {
+			isPageMove = true;
 			location.replace("/game/" + room);
 		}
+		if (type=='prev') {
+			roomLen = room.length;
+			for (i = 0; i < roomLen; i++) {
+				var curRoom = room[i];
+				$("#roomlist").append(temp_room(curRoom));
+				if (curRoom.password != 'true') {
+					$('#ispw_'+curRoom.id).detach();
+				}
+			}
+				
+			wssend('request', 'playerList');
+		}
+		
+		$("#roomlist").append(temp_room_empty());
 	}
 	roomMouseEvt();
 }

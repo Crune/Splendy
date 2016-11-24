@@ -10,7 +10,7 @@ import org.springframework.web.socket.WebSocketSession;
 public interface StreamService {
 
 	String getCwasid();
-	Map<Integer, GameRoom> getRooms();
+	//Map<Integer, GameRoom> getRooms();
 	Map<String, WebSocketSession> getSessions();
 	Map<String, WSPlayer> getWsplayers();
 

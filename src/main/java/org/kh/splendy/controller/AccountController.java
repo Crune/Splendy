@@ -37,16 +37,24 @@ public class AccountController {
 
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index() {
-		return "index";
+	public String index(HttpSession session) {
+		if ((UserCore) session.getAttribute("user") != null) {
+			return "redirect:/lobby/";
+		} else {
+			return "index";
+		}
 	}
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String indexWithMsg(@RequestParam("msg") String msg, Model model) {
-		if(msg == null){
-			msg = "";
+	public String indexWithMsg(@RequestParam("msg") String msg, Model model, HttpSession session) {
+		if ((UserCore) session.getAttribute("user") != null) {
+			return "redirect:/lobby/";
+		} else {
+			if(msg == null){
+				msg = "";
+			}
+			model.addAttribute(msg);
+			return "index";
 		}
-		model.addAttribute(msg);
-		return "index";
 	}
 
 	@RequestMapping(value = "/user/requestJoin", method = RequestMethod.POST, produces = "application/json")

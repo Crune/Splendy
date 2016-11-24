@@ -10,6 +10,7 @@
 	content="768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com">
 <title>Splendy - 환영합니다!</title>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
+<link rel='stylesheet' href='/css/index.css'>
 <link rel='stylesheet' href='/css/default.css'>
 <link rel='stylesheet'
 	href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />

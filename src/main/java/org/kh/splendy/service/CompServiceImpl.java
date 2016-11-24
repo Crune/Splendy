@@ -78,15 +78,16 @@ public class CompServiceImpl implements CompService {
 		}
 		
 		List<PLCoin> coins = new ArrayList<PLCoin>();
-
-		int count =0;
 		for (Coin coin : coinAll) {
 			PLCoin rst = new PLCoin();
 			rst.setRm_id(rid);
 			rst.setCn_id(coin.getId());
 			rst.setU_id(uid);
-			rst.setCn_count(startAmount);
-
+			if (coin.getId() == 6) {
+				rst.setCn_count(5);
+			} else {
+				rst.setCn_count(startAmount);
+			}
 			coins.add(rst);
 		}
 

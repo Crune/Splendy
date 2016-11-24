@@ -41,6 +41,10 @@ public class LobbyController {
 		return profile;
 	}
 
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String index() {
+		return "redirect:/lobby/";
+	}
 	/** 로비 첫 화면 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String list(Model model, HttpSession session, RedirectAttributes rttr) {
@@ -72,10 +76,16 @@ public class LobbyController {
 		UserCore user = (UserCore) session.getAttribute("user");
 		return serv.getAuth(user.getId());
 	}
-	
+
+	@RequestMapping(value = "/out", method = RequestMethod.GET)
+	public String outRoom(HttpSession session) {
+		UserCore user = (UserCore) session.getAttribute("user");
+		serv.left("", user.getId()+"");
+		return "redirect:/";
+	}
 
 	@RequestMapping(value = "/room_new", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody int requestJoin(@ModelAttribute Room reqRoom, HttpSession session) {
+	public @ResponseBody int requestCreate(@ModelAttribute Room reqRoom, HttpSession session) {
 		int result = -1;
 
 		UserCore user = (UserCore) session.getAttribute("user");
