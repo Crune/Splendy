@@ -152,7 +152,12 @@ public class StreamServiceImpl implements StreamService {
 		// 서버 비정상 종료로 잔여할 경우 DB수정
 		for (String cur : innerMap.getConnector()) {
 			if (!wsplayers.containsKey(cur)) {
-				innerMap.setConnectBySid(cur, 0);
+				UserInner targetWAS = innerMap.readByWSId(cur);
+				boolean isCurWas = false;
+				if (targetWAS != null) targetWAS.getWas().equals(cWasId);
+				if (isCurWas) {
+					innerMap.setConnectBySid(cur, 0);
+				}
 			}
 		}
 	}

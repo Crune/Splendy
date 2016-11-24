@@ -18,20 +18,21 @@
   function naverSignInCallback() { 
 	var email = naver_id_login.getProfileData('email');
     var nickname = naver_id_login.getProfileData('nickname');
-    alert(nickname);
+    
     $.ajax({
     	url:("/naver_loginPro?email="+email+"&nickname="+nickname),
     	method:"post",
     	success:function(data){
     		window.opener.location.replace("http://127.0.0.1/lobby/");
+    		window.close();
     	},
     	error:function(request, status, error){
 			alert("로그인 실패!");
-			
+			window.close();			
 		}
     });
     
-    window.close();
+    
   }
  
 </script>
