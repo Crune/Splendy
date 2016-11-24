@@ -22,7 +22,7 @@ public class CompServiceImpl implements CompService {
 
 	private static List<Card> cardAll = new ArrayList<Card>();
 	private static List<Coin> coinAll = new ArrayList<Coin>();
-	
+
 	private void init() {
 		if (cardAll.isEmpty()) {
 			try {
@@ -67,12 +67,14 @@ public class CompServiceImpl implements CompService {
 	public List<PLCoin> getNewCoins(int rid, int uid) {
 		init();
 
-		Room room = roomMap.read(rid);
-		int plLimits = room.getPlayerLimits();
-		
-		int startAmount = plLimits+2;
-		if (plLimits == 4) {
-			startAmount = 7;
+		int startAmount = 0;
+		if (uid < 1) {
+			Room room = roomMap.read(rid);
+			int plLimits = room.getPlayerLimits();
+			startAmount = plLimits+2;
+			if (plLimits == 4) {
+				startAmount++;
+			}
 		}
 		
 		List<PLCoin> coins = new ArrayList<PLCoin>();
@@ -83,7 +85,7 @@ public class CompServiceImpl implements CompService {
 			rst.setRm_id(rid);
 			rst.setCn_id(coin.getId());
 			rst.setU_id(uid);
-			rst.setCn_count(0);
+			rst.setCn_count(startAmount);
 
 			coins.add(rst);
 		}
@@ -95,7 +97,6 @@ public class CompServiceImpl implements CompService {
 	public List<PLCard> getNewDeck(int rid) {
 		init();
 
-		
 		List<PLCard> cards = new ArrayList<PLCard>();
 
 		int count =0;

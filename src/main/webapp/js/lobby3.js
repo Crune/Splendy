@@ -1,5 +1,17 @@
 
 window.onload = function(){
+	
+	$.ajax({
+		url:"/prof/iconModify",		
+		success:function(data){
+			console.log(data);
+			$("#userProfIcon").attr("src", data);			
+		},
+		error:function(request, status, error){
+			console.log('modify icon fail');
+		}
+	});
+
 	$("#btn_logout").on('click', function () {
 		document.location.href='/user/logout';
 		var revokeAllScopes = function() {
@@ -19,6 +31,20 @@ window.onload = function(){
 		}
 		$('#password').val('');
 	})
+	
+	$("#icon1").click(function (){
+		changeIcon('icon1');
+	});
+	$("#icon2").click(function (){
+		changeIcon('icon2');
+	});
+	$("#icon3").click(function (){
+		changeIcon('icon3');
+	});
+	$("#icon4").click(function (){
+		changeIcon('icon4');
+	});
+	
 }
 
 function modifyRequest() {
@@ -33,4 +59,21 @@ function modifyRequest() {
 			alert("정보 수정에 실패하였습니다. 다시 시도해주세요.");
 		}
 	})
+} 
+
+var changeIcon = function(icon_src){
+	var icon = {"icon" : $("#"+icon_src).attr("src")};
+	$("#userProfIcon").attr("src", "/img/top_"+icon_src+".png");
+	
+	$.ajax({
+		url:"/prof/iconChange",
+		type:'post',
+		data:icon,
+		success:function(data){
+			alert("아이콘 변경 완료!");
+		},
+		error:function(request, status, error){
+			alert("아이콘 변경 실패!");
+		}
+	});
 }

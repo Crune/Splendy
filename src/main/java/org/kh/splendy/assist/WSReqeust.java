@@ -1,4 +1,4 @@
-package org.kh.splendy.annotation;
+package org.kh.splendy.assist;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
