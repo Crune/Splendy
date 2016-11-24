@@ -42,6 +42,15 @@ public class SplendyAdvice {
 		return rst;
 	}
 
+	@Around("execution(* org.kh.splendy.protocol.*.*(..))")
+	public Object protocolAOP(ProceedingJoinPoint pjp) throws Throwable {
+		log.info(" » Protocol: op - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
+		log.info(" » Protocol: args - "+Arrays.toString(pjp.getArgs()));
+		Object rst = pjp.proceed();
+		log.info(" » Protocol: ed - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
+		return rst;
+	}
+	
 	public static void inject(Object getObj, Object setObj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Method[] methods = getObj.getClass().getMethods();
 		

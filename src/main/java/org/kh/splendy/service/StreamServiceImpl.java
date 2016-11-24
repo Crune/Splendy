@@ -6,6 +6,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.servlet.ServletContext;
+
+import org.kh.splendy.SplendyApplication;
 import org.kh.splendy.aop.SplendyAdvice;
 import org.kh.splendy.assist.ProtocolHelper;
 import org.kh.splendy.assist.SplendyProtocol;
@@ -18,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -176,7 +180,7 @@ public class StreamServiceImpl implements StreamService {
 		type = (type == null)?"":type;
 		
 		/** !! 중요 - 프로토콜을 변경할 경우 숫자를 변경할것 !! */
-		int nowBuild = 7;
+		int nowBuild = 11;
 		
 		// 메시지를 처리할 메서드 목록이 비어있을 경우 목록 생성
 		if (webSocketMethods.isEmpty() || pBuild != nowBuild) {
@@ -193,13 +197,12 @@ public class StreamServiceImpl implements StreamService {
 			
 			// 클래스 목록에서 메서드 추출
 			for (Class cls : allClasses) {
-				log.info("webSocketMethods.addClass: "+cls.getName());
+				log.info("msgPro.webSocketMethods.addClass: "+cls.getName());
 				for (Method m : cls.getMethods()) {
 					// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
 					if (m.isAnnotationPresent(WSReqeust.class)) {
-						log.info("webSocketMethods.addMethod: "+m.getName());
+						log.info("msgPro.webSocketMethods.addMethod: "+m.getName());
 						webSocketMethods.put(m.getName(), m);
-						
 					}
 				}
 			}
@@ -210,8 +213,10 @@ public class StreamServiceImpl implements StreamService {
 
 			// 메서드를 실행할 객체를 추가
 			for (Class cls : allClasses) {
-				String className = cls.getName().replace(packageName+".", "");
-				protocols.put(className, cls.newInstance());
+				String className = cls.getSimpleName();
+				Object obj = cls.newInstance();
+				log.info("msgPro.protocols.put: "+className+"/"+obj);
+				protocols.put(className, obj);
 			}
 		}
 
@@ -219,8 +224,7 @@ public class StreamServiceImpl implements StreamService {
 		if (webSocketMethods.containsKey(type)) {
 			// 해당 메서드를 꺼내서
 			Method m = webSocketMethods.get(type);
-
-
+			
 			log.info("msgProType: "+type);
 			// 인증된 사용자가 아닐경우 인증만 가능하게 함
 			boolean isAuthed = (wsplayers.get(sid) != null)?true:false;
@@ -396,17 +400,9 @@ public class StreamServiceImpl implements StreamService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 제거 요망 : 프로토콜 작성 후 해당 서비스로 이관 필요.
 
+/*
+	// 제거 요망 : 프로토콜 작성 후 해당 서비스로 이관 필요.
 	@Autowired private CardService cardServ;
 	
 	private List<Card> deck_lev1 = null;
@@ -417,9 +413,7 @@ public class StreamServiceImpl implements StreamService {
 	@Override @WSReqeust
 	public void cardRequest(String sId, String msg) throws Exception {
 			
-		/*
-		 *  처음 카드를 세팅하는 조건문
-		 */
+		// 처음 카드를 세팅하는 조건문
 		if(msg.equals("init_levN")){			
 			List<Card> initHeroCard = new ArrayList<Card>();
 			deck_levN = cardServ.getLevel_noble(); //히어로카드 덱
@@ -473,6 +467,6 @@ public class StreamServiceImpl implements StreamService {
 		GameLog gameLog = gson.fromJson(msg, GameLog.class);
 		sendR(sId, "cardCountPro", gameLog);		
 	}
-
+*/
 
 }

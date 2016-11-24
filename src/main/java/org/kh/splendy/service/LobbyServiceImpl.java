@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 
-@Service
+@Service("LobbyService")
 @EnableTransactionManagement
 public class LobbyServiceImpl implements LobbyService {
 
@@ -125,8 +125,8 @@ public class LobbyServiceImpl implements LobbyService {
 
 	@Override @WSReqeust
 	public void request(String sId, String msg) {
+		log.info("LobbyServiceImpl.request");
 		WSPlayer reqUser = stream.getWsplayers().get(sId);
-		log.info("테스트3426");
 		if (msg.equals("roomList")) {
 			List<Room> rooms = roomMap.getCurrentRooms();
 			stream.send(sId, "room.init", "{}");
