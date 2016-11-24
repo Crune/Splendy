@@ -84,12 +84,14 @@ public interface BoardMapper {
 		@Select("select max(AT_ID) from KH_ARTICLE")
 		public int max() throws Exception;		
 		
-		public void writePro(@ModelAttribute("BoardVO") Article article) throws Exception;
+		public void writePro(@ModelAttribute("article") Article article) throws Exception;
 		
 		public Article getDetail(int at_id) throws Exception;
 		
 		public void readCount(int at_id) throws Exception; 
 		
-		public void updateBoard(int at_id) throws Exception;
+		public void updateBoard(Article article) throws Exception;
+		
+		public void deleteBoard(int at_id)throws Exception;
 			
 }

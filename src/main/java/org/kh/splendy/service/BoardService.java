@@ -20,7 +20,7 @@ public interface BoardService {
 	
 	int boardCount() throws Exception;
 	
-	void writePro(@ModelAttribute("BoardVO") Article article) throws Exception;
+	void writePro(@ModelAttribute("article") Article article) throws Exception;
 	
 	void reply(HashMap<String, String> map) throws Exception;
 	
@@ -28,8 +28,9 @@ public interface BoardService {
 	 
 	void readCount(int at_id) throws Exception;
 	
-	void updateBoard(int at_id) throws Exception;
+	void updateBoard(Article article) throws Exception;
 	
+	void deleteBoard(int at_id)throws Exception;
 	
 	
 }
