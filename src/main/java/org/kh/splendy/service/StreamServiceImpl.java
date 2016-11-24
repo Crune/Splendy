@@ -6,12 +6,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.aop.SplendyAdvice;
+import org.kh.splendy.assist.ProtocolHelper;
+import org.kh.splendy.assist.SplendyProtocol;
+import org.kh.splendy.assist.WSController;
 import org.kh.splendy.assist.WSReqeust;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
-import org.reflections.Reflections;
+import org.reflections.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +26,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.google.gson.*;
-
-import lombok.*;
 
 @Service
 @EnableTransactionManagement
@@ -160,6 +160,7 @@ public class StreamServiceImpl implements StreamService {
 
 	private static Map<String, Method> webSocketMethods = new HashMap<String, Method>();
 	private static Map<String, Object> protocols = new HashMap<String, Object>();
+	private static int pBuild = 0;
 	
 	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
@@ -174,24 +175,31 @@ public class StreamServiceImpl implements StreamService {
 		protocol = (protocol == null)?"":protocol;
 		type = (type == null)?"":type;
 		
+		/** !! 중요 - 프로토콜을 변경할 경우 숫자를 변경할것 !! */
+		int nowBuild = 7;
+		
 		// 메시지를 처리할 메서드 목록이 비어있을 경우 목록 생성
-		if (webSocketMethods.isEmpty()) {
+		if (webSocketMethods.isEmpty() || pBuild != nowBuild) {
+			pBuild = nowBuild;
 
 			// 프로토콜 패키지 안의 모든 클래스를 대상으로 함
-			String packageName = "org.kh.splendy.protocol";
+			String packageName = "org.kh.splendy";
 			Reflections reflections = new Reflections(packageName);
-			Set<Class<? extends Object>> allClasses = 
-					reflections.getSubTypesOf(Object.class);
+			Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(WSController.class);
+			allClasses.remove(ProtocolHelper.class);
 			
 			// 현재 클래스도 대상에 포함
 			allClasses.add(this.getClass());
 			
 			// 클래스 목록에서 메서드 추출
 			for (Class cls : allClasses) {
+				log.info("webSocketMethods.addClass: "+cls.getName());
 				for (Method m : cls.getMethods()) {
 					// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
 					if (m.isAnnotationPresent(WSReqeust.class)) {
+						log.info("webSocketMethods.addMethod: "+m.getName());
 						webSocketMethods.put(m.getName(), m);
+						
 					}
 				}
 			}
@@ -212,8 +220,8 @@ public class StreamServiceImpl implements StreamService {
 			// 해당 메서드를 꺼내서
 			Method m = webSocketMethods.get(type);
 
+
 			log.info("msgProType: "+type);
-			
 			// 인증된 사용자가 아닐경우 인증만 가능하게 함
 			boolean isAuthed = (wsplayers.get(sid) != null)?true:false;
 			if (type.equals("auth") || isAuthed) {
@@ -223,6 +231,7 @@ public class StreamServiceImpl implements StreamService {
 				m.invoke(target, session.getId(), raw.cont+"");
 			} else {
 				// 권한없는 요청시 추방
+				log.info("msgProType: AccessDenied! Session will be close!");
 				session.close();
 			}
 		}
