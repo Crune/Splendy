@@ -6,6 +6,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.servlet.ServletContext;
+
+import org.kh.splendy.SplendyApplication;
 import org.kh.splendy.aop.SplendyAdvice;
 import org.kh.splendy.assist.ProtocolHelper;
 import org.kh.splendy.assist.SplendyProtocol;
@@ -18,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -162,6 +166,46 @@ public class StreamServiceImpl implements StreamService {
 	private static Map<String, Object> protocols = new HashMap<String, Object>();
 	private static int pBuild = 0;
 	
+	private void initProtocol() {
+		// 프로토콜 패키지 안의 모든 클래스를 대상으로 함
+		String packageName = "org.kh.splendy";
+		Reflections reflections = new Reflections(packageName);
+		Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(WSController.class);
+		allClasses.remove(ProtocolHelper.class);
+		
+		// 현재 클래스도 대상에 포함
+		allClasses.add(this.getClass());
+		
+		// 클래스 목록에서 메서드 추출
+		for (Class cls : allClasses) {
+			log.info("msgPro.webSocketMethods.addClass: "+cls.getName());
+			for (Method m : cls.getMethods()) {
+				// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
+				if (m.isAnnotationPresent(WSReqeust.class)) {
+					log.info("msgPro.webSocketMethods.addMethod: "+m.getName());
+					webSocketMethods.put(m.getName(), m);
+				}
+			}
+		}
+
+		// 현재 클래스는 생성 목록에서 현재 객체로 추가
+		allClasses.remove(this.getClass());
+		protocols.put("", this);
+
+		// 메서드를 실행할 객체를 추가
+		for (Class cls : allClasses) {
+			String className = cls.getSimpleName();
+			Object obj = null;
+			try {
+				obj = cls.newInstance();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			log.info("msgPro.protocols.put: "+className+"/"+obj);
+			protocols.put(className, obj);
+		}
+	}
+	
 	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
 		log.info(cWasId+"/"+session.getId() + " -> " + message.getPayload());
@@ -176,67 +220,58 @@ public class StreamServiceImpl implements StreamService {
 		type = (type == null)?"":type;
 		
 		/** !! 중요 - 프로토콜을 변경할 경우 숫자를 변경할것 !! */
-		int nowBuild = 7;
+		int nowBuild = 11;
 		
 		// 메시지를 처리할 메서드 목록이 비어있을 경우 목록 생성
 		if (webSocketMethods.isEmpty() || pBuild != nowBuild) {
 			pBuild = nowBuild;
-
-			// 프로토콜 패키지 안의 모든 클래스를 대상으로 함
-			String packageName = "org.kh.splendy";
-			Reflections reflections = new Reflections(packageName);
-			Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(WSController.class);
-			allClasses.remove(ProtocolHelper.class);
-			
-			// 현재 클래스도 대상에 포함
-			allClasses.add(this.getClass());
-			
-			// 클래스 목록에서 메서드 추출
-			for (Class cls : allClasses) {
-				log.info("webSocketMethods.addClass: "+cls.getName());
-				for (Method m : cls.getMethods()) {
-					// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
-					if (m.isAnnotationPresent(WSReqeust.class)) {
-						log.info("webSocketMethods.addMethod: "+m.getName());
-						webSocketMethods.put(m.getName(), m);
-						
-					}
-				}
-			}
-
-			// 현재 클래스는 생성 목록에서 현재 객체로 추가
-			allClasses.remove(this.getClass());
-			protocols.put("", this);
-
-			// 메서드를 실행할 객체를 추가
-			for (Class cls : allClasses) {
-				String className = cls.getName().replace(packageName+".", "");
-				protocols.put(className, cls.newInstance());
-			}
+			initProtocol();
 		}
 
 		// 입력받은 메시지의 type과 일치하는 메서드 명이 있을 경우
 		if (webSocketMethods.containsKey(type)) {
 			// 해당 메서드를 꺼내서
 			Method m = webSocketMethods.get(type);
-
-
+			
 			log.info("msgProType: "+type);
 			// 인증된 사용자가 아닐경우 인증만 가능하게 함
 			boolean isAuthed = (wsplayers.get(sid) != null)?true:false;
 			if (type.equals("auth") || isAuthed) {
-				// 해당 메서드를 수행할 객체를 꺼내옴
-				Object target = protocols.get(protocol);
-				// 해당 메서드를 실행함
-				m.invoke(target, session.getId(), raw.cont+"");
+
+				// 프로토콜이 미지정 되어 있을 경우
+				if (protocol.isEmpty()) {
+					// 모든 프로토콜을 대상으로 함
+					for (String pName : protocols.keySet()) {
+						Object target = protocols.get(pName);
+						Method[] methods = target.getClass().getMethods();
+						List<Method> list = Arrays.asList(methods);
+						
+						// 전체 메서드를 대상으로 존재 여부를 체크해서
+						for (Method checkMethod : list) {
+							if (checkMethod.getName().equals(type)) {
+								// 존재할 경우 해당 메서드를 실행함
+								m.invoke(target, session.getId(), raw.cont+"");
+							}
+						}
+					}
+					
+				// 프로토콜이 지정 되어 있을 경우
+				} else {
+					// 해당 메서드를 수행할 객체를 꺼내옴
+					Object target = protocols.get(protocol);
+
+					// 해당 메서드를 실행함
+					m.invoke(target, session.getId(), raw.cont+"");
+				}
+
+			// 권한없는 요청시 추방
 			} else {
-				// 권한없는 요청시 추방
 				log.info("msgProType: AccessDenied! Session will be close!");
 				session.close();
 			}
 		}
 	}
-
+	
 	@Override @WSReqeust @Transactional
 	public void auth(String sId, String msg) throws Exception {
 		Auth auth = Auth.convert(msg);
@@ -396,17 +431,9 @@ public class StreamServiceImpl implements StreamService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 제거 요망 : 프로토콜 작성 후 해당 서비스로 이관 필요.
 
+/*
+	// 제거 요망 : 프로토콜 작성 후 해당 서비스로 이관 필요.
 	@Autowired private CardService cardServ;
 	
 	private List<Card> deck_lev1 = null;
@@ -417,9 +444,7 @@ public class StreamServiceImpl implements StreamService {
 	@Override @WSReqeust
 	public void cardRequest(String sId, String msg) throws Exception {
 			
-		/*
-		 *  처음 카드를 세팅하는 조건문
-		 */
+		// 처음 카드를 세팅하는 조건문
 		if(msg.equals("init_levN")){			
 			List<Card> initHeroCard = new ArrayList<Card>();
 			deck_levN = cardServ.getLevel_noble(); //히어로카드 덱
@@ -473,6 +498,6 @@ public class StreamServiceImpl implements StreamService {
 		GameLog gameLog = gson.fromJson(msg, GameLog.class);
 		sendR(sId, "cardCountPro", gameLog);		
 	}
-
+*/
 
 }

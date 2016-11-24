@@ -39,8 +39,4 @@ public interface StreamService {
 
 	void logToDB(String sid, String type, Object msg);
 
-	void cardRequest(String sId, String msg)throws Exception;
-	void cardCount(String sId, String msg) throws Exception;
-
-
 }
