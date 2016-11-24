@@ -90,13 +90,13 @@ public class LobbyServiceImpl implements LobbyService {
 			rst = roomMap.getMyRoom(user.getId());
 			
 			
-			createRoom(rst);
+			initRoom(rst);
 		}
 		
 		return rst;
 	}
 
-	private void createRoom(int rid) {
+	private void initRoom(int rid) {
 		GameRoom room = new GameRoom();
 		room.setRoom(rid);
 		
@@ -230,6 +230,7 @@ public class LobbyServiceImpl implements LobbyService {
 
 	@Override @WSReqeust
 	public void left(String sId, String msg) {
+		log.info("나가기테스트");
 		int uid = stream.findUid(sId);
 		int rid = Integer.parseInt(msg);
 		playerMap.setIsIn(uid, rid, 0);

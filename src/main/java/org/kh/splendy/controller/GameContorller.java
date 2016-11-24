@@ -40,7 +40,7 @@ public class GameContorller {
 			session.setAttribute("user", user);
 			int lastRoom = lobbyServ.getLastRoom(user.getId());
 			if (lastRoom > 0) {
-				return "game/game_main";
+				return "game/main";
 			} else {
 				// 게임 중이 아닐경우 로비로 이동
 				return "redirect:/lobby/";

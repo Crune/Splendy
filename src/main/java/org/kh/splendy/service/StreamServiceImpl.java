@@ -166,6 +166,46 @@ public class StreamServiceImpl implements StreamService {
 	private static Map<String, Object> protocols = new HashMap<String, Object>();
 	private static int pBuild = 0;
 	
+	private void initProtocol() {
+		// 프로토콜 패키지 안의 모든 클래스를 대상으로 함
+		String packageName = "org.kh.splendy";
+		Reflections reflections = new Reflections(packageName);
+		Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(WSController.class);
+		allClasses.remove(ProtocolHelper.class);
+		
+		// 현재 클래스도 대상에 포함
+		allClasses.add(this.getClass());
+		
+		// 클래스 목록에서 메서드 추출
+		for (Class cls : allClasses) {
+			log.info("msgPro.webSocketMethods.addClass: "+cls.getName());
+			for (Method m : cls.getMethods()) {
+				// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
+				if (m.isAnnotationPresent(WSReqeust.class)) {
+					log.info("msgPro.webSocketMethods.addMethod: "+m.getName());
+					webSocketMethods.put(m.getName(), m);
+				}
+			}
+		}
+
+		// 현재 클래스는 생성 목록에서 현재 객체로 추가
+		allClasses.remove(this.getClass());
+		protocols.put("", this);
+
+		// 메서드를 실행할 객체를 추가
+		for (Class cls : allClasses) {
+			String className = cls.getSimpleName();
+			Object obj = null;
+			try {
+				obj = cls.newInstance();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			log.info("msgPro.protocols.put: "+className+"/"+obj);
+			protocols.put(className, obj);
+		}
+	}
+	
 	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
 		log.info(cWasId+"/"+session.getId() + " -> " + message.getPayload());
@@ -185,39 +225,7 @@ public class StreamServiceImpl implements StreamService {
 		// 메시지를 처리할 메서드 목록이 비어있을 경우 목록 생성
 		if (webSocketMethods.isEmpty() || pBuild != nowBuild) {
 			pBuild = nowBuild;
-
-			// 프로토콜 패키지 안의 모든 클래스를 대상으로 함
-			String packageName = "org.kh.splendy";
-			Reflections reflections = new Reflections(packageName);
-			Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(WSController.class);
-			allClasses.remove(ProtocolHelper.class);
-			
-			// 현재 클래스도 대상에 포함
-			allClasses.add(this.getClass());
-			
-			// 클래스 목록에서 메서드 추출
-			for (Class cls : allClasses) {
-				log.info("msgPro.webSocketMethods.addClass: "+cls.getName());
-				for (Method m : cls.getMethods()) {
-					// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
-					if (m.isAnnotationPresent(WSReqeust.class)) {
-						log.info("msgPro.webSocketMethods.addMethod: "+m.getName());
-						webSocketMethods.put(m.getName(), m);
-					}
-				}
-			}
-
-			// 현재 클래스는 생성 목록에서 현재 객체로 추가
-			allClasses.remove(this.getClass());
-			protocols.put("", this);
-
-			// 메서드를 실행할 객체를 추가
-			for (Class cls : allClasses) {
-				String className = cls.getSimpleName();
-				Object obj = cls.newInstance();
-				log.info("msgPro.protocols.put: "+className+"/"+obj);
-				protocols.put(className, obj);
-			}
+			initProtocol();
 		}
 
 		// 입력받은 메시지의 type과 일치하는 메서드 명이 있을 경우
@@ -229,18 +237,41 @@ public class StreamServiceImpl implements StreamService {
 			// 인증된 사용자가 아닐경우 인증만 가능하게 함
 			boolean isAuthed = (wsplayers.get(sid) != null)?true:false;
 			if (type.equals("auth") || isAuthed) {
-				// 해당 메서드를 수행할 객체를 꺼내옴
-				Object target = protocols.get(protocol);
-				// 해당 메서드를 실행함
-				m.invoke(target, session.getId(), raw.cont+"");
+
+				// 프로토콜이 미지정 되어 있을 경우
+				if (protocol.isEmpty()) {
+					// 모든 프로토콜을 대상으로 함
+					for (String pName : protocols.keySet()) {
+						Object target = protocols.get(pName);
+						Method[] methods = target.getClass().getMethods();
+						List<Method> list = Arrays.asList(methods);
+						
+						// 전체 메서드를 대상으로 존재 여부를 체크해서
+						for (Method checkMethod : list) {
+							if (checkMethod.getName().equals(type)) {
+								// 존재할 경우 해당 메서드를 실행함
+								m.invoke(target, session.getId(), raw.cont+"");
+							}
+						}
+					}
+					
+				// 프로토콜이 지정 되어 있을 경우
+				} else {
+					// 해당 메서드를 수행할 객체를 꺼내옴
+					Object target = protocols.get(protocol);
+
+					// 해당 메서드를 실행함
+					m.invoke(target, session.getId(), raw.cont+"");
+				}
+
+			// 권한없는 요청시 추방
 			} else {
-				// 권한없는 요청시 추방
 				log.info("msgProType: AccessDenied! Session will be close!");
 				session.close();
 			}
 		}
 	}
-
+	
 	@Override @WSReqeust @Transactional
 	public void auth(String sId, String msg) throws Exception {
 		Auth auth = Auth.convert(msg);
