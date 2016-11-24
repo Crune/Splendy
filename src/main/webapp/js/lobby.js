@@ -30,9 +30,9 @@ $( document ).ready(function() {
 			console.log("initialized.");
 		}
 		if (k[0] == 'auth' && v == 'ok') {
-			wssend('request', 'prevMsg');
-			wssend('request', 'roomList');
-			wssend('request', 'playerList');
+			lSend('request', 'prevMsg');
+			lSend('request', 'roomList');
+			lSend('request', 'playerList');
 		}
 		if (k[0] == 'room') {
 			onRoom(k[1], v);
@@ -89,13 +89,18 @@ var temp_room = Handlebars.compile($("#temp_room").html());
 var temp_player = Handlebars.compile($("#temp_player").html());
 var temp_room_empty = Handlebars.compile($("#temp_room_empty").html());
 
+function lSend(type, msg) {
+	console.log('lSend: '+this.value);
+	chatSock.send( JSON.stringify( new Msg('LobbyP', type, msg)) );
+}
+
 function joinRoom(rid, password) {
 	var room = new Object();
 	room.id = rid;
 	if (password != '') {
 		room.password = password;
 	}
-	wssend('join', room);
+	lSend('join', room);
 }
 function onChatMsg(type, msg) {
 	if (type =='init') {

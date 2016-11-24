@@ -1,10 +1,12 @@
 var chatSock;
+
 function wssend(type, msg) {
 	console.log('wssend: '+this.value);
-	chatSock.send( JSON.stringify( new Msg(type, msg)) );
+	chatSock.send( JSON.stringify( new Msg('', type, msg)) );
 }
 
-function Msg(type, cont) {
+function Msg(protocol, type, cont) {
+	this.protocol = protocol;
 	this.type = type;
 	this.cont = cont;
 }
