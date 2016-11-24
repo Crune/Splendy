@@ -102,9 +102,7 @@ body {
 			<div class="container">
 				<div class="row lobby_profile_innner">
 					<div class="col-md-4 profile_left">
-						<div class="profile_icon">
-							<div class="profile_icon_change"></div>
-						</div>
+						<div class="profile_icon"><img id="userProfIcon" src=""/></div>
 						<div class="profile_info">
 							<div>
 								<span class="lobby_text_nick">${sessionScope.user.nickname}</span>
@@ -286,16 +284,14 @@ body {
         				<td><input name="nickname" type="text" class="form-control" id="nickname" value="${user.nickname}"/></td>
         			</tr>
         			<tr>
-        				<td>아이콘</td>
-        			</tr>
-        			<tr>
-        				<td>
+        				<td colspan="2"><br />아이콘 
+        				<img src="/img/top_icon1.png" id="icon1" class="icon"/>
+        				<img src="/img/top_icon2.png" id="icon2" class="icon"/>
+        				<img src="/img/top_icon3.png" id="icon3" class="icon"/>
+        				<img src="/img/top_icon4.png" id="icon4" class="icon"/>      				
         				</td>
-        				<td><img src="/img/top_icon3.png" id="icon3" class="icon"/>
-        				<img src="/img/top_icon4.png" id="icon4" class="icon"/>
-        				<img src="/img/top_icon.png" id="icon1" class="icon"/>
-        				<img src="/img/top_icon2.png" id="icon2" class="icon"/></td>
         			</tr>
+        			
         		</table>
          	</form>
       </div>

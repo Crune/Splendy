@@ -22,7 +22,7 @@ $( document ).ready(function() {
 
 	// 메시지 이벤트 핸들러 연결
 	chatSock.onmessage = function (evt) {	
-		console.log("read.raw: "+evt.data);
+		//console.log("read.raw: "+evt.data);
 		var data = JSON.parse(evt.data);
 		var k = data.type.split(".");
 		var v = data.cont;
@@ -79,9 +79,7 @@ $( document ).ready(function() {
 	});
 	
 	
-	$("#icon1").click(function (){
-		$(".profile_icon").css("background", "url(/img/top_icon.png)");		
-	});
+	
 });
 
 var temp_chatmsg = Handlebars.compile($("#temp_chatmsg").html());
