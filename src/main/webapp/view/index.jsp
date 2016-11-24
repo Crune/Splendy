@@ -212,7 +212,7 @@ body {
 		var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp",
 				"http://spd.cu.cc/login/naver_loginPro");
 		var state = naver_id_login.getUniqState();
-		naver_id_login.setButton("green", 3, 40);
+		naver_id_login.setButton("green", 1, 40);
 		naver_id_login.setDomain("http://spd.cu.cc/");
 		naver_id_login.setState(state);
 		naver_id_login.setPopup();
