@@ -167,7 +167,7 @@ public class UserServiceImpl implements UserService {
 		mailSender.send(message);
 	}
 	
-	@Override @Transactional
+	@Override @Transactional @Async
 	public void joinUser(UserCore user, String credent_code) throws Exception {
 		userMap.createUser(user);
 		userMap.updateCredent(user.getEmail(), credent_code);

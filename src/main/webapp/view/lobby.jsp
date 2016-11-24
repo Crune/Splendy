@@ -102,9 +102,7 @@ body {
 			<div class="container">
 				<div class="row lobby_profile_innner">
 					<div class="col-md-4 profile_left">
-						<div class="profile_icon">
-							<div class="profile_icon_change"></div>
-						</div>
+						<div class="profile_icon"><img id="userProfIcon" src=""/></div>
 						<div class="profile_info">
 							<div>
 								<span class="lobby_text_nick">${sessionScope.user.nickname}</span>
@@ -125,7 +123,7 @@ body {
 							</div>
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">151:31</div>
+									<div class="lobby_text_value">${sessionScope.profile.totalTime}</div>
 									<div class="lobby_text_biglabel">총 플레이 시간</div>
 									<div class="lobby_text_sublabel">마지막: 0:12:31</div>
 								</div>
@@ -134,14 +132,14 @@ body {
 						<div class="row">
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">5-14-4</div>
+									<div class="lobby_text_value">${sessionScope.profile.win}-${sessionScope.profile.lose}-${sessionScope.profile.draw}</div>
 									<div class="lobby_text_biglabel">전적(승-패-무)</div>
 									<div class="lobby_text_sublabel">마지막: 무승부</span></div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">1524</div>
+									<div class="lobby_text_value">${sessionScope.profile.rate}</div>
 									<div class="lobby_text_biglabel">게임 레이팅</div>
 									<div class="lobby_text_sublabel">최근 증감: +20</div>
 								</div>
@@ -286,16 +284,14 @@ body {
         				<td><input name="nickname" type="text" class="form-control" id="nickname" value="${user.nickname}"/></td>
         			</tr>
         			<tr>
-        				<td>아이콘</td>
-        			</tr>
-        			<tr>
-        				<td>
+        				<td colspan="2"><br />아이콘 
+        				<img src="/img/top_icon1.png" id="icon1" class="icon"/>
+        				<img src="/img/top_icon2.png" id="icon2" class="icon"/>
+        				<img src="/img/top_icon3.png" id="icon3" class="icon"/>
+        				<img src="/img/top_icon4.png" id="icon4" class="icon"/>      				
         				</td>
-        				<td><img src="/img/top_icon3.png" id="icon3" class="icon"/>
-        				<img src="/img/top_icon4.png" id="icon4" class="icon"/>
-        				<img src="/img/top_icon.png" id="icon1" class="icon"/>
-        				<img src="/img/top_icon2.png" id="icon2" class="icon"/></td>
         			</tr>
+        			
         		</table>
          	</form>
       </div>

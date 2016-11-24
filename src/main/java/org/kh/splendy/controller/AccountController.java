@@ -30,7 +30,7 @@ public class AccountController {
 	
 	@Autowired
 	private UserService userServ;
-
+	
 	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
