@@ -61,6 +61,7 @@ public class LobbyController {
 				// 게임 중 재접속시에는 해당 게임방으로 이동. 
 				return "redirect:/game/"+lastRoom;
 			} else {
+				
 				return "lobby";				
 			}
 		}
