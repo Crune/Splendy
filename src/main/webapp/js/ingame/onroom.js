@@ -8,5 +8,9 @@ function onRoom(type, room) {
 		console.log("Room: "+room);
 		setControll(true);
 	} else {
+		if (type=='remove' && room.id == rid) {
+			isPageMove = true;
+			location.replace("/lobby/");
+		}
 	}
 }

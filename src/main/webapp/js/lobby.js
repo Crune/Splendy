@@ -139,10 +139,10 @@ function onPlayer(type, pl) {
 		}
 		if (type=='join') {
 			$(".lobby_players").append(temp_player(pl));
-			onChatMsg(new Chat('시스템', pl.nick+'님이 접속하였습니다.','','sys'));
+			onChatMsg(new Chat('new', '시스템', pl.nick+'님이 접속하였습니다.','','sys'));
 		}
 		if (type=='leave') {
-			onChatMsg(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
+			onChatMsg(new Chat('new', '시스템', pl.nick+'님이 나가셨습니다.','','sys'));
 		}
 		if (type=='enter') {
 			$("#room_"+pl.room+" .row .room_player").append(temp_player(pl));

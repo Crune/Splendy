@@ -20,6 +20,8 @@ $(document).ready(function() {
 	};
 			
 	chatSock.onmessage = function(evt) {
+		console.log("read: "+evt.data);
+		
 		var data = JSON.parse(evt.data);
 		var k = data.type.split(".");
 		var v = data.cont;
