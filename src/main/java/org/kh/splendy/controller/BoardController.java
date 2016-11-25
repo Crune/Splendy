@@ -193,11 +193,14 @@ public class BoardController {
 		/** TODO 찬우.게시판: 게시글 삭제 구현
 		 * - 삭제 후 해당 글이 있던 게시판의 목록화면으로 리다이렉트
 		 */
+		
 		boardServ.deleteBoard(at_id);
 		
 		
 		rttr.addFlashAttribute("bName","1"); // 해당 게시글의 게시판 읽어와서 설정 요망
-		return "redirect:/bbs/list";
+		rttr.addFlashAttribute("pageNum", 1);
+		
+		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}
 	
 }

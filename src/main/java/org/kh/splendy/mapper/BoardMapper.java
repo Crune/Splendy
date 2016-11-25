@@ -3,6 +3,7 @@ package org.kh.splendy.mapper;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
@@ -91,7 +92,8 @@ public interface BoardMapper {
 		public void readCount(int at_id) throws Exception; 
 		
 		public void updateBoard(Article article) throws Exception;
-		
-		public void deleteBoard(int at_id)throws Exception;
+
+		@Delete("DELETE KH_ARTICLE WHERE AT_ID = #{AT_ID, jdbcType=INTEGER}")
+		public void deleteBoard(int at_id) throws Exception;
 			
 }
