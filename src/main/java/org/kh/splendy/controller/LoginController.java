@@ -81,11 +81,40 @@ public class LoginController {
 		return "success";
 	}
 	
+	/** FIXME 민정아 지워라 */
 	@RequestMapping("/login/naver_loginPro")
 	public String naverLoginPro(HttpServletRequest request){
 		
 		return "user/naver_loginPro";
 	}
 
+	@RequestMapping(
+			value = "/user/facebook",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody String helloFacebook(@RequestParam("email") String email, @RequestParam("nickname") String nickname,
+													HttpSession session) throws Exception {
+		String text = "/";
+		System.out.println("Name : "+ nickname);
+		
+		UserCore user = new UserCore();
+		user.setEmail("F"+email);
+		user.setNickname(nickname);
+		user.setPassword(RandomStringUtils.randomAlphanumeric(9));
+		try {
+			UserCore searchUser = userServ.checkEmail(user.getEmail());
+			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
+				userServ.createUser(user);
+			}
+			user = userServ.checkEmail(user.getEmail());
+			user.openInfo();
+			session.setAttribute("user", user);
+			text = "lobby/";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return text;
+	}
 
 }
