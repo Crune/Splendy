@@ -45,17 +45,5 @@ spring:
             max-request-size: 10Mb
             resolve-lazily: false
             
----
-
-spring:
-    profiles: product
-    
-#Spring Boot App 시작 포트 설정
-server.port: 80
----
-
-spring:
-    profiles: development
-    
 #Spring Boot App 시작 포트 설정
 server.port: 80
