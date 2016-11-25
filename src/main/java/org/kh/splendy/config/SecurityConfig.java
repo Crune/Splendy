@@ -7,17 +7,23 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
+/**
+ * 
+ * @author 진규
+ *
+ * Spring Security 필터 & 설정
+ * 
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	@Autowired
-	public SecurityService secuServ;
-	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+		/**
+		 * permitAll() -> 모두 접근 가능
+		 * hasAuthority("admin") -> 해당 권한이 있는 유저만 접근 가능
+		 */
 		http
 			.csrf().disable()
 			.authorizeRequests()
@@ -36,4 +42,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.logout().logoutSuccessUrl("/")
 		;
 	}
+
 }

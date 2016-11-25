@@ -42,6 +42,7 @@
 					<li><a href="/admin/servList">서비스</a></li>
 					<li><a href="/admin/adminList">관리자</a></li>
 					<li><a href="/admin/userList">유저</a></li>
+					<li><a href="/">게임으로</a></li>
 					<li><a href="/logout">로그아웃</a></li>
 				</ul>
 			</div>

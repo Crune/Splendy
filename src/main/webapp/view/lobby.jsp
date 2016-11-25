@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html style="height: 100%">
 <head>
@@ -88,6 +89,9 @@ body {
 				<div class="row">
 					<div class="lobby_top align_left"" id="logo"><img src="/img/logo.png"></div>
 					<div class="lobby_top align_right">
+						<sec:authorize access="hasAuthority('admin')">
+							<button type="button" onclick="window.location='/admin/index'" class="btn btn-default btn-xs">관리자</button>
+						</sec:authorize>
 						<button type="button" class="btn btn-default btn-xs">공지사항</button>
 						<button type="button" class="btn btn-default btn-xs">자유게시판</button>
 						<button type="button" class="btn btn-default btn-xs" id="btn_modify">정보수정</button>
