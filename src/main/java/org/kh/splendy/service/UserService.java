@@ -12,7 +12,7 @@ public interface UserService {
 		
 	int checkPassword(String email, String password) throws Exception;
 	
-	int checkCredent(String email, String password) throws Exception;
+	int isNoneCredent(String email, String password) throws Exception;
 	
 	List<UserCore> searchEmail(String email) throws Exception;
 	

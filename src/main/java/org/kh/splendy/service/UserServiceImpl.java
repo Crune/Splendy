@@ -100,9 +100,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int checkCredent(String email, String password) throws Exception {
-		String encryptPw = SplendyAdvice.getEncSHA256(password);
-		int check = userMap.checkCredent(email, encryptPw);
+	public int isNoneCredent(String email, String password) throws Exception {
+		//String encryptPw = SplendyAdvice.getEncSHA256(password);
+		int check = userMap.checkCredent(email, password);
 		return check;
 	}
 

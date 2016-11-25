@@ -1,4 +1,4 @@
-package org.kh.splendy.paint;
+package org.kh.splendy;
 
 import java.util.ArrayList;
 import java.util.HashSet;

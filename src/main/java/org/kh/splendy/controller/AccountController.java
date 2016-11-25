@@ -120,61 +120,48 @@ public class AccountController {
 		return result_pw;
 	}
 	
-	@RequestMapping(
-			value = "/user/login_suc",
-			method = {RequestMethod.GET, RequestMethod.POST},
-			produces = "application/json")
-	public @ResponseBody String login_suc(
-				Authentication authentication,
-				@ModelAttribute("loginForm") UserCore user0,
-				HttpServletRequest request,HttpSession session) {
-		CustomUserDetails cud = (CustomUserDetails)authentication.getPrincipal();
-		int result = -1;
-		
-		int login_result = -1;
-		int credent = -1;
+	@RequestMapping( value = "/user/login_suc", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
+	public @ResponseBody String login_suc( Authentication authentication, @ModelAttribute("loginForm") UserCore user0, HttpSession session) {
+				
+		int isSameAccountInfo = -1;
+		int isAlreadyCredent = -1;
 		
 		UserCore user = null;
-		String email = cud.getUsername();
-		String password = cud.getPassword();
 		
-		String text = null;
+		String result = null;
+		String email = null;
+		String password = null;
 
-		System.out.println("email : " + email);
-		System.out.println("password : " + password);
-		
+
+		CustomUserDetails cud = (CustomUserDetails)authentication.getPrincipal();
 		try {
-			login_result = userServ.checkPassword(email, password);
-			credent = userServ.checkCredent(email, password);
+			if (cud != null) {
+				email = cud.getUsername();
+				password = cud.getPassword();
+			} else {
+				email = user0.getEmail();
+				password = user0.getPassword();
+			}
+			isSameAccountInfo = userServ.checkPassword(email, password);
+			isAlreadyCredent = userServ.isNoneCredent(email, password);
 
-			int login_result_org = userServ.checkPassword(user0.getEmail(), user0.getPassword());
-			int credent_org = userServ.checkCredent(user0.getEmail(), user0.getPassword());
+			user = userServ.checkEmail(email);
+			user.openInfo();
 		
-			if(login_result == 1 && credent == 0){
-			
-				user = userServ.checkEmail(email);
-				user.openInfo();
+			if (isSameAccountInfo == 1 && isAlreadyCredent == 0) {
 				session.setAttribute("user", user);
-				text = "true";
-
-			} else if(login_result_org == 1 && credent_org == 0) {
-
-				user = userServ.checkEmail(user0.getEmail());
-				user.openInfo();
-				session.setAttribute("user", user);
-				text = "true";
+				result = "true";
+			} else if (isSameAccountInfo == 1 && isAlreadyCredent == 1) {
+				result = "credentFalse";
 				
-			} else if ((login_result == 1 && credent == 1) || (login_result_org == 1 && credent_org == 1)) {
-				text = "credentFalse";
-				
-			} else if (login_result == 0 ||login_result_org == 0) {
-				text = "loginFalse";
+			} else if (isSameAccountInfo == 0) {
+				result = "loginFalse";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return text;
+		return result;
 	}
 	
 	@RequestMapping("/user/logout")

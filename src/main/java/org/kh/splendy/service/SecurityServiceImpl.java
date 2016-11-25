@@ -31,6 +31,7 @@ public class SecurityServiceImpl implements SecurityService {
 			cus.setUsername(email);
 			cus.setPassword(userMap.selectPW(email));
 			cus.setAuthorities(getAuthorities(email));
+			// TODO: 진규.시큐리티: 알아서해
 		return cus;
 	}
 	
