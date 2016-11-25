@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.UserInner;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /** 내부 사용 용도의 개인 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.20) */
@@ -109,4 +110,7 @@ public interface UserInnerMapper {
 	@ResultMap("userInnerResult")
 	@Select("select * from "+TABLE+" order by U_ID asc")
 	public List<UserInner> readAdmin();
+	
+	@Select("select U_ROLE from "+TABLE+" where "+KEY+"=#{id}")
+	public List<String> readAuthority(int id);
 }

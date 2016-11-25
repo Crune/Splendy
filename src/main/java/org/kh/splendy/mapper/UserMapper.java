@@ -1,6 +1,5 @@
 package org.kh.splendy.mapper;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -11,8 +10,6 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.kh.splendy.vo.Player;
-import org.kh.splendy.vo.Room;
 import org.kh.splendy.vo.UserCore;
 
 public interface UserMapper {
@@ -113,7 +110,7 @@ public interface UserMapper {
 	
 	@ResultMap("userResult")
 	@Select("select * from KH_USER where U_EMAIL=#{email}")
-	public UserCore selectOne(@Param("email") String email) throws Exception;
+	public UserCore selectOne(@Param("email") String email);
 	
 	@ResultMap("userResult")
 	@Update("update KH_USER set U_NICK=#{nickname}, U_ENABLED=#{enabled}"
@@ -124,4 +121,7 @@ public interface UserMapper {
 	@Update("update KH_USER set U_NICK=#{nickname}, U_PW=#{password}, U_ENABLED=#{enabled}"
 			+ ", U_N_LOCKED=#{notLocked}, U_N_EXPIRED=#{notExpired}, U_N_CREDENT=#{notCredential} where "+KEY+"=#{id}")
 	public void adminPM(UserCore user) throws Exception;
+	
+	@Select("select U_PW from KH_USER where U_EMAIL=#{email}")
+	public String selectPW(String email);
 }

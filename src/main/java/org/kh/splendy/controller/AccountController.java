@@ -7,10 +7,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.service.UserService;
+import org.kh.splendy.vo.CustomUserDetails;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -113,45 +115,55 @@ public class AccountController {
 			value = "/user/login_suc",
 			method = {RequestMethod.GET, RequestMethod.POST},
 			produces = "application/json")
-	public @ResponseBody String login_suc(@ModelAttribute("loginForm") UserCore user0,
-							HttpServletRequest request,
-							HttpSession session) {
+	public @ResponseBody String login_suc(
+				Authentication authentication,
+				@ModelAttribute("loginForm") UserCore user0,
+				HttpServletRequest request,HttpSession session) {
+		CustomUserDetails cud = (CustomUserDetails)authentication.getPrincipal();
 		int result = -1;
+		
 		int login_result = -1;
 		int credent = -1;
-		UserCore user = null;
-		String text = null;
 		
-		System.out.println("email : " + user0.getEmail());
-		System.out.println("password : " + user0.getPassword());
+		UserCore user = null;
+		String email = cud.getUsername();
+		String password = cud.getPassword();
+		
+		String text = null;
+
+		System.out.println("email : " + email);
+		System.out.println("password : " + password);
 		
 		try {
-			login_result = userServ.checkPassword(user0.getEmail(), user0.getPassword());
-			credent = userServ.checkCredent(user0.getEmail(), user0.getPassword());
+			login_result = userServ.checkPassword(email, password);
+			credent = userServ.checkCredent(email, password);
+
+			int login_result_org = userServ.checkPassword(user0.getEmail(), user0.getPassword());
+			int credent_org = userServ.checkCredent(user0.getEmail(), user0.getPassword());
 		
 			if(login_result == 1 && credent == 0){
 			
-					user = userServ.checkEmail(user0.getEmail());
-					session.setAttribute("user", user);
-					session.setAttribute("email", user.getEmail());
-					session.setAttribute("user_id", user.getId());
-					user.openInfo();
-					text = "true";
-					
-			} else if(login_result == 1 && credent == 1) {
+				user = userServ.checkEmail(email);
+				user.openInfo();
+				session.setAttribute("user", user);
+				text = "true";
+
+			} else if(login_result_org == 1 && credent_org == 0) {
+
+				user = userServ.checkEmail(user0.getEmail());
+				user.openInfo();
+				session.setAttribute("user", user);
+				text = "true";
+				
+			} else if ((login_result == 1 && credent == 1) || (login_result_org == 1 && credent_org == 1)) {
 				text = "credentFalse";
 				
-			} else if(login_result == 0) {
+			} else if (login_result == 0 ||login_result_org == 0) {
 				text = "loginFalse";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		/*request.setAttribute("credent", credent);
-		request.setAttribute("login_result", login_result);
-		request.setAttribute("user", user);
-		request.setAttribute("result", result);*/
 		
 		return text;
 	}
