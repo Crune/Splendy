@@ -10,6 +10,7 @@ $(document).ready(function() {
 	var temp = (window.location.href).split('/');
 	rid = temp[temp.lenght-1];
 	
+	// 입력 받지 않음
 	setControll(false);
 	
 	// 인증 시도
@@ -27,8 +28,15 @@ $(document).ready(function() {
 		var v = data.cont;
 		
 		if (k[0] == 'auth' && v == 'ok') {
-			wssend('reqRoom', rid);
+			// 접속시 카드들의 기본정보를 받아옴.
+			wssend('reqCards', rid);
+			// 그 이후 방 기본 정보를 받아옴.
 		}
+		if (k[0] == 'left') {
+			isPageMove = true;
+			location.replace("/lobby/");
+		}
+		
 		if (k[0] == 'room') {
 			onRoom(k[1], v);
 		}
@@ -36,16 +44,15 @@ $(document).ready(function() {
 			onPlayer(k[1], v);
 		}
 		if (k[0] == 'chat') {
-			onChatMsg(k[1], v);
+			onChat(k[1], v);
 		}
-		if (k[0] == 'left') {
-			isPageMove = true;
-			location.replace("/lobby/");
+		if (k[0] == 'comp') {
+			onComp(k[1], v);
 		}
 	};
 
 	chatSock.onclose = function() {
-		if (isPageMove == false) {
+		if (isPageMove) {
 			alert("연결끊김!");
 		}
 	};

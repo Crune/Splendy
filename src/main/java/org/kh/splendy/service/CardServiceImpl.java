@@ -35,7 +35,6 @@ public class CardServiceImpl implements CardService {
 
 	@Override
 	public List<Card> getLevel_2() throws Exception {
-		// TODO Auto-generated method stub
 		level_2 = cardMap.selectLevel_2();
 		level_2 = parseCard(level_2);
 		level_2 = suffleDeck(level_2);

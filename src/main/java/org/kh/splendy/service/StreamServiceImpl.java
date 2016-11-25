@@ -17,6 +17,7 @@ import org.kh.splendy.assist.SplendyProtocol;
 import org.kh.splendy.assist.WSController;
 import org.kh.splendy.assist.WSReqeust;
 import org.kh.splendy.mapper.*;
+import org.kh.splendy.protocol.InGame;
 import org.kh.splendy.vo.*;
 import org.reflections.*;
 import org.slf4j.Logger;
@@ -60,6 +61,8 @@ public class StreamServiceImpl implements StreamService {
 	@Autowired private MsgMapper msgMap;
 	
 	@Autowired private UserInnerMapper innerMap;
+	
+	private InGame inGame;
 	
 	@Override
 	public void connectPro(WebSocketSession session) {
@@ -120,6 +123,9 @@ public class StreamServiceImpl implements StreamService {
 						inner.setWsSession(null);
 						innerMap.update(inner);
 						sendWithoutSender(sid, "player.leave", curPl);
+						if (curPl.getRoom() > 0) {
+							inGame.notiOut(curPl);
+						}
 					}
 				}
 				
@@ -207,6 +213,9 @@ public class StreamServiceImpl implements StreamService {
 			Object pTarget = beans.get(bName);
 			tByP.put(bName, pTarget);
 			
+			if (bName.equals("inGame")) {
+				inGame = (InGame) pTarget;
+			}
 			// 프로토콜의 메서드를 수행할 대상 설정 부분 
 			
 			// 대상의 모든 메서드를 검사
@@ -299,7 +308,14 @@ public class StreamServiceImpl implements StreamService {
 					
 					// 사용자의 접속지가 로비인지 게임방인지 구분
 					String joinType = "player";
-					joinType += ((me.getRoom() > 0)?".enter":".join");
+					if (me.getRoom() > 0) {
+						joinType += ".enter";
+						
+						// 누군가 인증했음을 알림
+						inGame.notiAuth(me);
+					} else {
+						joinType += ".join";
+					}
 
 					// 입장 알림
 					sendWithoutSender(sId, joinType, me);
@@ -418,15 +434,6 @@ public class StreamServiceImpl implements StreamService {
 	public void sendAll(String type, Object cont){
 		sendWithoutSender("", type, cont);
 	}
-	
-	@Override
-	public void sendR(String sId, String type, Object cont) {
-		send(sId, type, cont);
-	}
-	
-	
-	
-	
 	
 
 /*

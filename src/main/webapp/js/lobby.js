@@ -214,7 +214,7 @@ function roomMouseEvt() {
 		} else if ($('#ispw_'+rid)) {
 			$('#ispw_'+rid).show();
 		} else {
-			joinRoom(rid, null);
+			joinRoom(rid, '');
 		}
 		
 	});

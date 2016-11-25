@@ -120,4 +120,10 @@ public class CompServiceImpl implements CompService {
 		Room room = roomMap.read(rid);
 		int plLimits = room.getPlayerLimits();
 	}
+
+	@Override
+	public List<Card> getCards() {
+		init();
+		return cardAll;
+	}
 }

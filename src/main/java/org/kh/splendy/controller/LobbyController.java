@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @SessionAttributes("rooms")
 @RequestMapping("lobby")
-/** TODO 윤.로비: 게임 로비 컨트롤러 구현
+/** 윤.로비: 게임 로비 컨트롤러 구현
  * 게임 참여 및 타 메뉴로 이동할 수 있는 로비 구현
  * @author 최윤 **/
 public class LobbyController {

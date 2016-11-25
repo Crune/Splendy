@@ -17,6 +17,12 @@
 	<style type="text/css">
 		body { _behavior: url(/js/iepngfix.htc) }
 	</style>
+	<script>
+		function closeIt() {
+			return "페이지를 벗어날 경우 탈주 처리됩니다.";
+		}
+		window.onbeforeunload = closeIt;
+	</script>
 </head>
 
 <body>
@@ -210,6 +216,9 @@
 	<script type="text/javascript" src="/js/default.js"></script>
 	<script type="text/javascript" src="/js/commonWS.js"></script>
 	<script type='text/javascript' src="/js/ingame/starter.js"></script>
-	<script type='text/javascript' src="/js/ingame/initroom.js"></script>
+	<script type='text/javascript' src="/js/ingame/onchat.js"></script>
+	<script type='text/javascript' src="/js/ingame/oncomp.js"></script>
+	<script type='text/javascript' src="/js/ingame/onplayer.js"></script>
+	<script type='text/javascript' src="/js/ingame/onroom.js"></script>
 </scripts>
 </html>

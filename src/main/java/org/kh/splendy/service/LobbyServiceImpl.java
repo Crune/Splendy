@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.assertj.core.util.Strings;
 import org.kh.splendy.assist.WSReqeust;
 import org.kh.splendy.mapper.*;
-import org.kh.splendy.protocol.InGame;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 
-@Service("LobbyService")
+@Service
 @EnableTransactionManagement
 public class LobbyServiceImpl implements LobbyService {
 
@@ -31,9 +29,8 @@ public class LobbyServiceImpl implements LobbyService {
 	@Autowired private MsgMapper msgMap;
 	
 	@Autowired private StreamService stream;
-	@Autowired private InGame ingame;
-	
 	@Autowired private CompService compServ;
+	//@Autowired private InGame ingame;
 
 	private static final Logger log = LoggerFactory.getLogger(LobbyServiceImpl.class);
 
@@ -94,8 +91,6 @@ public class LobbyServiceImpl implements LobbyService {
 			rst = roomMap.getMyRoom(user.getId());
 			
 			stream.sendAll("room.add", roomMap.read(rst));
-			
-			ingame.initRoom(rst);
 		}
 		
 		return rst;

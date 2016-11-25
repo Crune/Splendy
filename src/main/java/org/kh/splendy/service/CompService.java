@@ -12,5 +12,6 @@ public interface CompService {
 	
 	Card getCard(int cid);
 	Coin getCoin(int cid);
+	List<Card> getCards();
 
 }
