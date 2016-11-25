@@ -96,11 +96,12 @@ public class LoginController {
 													HttpSession session) throws Exception {
 		String text = "/";
 		System.out.println("Name : "+ nickname);
+		String password = RandomStringUtils.randomAlphanumeric(9); 
 		
 		UserCore user = new UserCore();
 		user.setEmail("F"+email);
 		user.setNickname(nickname);
-		user.setPassword(RandomStringUtils.randomAlphanumeric(9));
+		user.setPassword(password);
 		try {
 			UserCore searchUser = userServ.checkEmail(user.getEmail());
 			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
@@ -113,7 +114,6 @@ public class LoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return text;
 	}
 

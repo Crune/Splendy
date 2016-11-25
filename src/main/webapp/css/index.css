@@ -43,3 +43,25 @@
 .index-bottom {
 	text-align: center;
 }
+
+#btn_facebook {
+	cursor:pointer;
+	width: 65px;
+	height:65px;
+	float:left;
+	margin-top: 20px;
+	margin-right: 40px;
+}
+
+#btn_google {
+	cursor:pointer;
+	width: 65px;
+	height:65px;
+	margin-top: 20px;
+	margin-right: 40px;
+	float:left;
+}
+
+#naver_id_login {
+	margin-top: 20px;
+}

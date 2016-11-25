@@ -40,17 +40,17 @@ public class AccountController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(HttpSession session) {
-		if ((UserCore) session.getAttribute("user") != null) {
+		/*if ((UserCore) session.getAttribute("user") != null) {
 			return "redirect:/lobby/";
-		} else {
+		} else*/ {
 			return "index";
 		}
 	}
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String indexWithMsg(@RequestParam("msg") String msg, Model model, HttpSession session) {
-		if ((UserCore) session.getAttribute("user") != null) {
+		/*if ((UserCore) session.getAttribute("user") != null) {
 			return "redirect:/lobby/";
-		} else {
+		} else*/ {
 			if(msg == null){
 				msg = "";
 			}
