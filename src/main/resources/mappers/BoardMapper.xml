@@ -64,10 +64,19 @@
     <![CDATA[
         UPDATE KH_ARTICLE 
         SET
-            AT_SUBJECT = #{at_subject},
+            AT_SUBJECT = #{at_subject},            
             AT_CONTENT = #{at_content}
         WHERE
-            AT_ID = #{AT_ID}    
+            AT_ID = #{at_id}    
     ]]>
 	</update>
+	
+	<delete id="deleteBoard" parameterType="org.kh.splendy.vo.Article">
+    <![CDATA[
+        DELETE FROM KH_ARTICLE
+		 WHERE 
+		AT_ID = #{at_id}
+    ]]>
+	</delete>
+	
 </mapper>

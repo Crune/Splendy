@@ -62,7 +62,7 @@ body {
 <script id="temp_player" type="text/x-handlebars-template">
 	<div class="player {{ role }}" id="user_{{ uid }}" name="user_{{ uid }}" style="padding-bottom: 10px">
 		<div class="room_icon">
-			<img src="/img/{{ icon }}" width="50px" height="50px" />
+			<img src="{{ icon }}" width="50px" height="50px" />
 		</div>
 		<div class="room_nickname">{{ nick }}</div>
 		<div class="room_rate">{{ rating }}</div>
@@ -117,14 +117,14 @@ body {
 						<div class="row">
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">74</div>
+									<div class="lobby_text_value">${sessionScope.profile.win+sessionScope.profile.lose+sessionScope.profile.draw}</div>
 									<div class="lobby_text_biglabel">참가 게임수</div>
-									<div class="lobby_text_sublabel">일별 게임 수: 3 <span class="lobby_text_subsublabel">/5 (일일미션)</span></div>
+									<div class="lobby_text_sublabel">일별 게임 수: 0 <span class="lobby_text_subsublabel">/5 (일일미션)</span></div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">151:31</div>
+									<div class="lobby_text_value">${sessionScope.profile.totalTime}</div>
 									<div class="lobby_text_biglabel">총 플레이 시간</div>
 									<div class="lobby_text_sublabel">마지막: 0:12:31</div>
 								</div>
@@ -133,16 +133,16 @@ body {
 						<div class="row">
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">5-14-4</div>
+									<div class="lobby_text_value">${sessionScope.profile.win}-${sessionScope.profile.lose}-${sessionScope.profile.draw}</div>
 									<div class="lobby_text_biglabel">전적(승-패-무)</div>
 									<div class="lobby_text_sublabel">마지막: 무승부</span></div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">1524</div>
+									<div class="lobby_text_value">${sessionScope.profile.rate}</div>
 									<div class="lobby_text_biglabel">게임 레이팅</div>
-									<div class="lobby_text_sublabel">최근 증감: +20</div>
+									<div class="lobby_text_sublabel">최근 증감: +0</div>
 								</div>
 							</div>
 						</div>
@@ -185,7 +185,7 @@ body {
 							<button id="btn_create_cancel" type="button" class="btn btn-default">취소</button>
 						</form>
 					</div>
-					<div id="roomlist" name="roomlist" style="height: calc(100% - 99px); overflow: auto">
+					<div id="roomlist" name="roomlist">
 						<div class="lobby_room" id="room_1">
 							<div class="room_detail col-md-5">
 								<div class="room_name">아무나 들어오세요</div>

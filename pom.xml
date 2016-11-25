@@ -93,7 +93,7 @@
 		 
 		<!-- } org.springframework 관련은 전부 여기 위에 -->
 
-		<!-- Spring Login 관련
+		<!-- Spring Login 관련 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId> 
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -102,7 +102,7 @@
 			<groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId> 
 		</dependency>
-		-->
+		
 		
 		<!-- OJDBC & MyBatis -->
 		<dependency>

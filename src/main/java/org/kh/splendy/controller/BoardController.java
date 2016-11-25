@@ -173,30 +173,30 @@ public class BoardController {
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
-	public String writePro(@ModelAttribute("BoardVO") Article article, @RequestParam String bName,
-							@RequestParam int at_id,RedirectAttributes rttr)throws Exception{
-		
-		
-		if(at_id == 0){
-			boardServ.writePro(article);
-		}else{			
-			boardServ.updateBoard(at_id);
+	public String writePro(@ModelAttribute("article") Article article, @RequestParam String bName,
+						   RedirectAttributes rttr)throws Exception{
+				
+		if(article.getAt_id() == 0){
+			boardServ.writePro(article);						
+		}else{									
+			boardServ.updateBoard(article);
 		}
-
 		
-		
-		return "redirect:/bbs/list";
+		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}
 
-	@RequestMapping(value = "/bbs/deletePro", method = RequestMethod.GET)
+	@RequestMapping(value = "/bbs/deletePro", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 삭제
 	 * @param bName 게시판이름
 	 * @return 글삭제 확인 화면 */
-	public String delete(@RequestParam int aId, RedirectAttributes rttr) {
+	public String delete(@RequestParam int at_id, RedirectAttributes rttr) throws Exception {
 		/** TODO 찬우.게시판: 게시글 삭제 구현
 		 * - 삭제 후 해당 글이 있던 게시판의 목록화면으로 리다이렉트
 		 */
-		rttr.addFlashAttribute("bName","???"); // 해당 게시글의 게시판 읽어와서 설정 요망
+		boardServ.deleteBoard(at_id);
+		
+		
+		rttr.addFlashAttribute("bName","1"); // 해당 게시글의 게시판 읽어와서 설정 요망
 		return "redirect:/bbs/list";
 	}
 	

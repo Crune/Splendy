@@ -1,5 +1,6 @@
 package org.kh.splendy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -28,8 +29,8 @@ public class LobbyServiceImpl implements LobbyService {
 	@Autowired private MsgMapper msgMap;
 	
 	@Autowired private StreamService stream;
-	
 	@Autowired private CompService compServ;
+	//@Autowired private InGame ingame;
 
 	private static final Logger log = LoggerFactory.getLogger(LobbyServiceImpl.class);
 
@@ -89,26 +90,10 @@ public class LobbyServiceImpl implements LobbyService {
 			roomMap.create(reqRoom);
 			rst = roomMap.getMyRoom(user.getId());
 			
-			
-			createRoom(rst);
+			stream.sendAll("room.add", roomMap.read(rst));
 		}
 		
 		return rst;
-	}
-
-	private void createRoom(int rid) {
-		GameRoom room = new GameRoom();
-		room.setRoom(rid);
-		
-		room.getCards().addAll(compServ.getNewDeck(rid));
-		room.getCoins().addAll(compServ.getNewCoins(rid, 0));
-		
-		room.setCurrentPl(0);
-		room.setTurn(0);
-		
-		compServ.initCompDB(rid);
-		
-		stream.getRooms().put(room.getRoom(), room);
 	}
 
 	@Override
@@ -125,41 +110,40 @@ public class LobbyServiceImpl implements LobbyService {
 
 	@Override @WSReqeust
 	public void request(String sId, String msg) {
+		log.info("LobbyServiceImpl.request");
 		WSPlayer reqUser = stream.getWsplayers().get(sId);
 		if (msg.equals("roomList")) {
 			List<Room> rooms = roomMap.getCurrentRooms();
 			stream.send(sId, "room.init", "{}");
 			if (!rooms.isEmpty()) 
 			for (Room cur : rooms) {
-				if (cur.getId() != 0) {
-					if (cur.getPassword() != null) {
-						if (!cur.getPassword().isEmpty()) {
-							cur.setPassword("true");
-						}
+				if (cur.getId() != 0 && cur.getPassword() != null) {
+					if (!cur.getPassword().isEmpty()) {
+						cur.setPassword("true");
 					}
-					stream.send(sId, "room.add", cur);
 				}
 			}
+			stream.send(sId, "room.prev", rooms);
 		}
 		if (msg.equals("playerList")) {
 			stream.send(sId, "player.init", "{}");
+			stream.refreshConnector();
+			List<WSPlayer> pls = new ArrayList<WSPlayer>();
 			for (String cur : stream.getWsplayers().keySet()) {
 				if (stream.getSessions().containsKey(cur)) {
 					WSPlayer curPl = stream.getWsplayers().get(cur);
 					if (curPl != null) {
-						if (curPl.getRoom() == 0) {
-							stream.send(sId, "player.add", curPl);
-						} else {
-							stream.send(sId, "player.enter", curPl);
-						}
+						pls.add(curPl);
 					}
 				}
 			}
+			stream.send(sId, "player.prev", pls);
 		}
 		if (msg.equals("prevMsg")) {
 			
 			int rid = reqUser.getRoom();
 			List<Msg> msgs = msgMap.readPrevChat(rid, 31);
+			List<WSChat> chats = new ArrayList<WSChat>();
 			stream.send(sId, "chat.init", "{}");
 			for (Msg cur : msgs) {
 				WSChat curMsg = WSChat.convert(cur.getCont());
@@ -168,8 +152,10 @@ public class LobbyServiceImpl implements LobbyService {
 				} else {
 					curMsg.setType("o");
 				}
-				stream.send(sId, "chat.new", curMsg);
+				chats.add(curMsg);
 			}
+			stream.send(sId, "chat.prev", chats);
+			log.info("msgs:"+msgs.toString());
 		}
 	}
 
@@ -209,7 +195,7 @@ public class LobbyServiceImpl implements LobbyService {
 				player.setIp(ip);
 				playerMap.create(player);
 			} else {
-				player = playerMap.read(uid);
+				player = playerMap.read(uid, rid);
 				player.setIp(ip);
 				player.setIsIn(1);
 				playerMap.update(player);
@@ -228,15 +214,36 @@ public class LobbyServiceImpl implements LobbyService {
 	}
 
 	@Override @WSReqeust
-	public void left(String sId, String msg) {
-		int uid = stream.findUid(sId);
-		int rid = Integer.parseInt(msg);
-		playerMap.setIsIn(uid, rid, 0);
-		profMap.setLastRoom(uid, 0);
-		try {
-			stream.send(sId, "left", "");
-		} catch (Exception e) {
-			e.printStackTrace();
+	/** uid 사용시 sid는 미기입 필요 */
+	public void left(String sId, String uId) {
+		log.info("나가기테스트");
+		int uid = -1;
+		int rid = -1;
+		
+		if (!(sId == null || sId.length() == 0)) {
+			uid = stream.findUid(sId);
+			rid = stream.getWsplayers().get(sId).getRoom();
+		} else if (!(uId == null || uId.length() == 0)) {
+			try {
+				uid = Integer.parseInt(uId);
+				rid = profMap.getLastRoom(uid);
+			} finally { }
+		}
+		if (uid>0 && rid>0) {
+			playerMap.setIsIn(uid, rid, 0);
+			profMap.setLastRoom(uid, 0);
+			
+			List<Integer> notEmpty = roomMap.getNotEmptyRoom();
+			if (!notEmpty.contains(rid)) {
+				roomMap.close(rid);
+				Room tempRoom = new Room();
+				tempRoom.setId(rid);
+				stream.sendAll("room.remove", tempRoom);
+			}
+			
+			try {
+				stream.send(sId, "left", "");
+			} finally { }
 		}
 	}
 }

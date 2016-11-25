@@ -11,5 +11,6 @@ public interface UserProfileService {
 
 	void updateIcon(String icon, HttpSession session);
 	String getIcon(HttpSession session);
+	void refreshUserProf(HttpSession session);
 	
 }

@@ -1,31 +1,39 @@
 package org.kh.splendy.service;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import javax.servlet.ServletContext;
+
+import org.apache.tomcat.jni.Global;
+import org.kh.splendy.SplendyApplication;
 import org.kh.splendy.aop.SplendyAdvice;
+import org.kh.splendy.assist.ProtocolHelper;
+import org.kh.splendy.assist.SplendyProtocol;
+import org.kh.splendy.assist.WSController;
 import org.kh.splendy.assist.WSReqeust;
 import org.kh.splendy.mapper.*;
+import org.kh.splendy.protocol.InGame;
 import org.kh.splendy.vo.*;
-import org.reflections.Reflections;
+import org.reflections.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.google.gson.*;
-
-import lombok.*;
 
 @Service
 @EnableTransactionManagement
@@ -35,12 +43,12 @@ public class StreamServiceImpl implements StreamService {
 
 	private Logger log = LoggerFactory.getLogger(StreamServiceImpl.class);
 	
-	private static Map<Integer, GameRoom> rooms = new HashMap<Integer, GameRoom>();
+	//private static Map<Integer, GameRoom> rooms = new HashMap<Integer, GameRoom>();
 	private static Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
 	private static Map<String, WSPlayer> wsplayers = new HashMap<String, WSPlayer>();
 	
 	@Override public String getCwasid() { return cWasId; }
-	@Override public Map<Integer, GameRoom> getRooms() { return rooms; }
+	//@Override public Map<Integer, GameRoom> getRooms() { return rooms; }
 	@Override public Map<String, WebSocketSession> getSessions() { return sessions; }
 	@Override public Map<String, WSPlayer> getWsplayers() { return wsplayers; }
 	
@@ -53,6 +61,8 @@ public class StreamServiceImpl implements StreamService {
 	@Autowired private MsgMapper msgMap;
 	
 	@Autowired private UserInnerMapper innerMap;
+	
+	private InGame inGame;
 	
 	@Override
 	public void connectPro(WebSocketSession session) {
@@ -113,6 +123,9 @@ public class StreamServiceImpl implements StreamService {
 						inner.setWsSession(null);
 						innerMap.update(inner);
 						sendWithoutSender(sid, "player.leave", curPl);
+						if (curPl.getRoom() > 0) {
+							inGame.notiOut(curPl);
+						}
 					}
 				}
 				
@@ -148,7 +161,12 @@ public class StreamServiceImpl implements StreamService {
 		// 서버 비정상 종료로 잔여할 경우 DB수정
 		for (String cur : innerMap.getConnector()) {
 			if (!wsplayers.containsKey(cur)) {
-				innerMap.setConnectBySid(cur, 0);
+				UserInner targetWAS = innerMap.readByWSId(cur);
+				boolean isCurWas = false;
+				if (targetWAS != null) targetWAS.getWas().equals(cWasId);
+				if (isCurWas) {
+					innerMap.setConnectBySid(cur, 0);
+				}
 			}
 		}
 	}
@@ -158,8 +176,65 @@ public class StreamServiceImpl implements StreamService {
 		kick(session.getId());
 	}
 
-	private static Map<String, Method> webSocketMethods = new HashMap<String, Method>();
-	private static Map<String, Object> protocols = new HashMap<String, Object>();
+	private static Map<String, Method> mByP = new HashMap<String, Method>();
+	private static Map<String, String> helpTByP = new HashMap<String, String>();
+	private static Map<String, Object> tByP = new HashMap<String, Object>();
+	private static int pBuild = 0;
+	
+	private void initProtocol() {
+		// @WSController를 선언한 모든 클래스를 대상으로 함
+		String packageName = "org.kh.splendy";
+		Reflections reflections = new Reflections(packageName);
+		Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(WSController.class);
+		allClasses.add(this.getClass());
+		
+		for (Class<?> cls : allClasses) {
+			for (Method m : cls.getMethods()) {
+				// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
+				if (m.isAnnotationPresent(WSReqeust.class)) {
+					log.info("Protocol.Request.Add : "+m.getName());
+					WSReqeust anno = m.getAnnotation(WSReqeust.class);
+					String protocolName = m.getName();
+					if (!anno.value().isEmpty()) {
+						protocolName = anno.value();
+					}
+					mByP.put(protocolName, m);
+				}
+			}
+		}
+
+		// @Autowired 지원을 위해서 대상은 빈에서 꺼냄
+		Map<String, Object> beans = SplendyApplication.ctx.getBeansWithAnnotation(WSController.class);
+		beans.put("", this);
+
+		// 대상은 빈에서 꺼내서 집어 넣음
+		for (String bName : beans.keySet()) {
+			// 해당 빈을 대상으로 집어넣음.
+			Object pTarget = beans.get(bName);
+			tByP.put(bName, pTarget);
+			
+			if (bName.equals("inGame")) {
+				inGame = (InGame) pTarget;
+			}
+			// 프로토콜의 메서드를 수행할 대상 설정 부분 
+			
+			// 대상의 모든 메서드를 검사
+			for (Method m : pTarget.getClass().getMethods()) {
+				String bMName = m.getName();
+				// 모든 프로토콜을 검사
+				for (String pName : mByP.keySet()) {
+					String pMName = mByP.get(pName).getName();
+					// 프로토콜.메서드.이름 == 대상빈.메서드.이름
+					if (pMName.equals(bMName)) {
+						// 프로토콜을 수행할 객체명을 추가
+						helpTByP.put(pName, bName);
+					}
+				}
+			}
+			
+			
+		}
+	}
 	
 	@Override @Async
 	public void msgPro(WebSocketSession session, TextMessage message) throws Exception{
@@ -167,67 +242,42 @@ public class StreamServiceImpl implements StreamService {
 		
 		// 입력받은 메시지를 JSON -> WSMsg로 변경
 		WSMsg raw = WSMsg.convert(message.getPayload());
-		String protocol = raw.getProtocol();
+
 		String type = raw.getType();
+		type = (type == null)?"":type;
 		String sid = session.getId();
 		
-		protocol = (protocol == null)?"":protocol;
-		type = (type == null)?"":type;
+		/** !! 중요 - 프로토콜을 변경할 경우 숫자를 변경할것 !! */
+		int nowBuild = 10;
 		
 		// 메시지를 처리할 메서드 목록이 비어있을 경우 목록 생성
-		if (webSocketMethods.isEmpty()) {
-
-			// 프로토콜 패키지 안의 모든 클래스를 대상으로 함
-			String packageName = "org.kh.splendy.protocol";
-			Reflections reflections = new Reflections(packageName);
-			Set<Class<? extends Object>> allClasses = 
-					reflections.getSubTypesOf(Object.class);
-			
-			// 현재 클래스도 대상에 포함
-			allClasses.add(this.getClass());
-			
-			// 클래스 목록에서 메서드 추출
-			for (Class cls : allClasses) {
-				for (Method m : cls.getMethods()) {
-					// WSRequest 어노테이션이 붙은 메서드만 대상으로 함
-					if (m.isAnnotationPresent(WSReqeust.class)) {
-						webSocketMethods.put(m.getName(), m);
-					}
-				}
-			}
-
-			// 현재 클래스는 생성 목록에서 현재 객체로 추가
-			allClasses.remove(this.getClass());
-			protocols.put("", this);
-
-			// 메서드를 실행할 객체를 추가
-			for (Class cls : allClasses) {
-				String className = cls.getName().replace(packageName+".", "");
-				protocols.put(className, cls.newInstance());
-			}
+		if (mByP.isEmpty() || pBuild != nowBuild) {
+			pBuild = nowBuild;
+			initProtocol();
 		}
 
 		// 입력받은 메시지의 type과 일치하는 메서드 명이 있을 경우
-		if (webSocketMethods.containsKey(type)) {
-			// 해당 메서드를 꺼내서
-			Method m = webSocketMethods.get(type);
-
+		if (mByP.containsKey(type)) {
+			// 해당 메서드와 수행할 객체를 꺼냄
+			Method m = mByP.get(type);
+			Object target = tByP.get(helpTByP.get(type));
+			
 			log.info("msgProType: "+type);
 			
 			// 인증된 사용자가 아닐경우 인증만 가능하게 함
 			boolean isAuthed = (wsplayers.get(sid) != null)?true:false;
 			if (type.equals("auth") || isAuthed) {
-				// 해당 메서드를 수행할 객체를 꺼내옴
-				Object target = protocols.get(protocol);
 				// 해당 메서드를 실행함
 				m.invoke(target, session.getId(), raw.cont+"");
+					
+			// 권한없는 요청시 추방
 			} else {
-				// 권한없는 요청시 추방
+				log.info("msgProType: AccessDenied! Session will be close!");
 				session.close();
 			}
 		}
 	}
-
+	
 	@Override @WSReqeust @Transactional
 	public void auth(String sId, String msg) throws Exception {
 		Auth auth = Auth.convert(msg);
@@ -258,7 +308,14 @@ public class StreamServiceImpl implements StreamService {
 					
 					// 사용자의 접속지가 로비인지 게임방인지 구분
 					String joinType = "player";
-					joinType += ((me.getRoom() > 0)?".enter":".join");
+					if (me.getRoom() > 0) {
+						joinType += ".enter";
+						
+						// 누군가 인증했음을 알림
+						inGame.notiAuth(me);
+					} else {
+						joinType += ".join";
+					}
 
 					// 입장 알림
 					sendWithoutSender(sId, joinType, me);
@@ -378,26 +435,9 @@ public class StreamServiceImpl implements StreamService {
 		sendWithoutSender("", type, cont);
 	}
 	
-	@Override
-	public void sendR(String sId, String type, Object cont) {
-		send(sId, type, cont);
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 제거 요망 : 프로토콜 작성 후 해당 서비스로 이관 필요.
 
+/*
+	// 제거 요망 : 프로토콜 작성 후 해당 서비스로 이관 필요.
 	@Autowired private CardService cardServ;
 	
 	private List<Card> deck_lev1 = null;
@@ -408,9 +448,7 @@ public class StreamServiceImpl implements StreamService {
 	@Override @WSReqeust
 	public void cardRequest(String sId, String msg) throws Exception {
 			
-		/*
-		 *  처음 카드를 세팅하는 조건문
-		 */
+		// 처음 카드를 세팅하는 조건문
 		if(msg.equals("init_levN")){			
 			List<Card> initHeroCard = new ArrayList<Card>();
 			deck_levN = cardServ.getLevel_noble(); //히어로카드 덱
@@ -464,6 +502,6 @@ public class StreamServiceImpl implements StreamService {
 		GameLog gameLog = gson.fromJson(msg, GameLog.class);
 		sendR(sId, "cardCountPro", gameLog);		
 	}
-
+*/
 
 }

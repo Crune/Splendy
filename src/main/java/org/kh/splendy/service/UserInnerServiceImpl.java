@@ -30,5 +30,4 @@ public class UserInnerServiceImpl implements UserInnerService {
 	public void setRole(int id, String value) throws Exception {
 		innerMap.setRole(id, value);
 	}
-
 }

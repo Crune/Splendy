@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @SessionAttributes("rooms")
 @RequestMapping("lobby")
-/** TODO 윤.로비: 게임 로비 컨트롤러 구현
+/** 윤.로비: 게임 로비 컨트롤러 구현
  * 게임 참여 및 타 메뉴로 이동할 수 있는 로비 구현
  * @author 최윤 **/
 public class LobbyController {
@@ -30,7 +30,7 @@ public class LobbyController {
 	private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
 
 	@Autowired private StreamService stream;
-	
+	@Autowired private UserProfileService profServ;
 	@Autowired private LobbyService serv;
 
 	@ModelAttribute("profile")
@@ -41,6 +41,10 @@ public class LobbyController {
 		return profile;
 	}
 
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String index() {
+		return "redirect:/lobby/";
+	}
 	/** 로비 첫 화면 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String list(Model model, HttpSession session, RedirectAttributes rttr) {
@@ -61,6 +65,7 @@ public class LobbyController {
 				// 게임 중 재접속시에는 해당 게임방으로 이동. 
 				return "redirect:/game/"+lastRoom;
 			} else {
+				profServ.refreshUserProf(session);
 				return "lobby";				
 			}
 		}
@@ -71,10 +76,16 @@ public class LobbyController {
 		UserCore user = (UserCore) session.getAttribute("user");
 		return serv.getAuth(user.getId());
 	}
-	
+
+	@RequestMapping(value = "/out", method = RequestMethod.GET)
+	public String outRoom(HttpSession session) {
+		UserCore user = (UserCore) session.getAttribute("user");
+		serv.left("", user.getId()+"");
+		return "redirect:/";
+	}
 
 	@RequestMapping(value = "/room_new", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody int requestJoin(@ModelAttribute Room reqRoom, HttpSession session) {
+	public @ResponseBody int requestCreate(@ModelAttribute Room reqRoom, HttpSession session) {
 		int result = -1;
 
 		UserCore user = (UserCore) session.getAttribute("user");

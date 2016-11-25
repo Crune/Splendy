@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequestMapping("game")
 public class GameContorller {
 
 	@Autowired private LobbyService lobbyServ;
 
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 	
-	@RequestMapping("/game/{roomId}")
+	@RequestMapping("/{roomId}")
 	public String servList(@PathVariable int roomId, Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
 		log.info("game start / rid: "+roomId);
 
@@ -40,7 +41,7 @@ public class GameContorller {
 			session.setAttribute("user", user);
 			int lastRoom = lobbyServ.getLastRoom(user.getId());
 			if (lastRoom > 0) {
-				return "game/game_main";
+				return "game/main";
 			} else {
 				// 게임 중이 아닐경우 로비로 이동
 				return "redirect:/lobby/";

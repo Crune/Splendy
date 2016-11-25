@@ -3,6 +3,7 @@ package org.kh.splendy.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 로그인 페이지로 이동
@@ -39,7 +41,7 @@ public class LoginController {
 		 */
 		String email = "G"+user.getEmail();
 		user.setEmail(email);
-		user.setPassword("0");
+		user.setPassword(RandomStringUtils.randomAlphanumeric(9));
 		try {
 			UserCore searchUser = userServ.checkEmail(email);
 			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
@@ -55,10 +57,28 @@ public class LoginController {
 		return "success";
 	}
 	
-	@RequestMapping("login/naver")
-	public String naver(HttpServletRequest request){
-		
-		return "user/naver_login";
+	@RequestMapping(
+			value = "/naver_loginPro",
+			method = {RequestMethod.POST})
+	public @ResponseBody String naverLoginPro(@RequestParam("email") String emailParam, 
+									@RequestParam("nickname") String nicknameParam,HttpSession session){
+		UserCore user = new UserCore();				
+		user.setEmail("N" + emailParam.toLowerCase() + "N");
+		user.setNickname(nicknameParam);
+		String email = user.getEmail();
+		user.setPassword(RandomStringUtils.randomAlphanumeric(9));
+		try{
+			UserCore searchUser = userServ.checkEmail(email);
+			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
+				userServ.createUser(user);
+			}
+			user = userServ.checkEmail(email);
+			user.openInfo();
+			session.setAttribute("user", user);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return "success";
 	}
 	
 	@RequestMapping("/login/naver_loginPro")

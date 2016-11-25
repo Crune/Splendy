@@ -13,12 +13,15 @@ public class GameRoom {
 	
 	@SerializedName("room") @Expose
 	private int room;
+
+	@SerializedName("limit") @Expose
+	private int limit = 4;
 	
 	@SerializedName("logs") @Expose
 	private List<Msg> logs = new ArrayList<Msg>();
 	
 	@SerializedName("pls") @Expose
-	private List<Integer> pls = new ArrayList<Integer>();
+	private List<WSPlayer> pls = new ArrayList<WSPlayer>();
 	@SerializedName("cards") @Expose
 	private List<PLCard> cards = new ArrayList<PLCard>();
 	@SerializedName("coins") @Expose
