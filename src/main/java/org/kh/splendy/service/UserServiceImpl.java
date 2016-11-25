@@ -29,9 +29,6 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @EnableTransactionManagement
 public class UserServiceImpl implements UserService {
-	
-	@Autowired
-	private CustomAuthenticationProvider cp;
 
 	@Autowired
 	private UserMapper userMap;

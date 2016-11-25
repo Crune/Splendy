@@ -7,7 +7,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
+/**
+ * 
+ * @author 진규
+ *
+ * Spring Security 필터 & 설정
+ * 
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
@@ -17,7 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+		/**
+		 * permitAll() -> 모두 접근 가능
+		 * hasAuthority("admin") -> 
+		 */
 		http
 			.csrf().disable()
 			.authorizeRequests()
@@ -27,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/img/**").permitAll()
 				.antMatchers("/user/**").permitAll()
 				.antMatchers("/").permitAll()
-				.antMatchers("/lobby/").permitAll()
+				.antMatchers("/lobby/**").permitAll()
+				.antMatchers("/game/**").permitAll()
 				.antMatchers("/admin/**").hasAuthority("admin")
 			.anyRequest().authenticated()
 			.and()

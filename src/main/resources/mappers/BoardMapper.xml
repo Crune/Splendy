@@ -49,7 +49,7 @@
 		)
 	]]>		
 	</insert>
-	
+		
 	<update id="readCount" parameterType="org.kh.splendy.vo.Article">
     <![CDATA[
         UPDATE KH_ARTICLE 
@@ -70,13 +70,11 @@
             AT_ID = #{at_id}    
     ]]>
 	</update>
-	
-	<delete id="deleteBoard" parameterType="org.kh.splendy.vo.Article">
+	<!-- 
+	<delete id="deleteBoard" parameterType="int">
     <![CDATA[
-        DELETE FROM KH_ARTICLE
-		 WHERE 
-		AT_ID = #{at_id}
+        DELETE KH_ARTICLE WHERE AT_ID = #{AT_ID, jdbcType=INTEGER}
     ]]>
-	</delete>
-	
+	</delete>	
+	 -->
 </mapper>
