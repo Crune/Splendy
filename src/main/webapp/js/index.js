@@ -85,8 +85,6 @@ $(document).ready(function() {
 window.onload = function(){
 	
 	var source_test = $("#temp_test").html();
-	var temp_test = Handlebars.compile(source_test);	
-	var data = {temp:""};
 	
 		$(".btn_login").on('click', function () {
 			curState = "login";
