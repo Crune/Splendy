@@ -18,11 +18,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
+	@Autowired
+	public SecurityService secuServ;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		/**
 		 * permitAll() -> 모두 접근 가능
-		 * hasAuthority("admin") -> 해당 권한이 있는 유저만 접근 가능
+		 * hasAuthority("admin") -> 
 		 */
 		http
 			.csrf().disable()
@@ -33,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/img/**").permitAll()
 				.antMatchers("/").permitAll()
 				.antMatchers("/user/**").permitAll()
+				.antMatchers("/lobby/**").permitAll()
+				.antMatchers("/game/**").permitAll()
 				.antMatchers("/admin/**").hasAuthority("admin")
 			.anyRequest().authenticated()
 			.and()
@@ -42,5 +47,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.logout().logoutSuccessUrl("/")
 		;
 	}
-
 }
