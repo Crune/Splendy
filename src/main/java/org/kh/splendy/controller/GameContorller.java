@@ -19,14 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("game")
 public class GameContorller {
 
 	@Autowired private LobbyService lobbyServ;
 
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 	
-	@RequestMapping("/{roomId}")
+	@RequestMapping("/game/{roomId}")
 	public String servList(@PathVariable int roomId, Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
 		log.info("game start / rid: "+roomId);
 
@@ -47,5 +46,10 @@ public class GameContorller {
 				return "redirect:/lobby/";
 			}
 		}
+	}
+	
+	@RequestMapping("/canvas")
+	public String canvas() {
+		return "canvas";
 	}
 }

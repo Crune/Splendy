@@ -1,6 +1,72 @@
+$(document).ready(function() {
+	
+	window.fbAsyncInit = function(){
+	    FB.init({ appId: '1687598368235887', 
+	        status: true, 
+	        cookie: true,
+	        xfbml: true,
+	        oauth: true});
+	}
+	
+	function updateButton(response) {
+	    if (response.authResponse) {
+	       
+	      FB.api('/me', function(response) {
+	    	  console.log(response.id);
+	          console.log(response.name);
+	          $.ajax({
+                  url:'/user/facebook',
+                  type:'post',
+                  data:{email: response.id, nickname: response.name},
+                  dataType: 'text', 
+                  success:function(data){
+                  	document.location.href=data;
+                  },error:function(request,status,error){
+          			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+          		}
+              })
+	      });
+	       
+	       
+	    } else {
+	         FB.login(function(response) {
+	            if (response.authResponse) {
+	                FB.api('/me', function(response) {
+	                	$.ajax({
+	                        url:'/user/facebook',
+	                        type:'post',
+	                        data:{email: response.id, nickname: response.name},
+	                        dataType: 'text', 
+	                        success:function(data){
+	                        	document.location.href=data;
+	                        },error:function(request,status,error){
+	                			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+	                		}
+	                    })
+	                });    
+	            } else {
+	                 
+	            }
+	        }, {scope:'email'});    
+	    }
+	}
+	
+	(function() {
+		  var e = document.createElement('script'); e.async = true;
+		  e.src = document.location.protocol 
+		    + '//connect.facebook.net/ko_KR/all.js';
+		  document.getElementById('fb-root').appendChild(e);
+		}());
+	$('#btn_logout').on('click', function () {
+		console.log("로그아웃");
+		 FB.logout(function(response) { 
+         });
+		 window.location.href='/';
+	});
+	
+});
 
 window.onload = function(){
-	
 	$.ajax({
 		url:"/prof/iconModify",		
 		success:function(data){
@@ -43,6 +109,13 @@ window.onload = function(){
 	
 }
 
+function onSignOut(googleUser) {
+	var revokeAllScopes = function() {
+	  	console.log("구글 로그아웃?");
+		auth2.disconnect();
+	}
+}
+
 function modifyRequest() {
 	$.ajax({
 		url:'/user/modify_suc',
@@ -54,7 +127,7 @@ function modifyRequest() {
 		},error:function(request,status,error){
 			alert("정보 수정에 실패하였습니다. 다시 시도해주세요.");
 		}
-	})
+	});
 } 
 
 var changeIcon = function(icon_src){
@@ -72,4 +145,5 @@ var changeIcon = function(icon_src){
 			alert("아이콘 변경 실패!");
 		}
 	});
-}
+};
+

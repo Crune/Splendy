@@ -31,12 +31,7 @@ body {
 <script src="/webjars/handlebars/4.0.5/handlebars.js"></script>
 <script src='/js/default.js'></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-<script id="temp_test" type="text/x-handlebars-template">
-
-	<a>{{ test }}</a>
-
-</script>
+<script src='/js/index.js'></script>
 <script type='text/javascript' src='/js/index.js'></script>
 
 <script>
@@ -57,6 +52,7 @@ body {
     <![endif]-->
 </head>
 <body bgcolor="#191919">
+<div id="fb-root"></div>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
