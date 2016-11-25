@@ -5,8 +5,82 @@
 /*var curState = "join";
 var email = "${user.email}";
 var login_result = "${login_result}";
-var credent = "${credent}";
-var msg = "${msg}";*/
+var credent = "${credent}";*/
+
+var msg = "${msg}";
+
+$(document).ready(function() {
+	
+	if(msg !== "") {
+		$('#myModal').modal('show');
+	}
+	
+	window.fbAsyncInit = function(){
+	    FB.init({ appId: '1687598368235887', 
+	        status: true, 
+	        cookie: true,
+	        xfbml: true,
+	        oauth: true});
+	}
+	
+	function updateButton(response) {
+	    var button = document.getElementById('fb-auth');
+	     
+	    if (response.authResponse) {
+	       
+	      FB.api('/me', function(response) {
+	    	  console.log(response.id);
+	          console.log(response.name);
+	          $.ajax({
+                  url:'/user/facebook',
+                  type:'post',
+                  data:{email: response.id, nickname: response.name},
+                  dataType: 'text', 
+                  success:function(data){
+                  	document.location.href=data;
+                  },error:function(request,status,error){
+          			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+          		}
+              })
+	      });
+	       
+	       
+	    } else {
+	         FB.login(function(response) {
+	            if (response.authResponse) {
+	                FB.api('/me', function(response) {
+	                	$.ajax({
+	                        url:'/user/facebook',
+	                        type:'post',
+	                        data:{email: response.id, nickname: response.name},
+	                        dataType: 'text', 
+	                        success:function(data){
+	                        	document.location.href=data;
+	                        },error:function(request,status,error){
+	                			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+	                		}
+	                    })
+	                });    
+	            } else {
+	                 
+	            }
+	        }, {scope:'email'});    
+	    }
+	}
+	
+	document.getElementById('btn_facebook').onclick = function() {
+	    FB.Event.subscribe('auth.statusChange', updateButton);  
+	    FB.getLoginStatus(updateButton);
+	};
+	
+	(function() {
+		  var e = document.createElement('script'); e.async = true;
+		  e.src = document.location.protocol 
+		    + '//connect.facebook.net/ko_KR/all.js';
+		  document.getElementById('fb-root').appendChild(e);
+		}());
+});
+
 
 window.onload = function(){
 	
@@ -14,42 +88,6 @@ window.onload = function(){
 	var temp_test = Handlebars.compile(source_test);	
 	var data = {temp:""};
 	
-	/*if(msg !== "") {
-		$('#myModal').modal('show');
-	}
-	
-	$("#testDiv").html(temp_test(data));
-	
-	var result = "${result}";
-	if(result == "2") {
-		alert("email이 중복되었습니다.")
-	} else if(result == "1") {
-		alert("회원가입이 완료되었습니다.")
-	}
-	
-	if (login_result === "0") {
-		if (credent === "0"){ 
-			console.log("비밀번호틀림");
-			alert("email과 password를 다시 확인해주세요.");
-			return false;
-		} else if(credent === "1"){
-			console.log("이메일인증");
-			alert("email인증을 진행해주세요.");
-			return false;
-		}
-	} else if (login_result === "1"){
-		curState = "login_suc";
-		$("#loginDiv").hide();
-		$("#joinDiv").hide();
-		$("#sendPwDiv").hide();
-		$("#modifyDiv").hide();
-		$("#login_sucDiv").show();
-	}
-	
-	login_result = "";
-	credent = "";
-	*/
-
 		$(".btn_login").on('click', function () {
 			curState = "login";
 			$("#joinDiv").hide();
@@ -102,14 +140,13 @@ window.onload = function(){
 			loginRequest();
 		});
 		
-		$(".btn_facebook").on('click', function () {
-			loginFacebook();
-		});
+		/*$(".btn_facebook").on('click', function () {
+			
+		});*/
 		
-		$(".btn_google").on('click', function () {
+		/*$(".btn_google").on('click', function () {
 			loginGoogle();
-
-		});
+		});*/
 		
 		$(".btn_naver").on('click', function(){
 			
@@ -250,10 +287,6 @@ function delete_check() {
 		return false;
 	}
 }
-
-function loginFacebook() {
-	window.open("/login/facebook", "Facebook Login", "left=300, top=100, width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, location=1, resizable=yes" );
-} 
    
 function onSignIn(googleUser) {
     // Useful data for your client-side scripts:
@@ -288,3 +321,9 @@ function google() {
 		}
     })
 }
+
+
+
+ 
+
+

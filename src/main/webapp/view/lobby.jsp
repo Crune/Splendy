@@ -81,6 +81,7 @@ body {
     <![endif]-->
 </head>
 <body bgcolor="#191919">
+<div id="fb-root"></div>
 	<div class="container-fluid lobby_frame">
 		<div id="top">
 			<div class="container-fluid lobby_white_line" style="height: 5px"></div>
@@ -91,7 +92,7 @@ body {
 						<button type="button" class="btn btn-default btn-xs">공지사항</button>
 						<button type="button" class="btn btn-default btn-xs">자유게시판</button>
 						<button type="button" class="btn btn-default btn-xs" id="btn_modify">정보수정</button>
-						<button type="button" class="btn btn-default btn-xs" id="btn_logout">로그아웃</button>
+						<button type="button" class="btn btn-default btn-xs" id="btn_logout" data-onsuccess="onSignOut">로그아웃</button>
 					</div>
 				</div>
 			</div>

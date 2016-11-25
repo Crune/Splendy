@@ -1,5 +1,6 @@
 package org.kh.splendy.controller;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.kh.splendy.service.UserService;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -24,22 +28,18 @@ public class FaceController {
 	@Autowired
 	private UserService userServ;
 	
-	private Facebook facebook;
-	private ConnectionRepository connectionRepository;
-
-	public FaceController(Facebook facebook, ConnectionRepository connectionRepository) {
-		this.facebook = facebook;
-		this.connectionRepository = connectionRepository;
-	}
-
-	@RequestMapping("/user/facebook")
-	public String helloFacebook(Model model, HttpSession session) throws Exception {
-		if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
-			return "redirect:/connect/facebook";
-		}
+	@RequestMapping(
+			value = "/user/facebook",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody String helloFacebook(@RequestParam("email") String email, @RequestParam("nickname") String nickname,
+													HttpSession session) throws Exception {
+		String text = "/";
+		System.out.println("Name : "+ nickname);
+		
 		UserCore user = new UserCore();
-		user.setEmail("F"+facebook.userOperations().getUserProfile().getId());
-		user.setNickname(facebook.userOperations().getUserProfile().getName());
+		user.setEmail("F"+email);
+		user.setNickname(nickname);
 		user.setPassword("0");
 		try {
 			UserCore searchUser = userServ.checkEmail(user.getEmail());
@@ -49,11 +49,11 @@ public class FaceController {
 			user = userServ.checkEmail(user.getEmail());
 			user.openInfo();
 			session.setAttribute("user", user);
-			
+			text = "lobby/";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return "user/hello";
+		return text;
 	}
 }
