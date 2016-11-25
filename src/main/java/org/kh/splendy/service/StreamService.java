@@ -10,7 +10,7 @@ import org.springframework.web.socket.WebSocketSession;
 public interface StreamService {
 
 	String getCwasid();
-	Map<Integer, GameRoom> getRooms();
+	//Map<Integer, GameRoom> getRooms();
 	Map<String, WebSocketSession> getSessions();
 	Map<String, WSPlayer> getWsplayers();
 
@@ -26,7 +26,6 @@ public interface StreamService {
 	void sendAll(String type, Object cont);
 	void sendWithoutSender(String sId, String type, Object cont);
 
-	void sendR(String sId, String type, Object cont);
 	void sendChat(int rid, WSPlayer sender, String msg);
 
 	void auth(String sId, String message) throws Exception;

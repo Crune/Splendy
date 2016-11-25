@@ -1,7 +1,7 @@
 package org.kh.splendy.config;
 
+import org.kh.splendy.PaintHandler;
 import org.kh.splendy.SplendyHandler;
-import org.kh.splendy.paint.PaintHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;
@@ -20,9 +20,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(splendyHandler(), "/ws").withSockJS();;
+		registry.addHandler(splendyHandler(), "/ws").withSockJS().setWebSocketEnabled(true);
 		
-		//registry.addHandler(paintHandler(),"/paint").withSockJS();
+		registry.addHandler(paintHandler(),"/paint").withSockJS();
 	}
 
 	@Bean

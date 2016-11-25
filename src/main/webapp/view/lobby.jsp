@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html style="height: 100%">
 <head>
@@ -62,7 +63,7 @@ body {
 <script id="temp_player" type="text/x-handlebars-template">
 	<div class="player {{ role }}" id="user_{{ uid }}" name="user_{{ uid }}" style="padding-bottom: 10px">
 		<div class="room_icon">
-			<img src="/img/{{ icon }}" width="50px" height="50px" />
+			<img src="{{ icon }}" width="50px" height="50px" />
 		</div>
 		<div class="room_nickname">{{ nick }}</div>
 		<div class="room_rate">{{ rating }}</div>
@@ -81,6 +82,7 @@ body {
     <![endif]-->
 </head>
 <body bgcolor="#191919">
+<div id="fb-root"></div>
 	<div class="container-fluid lobby_frame">
 		<div id="top">
 			<div class="container-fluid lobby_white_line" style="height: 5px"></div>
@@ -88,10 +90,13 @@ body {
 				<div class="row">
 					<div class="lobby_top align_left"" id="logo"><img src="/img/logo.png"></div>
 					<div class="lobby_top align_right">
+						<sec:authorize access="hasAuthority('admin')">
+							<button type="button" onclick="window.location='/admin/index'" class="btn btn-default btn-xs">관리자</button>
+						</sec:authorize>
 						<button type="button" class="btn btn-default btn-xs">공지사항</button>
 						<button type="button" class="btn btn-default btn-xs">자유게시판</button>
 						<button type="button" class="btn btn-default btn-xs" id="btn_modify">정보수정</button>
-						<button type="button" class="btn btn-default btn-xs" id="btn_logout">로그아웃</button>
+						<button type="button" class="btn btn-default btn-xs" id="btn_logout" data-onsuccess="onSignOut">로그아웃</button>
 					</div>
 				</div>
 			</div>
@@ -116,9 +121,9 @@ body {
 						<div class="row">
 							<div class="col-md-6">
 								<div class="lobby_profile_data">
-									<div class="lobby_text_value">74</div>
+									<div class="lobby_text_value">${sessionScope.profile.win+sessionScope.profile.lose+sessionScope.profile.draw}</div>
 									<div class="lobby_text_biglabel">참가 게임수</div>
-									<div class="lobby_text_sublabel">일별 게임 수: 3 <span class="lobby_text_subsublabel">/5 (일일미션)</span></div>
+									<div class="lobby_text_sublabel">일별 게임 수: 0 <span class="lobby_text_subsublabel">/5 (일일미션)</span></div>
 								</div>
 							</div>
 							<div class="col-md-6">
@@ -141,7 +146,7 @@ body {
 								<div class="lobby_profile_data">
 									<div class="lobby_text_value">${sessionScope.profile.rate}</div>
 									<div class="lobby_text_biglabel">게임 레이팅</div>
-									<div class="lobby_text_sublabel">최근 증감: +20</div>
+									<div class="lobby_text_sublabel">최근 증감: +0</div>
 								</div>
 							</div>
 						</div>
@@ -184,7 +189,7 @@ body {
 							<button id="btn_create_cancel" type="button" class="btn btn-default">취소</button>
 						</form>
 					</div>
-					<div id="roomlist" name="roomlist" style="height: calc(100% - 99px); overflow: auto">
+					<div id="roomlist" name="roomlist">
 						<div class="lobby_room" id="room_1">
 							<div class="room_detail col-md-5">
 								<div class="room_name">아무나 들어오세요</div>

@@ -1,28 +1,20 @@
 package org.kh.splendy.controller;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.facebook.api.Facebook;
 /**
  * 로그인 페이지로 이동
  * @author 민정
@@ -39,60 +31,6 @@ public class LoginController {
 	
 	String storedState;
 	
-	@RequestMapping("/login/facebook")
-	public String facebook(RedirectAttributes rttr) {
-		
-		String scope = "user_posts";
-		
-		rttr.addFlashAttribute("scope", scope);
-		/*return "redirect:/connect/facebook";*/
-		return "user/facebookLogin";
-	
-	}
-	
-	@RequestMapping(
-			value = "/facebook",
-			method = RequestMethod.POST)
-	public class HelloController {
-		private Facebook facebook;
-		private ConnectionRepository connectionRepository;
-		
-		public HelloController(Facebook facebook, ConnectionRepository connectionRepository) {
-			this.facebook = facebook;
-			this.connectionRepository = connectionRepository;
-			log.info("sadfas");
-		}
-		
-		@PostMapping
-		public String helloFacebook(HttpSession session, RedirectAttributes rttr) throws Exception {
-			if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
-				
-				String scope = "user_posts";
-				rttr.addFlashAttribute("scope", scope);
-				return "redirect:/connect/facebook";  
-			} 
-
-			UserCore user = new UserCore();
-			user.setEmail("F"+facebook.userOperations().getUserProfile().getId());
-			user.setNickname(facebook.userOperations().getUserProfile().getName());
-			user.setPassword("0");
-			try {
-				UserCore searchUser = userServ.checkEmail(user.getEmail());
-				if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
-					userServ.createUser(user);
-				}
-				user = userServ.checkEmail(user.getEmail());
-				user.openInfo();
-				session.setAttribute("user", user);
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return "user/hello";
-		} 
-	}
-	
 	@RequestMapping(
 			value = "/user/google",
 			method = {RequestMethod.GET, RequestMethod.POST},
@@ -103,7 +41,7 @@ public class LoginController {
 		 */
 		String email = "G"+user.getEmail();
 		user.setEmail(email);
-		user.setPassword("0");
+		user.setPassword(RandomStringUtils.randomAlphanumeric(9));
 		try {
 			UserCore searchUser = userServ.checkEmail(email);
 			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
@@ -128,7 +66,7 @@ public class LoginController {
 		user.setEmail("N" + emailParam.toLowerCase() + "N");
 		user.setNickname(nicknameParam);
 		String email = user.getEmail();
-		user.setPassword("0");
+		user.setPassword(RandomStringUtils.randomAlphanumeric(9));
 		try{
 			UserCore searchUser = userServ.checkEmail(email);
 			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
@@ -143,11 +81,40 @@ public class LoginController {
 		return "success";
 	}
 	
+	/** FIXME 민정아 지워라 */
 	@RequestMapping("/login/naver_loginPro")
 	public String naverLoginPro(HttpServletRequest request){
 		
 		return "user/naver_loginPro";
 	}
 
+	@RequestMapping(
+			value = "/user/facebook",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody String helloFacebook(@RequestParam("email") String email, @RequestParam("nickname") String nickname,
+													HttpSession session) throws Exception {
+		String text = "/";
+		System.out.println("Name : "+ nickname);
+		
+		UserCore user = new UserCore();
+		user.setEmail("F"+email);
+		user.setNickname(nickname);
+		user.setPassword(RandomStringUtils.randomAlphanumeric(9));
+		try {
+			UserCore searchUser = userServ.checkEmail(user.getEmail());
+			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
+				userServ.createUser(user);
+			}
+			user = userServ.checkEmail(user.getEmail());
+			user.openInfo();
+			session.setAttribute("user", user);
+			text = "lobby/";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return text;
+	}
 
 }

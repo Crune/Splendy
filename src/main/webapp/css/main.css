@@ -41,7 +41,7 @@ header .guest{
     margin-top:3px;
     margin-left:1.5%;
     padding-left:20px;
-    background:url(../images/top_guest.png) no-repeat;
+    background:url(/img/top_guest.png) no-repeat;
 }
 header .backSpace{
     float:right;
@@ -50,7 +50,7 @@ header .backSpace{
 }
 header .backSpace a{
     padding-left:30px;
-    background:url(../images/top_arrow.png)0 40% no-repeat;
+    background:url(/img/top_arrow.png)0 40% no-repeat;
 }
 
 /*사이드*/
@@ -233,7 +233,7 @@ aside .player1{
     width:71%;
     height:100%;
     float:left;
-    background:url(../images/main_bg.png) no-repeat;
+    background:url(/img/main_bg.png) no-repeat;
     margin-left:1%;
     position:relative;
 }
@@ -448,7 +448,7 @@ footer .users{
 }
 footer .users a{
     padding-left:20px;
-    background:url(../images/foot_trophy.png)0 center no-repeat;
+    background:url(/img/foot_trophy.png)0 center no-repeat;
 }
 footer .chat{
     float:left;
@@ -457,6 +457,6 @@ footer .chat{
 }
 footer .chat a{
     padding-left:35px;
-    background:url(../images/foot_say.png) no-repeat;
+    background:url(/img/foot_say.png) no-repeat;
 }
 

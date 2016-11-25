@@ -40,13 +40,13 @@ public class AdminController {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 	
-	@RequestMapping("/admin")
+	@RequestMapping("/admin/index")
 	public String index() {
 		log.info("admin access index");
 		return "admin/index";
 	}
 	
-	@RequestMapping("/servList")
+	@RequestMapping("/admin/servList")
 	public String servList(Model model) throws Exception {
 		log.info("admin access servicelist");
 		List<PropInDB> list = servServ.readAll();
@@ -64,7 +64,7 @@ public class AdminController {
 		return result;
 	}
 	
-	@RequestMapping("/userList")
+	@RequestMapping("/admin/userList")
 	public String userList(Model model) throws Exception {
 		log.info("admin access userlist");
 		List<UserCore> list = userServ.selectAll();
@@ -91,7 +91,7 @@ public class AdminController {
 		log.info("admin modify : "+id);
 	}
 	
-	@RequestMapping("/adminList")
+	@RequestMapping("/admin/adminList")
 	public String readAdmin(Model model) throws Exception {
 		log.info("admin list read");
 		List<UserInner> list = innerServ.readAdmin();

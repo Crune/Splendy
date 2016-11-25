@@ -44,7 +44,6 @@ spring:
             max-file-size: 5Mb
             max-request-size: 10Mb
             resolve-lazily: false
-    
+            
 #Spring Boot App 시작 포트 설정
 server.port: 80
-    
