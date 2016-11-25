@@ -24,19 +24,22 @@ public interface UserInnerMapper {
 			+ "U_WS_AUTH, "
 			+ "U_REG_CODE, "
 			+ "U_CONNECT, "
-			+ "U_ROLE";
+			+ "U_ROLE, "
+			+ "U_WAS";
 	String C_VALUES = "#{id}, "
 			+ "#{wsSession, jdbcType=VARCHAR}, "
 			+ "#{wsAuthCode, jdbcType=VARCHAR}, "
 			+ "#{regCode, jdbcType=VARCHAR}, "
 			+ "#{connect, jdbcType=INTEGER}, "
-			+ "#{role, jdbcType=VARCHAR}";
+			+ "#{role, jdbcType=VARCHAR}, "
+			+ "#{was, jdbcType=VARCHAR}";
 	
 	String UPDATES = "U_WS_ID=#{wsSession, jdbcType=VARCHAR}, "
 			+ "U_WS_AUTH=#{wsAuthCode, jdbcType=VARCHAR}, "
 			+ "U_REG_CODE=#{regCode, jdbcType=VARCHAR}, "
 			+ "U_CONNECT=#{connect, jdbcType=INTEGER}, "
-			+ "U_ROLE=#{role, jdbcType=VARCHAR}";
+			+ "U_ROLE=#{role, jdbcType=VARCHAR}, "
+			+ "U_WAS=#{was, jdbcType=VARCHAR}";
 	
 	String KEY = "U_ID";
 
@@ -90,6 +93,9 @@ public interface UserInnerMapper {
 	@Update("update "+TABLE+" set U_CONNECT=#{value, jdbcType=INTEGER} where "+KEY+"=#{id} ")
 	public void setConnect(@Param("id") int id, @Param("value") int value);
 
+	@Update("update "+TABLE+" set U_CONNECT=#{value, jdbcType=INTEGER} where U_WS_ID=#{id} ")
+	public void setConnectBySid(@Param("id") String id, @Param("value") int value);
+	
 	@Select("select U_CONNECT from "+TABLE+" where "+KEY+"=#{id}")
 	public int getConnect(int id);
 
@@ -99,6 +105,13 @@ public interface UserInnerMapper {
 
 	@Select("select U_ROLE from "+TABLE+" where "+KEY+"=#{id}")
 	public String getRole(int id);
+	
+	
+	@Update("update "+TABLE+" set U_WAS=#{value, jdbcType=VARCHAR} where "+KEY+"=#{id} ")
+	public void setWAS(@Param("id") int id, @Param("value") String value);
+
+	@Select("select U_WAS from "+TABLE+" where "+KEY+"=#{id}")
+	public String getWAS(int id);
 	
 
 	// Another
@@ -113,4 +126,7 @@ public interface UserInnerMapper {
 	
 	@Select("select U_ROLE from "+TABLE+" where "+KEY+"=#{id}")
 	public List<String> readAuthority(int id);
+
+	@Select("SELECT "+TABLE+".U_WS_ID FROM "+TABLE+" WHERE "+TABLE+".U_CONNECT > 0")
+	public List<String> getConnector();
 }

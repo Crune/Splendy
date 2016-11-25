@@ -8,10 +8,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.kh.splendy.annotation.WSReqeust;
+import org.kh.splendy.assist.WSReqeust;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -40,26 +41,14 @@ public class SplendyAdvice {
 		log.info(" » Service: ed - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
 		return rst;
 	}
-
-	public void inject(Object getObj, Object setObj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Method[] methods = getObj.getClass().getMethods();
-		
-		Map<String, Method> getter = new HashMap<String, Method>();
-		Map<String, Method> setter = new HashMap<String, Method>();
-		
-		for (Method m : methods) {
-			if (m.getName().length()>3) {
-				String head = m.getName().substring(0, 3);
-				String name = m.getName().substring(3);
-				if (head.equals("set")) setter.put(name, m);
-				if (head.equals("get")) getter.put(name, m);
-			}
-		}
-		
-		for (String curMethodName : setter.keySet()) {
-			Object data = getter.get(curMethodName).invoke(getObj);
-			setter.get(curMethodName).invoke(setObj,data);
-		}
+	
+	@Around("execution(* org.kh.splendy.protocol.*.*(..))")
+	public Object protocolAOP(ProceedingJoinPoint pjp) throws Throwable {
+		log.info(" » Protocol: op - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
+		log.info(" » Protocol: args - "+Arrays.toString(pjp.getArgs()));
+		Object rst = pjp.proceed();
+		log.info(" » Protocol: ed - "+pjp.getSignature().getDeclaringTypeName()+" / "+pjp.getSignature().getName());
+		return rst;
 	}
 
 	public static String getEncSHA256(String txt) throws NoSuchAlgorithmException {
@@ -79,4 +68,6 @@ public class SplendyAdvice {
 	
 		return sbuf.toString();
 	}
+
+	public static final String WAS_ID = RandomStringUtils.randomAlphanumeric(9);
 }

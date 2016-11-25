@@ -31,8 +31,6 @@ $( document ).ready(function() {
 		}
 		if (k[0] == 'auth' && v == 'ok') {
 			wssend('request', 'prevMsg');
-			wssend('request', 'roomList');
-			wssend('request', 'playerList');
 		}
 		if (k[0] == 'room') {
 			onRoom(k[1], v);
@@ -48,19 +46,40 @@ $( document ).ready(function() {
 
 	// 연결 해제시 핸들러 연결
 	chatSock.onclose = function () {
-		alert("연결끊김!");
+		if (isPageMove == false) {
+			alert("연결끊김!");
+		}
 	};
 	
 	// 방개설시
 
 	$("#btn_create").on("click", function() {
-		alert("방개설");
+		$.ajax({
+			url : '/lobby/room_new',
+			type : 'post',
+			data : $("#form_newroom").serialize(),
+			success : function(data) {
+				if (data == -1) {
+					alert("방 정보가 잘못 되었습니다.");
+				} else if (data > 0) {
+					console.log("방개설 성공!");
+					joinRoom(data, $("#password").val());
+				}
+			},
+			error : function(request, status, error) {
+				alert("방 개설에 실패하였습니다.");
+			}
+		});
 	});
 	$("#btn_create_cancel").on("click", function() {
 		$("#createRoom").hide();
 		$("#roomlist").append(temp_room_empty());
+		$("#roomlist").css('height','calc(100% - 99px)');
 		roomMouseEvt();
 	});
+	
+	
+	
 });
 
 var temp_chatmsg = Handlebars.compile($("#temp_chatmsg").html());
@@ -68,15 +87,43 @@ var temp_room = Handlebars.compile($("#temp_room").html());
 var temp_player = Handlebars.compile($("#temp_player").html());
 var temp_room_empty = Handlebars.compile($("#temp_room_empty").html());
 
+var isPageMove = false;
+
+function joinRoom(rid, password) {
+	var room = new Object();
+	room.id = rid;
+	if (password != '') {
+		room.password = password;
+	}
+	wssend('join', room);
+}
 function onChatMsg(type, msg) {
 	if (type =='init') {
 		console.log("Chatting initialized!");
 		$(".chat_msg").detach();
 	} else {
 		if (type =='new') {
-			console.log("chat.add!");
+			if (msg.uid == auth.uid) {
+				msg.type = 'me'
+			} else if (msg.type == 'me') {
+				msg.type = 'o'
+			}
 			$("#chatDiv").append(temp_chatmsg(msg));
 			$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+		}
+		if (type =='prev') {
+			msgLen = msg.length;
+			for (i = 0; i < msgLen; i++) {
+				var curMsg = msg[i];
+				if (curMsg.uid == auth.uid) {
+					curMsg.type = 'me'
+				} else if (curMsg.type == 'me') {
+					curMsg.type = 'o'
+				}
+				$("#chatDiv").append(temp_chatmsg(curMsg));
+				$("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+			}
+			wssend('request', 'roomList');
 		}
 	}
 }
@@ -92,14 +139,24 @@ function onPlayer(type, pl) {
 		}
 		if (type=='join') {
 			$(".lobby_players").append(temp_player(pl));
-			onChatMsg(new Chat('시스템', pl.nick+'님이 접속하였습니다.','','sys'));
+			onChatMsg(new Chat('new', '시스템', pl.nick+'님이 접속하였습니다.','','sys'));
 		}
 		if (type=='leave') {
-			onChatMsg(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
+			onChatMsg(new Chat('new', '시스템', pl.nick+'님이 나가셨습니다.','','sys'));
 		}
 		if (type=='enter') {
-			var room = pl.room;
-			$("#room_"+room).append(temp_player(pl));
+			$("#room_"+pl.room+" .row .room_player").append(temp_player(pl));
+		}
+		if (type=='prev') {
+			plLen = pl.length;
+			for (i = 0; i < plLen; i++) {
+				var curPl = pl[i];
+				if (curPl.room == 0) {
+					$(".lobby_players").append(temp_player(curPl));
+				} else {
+					$("#room_"+curPl.room+" .row .room_player").append(temp_player(curPl));
+				}
+			}
 		}
 	}
 }
@@ -108,16 +165,36 @@ function onRoom(type, room) {
 	if (type=='init') {
 		console.log("Room initialized!")
 		$(".lobby_room").detach();
-		$("#roomlist").append(temp_room_empty());
 	} else {
+		$(".empty_room").detach();
+		
 		if (type=='add') {
-			$(".empty_room").detach();
 			$("#roomlist").append(temp_room(room));
-			$("#roomlist").append(temp_room_empty());
+			if (room.password != 'true') {
+				$('#ispw_'+room.id).detach();
+			}
 		}
 		if (type=='remove') {
-			$("#room_"+room).detach();
+			$("#room_"+room.id).detach();
 		}
+		if (type=='accept') {
+			isPageMove = true;
+			location.replace("/game/" + room);
+		}
+		if (type=='prev') {
+			roomLen = room.length;
+			for (i = 0; i < roomLen; i++) {
+				var curRoom = room[i];
+				$("#roomlist").append(temp_room(curRoom));
+				if (curRoom.password != 'true') {
+					$('#ispw_'+curRoom.id).detach();
+				}
+			}
+				
+			wssend('request', 'playerList');
+		}
+		
+		$("#roomlist").append(temp_room_empty());
 	}
 	roomMouseEvt();
 }
@@ -129,13 +206,21 @@ function roomMouseEvt() {
 	}).on("mouseleave", function() {
 		$(this).removeClass("lobby_room_hover");
 	}).on("click", function() {
-
-		if ($(this).attr("id") == "room_0") {
+		var rid = $(this).attr("id").split('_')[1];
+		if (rid == '0') {
 			$("div#createRoom").show();
 			$(".empty_room").detach();
+			$("#roomlist").css('height','calc(100% - 366px)');
+		} else if ($('#ispw_'+rid)) {
+			$('#ispw_'+rid).show();
 		} else {
-			alert("방 접속: " + $(this).attr("id"));
+			joinRoom(rid, '');
 		}
 		
+	});
+	$(".btn_joinroom").on("click", function() {
+		var rid = $(this).attr("id").split('_')[2];
+		var pw = $('#rpw_'+rid).val();
+		joinRoom(rid, pw);
 	});
 }

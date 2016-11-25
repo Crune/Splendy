@@ -37,8 +37,12 @@
 
 .lobby_frame {
 	padding: 0px 0px 0px 0px;
+	height: 100%;
 }
-
+.lobby_cont {	
+    min-height: 300px;
+    height: 100%;
+}
 .lobby_frame:before {
 	content: " ";
 	position: absolute;
@@ -63,8 +67,8 @@
 	font-size: 24px;
 	font-weight: 900;
 	font-style: italic;
-	padding-right: 10px;z
-	text-shadow:0 0 3px #ffffff;
+	padding-right: 10px;
+	text-shadow: 0 0 5px #dddddd;
 }
 
 .lobby_text_level {
@@ -106,7 +110,6 @@
 	margin-bottom: auto;
 	height: 100px;
 	width: 100px;
-	background: url(/img/unnamed.png);
 	background-size: 100px 100px;
 	background-repeat: no-repeat;
 }
@@ -128,7 +131,6 @@
 	margin: 5px 5px 20px 5px;
 	padding: 5px 5px 5px 5px;
 	height: 120px;
-	display: flex;
 }
 
 div#createRoom {
@@ -145,6 +147,12 @@ div#createRoom {
 	font-size: 28px;
 	font-weight: 500;
 	line-height: 40px;
+}
+#roomlist {
+	height: calc(100% - 99px);
+	overflow-y: auto;
+	overflow-wrap: break-word;
+	overflow-x: hidden;
 }
 .room_info {
 	color: #fec2ba;
@@ -167,10 +175,13 @@ div#createRoom {
 }
 .room_player {
 	display:flex;
+	display: -ms-flexbox;
 	flex-direction:row;
+	overflow-x: auto; 
 }
 .lobby_players {
 	display: flex;
+	display: -ms-flexbox;
 	flex-wrap: wrap;
 }
 .chat_msg {
@@ -185,9 +196,11 @@ div#createRoom {
 	overflow: auto;
 }
 .chat_msg_frame  {
-	height: 500px;
+	height: calc(100% - 50px);
 	margin-bottom: 10px;
-	overflow: auto;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
 }
 .nick_o {
 	color: #e3a1ae;
@@ -215,4 +228,9 @@ div#createRoom {
 	font-size: 20px;
 	font-weight: 500;
 	line-height: 30px;
+}
+
+.icon {
+	width : 30px;
+	height: 30px;
 }

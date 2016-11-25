@@ -11,5 +11,6 @@ public class UserInner {
 	private String regCode;
 	private int connect;
 	private String role;
+	private String was;
 
 }

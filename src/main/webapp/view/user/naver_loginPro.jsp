@@ -4,36 +4,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-
-<link rel='stylesheet' href='/js/jquery.ajax-cross-origin.min.js'>
-<title>Insert title here</title>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <body>
-	<script>
-		//location.href='https://nid.naver.com/oauth2.0/token?client_id=iM6rVSYTz69Duz5F99Mp&client_secret=xP3KOGIDSB&grant_type=authorization_code&state=${state}&code=${code}';
-		var url = 'https://nid.naver.com/oauth2.0/token?client_id=iM6rVSYTz69Duz5F99Mp&client_secret=xP3KOGIDSB&grant_type=authorization_code&state=${state}&code=${code}';
-		var author;
-		var str;
-		$.getJSON(url, function(data){
-			author = data;
-			console.log(author);
-
-			$.ajax({
-			    url: "https://openapi.naver.com/v1/nid/me",
-			    headers: {
-			        'Authorization':'Bearer ' + author.access_token,
-			    },
-			    method: 'POST',
-			    dataType: 'json',
-			    success: function(data){
-			      console.log('succes: '+data);
-			    }
-			  });
-		    }); 
-		console.log(str);	
-		
-	</script>
+<script type="text/javascript">
+  var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp", "http://spd.cu.cc/login/naver_loginPro");
+  // 접근 토큰 값 출력
+  //alert(naver_id_login.oauthParams.access_token);
+  // 네이버 사용자 프로필 조회
+  naver_id_login.get_naver_userprofile("naverSignInCallback()");
+  // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+  function naverSignInCallback() { 
+	var email = naver_id_login.getProfileData('email');
+    var nickname = naver_id_login.getProfileData('nickname');
+    
+    $.ajax({
+    	url:("/naver_loginPro?email="+email+"&nickname="+nickname),
+    	method:"post",
+    	success:function(data){
+    		window.opener.location.replace("http://spd.cu.cc/lobby/");
+    		window.close();
+    	},
+    	error:function(request, status, error){
+			alert("로그인 실패!");
+			window.close();			
+		}
+    });
+    
+    
+  }
+ 
+</script>
 </body>
 </html>

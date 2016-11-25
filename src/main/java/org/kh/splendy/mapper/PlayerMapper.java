@@ -27,8 +27,8 @@ public interface PlayerMapper {
 	public void create(Player player);
 	
 	@ResultMap("player")
-	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
-	public Player read(int id);
+	@Select("select * from "+TABLE+" where "+KEY+"=#{uid} and RM_ID = #{rid}")
+	public Player read(@Param("uid") int uid, @Param("rid") int rid);
 
 	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
 	public void update(Player player);
@@ -39,8 +39,8 @@ public interface PlayerMapper {
 
 	// BASIC MAPPER ( count , set )
 	
-	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id}")
-	public int count(int id);
+	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{uid} and RM_ID = #{rid}")
+	public int count(@Param("uid") int uid, @Param("rid") int rid);
 
 	@Update("update "+TABLE+" set PL_IS_IN=#{value, jdbcType=INTEGER} where U_ID=#{uid} and RM_ID=#{rid}")
 	public void setIsIn(@Param("uid") int uid, @Param("rid") int rid, @Param("value") int value);
@@ -58,6 +58,9 @@ public interface PlayerMapper {
 
 	// SQL query in xml
 	public List<WSPlayer> getInRoomPlayer(@Param("sid") String sid);
+	
+	// SQL query in xml
+	public List<WSPlayer> getInRoomPlayerByRid(@Param("rid") int rid);
 
 	// SQL query in xml
 	public WSPlayer getWSPlayerBySid(@Param("sid") String sid);
@@ -75,4 +78,7 @@ public interface PlayerMapper {
 			+ " 	and pl.pl_is_in   is not null"
 			+ " 	and inn.u_id      <> 0")
 	public List<String> getActiverSid();
+
+	// SQL query in xml
+	public int countIsIn(@Param("uid") int uid);
 }

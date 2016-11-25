@@ -10,17 +10,17 @@ import lombok.Data;
 public class WSPlayer {
 
 	@SerializedName("uid") @Expose
-	public int uid;
+	private int uid;
 	@SerializedName("nick") @Expose
-	public String nick;
+	private String nick;
 	@SerializedName("rating") @Expose
-	public int rating;
+	private int rating;
 	@SerializedName("icon") @Expose
-	public String icon;
+	private String icon;
 	@SerializedName("role") @Expose
-	public String role;
+	private String role;
 	@SerializedName("room") @Expose
-	public int room;
+	private int room;
 
 	public WSPlayer CanSend() {
 		setRole((getUid() == Integer.parseInt(getRole()))?"host":"");

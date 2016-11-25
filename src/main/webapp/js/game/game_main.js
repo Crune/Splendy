@@ -25,6 +25,7 @@ var lev3CardList = new Array();
 var lev2CardList = new Array();
 var lev1CardList = new Array();
 
+var roomId = -1;
 var rest_cardValue = {
 		rest_heroCardValue : 5,
 		rest_lev3CardValue : 15,
@@ -59,28 +60,45 @@ $(document).ready(
 			// 페이지가 시작됨과 동시에 소켓 서버 주소로 접속한다.
 			chatSock = new SockJS("http://" + window.location.host + "/ws");
 			
+			getAuth();
 			//필드의 보석 초기화
 			field_jewel = new Field_jewel();
 			field_jewel.initJewel();
 			
-			
-			chatSock.onopen = function() {				
-				player1.toggleTurn();
-				$("#player1").css("background-color", "red");
+			roomId = (window.location.href).split('/')[4];
+			console.log(roomId);
+			chatSock.onopen = function() {
 				
-				wssend('cardRequest', 'init_levN');
-				wssend('cardRequest', 'init_lev3');
-				wssend('cardRequest', 'init_lev2');
-				wssend('cardRequest', 'init_lev1');
+				wssend('auth', auth);
 				
-				$("#player1_name").html(player1.getUserId());
-				$("#player2_name").html(player2.getUserId());
-				$("#player3_name").html(player3.getUserId());
-				$("#player4_name").html(player4.getUserId());
+				
 			};
 					
-			chatSock.onmessage = function(evt) {				
-				var card = JSON.parse(evt.data);				
+			chatSock.onmessage = function(evt) {
+				var card = JSON.parse(evt.data);
+				
+				var data = JSON.parse(evt.data);
+				var k = data.type.split(".");
+				var v = data.cont;
+				
+				if (k[0] == 'auth' && v == 'ok') {
+					player1.toggleTurn();
+					$("#player1").css("background-color", "red");
+					
+					wssend('cardRequest', 'init_levN');
+					wssend('cardRequest', 'init_lev3');
+					wssend('cardRequest', 'init_lev2');
+					wssend('cardRequest', 'init_lev1');
+					
+					$("#player1_name").html(player1.getUserId());
+					$("#player2_name").html(player2.getUserId());
+					$("#player3_name").html(player3.getUserId());
+					$("#player4_name").html(player4.getUserId());
+				}
+				if (k[0] == 'left') {
+					location.replace("/lobby/");
+				}				
+				
 				if(card.type === "init_levN"){
 					var initHeroCards = cardManager.setInitLevN(card.cont);
 					for(var i in initHeroCards){
@@ -142,6 +160,14 @@ $(document).ready(
 			chatSock.onclose = function() {
 				alert('연결 종료');
 			};
+			
+			$("#left_btn").click(function(){				
+				
+				wssend("left", roomId);
+				
+				
+				
+			});
 
 			
 			$("#jewel_white_img").click(

@@ -16,20 +16,21 @@ public interface BoardService {
 
 	List<Article> getList(String bName) throws Exception;
 
-	Article getDetail(int at_Id) throws Exception;
+	Article getDetail(int at_id) throws Exception;
 	
 	int boardCount() throws Exception;
 	
-	void writePro(@ModelAttribute("BoardVO") Article article) throws Exception;
+	void writePro(@ModelAttribute("article") Article article) throws Exception;
 	
 	void reply(HashMap<String, String> map) throws Exception;
 	
 	int max() throws Exception;	 
 	 
-	void readCount(int at_Id) throws Exception;
+	void readCount(int at_id) throws Exception;
 	
-	void updateBoard(int at_Id) throws Exception;
+	void updateBoard(Article article) throws Exception;
 	
-	int updateBoard(Article article) throws Exception;
+	void deleteBoard(int at_id)throws Exception;
+	
 	
 }

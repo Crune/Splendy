@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class WSMsg {
-
+	
 	@SerializedName("type") @Expose
 	public String type;
 	@SerializedName("cont") @Expose

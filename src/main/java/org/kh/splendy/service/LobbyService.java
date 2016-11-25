@@ -11,9 +11,19 @@ public interface LobbyService {
 
 	List<Room> getList();
 
-	UserCore initPlayer(UserCore user);
-
 	Auth getAuth(int uid);
+
+	int createRoom(Room reqRoom, UserCore user);
+
+	int getLastRoom(int uid);
+
+	UserCore initPlayer(UserCore inUser, int rid);
+
+	void join(String sId, String msg);
+
+	void request(String sId, String msg);
+
+	void left(String sId, String msg);
 
 
 }

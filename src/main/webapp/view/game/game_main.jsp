@@ -5,11 +5,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
+
 <script type="text/javascript">
 	
 </script>
 </head>
 <body>
+	<div>
+		<button id="left_btn">Go lobby</button>
+		</div>
 	<div class="container">
 		<div class="container_player">
 			<div class="player" id="player1">
@@ -279,6 +283,7 @@
 			</div>
 		</div>
 		<!-- //보석 가져오는 모달창 -->
+		
 </body>
 
 <script class="heroCard_details" type="text/x-handlebars-template">
@@ -324,5 +329,5 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <link rel='stylesheet' href='/css/game_main.css'>
-<script type='text/javascript' src="/js/game/game_main.js"></script>
+<script type='text/javascript' src="/js/game/game_main2.js"></script>
 </html>

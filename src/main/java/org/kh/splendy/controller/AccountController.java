@@ -32,23 +32,31 @@ public class AccountController {
 	
 	@Autowired
 	private UserService userServ;
-
+	
 	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index() {
-		return "index";
+	public String index(HttpSession session) {
+		if ((UserCore) session.getAttribute("user") != null) {
+			return "redirect:/lobby/";
+		} else {
+			return "index";
+		}
 	}
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String indexWithMsg(@RequestParam("msg") String msg, Model model) {
-		if(msg == null){
-			msg = "";
+	public String indexWithMsg(@RequestParam("msg") String msg, Model model, HttpSession session) {
+		if ((UserCore) session.getAttribute("user") != null) {
+			return "redirect:/lobby/";
+		} else {
+			if(msg == null){
+				msg = "";
+			}
+			model.addAttribute(msg);
+			return "index";
 		}
-		model.addAttribute(msg);
-		return "index";
 	}
 
 	@RequestMapping(value = "/user/requestJoin", method = RequestMethod.POST, produces = "application/json")
@@ -102,6 +110,7 @@ public class AccountController {
 		
 		int result_pw = -1;
 		String new_pw = RandomStringUtils.randomAlphanumeric(9);
+		
 		try {
 			result_pw = userServ.findPw(email, new_pw);
 		} catch (Exception e) {
@@ -181,7 +190,7 @@ public class AccountController {
 	public  @ResponseBody UserCore modify_suc(@ModelAttribute("modal_form") UserCore user0, HttpSession session) {
 		
 		List<UserCore> user1 = null;
-		String email = (String)session.getAttribute("email");
+		String email = ((UserCore)session.getAttribute("user")).getEmail();
 				
 		try {
 			userServ.updateUser(user0, email);
@@ -195,7 +204,7 @@ public class AccountController {
 	
 	@RequestMapping("/user/delete_suc")
 	public String remove_suc(HttpSession session) {
-		String email = (String)session.getAttribute("email");
+		String email = ((UserCore)session.getAttribute("user")).getEmail();
 		
 		try {
 			userServ.deleteUser(email);

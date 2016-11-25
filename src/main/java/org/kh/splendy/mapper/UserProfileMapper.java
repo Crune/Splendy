@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.UserInner;
+import org.kh.splendy.vo.UserProfile;
 
 /** 개인 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.20) */
@@ -51,7 +52,7 @@ public interface UserProfileMapper {
 
 	@ResultMap("userProfile")
 	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
-	public UserProfileMapper read(int id); // 수정: 클래스 명
+	public UserProfile read(int id); // 수정: 클래스 명
 
 	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
 	public void update(UserProfileMapper var);
@@ -70,7 +71,7 @@ public interface UserProfileMapper {
 	public void setLastRoom(@Param("id") int id, @Param("value") int value);
 	
 	@Select("select U_LAST_RID from "+TABLE+" where "+KEY+"=#{id}")
-	public String getLastRoom(int id);
+	public int getLastRoom(int id);
 	
 	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and U_LAST_RID=#{value}")
 	public int checkLastRoom(@Param("id") int id, @Param("value") int value);

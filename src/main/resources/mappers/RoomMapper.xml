@@ -15,4 +15,22 @@
 		<result column="RM_START"		property="start"		javaType="java.sql.Date" />
 		<result column="RM_END"			property="end"			javaType="java.sql.Date" />
 	</resultMap>
+	
+	<select id="getNotEmptyRoom" resultType="java.util.HashMap">
+	<![CDATA[
+		SELECT KH_ROOM.RM_ID
+		FROM KH_ROOM
+			INNER JOIN KH_PLAYER
+				ON KH_ROOM.RM_ID = KH_PLAYER.RM_ID
+			INNER JOIN KH_USER_INNER
+				ON KH_PLAYER.U_ID           = KH_USER_INNER.U_ID
+		WHERE KH_PLAYER.PL_IS_IN    > 0
+			AND KH_USER_INNER.U_CONNECT > 0
+			AND KH_ROOM.RM_ID > 0
+		GROUP BY KH_PLAYER.PL_IS_IN,
+			KH_USER_INNER.U_CONNECT,
+			KH_ROOM.RM_ID
+		HAVING COUNT(KH_PLAYER.U_ID) > 0
+	]]>
+	</select>
 </mapper>
