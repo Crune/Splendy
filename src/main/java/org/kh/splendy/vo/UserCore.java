@@ -22,15 +22,15 @@ public class UserCore {
 	private int notCredential;
 	private Date reg;
 
-	public int isSamePassword(String password) {		
-		int login_result = -1;
+	public boolean isSamePassword(String password) {		
+		boolean login_result = false;
 		String check = null; 
 		try {
 			check = SplendyAdvice.getEncSHA256(password);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} if(this.password.equals(check)){
-			login_result = 1;
+			login_result = true;
 		}
 		return login_result;
 	}	

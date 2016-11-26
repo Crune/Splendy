@@ -1,4 +1,4 @@
-package org.kh.splendy;
+package org.kh.splendy.trash;
 
 import java.util.ArrayList;
 import java.util.HashSet;

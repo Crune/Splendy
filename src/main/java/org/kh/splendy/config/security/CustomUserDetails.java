@@ -1,4 +1,4 @@
-package org.kh.splendy.vo;
+package org.kh.splendy.config.security;
 
 import java.util.Collection;
 

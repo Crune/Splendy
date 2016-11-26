@@ -23,6 +23,7 @@ public class CardServiceImpl implements CardService {
 	private static List<Card> level_3 = null;
 	private static List<Card> level_noble = null;
 	
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(CardServiceImpl.class);
 	
 	@Override

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.service.*;
+import org.kh.splendy.trash.StreamService;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

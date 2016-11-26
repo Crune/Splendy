@@ -4,7 +4,6 @@ import javax.servlet.http.HttpSession;
 
 import org.kh.splendy.mapper.UserProfileMapper;
 import org.kh.splendy.service.UserProfileService;
-import org.kh.splendy.vo.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,8 @@
 package org.kh.splendy.mapper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Player;
-import org.kh.splendy.vo.WSChat;
 import org.kh.splendy.vo.WSPlayer;
 
 /** 플레이어 참가 정보 테이블을 관리하는 MyBatis Mapper

@@ -1,8 +1,7 @@
-package org.kh.splendy;
+package org.kh.splendy.trash;
 
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import org.kh.splendy.service.StreamService;
 import org.kh.splendy.vo.Chat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
