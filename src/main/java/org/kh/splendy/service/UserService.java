@@ -32,6 +32,8 @@ public interface UserService {
 	
 	UserCore selectOne(String email) throws Exception;
 	
+	UserCore selectOne(int id);
+	
 	void sendEmail(UserCore user, String credent_code) throws Exception;
 	
 	void sendPw(String email, String new_pw) throws Exception;
