@@ -76,7 +76,7 @@
     } 
     function fn_deleteBoard(){
         var comSubmit = new ComSubmit("frm");
-        comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
+        comSubmit.setUrl("<c:url value='/bbs/deletePro' />");
         comSubmit.addParam("at_id", $("#at_id").val());
         comSubmit.submit();             
     }

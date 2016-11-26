@@ -5,85 +5,103 @@
 /*var curState = "join";
 var email = "${user.email}";
 var login_result = "${login_result}";
-var credent = "${credent}";
-var msg = "${msg}";*/
+var credent = "${credent}";*/
 
-window.onload = function(){
+var msg = "${msg}";
+
+$(document).ready(function() {
 	
-	var source_test = $("#temp_test").html();
-	var temp_test = Handlebars.compile(source_test);	
-	var data = {temp:""};
-	
-	/*if(msg !== "") {
+	if(msg !== "") {
 		$('#myModal').modal('show');
 	}
 	
-	$("#testDiv").html(temp_test(data));
-	
-	var result = "${result}";
-	if(result == "2") {
-		alert("email이 중복되었습니다.")
-	} else if(result == "1") {
-		alert("회원가입이 완료되었습니다.")
+	window.fbAsyncInit = function(){
+	    FB.init({ appId: '1687598368235887', 
+	        status: true, 
+	        cookie: true,
+	        xfbml: true,
+	        oauth: true});
 	}
 	
-	if (login_result === "0") {
-		if (credent === "0"){ 
-			console.log("비밀번호틀림");
-			alert("email과 password를 다시 확인해주세요.");
-			return false;
-		} else if(credent === "1"){
-			console.log("이메일인증");
-			alert("email인증을 진행해주세요.");
-			return false;
-		}
-	} else if (login_result === "1"){
-		curState = "login_suc";
-		$("#loginDiv").hide();
-		$("#joinDiv").hide();
-		$("#sendPwDiv").hide();
-		$("#modifyDiv").hide();
-		$("#login_sucDiv").show();
+	function updateButton(response) {
+	    var button = document.getElementById('btn_facebook');
+	     
+	    if (response.authResponse) {
+	      FB.api('/me', function(response) {
+	    	  console.log(response.id);
+	          console.log(response.name);
+	          $.ajax({
+                  url:'/user/facebook',
+                  type:'post',
+                  data:{email: response.id, nickname: response.name},
+                  dataType: 'text', 
+                  success:function(data){
+                  	document.location.href=data;
+                  },error:function(request,status,error){
+          			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+          		}
+              });
+	      });
+	       
+	       
+	    } else {
+	         FB.login(function(response) {
+	            if (response.authResponse) {
+	                FB.api('/me', function(response) {
+	                	$.ajax({
+	                        url:'/user/facebook',
+	                        type:'post',
+	                        data:{email: response.id, nickname: response.name},
+	                        dataType: 'text', 
+	                        success:function(data){
+	                        	console.log(data);
+	                        	document.location.href=data;
+	                        },error:function(request,status,error){
+	                			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+	                		}
+	                    })
+	                });    
+	            } else {
+	                 
+	            }
+	        }, {scope:'email'});    
+	    }
 	}
 	
-	login_result = "";
-	credent = "";
-	*/
+	document.getElementById('btn_facebook').onclick = function() {
+	    FB.Event.subscribe('auth.statusChange', updateButton);  
+	    FB.getLoginStatus(updateButton);
+	};
+	
+	(function() {
+		  var e = document.createElement('script'); e.async = true;
+		  e.src = document.location.protocol 
+		    + '//connect.facebook.net/ko_KR/all.js';
+		  document.getElementById('fb-root').appendChild(e);
+	}());
+});
 
+
+window.onload = function(){
+	
 		$(".btn_login").on('click', function () {
-			curState = "login";
 			$("#joinDiv").hide();
-			$("#login_sucDiv").hide();
 			$("#sendPwDiv").hide();
-			$("#modifyDiv").hide();
 			$("#loginDiv").show();
 		});
 		
 		$(".btn_join").on('click', function () {
 			curState = "join";
 			$("#loginDiv").hide();
-			$("#login_sucDiv").hide();
 			$("#sendPwDiv").hide();
-			$("#modifyDiv").hide();
 			$("#joinDiv").show();
 		});
 		
 		$(".btn_send_pw").on('click', function () {
 			curState = "send_pw";
 			$("#loginDiv").hide();
-			$("#login_sucDiv").hide();
 			$("#joinDiv").hide();
-			$("#modifyDiv").hide();
 			$("#sendPwDiv").show();
-		});
-		
-		$(".btn_modify").on('click', function () {
-			curState = "modify";
-			$("#loginDiv").hide();
-			$("#login_sucDiv").hide();
-			$("#joinDiv").hide();
-			$("#sendPwDiv").hide();
-			$("#modifyDiv").show();
 		});
 		
 		$(".btn_join_prc").on('click', function () {
@@ -102,17 +120,7 @@ window.onload = function(){
 			loginRequest();
 		});
 		
-		$(".btn_facebook").on('click', function () {
-			loginFacebook();
-		});
-		
-		$(".btn_google").on('click', function () {
-			loginGoogle();
-
-		});
-		
 		$(".btn_naver").on('click', function(){
-			
 		});
 		
 		self.opener = self;
@@ -173,6 +181,7 @@ function loginRequest() {
 		data:$("#loginForm").serialize(),
 		dataType: 'text', //!!!
 		success:function(text){
+			alert(text);
 			if(text == "true"){
 				window.location.href = "lobby/";
 			} else if (text == "credentFalse"){
@@ -251,10 +260,47 @@ function delete_check() {
 	}
 }
 
-function loginFacebook() {
-	window.open("/login/facebook", "Facebook Login", "left=300, top=100, width=600, height=350, toolbar=no, menubar=no, scrollbars=yes, location=1, resizable=yes" );
-} 
-   
+var googleUser = {};
+var startApp = function() {
+  gapi.load('auth2', function(){
+    // Retrieve the singleton for the GoogleAuth library and set up the client.
+    auth2 = gapi.auth2.init({
+      client_id: '768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com',
+      cookiepolicy: 'VR7RGj1x7ET3dG8eMUlMn_jj',
+      // Request scopes in addition to 'profile' and 'email'
+      //scope: 'additional_scope'
+    });
+    attachSignin(document.getElementById('btn_google'));
+  });
+};
+
+function attachSignin(element) {
+  auth2.attachClickHandler(element, {},
+      function(googleUser) {
+	  document.googleForm.email.value = googleUser.getBasicProfile().getId(); //구글의 id:디비의 email
+	  document.googleForm.nickname.value = googleUser.getBasicProfile().getName();
+	  google();
+      }, function(error) {
+        alert(JSON.stringify(error, undefined, 2));
+      });
+}
+
+function google() {
+	$.ajax({
+        url:'/user/google',
+        type:'post',
+        data:$("#googleForm").serialize(),
+        dataType: 'text', 
+        success:function(data){
+        	document.location.href="lobby/";
+        },error:function(request,status,error){
+			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+		}
+    })
+}
+
+
+   /*
 function onSignIn(googleUser) {
     // Useful data for your client-side scripts:
     var profile = googleUser.getBasicProfile();
@@ -273,18 +319,11 @@ function onSignIn(googleUser) {
     document.googleForm.nickname.value = profile.getName();
    
     google();
-}
+} */
 
-function google() {
-	$.ajax({
-        url:'/user/google',
-        type:'post',
-        data:$("#googleForm").serialize(),
-        dataType: 'text', 
-        success:function(data){
-        	document.location.href="lobby/";
-        },error:function(request,status,error){
-			alert("로그인에 실패했습니다. 다시 시도해주세요.");
-		}
-    })
-}
+
+
+
+ 
+
+

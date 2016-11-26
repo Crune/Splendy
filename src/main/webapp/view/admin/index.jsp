@@ -33,13 +33,15 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/admin"><img src="/img/logo.png" /></a>
+				<a class="navbar-brand" href="/admin/index"><img src="/img/logo.png" /></a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="/servList">서비스</a></li>
-					<li><a href="adminList">관리자</a></li>
-					<li><a href="/userList">유저</a></li>
+					<li><a href="/admin/servList">서비스</a></li>
+					<li><a href="/admin/adminList">관리자</a></li>
+					<li><a href="/admin/userList">유저</a></li>
+					<li><a href="/">게임으로</a></li>
+					<li><a href="/logout">로그아웃</a></li>
 				</ul>
 			</div>
 		</div>
@@ -48,13 +50,13 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li><a href="/servList">서비스</a></li>
+					<li><a href="/admin/servList">서비스</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="/adminList">관리자</a></li>
+					<li><a href="/admin/adminList">관리자</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="/userList">유저</a></li>
+					<li><a href="/admin/userList">유저</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

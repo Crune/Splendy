@@ -1,14 +1,12 @@
 package org.kh.splendy.assist;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.*;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import org.springframework.stereotype.Component;
 
-@Retention(RUNTIME)
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Component
 public @interface WSController {
-
+	String value() default "";
 }

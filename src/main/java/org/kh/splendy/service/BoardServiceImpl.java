@@ -48,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void writePro(@ModelAttribute("BoardVO") Article article) throws Exception {		
+	public void writePro(@ModelAttribute("article") Article article) throws Exception {		
 		boardMap.writePro(article);
 		
 	}
@@ -77,8 +77,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public void updateBoard(int at_id) throws Exception{
-		boardMap.updateBoard(at_id);
+	public void updateBoard(Article article) throws Exception{
+		boardMap.updateBoard(article);
+	}
+
+	@Override
+	public void deleteBoard(int at_id) throws Exception {
+		boardMap.deleteBoard(at_id);
+		
 	}
 
 	

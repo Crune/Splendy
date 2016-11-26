@@ -3,6 +3,7 @@ package org.kh.splendy.mapper;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
@@ -84,12 +85,15 @@ public interface BoardMapper {
 		@Select("select max(AT_ID) from KH_ARTICLE")
 		public int max() throws Exception;		
 		
-		public void writePro(@ModelAttribute("BoardVO") Article article) throws Exception;
+		public void writePro(@ModelAttribute("article") Article article) throws Exception;
 		
 		public Article getDetail(int at_id) throws Exception;
 		
 		public void readCount(int at_id) throws Exception; 
 		
-		public void updateBoard(int at_id) throws Exception;
+		public void updateBoard(Article article) throws Exception;
+
+		@Delete("DELETE KH_ARTICLE WHERE AT_ID = #{AT_ID, jdbcType=INTEGER}")
+		public void deleteBoard(int at_id) throws Exception;
 			
 }

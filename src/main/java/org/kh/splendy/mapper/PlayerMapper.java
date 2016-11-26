@@ -27,8 +27,8 @@ public interface PlayerMapper {
 	public void create(Player player);
 	
 	@ResultMap("player")
-	@Select("select * from "+TABLE+" where "+KEY+"=#{id}")
-	public Player read(int id);
+	@Select("select * from "+TABLE+" where "+KEY+"=#{uid} and RM_ID = #{rid}")
+	public Player read(@Param("uid") int uid, @Param("rid") int rid);
 
 	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
 	public void update(Player player);

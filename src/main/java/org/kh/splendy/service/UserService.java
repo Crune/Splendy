@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.vo.UserCore;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
 public interface UserService {
 
@@ -11,7 +12,7 @@ public interface UserService {
 		
 	int checkPassword(String email, String password) throws Exception;
 	
-	int checkCredent(String email, String password) throws Exception;
+	int isNoneCredent(String email, String password) throws Exception;
 	
 	List<UserCore> searchEmail(String email) throws Exception;
 	
@@ -44,4 +45,8 @@ public interface UserService {
 	void adminMF(UserCore user) throws Exception;
 
 	void updateUser(UserCore user, String email) throws Exception;
+	
+	public UserCore read(int id) throws Exception;
+	
+	String selectPW(String email)throws Exception;
 }

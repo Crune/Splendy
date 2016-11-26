@@ -10,6 +10,7 @@
 	content="768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com">
 <title>Splendy - 환영합니다!</title>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
+<link rel='stylesheet' href='/css/index.css'>
 <link rel='stylesheet' href='/css/default.css'>
 <link rel='stylesheet'
 	href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
@@ -29,13 +30,8 @@ body {
 <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 <script src="/webjars/handlebars/4.0.5/handlebars.js"></script>
 <script src='/js/default.js'></script>
+<script src="https://apis.google.com/js/api:client.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-<script id="temp_test" type="text/x-handlebars-template">
-
-	<a>{{ test }}</a>
-
-</script>
 <script type='text/javascript' src='/js/index.js'></script>
 
 <script>
@@ -56,6 +52,7 @@ body {
     <![endif]-->
 </head>
 <body bgcolor="#191919">
+<div id="fb-root"></div>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -103,41 +100,20 @@ body {
 										<label for="exampleInputPassword1">암호</label> <input
 											name="password" type="password" class="form-control"
 											id="exampleInputPassword1" name="password" placeholder="암호" />
-
 									</div>
 									<input id="btn_login_prc" class="btn btn-default btn_login_prc"
 										type="button" onclick="return login_check();" value="로그인" />
 									<input id="btn_send_pw" class="btn btn-default btn_send_pw"
 										type="button" value="비밀번호 찾기" /> <input id="btn_join"
 										class="btn btn-default btn_join" type="button" value="회원가입" />
-									<input id="btn_facebook" class="btn btn-default btn_facebook"
-										type="button" value="페이스북으로 로그인" />
-									<div class="g-signin2" id="google" data-onsuccess="onSignIn"></div>
-									<!-- 네이버아이디로로그인 버튼 노출 영역 -->
+									<div class="f-login" ><img src="/img/sns/facebook.png" id="btn_facebook" title="페이스북 아이디로 로그인"/></div>
+									<div class="g-login" class="customGPlusSignIn"><img src="/img/sns/google.png" title="구글 아이디로 로그인" id="btn_google" /></div>
 									<div id="naver_id_login"></div>
-									<!-- //네이버아이디로로그인 버튼 노출 영역 -->
-
 								</form>
 								<form name="googleForm" id="googleForm" method="post">
 									<input type="hidden" name="email" value=""> <input
 										type="hidden" name="nickname" value="">
 								</form>
-							</div>
-						</div>
-						<div class="index-right-frame" id="login_sucDiv"
-							style="display: none">
-							<p class="index-title">로그인성공</p>
-							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
-							<div class="index-cont">
-								<div class="form-group">
-									<label for="textfield"><b>${user.nickname}</b>님 환영합니다.</label>
-								</div>
-								<input id="btn_logout" class="btn btn-default btn_logout"
-									type="button" onclick="location.href='/user/logout'"
-									value="로그아웃" /> <input id="btn_modify"
-									class="btn btn-default btn_modify" type="button" value="정보수정" />
-								<input id="btn_delete" class="btn btn-default btn_delete"
-									type="button" onclick="return delete_check()" value="회원탈퇴" />
 							</div>
 						</div>
 						<div class="index-right-frame" id="sendPwDiv"
@@ -155,28 +131,6 @@ body {
 										class="btn btn-default btn_join" type="button" value="회원가입" />
 									<input id="btn_login" class="btn btn-default btn_login"
 										type="button" value="로그인" />
-								</form>
-							</div>
-						</div>
-						<div class="index-right-frame" id="modifyDiv"
-							style="display: none">
-							<p class="index-title">개인정보 수정</p>
-							<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
-							<div class="index-cont">
-								<form id="modifyForm" name="modifyForm" method="post">
-									<div class="form-group">
-										<label for="textfield">email : </label> ${user.email} <br />
-										<input name="email" type="hidden" class="form-control"
-											id="email" value="${user.email}"> <label
-											for="textfield">nickname : </label> <input name="nickname"
-											type="text" class="form-control" id="nickname"
-											value="${user.nickname}"> <label for="textfield">password
-											: </label> <input name="password" type="password"
-											class="form-control" id="password">
-									</div>
-									<input id="btn_modify_prc"
-										class="btn btn-default btn_modify_prc" type="button"
-										value="정보수정" />
 								</form>
 							</div>
 						</div>
@@ -212,11 +166,12 @@ body {
 		var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp",
 				"http://spd.cu.cc/login/naver_loginPro");
 		var state = naver_id_login.getUniqState();
-		naver_id_login.setButton("green", 1, 40);
+		naver_id_login.setButton("green", 1, 65);
 		naver_id_login.setDomain("http://spd.cu.cc/");
 		naver_id_login.setState(state);
 		naver_id_login.setPopup();
 		naver_id_login.init_naver_id_login();
 	</script>
+	<script>startApp();</script>
 </body>
 </html>

@@ -10,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.aop.SplendyAdvice;
+import org.kh.splendy.config.CustomAuthenticationProvider;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,9 +97,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int checkCredent(String email, String password) throws Exception {
-		String encryptPw = SplendyAdvice.getEncSHA256(password);
-		int check = userMap.checkCredent(email, encryptPw);
+	public int isNoneCredent(String email, String password) throws Exception {
+		//String encryptPw = SplendyAdvice.getEncSHA256(password);
+		int check = userMap.checkCredent(email, password);
 		return check;
 	}
 
@@ -214,6 +216,19 @@ public class UserServiceImpl implements UserService {
 			}
 		}	
 	}
+
+	@Override
+	public UserCore read(int id) throws Exception {
+		UserCore user = userMap.read(id);
+		return user;
+	}
+
+	@Override
+	public String selectPW(String email) throws Exception {
+		String pw = userMap.selectPW(email);
+		return pw;
+	}
+
 	
 	@Override
 	public void createUser(UserCore user) throws Exception {

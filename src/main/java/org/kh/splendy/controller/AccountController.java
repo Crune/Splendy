@@ -7,10 +7,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.service.UserService;
+import org.kh.splendy.vo.CustomUserDetails;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,16 +39,24 @@ public class AccountController {
 
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index() {
-		return "index";
+	public String index(HttpSession session) {
+		/*if ((UserCore) session.getAttribute("user") != null) {
+			return "redirect:/lobby/";
+		} else*/ {
+			return "index";
+		}
 	}
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String indexWithMsg(@RequestParam("msg") String msg, Model model) {
-		if(msg == null){
-			msg = "";
+	public String indexWithMsg(@RequestParam("msg") String msg, Model model, HttpSession session) {
+		/*if ((UserCore) session.getAttribute("user") != null) {
+			return "redirect:/lobby/";
+		} else*/ {
+			if(msg == null){
+				msg = "";
+			}
+			model.addAttribute(msg);
+			return "index";
 		}
-		model.addAttribute(msg);
-		return "index";
 	}
 
 	@RequestMapping(value = "/user/requestJoin", method = RequestMethod.POST, produces = "application/json")
@@ -86,8 +96,6 @@ public class AccountController {
 			e.printStackTrace();
 		}
 		
-		/*request.setAttribute("credent_result", credent_result);*/
-		
 		rttr.addFlashAttribute("msg","이메일 인증을 완료하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
 		return "redirect:/";
 	}
@@ -110,45 +118,48 @@ public class AccountController {
 		return result_pw;
 	}
 	
-	@RequestMapping(
-			value = "/user/login_suc",
-			method = {RequestMethod.GET, RequestMethod.POST},
-			produces = "application/json")
-	public @ResponseBody String login_suc(@ModelAttribute("loginForm") UserCore user0,
-							HttpServletRequest request, HttpSession session) {
-		int result = -1;
-		int login_result = -1;
-		int credent = -1;
-		UserCore user = null;
-		String text = null;
-		
-		System.out.println("email : " + user0.getEmail());
-		System.out.println("password : " + user0.getPassword());
-		
-		try {
-			login_result = userServ.checkPassword(user0.getEmail(), user0.getPassword());
-			credent = userServ.checkCredent(user0.getEmail(), user0.getPassword());
-		
-			if(login_result == 1 && credent == 0){
-			
-					user = userServ.checkEmail(user0.getEmail());
-					session.setAttribute("user", user);
-					session.setAttribute("email", user.getEmail());
-					session.setAttribute("user_id", user.getId());
-					user.openInfo();
-					text = "true";
-					
-			} else if(login_result == 1 && credent == 1) {
-				text = "credentFalse";
+	@RequestMapping( value = "/user/login_suc", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
+	public @ResponseBody String login_suc( Authentication authentication, @ModelAttribute("loginForm") UserCore user0, HttpSession session) {
 				
-			} else if(login_result == 0) {
-				text = "loginFalse";
+		int isSameAccountInfo = -1;
+		int isAlreadyCredent = -1;
+		
+		UserCore user = null;
+		
+		String result = null;
+		String email = null;
+		String password = null;
+
+
+		CustomUserDetails cud = (CustomUserDetails)authentication.getPrincipal();
+		try {
+			if (cud != null) {
+				email = cud.getUsername();
+				password = cud.getPassword();
+			} else {
+				email = user0.getEmail();
+				password = user0.getPassword();
+			}
+			isSameAccountInfo = userServ.checkPassword(email, password);
+			isAlreadyCredent = userServ.isNoneCredent(email, password);
+
+			user = userServ.checkEmail(email);
+			user.openInfo();
+		
+			if (isSameAccountInfo == 1 && isAlreadyCredent == 0) {
+				session.setAttribute("user", user);
+				result = "true";
+			} else if (isSameAccountInfo == 1 && isAlreadyCredent == 1) {
+				result = "credentFalse";
+				
+			} else if (isSameAccountInfo == 0) {
+				result = "loginFalse";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return text;
+		return result;
 	}
 	
 	@RequestMapping("/user/logout")

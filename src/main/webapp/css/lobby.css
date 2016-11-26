@@ -148,6 +148,12 @@ div#createRoom {
 	font-weight: 500;
 	line-height: 40px;
 }
+#roomlist {
+	height: calc(100% - 99px);
+	overflow-y: auto;
+	overflow-wrap: break-word;
+	overflow-x: hidden;
+}
 .room_info {
 	color: #fec2ba;
 	font-size: 16px;
@@ -192,7 +198,9 @@ div#createRoom {
 .chat_msg_frame  {
 	height: calc(100% - 50px);
 	margin-bottom: 10px;
-	overflow: auto;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
 }
 .nick_o {
 	color: #e3a1ae;
