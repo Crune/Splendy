@@ -219,8 +219,7 @@ body {
 								class="btn btn-default">취소</button>
 						</form>
 					</div>
-					<div id="roomlist" name="roomlist"
-						style="height: calc(100% - 99px); overflow: auto">
+					<div id="roomlist" name="roomlist">
 						<div class="lobby_room" id="room_1">
 							<div class="room_detail col-md-5">
 								<div class="room_name">아무나 들어오세요</div>
