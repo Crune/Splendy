@@ -1,5 +1,7 @@
 package org.kh.splendy.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.kh.splendy.mapper.UserProfileMapper;
@@ -38,5 +40,26 @@ public class UserProfileServiceImpl implements UserProfileService{
 		UserProfile ups = profMap.read(id);
 		session.setAttribute("profile", ups);		
 	}
+
+	@Override
+	public List<UserProfile> getProfAll() {
+		List<UserProfile> profList = null;
+		try{
+			profList = profMap.getProfAll();
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return profList;
+	}
+
+	@Override
+	public void updateRate(int id, int rate) {
+		try{
+			profMap.setRate(id, rate);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

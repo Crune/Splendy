@@ -220,8 +220,11 @@ public class UserServiceImpl implements UserService {
 		userMap.createUser(user);
 	}
 	
-	public void socialLogin(UserCore user) throws Exception {
-		
+
+	@Override
+	public UserCore selectOne(int id) {
+		UserCore user = userMap.read(id);
+		return user;
 	}
 	
 }

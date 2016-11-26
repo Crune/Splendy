@@ -41,6 +41,10 @@ window.onload = function(){
 		changeIcon('icon4');
 	});
 	
+	$("#btn_rank").click(function(){
+		$('#rank_modal').modal('show');
+	});
+	
 }
 
 function modifyRequest() {

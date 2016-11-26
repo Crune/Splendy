@@ -1,9 +1,13 @@
 package org.kh.splendy.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.UserInner;
@@ -70,6 +74,9 @@ public interface UserProfileMapper {
 	@Update("update "+TABLE+" set U_LAST_RID=#{value} where "+KEY+"=#{id} ")
 	public void setLastRoom(@Param("id") int id, @Param("value") int value);
 	
+	@Update("update "+TABLE+" set U_RATE=#{value} where " + KEY+ "=#{id}")
+	public void setRate(@Param("id") int id, @Param("value") int value);
+	
 	@Select("select U_LAST_RID from "+TABLE+" where "+KEY+"=#{id}")
 	public int getLastRoom(int id);
 	
@@ -95,8 +102,10 @@ public interface UserProfileMapper {
 	
 	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and U_INFO=#{value}")
 	public int checkInfo(@Param("id") int id, @Param("value") String value);
-
 	
+	@ResultMap("userProfile")
+	@Select("select * from "+TABLE +" where U_RATE is not null order by U_RATE DESC")
+	public List<UserProfile> getProfAll();
 
 	// Another
 
