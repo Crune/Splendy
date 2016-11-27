@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Splendy - 환영합니다!</title>
 <link rel='stylesheet' href='/css/default.css'>
+<link rel='stylesheet' href='/css/rank.css'>
 <link rel='stylesheet' href='/css/lobby.css'>
 <link rel='stylesheet'
 	href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
@@ -103,8 +104,7 @@ body {
 							<button type="button" onclick="window.location='/admin/index'" class="btn btn-default btn-xs">관리자</button>
 						</sec:authorize>
 						<button type="button" class="btn btn-default btn-xs">공지사항</button>
-						<button type="button" class="btn btn-default btn-xs" id="btn_rank">TOP
-							20 Player</button>
+						<button type="button" class="btn btn-default btn-xs" id="btn_rank">TOP 20 Player</button>
 						<button type="button" class="btn btn-default btn-xs">자유게시판</button>
 
 						<button type="button" class="btn btn-default btn-xs" id="btn_modify">정보수정</button>
@@ -218,8 +218,10 @@ body {
 							<button id="btn_create_cancel" type="button"
 								class="btn btn-default">취소</button>
 						</form>
+
 					</div>
 					<div id="roomlist" name="roomlist">
+
 						<div class="lobby_room" id="room_1">
 							<div class="room_detail col-md-5">
 								<div class="room_name">아무나 들어오세요</div>

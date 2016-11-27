@@ -108,7 +108,7 @@ window.onload = function(){
 	});
 	
 	$("#btn_rank").click(function(){
-		$('#rank_modal').modal('show');
+		$("#rank_modal").modal('show');
 	});
 	
 }
