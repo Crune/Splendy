@@ -2,7 +2,7 @@ package org.kh.splendy.service;
 
 import java.util.Collection;
 
-import org.kh.splendy.vo.CustomUserDetails;
+import org.kh.splendy.config.security.CustomUserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class UserProfile {
 	private int userId=-1;
-
+	private String nickname;
 	// 전체 플레이 정보
 	private Date totalTime=new Date(0);
 	

@@ -1,4 +1,4 @@
-package org.kh.splendy.service;
+package org.kh.splendy.trash;
 
 import java.util.Map;
 

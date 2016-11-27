@@ -1,3 +1,4 @@
+package org.kh.splendy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -11,6 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kh.splendy.vo.WSMsg;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -31,7 +33,7 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GreetingIntegrationTests {
-/*
+
     @LocalServerPort
     private int port;
 
@@ -57,21 +59,21 @@ public class GreetingIntegrationTests {
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicReference<Throwable> failure = new AtomicReference<>();
 
-        StompSessionHandler handler = new TestSessionHandler(failure) {
+        StompSessionHandler handler = new TestSessionHandler(failure) {/*
 
             @Override
             public void afterConnected(final StompSession session, StompHeaders connectedHeaders) {
                 session.subscribe("/topic/greetings", new StompFrameHandler() {
                     @Override
                     public Type getPayloadType(StompHeaders headers) {
-                        return Greeting.class;
+                        return WSMsg.class;
                     }
 
                     @Override
                     public void handleFrame(StompHeaders headers, Object payload) {
-                        Greeting greeting = (Greeting) payload;
+                    	WSMsg greeting = (WSMsg) payload;
                         try {
-                            assertEquals("Hello, Spring!", greeting.getContent());
+                            assertEquals("Hello, Spring!", greeting.getCont());
                         } catch (Throwable t) {
                             failure.set(t);
                         } finally {
@@ -81,12 +83,12 @@ public class GreetingIntegrationTests {
                     }
                 });
                 try {
-                    session.send("/app/hello", new HelloMessage("Spring"));
+                    session.send("/app/hello", new WSMsg());
                 } catch (Throwable t) {
                     failure.set(t);
                     latch.countDown();
                 }
-            }
+            }*/
         };
 
         this.stompClient.connect("ws://localhost:{port}/gs-guide-websocket", this.headers, handler, this.port);
@@ -126,5 +128,5 @@ public class GreetingIntegrationTests {
             this.failure.set(ex);
         }
     }
-    */
+
 }

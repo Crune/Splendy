@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.assist.WSReqeust;
 import org.kh.splendy.mapper.*;
+import org.kh.splendy.trash.StreamService;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

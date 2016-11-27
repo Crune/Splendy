@@ -10,11 +10,19 @@ import lombok.Data;
 public class WSMsg {
 	
 	@SerializedName("type") @Expose
-	public String type;
+	public String type="";
 	@SerializedName("cont") @Expose
-	public Object cont;
+	public Object cont=null;
 	
 	public static WSMsg convert(String source) {
 		return new Gson().fromJson(source, WSMsg.class);
+	}
+
+	public WSMsg(String type, Object cont) {
+		this.type = type;
+		this.cont = cont;
+	}
+
+	public WSMsg() {
 	}
 }

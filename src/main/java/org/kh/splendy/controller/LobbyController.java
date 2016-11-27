@@ -1,10 +1,15 @@
 package org.kh.splendy.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.kh.splendy.mapper.UserMapper;
+import org.kh.splendy.mapper.UserProfileMapper;
 import org.kh.splendy.service.*;
+import org.kh.splendy.trash.StreamService;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +35,11 @@ public class LobbyController {
 	private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
 
 	@Autowired private StreamService stream;
+	@Autowired private LobbyService serv;	
 	@Autowired private UserProfileService profServ;
-	@Autowired private LobbyService serv;
+	@Autowired UserProfileMapper profMap;
+	@Autowired UserService userServ;
+	@Autowired UserMapper userMap;
 
 	@ModelAttribute("profile")
 	/** 뷰어(JSP)에서 profile을 요청했을때 선언되지 않을 경우 반환할 값
@@ -65,6 +73,24 @@ public class LobbyController {
 				// 게임 중 재접속시에는 해당 게임방으로 이동. 
 				return "redirect:/game/"+lastRoom;
 			} else {
+				//랭킹 처리 부분
+				List<UserProfile> profList = profServ.getProfAll();
+				for(int i = 0; i < profList.size(); i++){
+					int id = profList.get(i).getUserId();
+					UserCore user_rank = userServ.selectOne(id);
+					String nickname = user_rank.getNickname();
+					profList.get(i).setNickname(nickname);
+					/*//승패가 정해졌을 때 코딩 다시해야함 
+					int win = profList.get(i).getWin();
+					int lose = profList.get(i).getLose();
+					int rate = profList.get(i).getRate();
+					
+					int correctRate = (rate + (win*20) - (lose*20));
+					profServ.updateRate(id, correctRate);
+					profList.get(i).setRate(correctRate);*/
+				}
+				model.addAttribute("profList", profList);
+				//랭킹 처리 부분 끝
 				profServ.refreshUserProf(session);
 				return "lobby";				
 			}

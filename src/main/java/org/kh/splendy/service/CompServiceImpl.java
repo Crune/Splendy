@@ -18,6 +18,7 @@ public class CompServiceImpl implements CompService {
 	@Autowired private CoinMapper coinMap;
 	@Autowired private RoomMapper roomMap;
 
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(CompServiceImpl.class);
 
 	private static List<Card> cardAll = new ArrayList<Card>();
@@ -100,7 +101,6 @@ public class CompServiceImpl implements CompService {
 
 		List<PLCard> cards = new ArrayList<PLCard>();
 
-		int count =0;
 		for (Card card : cardAll) {
 			PLCard rst = new PLCard();
 			rst.setRm_id(rid);

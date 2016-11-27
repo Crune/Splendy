@@ -70,4 +70,5 @@ public class SplendyAdvice {
 	}
 
 	public static final String WAS_ID = RandomStringUtils.randomAlphanumeric(9);
+
 }

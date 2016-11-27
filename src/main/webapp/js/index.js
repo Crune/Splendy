@@ -181,7 +181,7 @@ function loginRequest() {
 		data:$("#loginForm").serialize(),
 		dataType: 'text', //!!!
 		success:function(text){
-			alert(text);
+			console.log("login result: "+text);
 			if(text == "true"){
 				window.location.href = "lobby/";
 			} else if (text == "credentFalse"){

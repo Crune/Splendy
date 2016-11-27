@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.kh.splendy.config.security.CustomUserDetails;
 import org.kh.splendy.service.UserService;
-import org.kh.splendy.vo.CustomUserDetails;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,6 +131,7 @@ public class AccountController {
 		String password = null;
 
 		CustomUserDetails cud = (CustomUserDetails)authentication.getPrincipal();
+
 		try {
 			if(cud != null) {
 				if (authentication.getName() == null) {
