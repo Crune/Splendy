@@ -1,5 +1,7 @@
 package org.kh.splendy.vo;
 
+import org.kh.splendy.assist.ProtocolHelper;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -22,5 +24,21 @@ public class WSChat {
 	
 	public static WSChat convert(String source) {
 		return new Gson().fromJson(source, WSChat.class);
+	}
+
+	public WSChat() { }
+	public WSChat(WSChat org) {
+		try {
+			ProtocolHelper.inject(this, org);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public WSChat(int uid, String nick, String cont, String time, String type) {
+		this.uid = uid;
+		this.nick = nick;
+		this.cont = cont;
+		this.time =  time;
+		this.type = type;
 	}
 }

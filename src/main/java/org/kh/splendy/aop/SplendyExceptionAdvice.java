@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
-public class CommonExceptionAdvice {
+public class SplendyExceptionAdvice {
 
-	private static final Logger log = LoggerFactory.getLogger(CommonExceptionAdvice.class);
+	@SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(SplendyExceptionAdvice.class);
 
 	@ExceptionHandler(Exception.class)
 	public ModelAndView errorModelAndView(Exception ex) {

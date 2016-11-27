@@ -10,7 +10,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.aop.SplendyAdvice;
-import org.kh.splendy.config.CustomAuthenticationProvider;
+import org.kh.splendy.config.security.SplendyAuthenticationProvider;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;

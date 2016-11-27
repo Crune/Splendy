@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.kh.splendy.config.security.CustomUserDetails;
 import org.kh.splendy.mapper.UserInnerMapper;
 import org.kh.splendy.mapper.UserMapper;
-import org.kh.splendy.vo.CustomUserDetails;
 import org.kh.splendy.vo.UserCore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

@@ -13,6 +13,13 @@ function wrapWindowByMask() {
 	$('.window').show();
 }
 
+function setControll(boolVar) {
+    if (boolVar) {
+        $('#mask, .window').hide();
+    } else {
+        wrapWindowByMask();
+    }
+}
 /*
 $(document).ready(function() {
 

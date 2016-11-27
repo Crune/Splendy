@@ -1,4 +1,4 @@
-package org.kh.splendy.protocol;
+package org.kh.splendy.trash;
 
 import org.kh.splendy.assist.*;
 import org.kh.splendy.service.*;

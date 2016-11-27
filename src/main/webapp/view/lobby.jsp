@@ -24,17 +24,16 @@ body {
 	height: 100%;
 }
 </style>
-<script type='text/javascript'
-	src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
-<script type='text/javascript'
-	src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
-<script type='text/javascript'
-	src="/webjars/handlebars/4.0.5/handlebars.js"></script>
-<script type='text/javascript'
-	src="/webjars/sockjs-client/1.1.1/sockjs.min.js"></script>
-<script type='text/javascript'
-	src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+<script type='text/javascript'>
+	var uid = ${sessionScope.user.id};
+	var nick = "${sessionScope.user.nickname}";
+</script>
 
+<script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
+<script type='text/javascript' src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
+<script type='text/javascript' src="/webjars/handlebars/4.0.5/handlebars.js"></script>
+<script type='text/javascript' src="/webjars/sockjs-client/1.1.1/sockjs.min.js"></script>
+<script type='text/javascript' src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 <script id="temp_chatmsg" type="text/x-handlebars-template">
 	<div class="chat_msg"><span class="nick_{{ type }}">{{ nick }}:</span> {{ cont }} <span class="msg_time">- {{ time }}</span></div>
 </script>
@@ -76,9 +75,12 @@ body {
 	</div>
 </script>
 <script type='text/javascript' src='/js/default.js'></script>
-<script type='text/javascript' src='/js/commonWS.js'></script>
-<script type='text/javascript' src='/js/lobby.js'></script>
-<script type='text/javascript' src='/js/lobby3.js'></script>
+<script type='text/javascript' src='/js/sock.js'></script>
+<script type='text/javascript' src='/js/lobby/starter.js'></script>
+<script type='text/javascript' src='/js/lobby/account.js'></script>
+<script type='text/javascript' src='/js/lobby/onchat.js'></script>
+<script type='text/javascript' src='/js/lobby/onroom.js'></script>
+<script type='text/javascript' src='/js/lobby/onplayer.js'></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -217,8 +219,8 @@ body {
 							<button id="btn_create_cancel" type="button"
 								class="btn btn-default">취소</button>
 						</form>
-					</div>
 
+					</div>
 					<div id="roomlist" name="roomlist">
 
 						<div class="lobby_room" id="room_1">
