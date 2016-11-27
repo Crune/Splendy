@@ -188,9 +188,18 @@ function loginRequest() {
 				alert("email을 인증해주세요.");
 				windwo.location.href = "/";
 			} else if (text == "loginFalse") {
-			alert("email과 password를 다시 확인해주세요.");
-			window.location.href = "/";
-			}
+				alert("email과 password를 다시 확인해주세요.");
+				window.location.href = "/";
+			} else if (text == "pwFalse") {
+				alert("password를 다시 확인해주세요.");
+				window.location.href = "/";
+			} else if (text == "idFalse") {
+				alert("id를 다시 확인해주세요.");
+				window.location.href = "/logout";
+			} else if (text == "lockAccount") {
+				alert("차단된 아이디 입니다.");
+				window.location.href = "/logout";
+			} 
 		},error:function(request,status,error){
 			 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}

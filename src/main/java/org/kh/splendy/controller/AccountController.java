@@ -130,16 +130,22 @@ public class AccountController {
 		String email = null;
 		String password = null;
 
-		CustomUserDetails cud = null;
+		CustomUserDetails cud = (CustomUserDetails)authentication.getPrincipal();
+
 		try {
-			cud = (CustomUserDetails)authentication.getPrincipal();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			if (cud != null) {
-				email = cud.getUsername();
-				password = cud.getPassword();
+			if(cud != null) {
+				if (authentication.getName() == null) {
+					result="idFalse"; // id 틀림
+				} else if(cud.getPassword() == null) {
+					result="pwFalse"; // pw 틀림
+				} else if(cud.isAccountNonLocked() == false) {
+					result="lockAccount"; // 잠긴계정
+				} else if(cud.isCredentialsNonExpired() == false) {
+					result="credentFalse"; // 인증실패
+				} else {
+					email = cud.getUsername();
+					password = cud.getPassword();
+				}
 			} else {
 				email = user0.getEmail();
 				password = user0.getPassword();
@@ -149,16 +155,14 @@ public class AccountController {
 
 			user = userServ.checkEmail(email);
 			user.openInfo();
-		
 			if (isSameAccountInfo == 1 && isAlreadyCredent == 0) {
 				session.setAttribute("user", user);
 				result = "true";
 			} else if (isSameAccountInfo == 1 && isAlreadyCredent == 1) {
 				result = "credentFalse";
-				
 			} else if (isSameAccountInfo == 0) {
 				result = "loginFalse";
-			}
+			}	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

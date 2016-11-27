@@ -26,19 +26,25 @@ public class SecurityServiceImpl implements SecurityService {
 	private UserMapper userMap;
 	
 	@Override
-	public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException  {
+	public CustomUserDetails loadUserByUsername(String email) {
 		CustomUserDetails cus = new CustomUserDetails();
+		UserCore user = userMap.selectOne(email);
+		if(user != null){
 			cus.setUsername(email);
 			cus.setPassword(userMap.selectPW(email));
+			if(user.getNotCredential() == 0){
+				cus.setCredentialsNonExpired(false);
+			}else if(user.getNotLocked() == 0){
+				cus.setAccountNonLocked(false);
+			}
 			cus.setAuthorities(getAuthorities(email));
-			// TODO: 진규.시큐리티: 알아서해
+		} else { cus.setUsername(null); }
 		return cus;
 	}
 	
 	@Override
 	public Collection<GrantedAuthority> getAuthorities(String email) {
-		UserCore user = userMap.selectOne(email);
-		int id = new Integer(user.getId());
+		int id = new Integer(userMap.serchID(email));
         List<String> string_authorities = innerMap.readAuthority(id);
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         for (String authority : string_authorities) {

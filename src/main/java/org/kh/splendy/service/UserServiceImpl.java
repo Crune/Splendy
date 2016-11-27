@@ -218,18 +218,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserCore read(int id) throws Exception {
-		UserCore user = userMap.read(id);
-		return user;
-	}
-
-	@Override
 	public String selectPW(String email) throws Exception {
 		String pw = userMap.selectPW(email);
 		return pw;
 	}
 
-	
 	@Override
 	public void createUser(UserCore user) throws Exception {
 		userMap.createUser(user);
@@ -240,6 +233,12 @@ public class UserServiceImpl implements UserService {
 	public UserCore selectOne(int id) {
 		UserCore user = userMap.read(id);
 		return user;
+	}
+
+	@Override
+	public int serchID(String email) throws Exception {
+		int id = userMap.serchID(email);
+		return id;
 	}
 	
 }
