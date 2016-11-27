@@ -83,7 +83,6 @@ public interface UserProfileMapper {
 	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and U_LAST_RID=#{value}")
 	public int checkLastRoom(@Param("id") int id, @Param("value") int value);
 
-
 	@Update("update "+TABLE+" set U_ICON=#{value} where "+KEY+"=#{id} ")
 	public void setIcon(@Param("id") int id, @Param("value") String value);
 	
@@ -92,7 +91,6 @@ public interface UserProfileMapper {
 	
 	@Select("select count(*) from "+TABLE+" where "+KEY+"=#{id} and U_ICON=#{value}")
 	public int checkIcon(@Param("id") int id, @Param("value") String value);
-
 
 	@Update("update "+TABLE+" set U_INFO=#{value} where "+KEY+"=#{id} ")
 	public void setInfo(@Param("id") int id, @Param("value") String value);
@@ -104,7 +102,7 @@ public interface UserProfileMapper {
 	public int checkInfo(@Param("id") int id, @Param("value") String value);
 	
 	@ResultMap("userProfile")
-	@Select("select * from "+TABLE +" where U_RATE is not null order by U_RATE DESC")
+	@Select("select * from "+TABLE +" where U_RATE is not null and rownum <= 20 order by U_RATE DESC")
 	public List<UserProfile> getProfAll();
 
 	// Another

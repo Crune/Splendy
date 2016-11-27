@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Splendy - 환영합니다!</title>
 <link rel='stylesheet' href='/css/default.css'>
+<link rel='stylesheet' href='/css/rank.css'>
 <link rel='stylesheet' href='/css/lobby.css'>
 <link rel='stylesheet'
 	href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
@@ -136,14 +137,7 @@ body {
 								<div class="lobby_profile_data">
 									<div class="lobby_text_value">${sessionScope.profile.win+sessionScope.profile.lose+sessionScope.profile.draw}</div>
 									<div class="lobby_text_biglabel">참가 게임수</div>
-<<<<<<< HEAD
-									<div class="lobby_text_sublabel">
-										일별 게임 수: 3 <span class="lobby_text_subsublabel">/5
-											(일일미션)</span>
-									</div>
-=======
 									<div class="lobby_text_sublabel">일별 게임 수: 0 <span class="lobby_text_subsublabel">/5 (일일미션)</span></div>
->>>>>>> branch 'master' of https://github.com/Crune/Splendy.git
 								</div>
 							</div>
 							<div class="col-md-6">
@@ -224,12 +218,9 @@ body {
 								class="btn btn-default">취소</button>
 						</form>
 					</div>
-<<<<<<< HEAD
-					<div id="roomlist" name="roomlist"
-						style="height: calc(100% - 99px); overflow: auto">
-=======
+
 					<div id="roomlist" name="roomlist">
->>>>>>> branch 'master' of https://github.com/Crune/Splendy.git
+
 						<div class="lobby_room" id="room_1">
 							<div class="room_detail col-md-5">
 								<div class="room_name">아무나 들어오세요</div>
