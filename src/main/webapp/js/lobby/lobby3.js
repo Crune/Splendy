@@ -108,6 +108,7 @@ window.onload = function(){
 	});
 	
 	$("#btn_rank").click(function(){
+		console.log('enter');
 		$("#rank_modal").modal('show');
 	});
 	

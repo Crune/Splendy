@@ -81,6 +81,7 @@ body {
 <script type='text/javascript' src='/js/lobby/onchat.js'></script>
 <script type='text/javascript' src='/js/lobby/onroom.js'></script>
 <script type='text/javascript' src='/js/lobby/onplayer.js'></script>
+<script type='text/javascript' src='/js/lobby/lobby3.js'></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -104,8 +105,7 @@ body {
 							<button type="button" onclick="window.location='/admin/index'" class="btn btn-default btn-xs">관리자</button>
 						</sec:authorize>
 						<button type="button" class="btn btn-default btn-xs">공지사항</button>
-						<button type="button" class="btn btn-default btn-xs" id="btn_rank">TOP
-							20 Player</button>
+						<button type="button" class="btn btn-default btn-xs" id="btn_rank">TOP 20 Player</button>
 						<button type="button" class="btn btn-default btn-xs">자유게시판</button>
 
 						<button type="button" class="btn btn-default btn-xs" id="btn_modify">정보수정</button>
