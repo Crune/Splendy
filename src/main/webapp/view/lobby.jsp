@@ -81,7 +81,6 @@ body {
 <script type='text/javascript' src='/js/lobby/onchat.js'></script>
 <script type='text/javascript' src='/js/lobby/onroom.js'></script>
 <script type='text/javascript' src='/js/lobby/onplayer.js'></script>
-<script type='text/javascript' src='/js/lobby/lobby3.js'></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
