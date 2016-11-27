@@ -44,7 +44,7 @@ public interface UserService {
 
 	void updateUser(UserCore user, String email) throws Exception;
 	
-	public UserCore read(int id) throws Exception;
-	
 	String selectPW(String email)throws Exception;
+	
+	int serchID(String email) throws Exception;
 }

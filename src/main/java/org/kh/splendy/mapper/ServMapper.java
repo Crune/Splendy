@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.PropInDB;
 /**
  * 
- * 서비스 테이블 관리
+ * 서비스 테이블을 관리하는 MyBatis Mapper
  * @author 진규
  *
  */

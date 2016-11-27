@@ -124,4 +124,7 @@ public interface UserMapper {
 	
 	@Select("select U_PW from KH_USER where U_EMAIL=#{email}")
 	public String selectPW(String email);
+	
+	@Select("select U_ID from KH_USER where U_EMAIL=#{email}")
+	public int serchID(String email);
 }
