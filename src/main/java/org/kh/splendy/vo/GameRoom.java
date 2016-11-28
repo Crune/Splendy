@@ -1,11 +1,14 @@
 package org.kh.splendy.vo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import lombok.*;
 
 import com.google.gson.*;
 import com.google.gson.annotations.*;
+import org.kh.splendy.config.aop.SplendyAdvice;
+import org.kh.splendy.config.assist.Utils;
 
 
 @Data
@@ -73,20 +76,77 @@ public class GameRoom {
     }
 
 
-    public Map<Integer, Integer> getCoinCount(List<PLCoin> reqCoins) {
+    public Map<Integer, Integer> getCoinCount(List<PLCoin> reqCoins, int uid, int rid) {
         Map<Integer, Integer> rstCoins = new HashMap<>();
         for (PLCoin cur : reqCoins) {
-            rstCoins.put(cur.getCn_id(), cur.getCn_count());
+            if (cur.getU_id() == uid) {
+                rstCoins.put(cur.getCn_id(), cur.getCn_count());
+            }
         }
         return rstCoins;
     }
 
-    public List<PLCoin> pickCoins(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid) {
-        List<PLCoin> changed = new ArrayList<>();
+    /** 코인 목록 통합 */
+    public Map<Integer, PLCoin> getCoinMap(List<PLCoin> reqCoins) {
+        Map<Integer, PLCoin> rst = new HashMap<>();
+        for (PLCoin cur : reqCoins) {
+            if (rst.get(cur.getCn_id()) != null) {
+                PLCoin temp = rst.get(cur.getCn_id());
+                rst.get(cur.getCn_id()).setCn_count(temp.cn_count + cur.getCn_count());
+            } else {
+                rst.put(cur.getCn_id(), cur);
+            }
+        }
+        return rst;
+    }
+    public WSComp pickCard(PLCard reqCard) {
+        return null;
+    }
 
-        // TODO WORKME
+    public List<PLCoin> pickCoins(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins) {
+        // 버리는 코인이 있을 경우
+        if (!reqDrawCoins.isEmpty()) {
+            List<PLCoin> uChange = null, fChange = null;
+            try {
+                uChange = (List<PLCoin>) Utils.copy(reqGetCoins);
+                fChange = (List<PLCoin>) Utils.copy(reqDrawCoins);
 
-        return changed;
+                // 버림 코인은 음수로 변환
+                reqDrawCoins.forEach(cn -> {
+                    if (cn.getCn_count() > 0) {
+                        cn.setCn_count(cn.getCn_count() * -1);
+                    }
+                });
+                uChange.addAll(reqDrawCoins);
+
+                // 같은 종류의 코인 갯수 합산 처리
+                Map<Integer, PLCoin> rst = getCoinMap(uChange);
+                uChange.clear();
+                for (int k : rst.keySet()) {
+                    PLCoin temp = rst.get(k);
+                    temp.setRm_id(room);
+                    uChange.add(temp);
+                }
+
+                // 버리는 코인 양수로 변환, 필드의 변경값 산정
+                fChange.forEach(cn -> {
+                    cn.setU_id(0);
+                    if (cn.getCn_count() < 0) {
+                        cn.setCn_count(cn.getCn_count() * -1);
+                    }
+                });
+
+                // 통합된 목록에 필드 변경값 합산
+                uChange.addAll(fChange);
+
+                return uChange;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return reqGetCoins;
+            }
+        } else {
+            return reqGetCoins;
+        }
     }
 
     public boolean reqCard(PLCard reqCard, int reqUser) {

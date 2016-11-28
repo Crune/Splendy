@@ -9,6 +9,7 @@ import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,4 +41,10 @@ public class RoomProtocol extends ProtocolHelper {
             sock.send(sender, "room", "prev", rooms);
         }
 	}
+
+    @MessageMapping("/room/event/{rid}")
+    public void roomEvent(SimpMessageHeaderAccessor head, @DestinationVariable int rid) throws Exception {
+        UserCore sender = sender(head);
+        //
+    }
 }

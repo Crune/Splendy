@@ -1,20 +1,21 @@
 package org.kh.splendy.task;
 
-import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
+import org.kh.splendy.mapper.MsgMapper;
+import org.kh.splendy.mapper.PlayerMapper;
+import org.kh.splendy.mapper.RoomMapper;
+import org.kh.splendy.mapper.UserMapper;
+import org.kh.splendy.vo.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import org.kh.splendy.mapper.*;
-import org.kh.splendy.service.*;
-import org.kh.splendy.trash.StreamService;
-import org.kh.splendy.vo.*;
-
-import lombok.*;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class ScheduledTasks {
@@ -31,8 +32,6 @@ public class ScheduledTasks {
 	@Autowired private PlayerMapper playerMap;
 	@Autowired private UserMapper userMap;
 	@Autowired private MsgMapper msgMap;
-
-	@Autowired private StreamService stream;
 
 	private void clearRoom() {
 		List<Room> rooms = roomMap.getCurrentRooms();

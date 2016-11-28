@@ -2,7 +2,11 @@ package org.kh.splendy.protocol;
 
 import org.kh.splendy.config.assist.ProtocolHelper;
 import org.kh.splendy.service.CompService;
-import org.kh.splendy.vo.*;
+import org.kh.splendy.vo.Card;
+import org.kh.splendy.vo.PLCard;
+import org.kh.splendy.vo.PLCoin;
+import org.kh.splendy.vo.UserCore;
+import org.kh.splendy.vo.WSCoinRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +27,6 @@ public class CompProtocol extends ProtocolHelper {
 
     @Autowired private CompService compServ;
 
-
     @MessageMapping("/comp/cards")
     public void reqCards(SimpMessageHeaderAccessor head) throws Exception {
         UserCore sender = sender(head);
@@ -33,10 +36,16 @@ public class CompProtocol extends ProtocolHelper {
 
     @SubscribeMapping("/comp/card/{rid}")
     @SendTo("/comp/card/{rid}")
-    public PLCard requestCard(SimpMessageHeaderAccessor head, List<PLCard> reqCard, @DestinationVariable int rid) throws Exception {
+    public List<PLCard> requestCard(SimpMessageHeaderAccessor head, PLCard reqCard, @DestinationVariable int rid) throws Exception {
         UserCore sender = sender(head);
 
-        return null;
+        List<PLCard> rst = null;
+        if (rid(head) == rid) {
+            rst = compServ.reqPickCard(reqCard, sender.getId(), game.getRoom(rid));
+        }
+
+        // 카드 홀딩시 골드 코인 정보는 'CompService'가 '/comp/coin/{rid}'의 구독자들에게 제공
+        return rst;
     }
 
     @SubscribeMapping("/comp/coin/{rid}")

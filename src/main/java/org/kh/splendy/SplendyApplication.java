@@ -1,13 +1,13 @@
 package org.kh.splendy;
 
-import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+
+import java.util.Arrays;
 
 @SpringBootApplication
 @ComponentScan
@@ -23,10 +23,7 @@ public class SplendyApplication {
 		
 		String[] beanNames = ctx.getBeanDefinitionNames();
 		Arrays.sort(beanNames);
-		
-		String beans = "";
-		Arrays.asList(beanNames).forEach(e->String.join(", ",beans, e));
-		log.info("Add Beans: "+beans);
+		log.info("Add Beans: "+ Arrays.asList(beanNames));
 	}
 	
 }

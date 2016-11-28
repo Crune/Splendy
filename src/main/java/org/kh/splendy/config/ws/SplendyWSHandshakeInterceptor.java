@@ -34,14 +34,6 @@ public class SplendyWSHandshakeInterceptor implements HandshakeInterceptor {
 
             if (header != null) {
                 log.info("헤더에 이게 들어감"+header);
-            }
-            if (session != null) {
-				UserCore user = (UserCore) session.getAttribute("user");
-                int reqRid = (int) session.getAttribute("rid");
-
-				attributes.put("user", user);
-				attributes.put("uid", user.getId());
-				attributes.put("rid", reqRid);
 				/*
                 log.info("plServ: "+playerService);
                 int rid = playerService.getLastRoomAndInit(user.getId());
@@ -51,6 +43,14 @@ public class SplendyWSHandshakeInterceptor implements HandshakeInterceptor {
                         rid = reqRid;
                     }
                 }*/
+            }
+            if (session != null) {
+				UserCore user = (UserCore) session.getAttribute("user");
+                int reqRid = (int) session.getAttribute("rid");
+
+				attributes.put("user", user);
+				attributes.put("uid", user.getId());
+				attributes.put("rid", reqRid);
 			}
 		}
 		return true;
