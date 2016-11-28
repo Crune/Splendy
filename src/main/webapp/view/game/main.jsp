@@ -17,11 +17,15 @@
 	<style type="text/css">
 		body { _behavior: url(/js/iepngfix.htc) }
 	</style>
-	<script>
+	<script type='text/javascript'>
 		function closeIt() {
 			return "페이지를 벗어날 경우 탈주 처리됩니다.";
 		}
 		window.onbeforeunload = closeIt;
+
+        var uid = ${sessionScope.user.id};
+        var nick = "${sessionScope.user.nickname}";
+        var email = "${sessionScope.user.email}";
 	</script>
 </head>
 
@@ -214,7 +218,7 @@
 	<script type='text/javascript' src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 	
 	<script type="text/javascript" src="/js/default.js"></script>
-	<script type="text/javascript" src="/js/commonWS.js"></script>
+	<script type="text/javascript" src="/js/sock.js"></script>
 	<script type='text/javascript' src="/js/ingame/starter.js"></script>
 	<script type='text/javascript' src="/js/ingame/onchat.js"></script>
 	<script type='text/javascript' src="/js/ingame/oncomp.js"></script>
