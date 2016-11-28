@@ -2,8 +2,9 @@ var temp_player = Handlebars.compile($("#temp_player").html());
 
 var isReadPrevPlayer = false;
 
-var playerNew;
 var playerPriv;
+var playerJoin;
+var playerLeft;
 
 function onPlayer() {
 	playerPriv = stompClient.subscribe('/player/private/'+uid, player_priv);
@@ -16,19 +17,18 @@ function onPlayer() {
 }
 
 function player_init() {
-    console.log("Chatting initialized!");
-    $(".chat_msg").detach();
+    console.log("Player initialized!");
+    $(".player").detach();
 }
 
 function player_priv(evt) {
-	alert('pl:'+evt);
     var data = JSON.parse(evt.body);
     if (data.type == 'prev') {
 	    var pl = data.cont;
 		plLen = pl.length;
 		for (i = 0; i < plLen; i++) {
 			var curPl = pl[i];
-			if (curPl.room == 0) {
+			if (curPl.room == '0') {
 				$(".lobby_players").append(temp_player(curPl));
 			} else {
 				$("#room_"+curPl.room+" .row .room_player").append(temp_player(curPl));
