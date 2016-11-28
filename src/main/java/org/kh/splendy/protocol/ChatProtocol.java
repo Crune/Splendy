@@ -43,7 +43,8 @@ public class ChatProtocol extends ProtocolHelper {
             error.setNick("시스템");
             error.setType("sys");
             error.setCont("참가하지 않은 방의 채팅은 허가되지 않습니다.");
-            return (WSChat) sock.copy(error);
+			sock.send(sender.getId(), "chat", "new", error);
+            return null;
         }
 	}
 

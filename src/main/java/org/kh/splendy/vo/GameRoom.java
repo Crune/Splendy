@@ -9,6 +9,7 @@ import com.google.gson.*;
 import com.google.gson.annotations.*;
 import org.kh.splendy.config.aop.SplendyAdvice;
 import org.kh.splendy.config.assist.Utils;
+import org.kh.splendy.service.SocketService;
 
 
 @Data
@@ -55,6 +56,30 @@ public class GameRoom {
 		}
 		return rst;
 	}
+	public void nextTurn(SocketService sock) {
+        if (turn >= 0) {
+            this.turn += 1;
+            this.currentPl = pls.get(0).getUid();
+        }
+    }
+
+    public int nextActor(SocketService sock) {
+        boolean isValid = false;
+        int myCursor = 0;
+        for (int i = 0; i < pls.size(); i++) {
+            if (myCursor != 0) {
+                this.currentPl = i;
+                isValid = true;
+            }
+            if (currentPl == pls.get(i).getUid()) {
+                myCursor = i;
+            }
+        }
+        if (!isValid) {
+            nextTurn(sock);
+        }
+        return this.currentPl;
+    }
 
 	public boolean reqJoin(WSPlayer reqUser) {
 	    boolean rst = false;
@@ -157,4 +182,5 @@ public class GameRoom {
         }*/
         return rst;
     }
+
 }

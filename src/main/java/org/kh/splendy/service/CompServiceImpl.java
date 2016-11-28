@@ -226,4 +226,9 @@ public class CompServiceImpl implements CompService {
 		init();
 		return cardAll;
 	}
+
+	@Override
+	public Map<Integer, Integer> scoring(List<PLCard> cards) {
+		return null;
+	}
 }

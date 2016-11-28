@@ -26,6 +26,7 @@
         var uid = ${sessionScope.user.id};
         var nick = "${sessionScope.user.nickname}";
         var email = "${sessionScope.user.email}";
+        var rid = "${sessionScope.rid}";
 	</script>
 </head>
 
