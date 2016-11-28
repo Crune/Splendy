@@ -18,26 +18,83 @@ public class GameRoom {
 	private int limit = 4;
 	
 	@SerializedName("logs") @Expose
-	private List<Msg> logs = new ArrayList<Msg>();
+	private List<Msg> logs = new ArrayList<>();
 	
 	@SerializedName("pls") @Expose
-	private List<WSPlayer> pls = new ArrayList<WSPlayer>();
+	private List<WSPlayer> pls = new ArrayList<>();
 	@SerializedName("cards") @Expose
-	private List<PLCard> cards = new ArrayList<PLCard>();
+	private List<PLCard> cards = new ArrayList<>();
 	@SerializedName("coins") @Expose
-	private List<PLCoin> coins = new ArrayList<PLCoin>();
+	private List<PLCoin> coins = new ArrayList<>();
 	
 	@SerializedName("turn") @Expose
 	private int turn = 0;
 	@SerializedName("currentPl") @Expose
 	private int currentPl = 0;
-	
-	public static GameRoom convert(String source) {
-		return new Gson().fromJson(source, GameRoom.class);
-	}
-	
-	public String getJson() {
+
+
+
+    public String getJson() {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		return gson.toJson(this);
 	}
+
+	public boolean isPlaying() {
+		return (turn > 0);
+	}
+
+	public boolean isMyTurn(int uid) {
+		boolean rst = false;
+		for (int i=0; i<pls.size(); i++) {
+		    if (uid == pls.get(i).getUid()) {
+                rst = (currentPl == i);
+            }
+		}
+		return rst;
+	}
+
+	public boolean reqJoin(WSPlayer reqUser) {
+	    boolean rst = false;
+	    if (limit > pls.size()) {
+	        pls.add(reqUser);
+	        rst = true;
+        }
+        return rst;
+    }
+
+    public Map<Integer, Integer> getCoinAmount(int uid) {
+        Map<Integer, Integer> fCoins = new HashMap<>();
+        for (PLCoin cur : coins) {
+            if (cur.getU_id() == uid) {
+                fCoins.put(cur.getCn_id(), cur.getCn_count());
+            }
+        }
+        return fCoins;
+    }
+
+
+    public Map<Integer, Integer> getCoinCount(List<PLCoin> reqCoins) {
+        Map<Integer, Integer> rstCoins = new HashMap<>();
+        for (PLCoin cur : reqCoins) {
+            rstCoins.put(cur.getCn_id(), cur.getCn_count());
+        }
+        return rstCoins;
+    }
+
+    public List<PLCoin> pickCoins(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid) {
+        List<PLCoin> changed = new ArrayList<>();
+
+        // TODO WORKME
+
+        return changed;
+    }
+
+    public boolean reqCard(PLCard reqCard, int reqUser) {
+        boolean rst = false;/*
+        if (isMyTurn(reqUser) && couldBuy(reqUser)) {
+
+            rst = true;
+        }*/
+        return rst;
+    }
 }

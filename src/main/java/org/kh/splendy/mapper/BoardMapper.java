@@ -1,21 +1,13 @@
 package org.kh.splendy.mapper;
 
-import java.util.HashMap;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.junit.runners.Parameterized.Parameters;
 import org.kh.splendy.vo.Article;
-import org.kh.splendy.vo.UserCore;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.List;
 
 
 

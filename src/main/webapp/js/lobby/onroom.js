@@ -88,15 +88,6 @@ function room_remove(roomId) {
     $("#room_"+roomId).detach();
 }
 
-function joinRoom(rid, password) {
-    var room = new Object();
-    room.id = rid;
-    if (password != '') {
-        room.password = password;
-    }
-    send('room/join/'+rid, password);
-}
-
 function roomMouseEvt() {
 
     // 방 개설시

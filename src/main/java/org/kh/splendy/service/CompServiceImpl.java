@@ -116,6 +116,73 @@ public class CompServiceImpl implements CompService {
 	}
 
 	@Override
+	public List<PLCoin> reqPickCoin(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid, GameRoom room) {
+        List<PLCoin> result = new ArrayList<>();
+
+		boolean rst = false;
+		boolean isAct1Valid = false, isAct2Valid = false;
+		boolean isHasCoinValid = false;
+
+		if (room.isMyTurn(uid) && room.isPlaying()) {
+			Map<Integer, Integer> reqCoinAmount = room.getCoinCount(reqGetCoins);
+
+			// 서로 다른 색의 보석 토큰 3개 가져가기
+			int amountOneCount = 0;
+			for (int curCid : reqCoinAmount.keySet()) {
+				if (reqCoinAmount.get(curCid) == 1) {
+					amountOneCount++;
+				}
+			}
+			isAct1Valid = (amountOneCount == 3);
+
+			// 같은 색의 보석 토큰 2개 가져가기.
+			int amountTwoCount = 0;
+			int lastCurId = -1;
+			for (int curCid : reqCoinAmount.keySet()) {
+				if (reqCoinAmount.get(curCid) == 2) {
+					amountTwoCount++;
+					lastCurId = curCid;
+				}
+			}
+            /* 이 액션은 플레이어가 보석 토큰을 가져올때,
+             선택한 색상의 토큰이 적어도 4개가 있어야만 가능합니다. */
+			if (room.getCoinAmount(0).get(lastCurId) >= 4) {
+				isAct2Valid = (amountTwoCount == 1);
+			}
+
+            /* 플레이어는 자신의 차례 끝에 10개보다 많은 토큰을 가질 수 없습니다.(조커 포함.)
+             만약 많다면, 오직 10개가 될때까지 반납해야 합니다. */
+			int amountCoin = 0;
+			for (int curCid : room.getCoinAmount(uid).keySet()) {
+				amountCoin += room.getCoinAmount(uid).get(curCid);
+			}
+			for (int curCid : reqCoinAmount.keySet()) {
+				amountCoin += reqCoinAmount.get(curCid);
+			}
+			if (amountCoin > 10) {
+				if (reqDrawCoins != null) {
+					Map<Integer, Integer> drawCoinAmount = room.getCoinCount(reqGetCoins);
+					for (int curCid : drawCoinAmount.keySet()) {
+						amountCoin -= drawCoinAmount.get(curCid);
+					}
+					if (amountCoin <= 10) {
+						isHasCoinValid = true;
+					}
+				}
+			} else {
+				isHasCoinValid = true;
+			}
+
+			// 검증 결과를 산출 하고 통과시 수행
+			rst = ((isAct1Valid || isAct2Valid) && isHasCoinValid);
+			if (rst) {
+                result = room.pickCoins(reqGetCoins, reqDrawCoins, uid);
+			}
+		}
+		return result;
+	}
+
+	@Override
 	public void initCompDB(int rid) {
 		Room room = roomMap.read(rid);
 		int plLimits = room.getPlayerLimits();

@@ -16,3 +16,12 @@ function onPlayer() {/*
         wssend('request', 'playerList');
     });*/
 }
+
+function joinRoom(rid, password) {
+    var room = new Object();
+    room.id = rid;
+    if (password != '') {
+        room.password = password;
+    }
+    send('player/join/'+rid, password);
+}

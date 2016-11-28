@@ -1,14 +1,14 @@
 package org.kh.splendy.trash;
-
+/*
 import java.util.Map;
 
 import org.kh.splendy.vo.GameRoom;
 import org.kh.splendy.vo.WSPlayer;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-
+*/
 public interface StreamService {
-
+/*
 	String getCwasid();
 	//Map<Integer, GameRoom> getRooms();
 	Map<String, WebSocketSession> getSessions();
@@ -37,5 +37,5 @@ public interface StreamService {
 	void refreshConnector();
 
 	void logToDB(String sid, String type, Object msg);
-
+*/
 }

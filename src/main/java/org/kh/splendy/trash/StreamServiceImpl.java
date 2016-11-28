@@ -1,44 +1,12 @@
 package org.kh.splendy.trash;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import javax.servlet.ServletContext;
-
-import org.apache.tomcat.jni.Global;
-import org.kh.splendy.SplendyApplication;
-import org.kh.splendy.aop.SplendyAdvice;
-import org.kh.splendy.assist.ProtocolHelper;
-import org.kh.splendy.assist.SplendyProtocol;
-import org.kh.splendy.assist.WSController;
-import org.kh.splendy.assist.WSReqeust;
-import org.kh.splendy.mapper.*;
-import org.kh.splendy.protocol.InGame;
-import org.kh.splendy.vo.*;
-import org.reflections.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-
-import com.google.gson.*;
 
 @Service
 @EnableTransactionManagement
 public class StreamServiceImpl implements StreamService {
-
+/*
 	private static final String cWasId = SplendyAdvice.WAS_ID;
 
 	private Logger log = LoggerFactory.getLogger(StreamServiceImpl.class);
@@ -246,8 +214,7 @@ public class StreamServiceImpl implements StreamService {
 		String type = raw.getType();
 		type = (type == null)?"":type;
 		String sid = session.getId();
-		
-		/** !! 중요 - 프로토콜을 변경할 경우 숫자를 변경할것 !! */
+
 		int nowBuild = 10;
 		
 		// 메시지를 처리할 메서드 목록이 비어있을 경우 목록 생성
@@ -328,8 +295,6 @@ public class StreamServiceImpl implements StreamService {
 		}
 	}
 
-	/** 현재 시간을 문자열로 반환
-	 * @return 현재 시간의 HH:mm:ss 형식의 문자열 반환 */
 	private String getCurrentTime() {
 		TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
 		DateFormat df = new SimpleDateFormat("HH:mm:ss");
@@ -435,7 +400,7 @@ public class StreamServiceImpl implements StreamService {
 		sendWithoutSender("", type, cont);
 	}
 	
-
+*/
 /*
 	// 제거 요망 : 프로토콜 작성 후 해당 서비스로 이관 필요.
 	@Autowired private CardService cardServ;

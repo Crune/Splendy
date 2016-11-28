@@ -1,0 +1,13 @@
+package org.kh.splendy.service;
+
+import org.kh.splendy.vo.UserCore;
+import org.kh.splendy.vo.WSChat;
+
+/**
+ * Created by runec on 2016-11-27.
+ */
+public interface ChatService {
+    void readPrev(int rid, int uid);
+
+    WSChat writeMsg(UserCore sender, int rid, String msg);
+}

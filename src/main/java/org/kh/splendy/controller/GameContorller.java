@@ -2,7 +2,7 @@ package org.kh.splendy.controller;
 
 import javax.servlet.http.HttpSession;
 
-import org.kh.splendy.service.LobbyService;
+import org.kh.splendy.service.PlayerService;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,24 +16,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class GameContorller {
 
-	@Autowired private LobbyService lobbyServ;
+	@Autowired private PlayerService player;
 
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 	
-	@RequestMapping("/game/{roomId}")
-	public String servList(@PathVariable int roomId, Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
-		log.info("game start / rid: "+roomId);
-
-		session.setAttribute("roomId", roomId);
+	@RequestMapping("/game/{rid}")
+	public String servList(@PathVariable int rid, Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
 		UserCore user = (UserCore) session.getAttribute("user");
 		if (user == null) {
 			// 로그인 정보가 없을 경우는 로그인 페이지로 이동
 			rttr.addFlashAttribute("msg","로그인이 필요합니다!");
 			return "redirect:/";
 		} else {
-			user = lobbyServ.initPlayer(user, roomId); // 플레이어 인증 정보 생성
-			session.setAttribute("user", user);
-			int lastRoom = lobbyServ.getLastRoom(user.getId());
+			int lastRoom = player.getLastRoomAndInit(user.getId());
+			session.setAttribute("rid", lastRoom);
 			if (lastRoom > 0) {
 				return "game/main";
 			} else {

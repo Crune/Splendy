@@ -3,7 +3,7 @@ package org.kh.splendy.vo;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 
-import org.kh.splendy.aop.SplendyAdvice;
+import org.kh.splendy.config.aop.SplendyAdvice;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import lombok.Data;

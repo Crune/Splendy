@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SystemProtocol {
 	
-	@MessageMapping("/help")	
+	@MessageMapping("/system/help")
 	public void help(SimpMessageHeaderAccessor headerAccessor, String msg) {
 		
 	}
-	
+
 	@PreAuthorize("hasRole('admin')")
 	@SendTo("/notice/everyone")
 	public WSMsg notice(SimpMessageHeaderAccessor headerAccessor, WSMsg message) throws Exception {

@@ -2,8 +2,7 @@ package org.kh.splendy.config.security;
 
 import java.util.Collection;
 
-import org.kh.splendy.aop.SplendyAdvice;
-import org.kh.splendy.aop.SplendyExceptionAdvice;
+import org.kh.splendy.config.aop.SplendyAdvice;
 import org.kh.splendy.service.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

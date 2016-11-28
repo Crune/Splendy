@@ -1,6 +1,6 @@
 package org.kh.splendy.config;
 
-import org.kh.splendy.aop.SplendyInterceptor;
+import org.kh.splendy.config.aop.SplendyInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

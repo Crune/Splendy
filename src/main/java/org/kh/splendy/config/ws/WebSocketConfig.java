@@ -1,5 +1,6 @@
 package org.kh.splendy.config.ws;
 
+import java.lang.SuppressWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.*;
@@ -15,7 +16,9 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 
 public	class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
+	@SuppressWarnings("unused")
 	private Logger log = LoggerFactory.getLogger(WebSocketConfig.class);
+
 	@Bean
 	public ServletServerContainerFactoryBean createWebSocketContainer() {
 		ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
@@ -29,14 +32,14 @@ public	class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 		registry
 				.addEndpoint("/socket")
 				.withSockJS()
-				.setInterceptors(new HttpSessionIdHandshakeInterceptor());
+				.setInterceptors(new SplendyWSHandshakeInterceptor());
 	}
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		// @formatter:off
 		registry.setApplicationDestinationPrefixes("/req")
-				.enableSimpleBroker("/notice", "/room", "/player", "/comp", "/chat");
+				.enableSimpleBroker("/system", "/notice", "/room", "/player", "/comp", "/chat");
 		// @formatter:on
 	}
 

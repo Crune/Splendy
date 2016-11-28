@@ -1,18 +1,9 @@
 package org.kh.splendy.service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-
-import javax.activation.DataSource;
-import javax.activation.URLDataSource;
-import javax.mail.internet.MimeMessage;
-
 import org.apache.ibatis.annotations.Param;
-import org.kh.splendy.aop.SplendyAdvice;
-import org.kh.splendy.config.security.SplendyAuthenticationProvider;
-import org.kh.splendy.mapper.*;
-import org.kh.splendy.vo.*;
+import org.kh.splendy.config.aop.SplendyAdvice;
+import org.kh.splendy.mapper.UserMapper;
+import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +11,15 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+
+import javax.activation.DataSource;
+import javax.activation.URLDataSource;
+import javax.mail.internet.MimeMessage;
+import java.util.List;
 
 @Service
 @EnableTransactionManagement
