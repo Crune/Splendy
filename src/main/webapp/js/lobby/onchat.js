@@ -38,9 +38,9 @@ function chat_priv(evt) {
 	    for (i = 0; i < msgLen; i++) {
 	        var curMsg = msg[i];
 	        if (curMsg.uid == uid) {
-	            curMsg.type = 'me'
+	            curMsg.type = 'me';
 	        } else if (curMsg.type == 'me') {
-	            curMsg.type = 'o'
+	            curMsg.type = 'o';
 	        }
 	        $("#chatDiv").append(temp_chatmsg(curMsg));
 	        $("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
