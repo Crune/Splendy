@@ -23,8 +23,8 @@ public class CompServiceImpl implements CompService {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(CompServiceImpl.class);
 
-	private static List<Card> cardAll = new ArrayList<Card>();
-	private static List<Coin> coinAll = new ArrayList<Coin>();
+	private static List<Card> cardAll = new ArrayList<>();
+	private static List<Coin> coinAll = new ArrayList<>();
 
 	private void init() {
 		if (cardAll.isEmpty()) {
@@ -229,6 +229,31 @@ public class CompServiceImpl implements CompService {
 
 	@Override
 	public Map<Integer, Integer> scoring(List<PLCard> cards) {
-		return null;
+        Map<Integer, Integer> result = new HashMap<>();
+
+        for (PLCard cur : cards) {
+            int uid = cur.getU_id();
+            int cnid = cur.getCd_id();
+
+            if (result.containsKey(uid)) {
+                Card thisCard = null;
+                for (Card curCard : cardAll) {
+                    if (curCard.getId() == cnid) {
+                        thisCard = curCard;
+                    }
+                }
+                result.put(uid, thisCard.getPoint());
+            } else {
+                Card thisCard = null;
+                for (Card curCard : cardAll) {
+                    if (curCard.getId() == cnid) {
+                        thisCard = curCard;
+                    }
+                }
+                result.put(uid, thisCard.getPoint());
+            }
+        }
+
+		return result;
 	}
 }
