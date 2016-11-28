@@ -1,6 +1,7 @@
 package org.kh.splendy.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kh.splendy.vo.Card;
 import org.kh.splendy.vo.Coin;
@@ -24,4 +25,5 @@ public interface CompService {
 
 	List<Card> getCards();
 
+    Map<Integer,Integer> scoring(List<PLCard> cards);
 }

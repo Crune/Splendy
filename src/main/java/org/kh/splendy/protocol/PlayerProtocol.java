@@ -28,7 +28,7 @@ public class PlayerProtocol extends ProtocolHelper {
 
 		List<WSPlayer> pls = plServ.readList(rid);
 
-		sock.send(sender, "room", "prev", pls);
+		sock.send(sender, "player", "prev", pls);
 	}
 
 	@MessageMapping("/player/join/{rid}")

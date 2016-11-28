@@ -31,21 +31,24 @@ function chat_init() {
 }
 
 function chat_priv(evt) {
-    var msg = JSON.parse(evt.body);
-    msgLen = msg.length;
-    for (i = 0; i < msgLen; i++) {
-        var curMsg = msg[i];
-        if (curMsg.uid == uid) {
-            curMsg.type = 'me'
-        } else if (curMsg.type == 'me') {
-            curMsg.type = 'o'
-        }
-        $("#chatDiv").append(temp_chatmsg(curMsg));
-        $("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
-    }
-    if (isReadPrevChat == false) {
-        send('room/list');
-        isReadPrevChat = true;
+    var data = JSON.parse(evt.body);
+    if (data.type == 'prev') {
+	    var msg = data.cont;
+	    msgLen = msg.length;
+	    for (i = 0; i < msgLen; i++) {
+	        var curMsg = msg[i];
+	        if (curMsg.uid == uid) {
+	            curMsg.type = 'me';
+	        } else if (curMsg.type == 'me') {
+	            curMsg.type = 'o';
+	        }
+	        $("#chatDiv").append(temp_chatmsg(curMsg));
+	        $("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+	    }
+	    if (isReadPrevChat == false) {
+	        send('room/list');
+	        isReadPrevChat = true;
+	    }
     }
 }
 

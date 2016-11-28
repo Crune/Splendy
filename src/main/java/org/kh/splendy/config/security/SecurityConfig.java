@@ -21,11 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		web
 			.ignoring()
 				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**")
-				.antMatchers("/socket/**", "/socket**")
-
-				.antMatchers("/user/**", "/user**")
-				.antMatchers("/lobby/**", "/lobby**")
-				.antMatchers("/game/**", "/game**");
+				.antMatchers("/socket/**", "/socket**");
 	}
 	/**
 	 * permitAll() -> 모두 접근 가능
@@ -68,17 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 		.and()
 			.logout()
-				.logoutSuccessUrl("/")
-
-		.and()
-			.requestMatchers()
-				.antMatchers("/socket/**", "/socket/**")
-/*
-		.and()
-			.addFilterBefore(new SplendySecurityTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-				.authorizeRequests()
-*/
-		;
+				.logoutSuccessUrl("/");
 		//@formatter:on
 	}
 }

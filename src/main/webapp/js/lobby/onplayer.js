@@ -1,20 +1,49 @@
 var temp_player = Handlebars.compile($("#temp_player").html());
 
-function onPlayer() {/*
-    stompClient.subscribe('room.prev.'+uid, function(evt) {
-        var room = JSON.parse(evt.body);
-        
-        roomLen = room.length;
-        for (i = 0; i < roomLen; i++) {
-            var curRoom = room[i];
-            $("#roomlist").append(temp_room(curRoom));
-            if (curRoom.password != 'true') {
-                $('#ispw_'+curRoom.id).detach();
-            }
-        }
-            
-        wssend('request', 'playerList');
-    });*/
+var isReadPrevPlayer = false;
+
+var playerPriv;
+var playerJoin;
+var playerLeft;
+
+function onPlayer() {
+	playerPriv = stompClient.subscribe('/player/private/'+uid, player_priv);
+    
+    playerJoin = stompClient.subscribe('/player/join', player_join);
+    playerLeft = stompClient.subscribe('/player/left', player_left);
+    
+    player_init();
+    send('player/prev/'+rid, '');
+}
+
+function player_init() {
+    console.log("Player initialized!");
+    $(".player").detach();
+}
+
+function player_priv(evt) {
+    var data = JSON.parse(evt.body);
+    if (data.type == 'prev') {
+	    var pl = data.cont;
+		plLen = pl.length;
+		for (i = 0; i < plLen; i++) {
+			var curPl = pl[i];
+			if (curPl.room == '0') {
+				$(".lobby_players").append(temp_player(curPl));
+			} else {
+				$("#room_"+curPl.room+" .row .room_player").append(temp_player(curPl));
+			}
+		}
+    }
+	
+}
+
+function player_join(evt) {
+	
+}
+
+function player_left(evt) {
+	
 }
 
 function joinRoom(rid, password) {

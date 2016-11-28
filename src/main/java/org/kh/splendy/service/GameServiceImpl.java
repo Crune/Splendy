@@ -34,7 +34,6 @@ public class GameServiceImpl implements GameService {
     @Override public Map<Integer, GameRoom> getRooms() { return rooms; }
     @Override public GameRoom getRoom(int rid) { return rooms.get(rid); }
 
-
     private void initRoom(int rid) {
         Room reqRoom = roomMap.read(rid);
         List<WSPlayer> players = plMap.getInRoomPlayerByRid(rid);
@@ -68,6 +67,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public void joinPro(int rid, int uid) {
         if (roomMap.count(rid)>0) {
+            initRoom(rid);
             WSPlayer joiner = plMap.getWSPlayer(uid).CanSend();
             boolean result = rooms.get(rid).reqJoin(joiner);
         } else {

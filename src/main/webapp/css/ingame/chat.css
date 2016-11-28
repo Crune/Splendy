@@ -1,0 +1,12 @@
+#game_chat{
+	background : white;
+	position: fixed;
+	z-index: 9000;
+	background-color: #000;
+	display: none;
+	left: 100px;
+	bottom: 30px;	
+}
+#game_chat h2{
+	background: white;
+}

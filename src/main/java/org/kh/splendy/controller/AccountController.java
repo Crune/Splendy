@@ -130,8 +130,11 @@ public class AccountController {
 		String email = null;
 		String password = null;
 
-		CustomUserDetails cud = (CustomUserDetails)authentication.getPrincipal();
-
+		CustomUserDetails cud = null;
+		try {
+			cud = (CustomUserDetails)authentication.getPrincipal();
+		} finally { }
+		
 		try {
 			if(cud != null) {
 				if (authentication.getName() == null) {

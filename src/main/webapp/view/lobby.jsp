@@ -27,6 +27,7 @@ body {
 <script type='text/javascript'>
 	var uid = ${sessionScope.user.id};
 	var nick = "${sessionScope.user.nickname}";
+	var email = "${sessionScope.user.email}";
 </script>
 
 <script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>

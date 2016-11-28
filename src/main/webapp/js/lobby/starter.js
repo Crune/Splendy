@@ -4,6 +4,9 @@ var rid = 0;
 
 function setConnected(connected) {
     if (connected) {
+        // 통신 내용 표시 여부
+        //stompClient.debug = null;
+
         onChat();
         onRoom();
         onPlayer();
@@ -20,7 +23,7 @@ function setConnected(connected) {
 $(document).ready(function() {
     // 입력 받지 않음
     setControll(false);
-    
+
     // 페이지가 시작됨과 동시에 웹소켓에 접속한다.
     connect();
 });
