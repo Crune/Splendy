@@ -5,12 +5,13 @@ var isReadPrevRoom = false;
 
 var roomNew;
 var roomPriv;
+var roomRemove;
 
 function onRoom() {
     roomPriv = stompClient.subscribe('/room/private/'+uid, room_priv);
     
     roomNew = stompClient.subscribe('/room/new', room_new);
-    roomNew = stompClient.subscribe('/room/remove', room_remove);
+    roomRemove = stompClient.subscribe('/room/remove', room_remove);
     
     room_init();
     
