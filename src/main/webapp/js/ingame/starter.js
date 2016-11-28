@@ -27,7 +27,7 @@ $(document).ready(function() {
 	setControll(false);
 
     // 페이지가 시작됨과 동시에 웹소켓에 접속한다.
-    connect();
+    connect();	// in sock.js
 	
 	$(".backSpace").click(function(){
 		send("/player/left", rid);

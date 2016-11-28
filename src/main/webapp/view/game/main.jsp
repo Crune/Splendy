@@ -210,9 +210,10 @@
 			</div>
 		</div>
 		</section>
-		<div id="game_chat">
-			<h2>sdkfsdfdsfsdfsdfsdfsdfsf</h2>
+		<div id="game_chat">			
+			 
 		</div>
+		<input type="text" id="chat_input" size="74px"/>
 	</div>
 	<footer class="clearFix">
 		<p class="users"><a href="#">x 10</a></p>

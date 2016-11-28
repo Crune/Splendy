@@ -6,8 +6,8 @@ var chatNew;
 var chatPriv;
 
 function onChat() {
-    chatPriv = stompClient.subscribe('/chat/private/'+uid, chat_priv);
-    
+/*    chatPriv = stompClient.subscribe('/chat/private/'+uid, chat_priv);
+*/    
     chatNew = stompClient.subscribe('/chat/new/'+rid, chat_new);
     
     send('chat/prev', rid);
@@ -24,8 +24,9 @@ $(document).ready(function() {
     
     chat_init();
     
-    $(".clearFix").on('click', function (){
+    $("#chat_btn").on('click', function (){
     	$("#game_chat").toggle();
+    	$("#chat_input").toggle();
     });
 });
 
@@ -34,7 +35,7 @@ function chat_init() {
     $(".chat_msg").detach();
 }
 
-function chat_priv(evt) {
+/*function chat_priv(evt) {
     var data = JSON.parse(evt.body);
     if (data.type == 'prev') {
 	    var msg = data.cont;
@@ -54,7 +55,7 @@ function chat_priv(evt) {
 	        isReadPrevChat = true;
 	    }
     }
-}
+}*/
 
 function chat_new(evt) {
     var msg = JSON.parse(evt.body);
@@ -63,6 +64,6 @@ function chat_new(evt) {
     } else if (msg.type == 'me') {
         msg.type = 'o'
     }
-    $("#chatDiv").append(temp_chatmsg(msg));
-    $("#chatDiv").scrollTop($("#chatDiv")[0].scrollHeight);
+    $("#game_chat").append(temp_chatmsg(msg));
+    $("#game_chat").scrollTop($("#game_chat")[0].scrollHeight);
 }

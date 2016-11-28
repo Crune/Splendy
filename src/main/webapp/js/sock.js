@@ -14,7 +14,7 @@ function connect() {
             showNotice(type, cont);
         });
     });
-    stompClient.disconnect(disconnect);
+    //stompClient.disconnect(disconnect);
 }
 function showNotice(type, cont) {
     alert(type+"/"+cont);

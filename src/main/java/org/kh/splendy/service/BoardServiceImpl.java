@@ -91,9 +91,9 @@ public class BoardServiceImpl implements BoardService {
 	@Override
     public void insertBoardReply(Comment comment) {
         if (comment.getRe_id()==0 || "".equals(comment.getRe_id())) {
-            sqlSession.insert("insertBoard5Reply", comment);
+            //sqlSession.insert("insertBoard5Reply", comment);
         } else {
-            sqlSession.insert("updateBoard5Reply", comment);
+            //sqlSession.insert("updateBoard5Reply", comment);
         }
     }
 	

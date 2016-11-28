@@ -206,8 +206,9 @@ public class BoardController {
     @RequestMapping(value = "/board5ReplySave", method = {RequestMethod.GET,RequestMethod.POST})
     public String board5ReplySave(HttpServletRequest request, Comment comment) {
         
-    	boardServ.insertBoardReply(boardReplyInfo);
+    	/*boardServ.insertBoardReply(boardReplyInfo);
 
-        return "redirect:/board5Read?brdno=" + boardReplyInfo.getBrdno();
+        return "redirect:/board5Read?brdno=" + boardReplyInfo.getBrdno();*/
+    	return null;
     }
 }
