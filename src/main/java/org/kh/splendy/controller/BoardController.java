@@ -203,4 +203,11 @@ public class BoardController {
 		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}
 	
+    @RequestMapping(value = "/board5ReplySave", method = {RequestMethod.GET,RequestMethod.POST})
+    public String board5ReplySave(HttpServletRequest request, Comment comment) {
+        
+    	boardServ.insertBoardReply(boardReplyInfo);
+
+        return "redirect:/board5Read?brdno=" + boardReplyInfo.getBrdno();
+    }
 }

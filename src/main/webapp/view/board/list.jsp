@@ -9,15 +9,17 @@
 
     <table class="board_list">
         <colgroup>
-            <col width="10%"/>
+            <col width="8%"/>
             <col width="*"/>
             <col width="15%"/>
-            <col width="20%"/>
+            <col width="30%"/>
+            <col width="10%"/>
         </colgroup>
         <thead>
             <tr>
                 <th scope="col">글번호</th>
-                <th scope="col">제목</th>                
+                <th scope="col">제목</th>  
+                <th scope="col">작성자</th>              
                 <th scope="col">작성일</th>
                 <th scope="col">조회</th>
             </tr>
@@ -31,9 +33,10 @@
                             <td class="at_subject">
                                 <a href="#this" name="at_subject">${row.at_subject }</a>
                                 <input type="hidden" id="at_id" value="${row.at_id }">
-                            </td>
+                            </td>                                                      
                             <td>${row.u_id }</td>
-                            <td>${row.at_readcount }</td>
+                            <td>${row.at_reg_date }</td>
+                            <td>${row.at_readcount }</td> 
                         </tr>
                     </c:forEach>
                 </c:when>
