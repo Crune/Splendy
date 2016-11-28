@@ -88,4 +88,5 @@ public interface BoardMapper {
 		@Delete("DELETE KH_ARTICLE WHERE AT_ID = #{AT_ID, jdbcType=INTEGER}")
 		public void deleteBoard(int at_id) throws Exception;
 			
+		
 }

@@ -2,6 +2,7 @@ package org.kh.splendy.protocol;
 
 import org.kh.splendy.config.assist.ProtocolHelper;
 import org.kh.splendy.service.CompService;
+import org.kh.splendy.service.RoomService;
 import org.kh.splendy.vo.Card;
 import org.kh.splendy.vo.PLCard;
 import org.kh.splendy.vo.PLCoin;
@@ -18,6 +19,7 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CompProtocol extends ProtocolHelper {
@@ -42,6 +44,10 @@ public class CompProtocol extends ProtocolHelper {
         List<PLCard> rst = null;
         if (rid(head) == rid) {
             rst = compServ.reqPickCard(reqCard, sender.getId(), game.getRoom(rid));
+            if (rst != null) {
+                sock.send("/room/event/"+rid(head), game.getRoom(rid).nextActor(sock));
+                Map<Integer, Integer> score = compServ.scoring(game.getRoom(rid).getCards());
+            }
         }
 
         // 카드 홀딩시 골드 코인 정보는 'CompService'가 '/comp/coin/{rid}'의 구독자들에게 제공
@@ -60,6 +66,9 @@ public class CompProtocol extends ProtocolHelper {
 
         if (rid(head) == rid) {
             rst = compServ.reqPickCoin(req, draw, sender.getId(), game.getRoom(rid));
+            if (rst != null) {
+                sock.send("/room/event/"+rid(head), game.getRoom(rid).nextActor(sock));
+            }
         }
 
         return rst;
