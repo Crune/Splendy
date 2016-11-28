@@ -25,7 +25,7 @@ public class ChatProtocol extends ProtocolHelper {
 
 	@MessageMapping("/chat/prev")
 	public void prevChat(SimpMessageHeaderAccessor head, int rid) throws Exception {
-		UserCore sender = sender(head);
+		UserCore sender = sender(head);  //head에는 uid, rid, UserCore user 객체 하나가 들어있다.
         chatServ.readPrev(rid, sender.getId());
 	}
 	
@@ -35,7 +35,7 @@ public class ChatProtocol extends ProtocolHelper {
 		UserCore sender = sender(head);
 		if (rid(head) == rid) {
             String msg = new Gson().fromJson(message, String.class);
-            return (WSChat) sock.copy(chatServ.writeMsg(sender, rid, msg));
+            return (WSChat) sock.copy(chatServ.writeMsg(sender, rid, msg));  //구독자에게 onchat.js 의 chat_new(evt)의 evt로 리턴된다.
         } else {
             WSChat error = new WSChat();
             error.setUid(0);
@@ -46,5 +46,4 @@ public class ChatProtocol extends ProtocolHelper {
             return (WSChat) sock.copy(error);
         }
 	}
-
 }
