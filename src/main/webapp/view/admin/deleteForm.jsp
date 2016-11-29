@@ -59,153 +59,155 @@
 				<ul class="nav nav-sidebar"> <li><a href="/admin/deleteForm">데이터정리</a></li> </ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header">가입자 현황</h1>
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>닉네임</th>
-								<th>E-MAIL</th>
-								<th>등록일</th>
-								<th>수정</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="list" items="${list}">
-								<tr>
-									<td>
-										${list.id}
-									</td>
-									<td>
-										${list.nickname}
-									</td>
-									<td>
-										${list.email}
-									</td>
-									<td>
-										${list.reg}
-									</td>
-									<td>
-										<input id="${list.email}" class="btn btn-default btn_update" type="button" value="수정" />
-									</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
+				<h1 class="page-header">잔여 데이터 관리</h1>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#msgModal"> Message 정리 </button>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#roomModal"> Room 정리 </button>
 			</div>
 		</div>
 	</div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog">
+<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">유저 정보</h4>
+				<h4 class="modal-title" id="msgModalLabel">채팅 로그</h4>
 			</div>
 			<div class="modal-body">
-				<div class="index-cont">
-					<form method="post" id="modifyForm" name="modifyForm">
-						<div class="form-group">
-							<label for="textfield" id="u_id"> ID :  </label> <input type="hidden" name="id" id="id" class="form-contorl">
-						</div>
-						<div class="form-group">
-							<label for="textfield"> 닉네임 </label> <input type="text" id="nickname" name="nickname" class="form-control">
-						</div>
-						<div class="form-group">
-							<label for="textfield" id="email"> E-Mail :  </label>
-						</div>
-						<div class="form-group">
-							<label for="exampleInputPassword1"> 암호 </label> <input name="password" type="password" id="password" placeholder="암호" class="form-control">						
-						</div>
-						<div class="form-group">
-							<label for="textfield"> 유지 </label> <input type="text" id="enabled" name="enabled" class="form-control">
-						</div>
-						<div class="form-group">
-							<label for="textfield"> 차단 </label> <input type="text" id="notLocked" name="notLocked" class="form-control">
-						</div>
-						<div class="form-group">
-							<label for="textfield"> 연동 </label> <input type="text" id="notExpired" name="notExpired" class="form-control">
-						</div>
-						<div class="form-group">
-							<label for="textfield"> 메일인증 </label> <input type="text" id="notCredential" name="notCredential" class="form-control">
-						</div>
-						<div class="form-group">
-							<label for="textfield" id="reg"> 등록일 :  </label>
-						</div>
+					<form id="msgForm" name="msgForm" method="post" >
+						<table class="table table-hover">
+							<tr>
+								<td> <input type="checkbox" name="msg-all" id="msg-all" /> </td>
+								<td> M_ID </td>
+								<td> R_ID </td>
+								<td> content </td>
+							</tr>
+							<c:forEach var="msg" items="${msg}">
+								<tr>
+									<td> <input type="checkbox" name="mid" id="mid" class="msg-box" value="${msg.mid}" /> </td>
+									<td> ${msg.mid} </td>
+									<td> ${msg.rid} </td>
+									<td> ${msg.cont} </td>
+								</tr>
+							</c:forEach>
+						</table>
 					</form>
-				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary btn_modify">Save changes</button>
+				<input type="submit" id="btn_delete" name="btn_delete" class="btn btn-default btn_delete_msg" value="삭제" />
 				<button type="button" class="btn btn-default btn_modal_close" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
 </div>
-	
+
+<div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="roomModal">룸 로그</h4>
+			</div>
+			<div class="modal-body">
+				<form id="roomForm" name="roomForm" method="post" >
+					<table class="table table-hover">
+						<tr>
+							<td> <input type="checkbox" name="room-all" id="room-all" /> </td>
+							<td> R_ID </td>
+							<td> host </td>
+							<td> 정보 </td>
+							<td> 승자 </td>
+							<td> 시작여부 </td>
+							<td> 종료여부 </td>
+						</tr>
+						<c:forEach var="room" items="${room}">
+							<tr>
+								<td> <input type="checkbox" name="id" id="id" class="room-box" value="${room.id}" /> </td>
+								<td> ${room.id} </td>
+								<td> ${room.host} </td>
+								<td> ${room.info} </td>
+								<td> ${room.winner} </td>
+								<td> ${room.start} </td>
+								<td> ${room.end} </td>
+							</tr>
+						</c:forEach>
+					</table>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" id="btn_delete" name="btn_delete" class="btn btn-default btn_delete_room" value="변경" />
+				<button type="button" class="btn btn-default btn_modal_close" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 window.onload = function(){
-	$(".btn_update").on('click', function () {
-		var email = $(this).attr('id');
-		sendRequest(email);
+	$("#msg-all").click( function () {
+		$(".msg-box").prop( 'checked', this.checked );
 	});
-	
-	$(".btn_modal_close").on('click', function () {
-		removeVar();
-	});
-	
-	$(".btn_modify").on('click', function () {
-		modify();
-		removeVar();
-	});
-	
-	$(".close").on('click', function () {
-		removeVar();
-	});
-}
 
-function sendRequest(email) {
-	console.log("회원 정보 조회 : "+email);
-	$.ajax({
-		url:'/admin/userState/'+email+'/',
-		type:'get',
-		data:email,
-		success:function(data){
-			$('#myModal').modal('show');
-			$('#u_id').append(data.id)
-			$('#id').val(data.id);
-			$('#nickname').val(data.nickname);
-			$('#email').append(data.email);
-			$('#enabled').val(data.enabled);
-			$('#notLocked').val(data.notLocked);
-			$('#notExpired').val(data.notExpired);
-			$('#notCredential').val(data.notCredential);
-			$('#reg').append(data.reg);
+	$('.msg-box').on( 'change', function(){
+		if(!this.checked){
+			$('#msg-all').prop('checked', false);
 		}
-	})
+	});
+	
+	$("#room-all").click( function () {
+		$(".room-box").prop( 'checked', this.checked );
+	});
+
+	$('.room-box').on( 'change', function(){
+		if(!this.checked){
+			$('#room-all').prop('checked', false);
+		}
+	});
+	
+	$(".btn_delete_msg").on('click', function () {
+		deleteMsg();
+	});
+	
+	$(".btn_delete_room").on('click', function () {
+		closeRoom();
+	});
 }
 
-function removeVar() {
-	$('#u_id').empty();
-	$('#email').empty();
-	$('#reg').empty();
-}
-
-function modify() {
-	console.log("회원 정보 변경");
+function deleteMsg() {
+	console.log("delete Message start");
+jQuery.ajaxSettings.traditional = true;
 	$.ajax({
-        url:'/admin/user_modify',
+        url:'/admin/msg_delete',
         type:'post',
-        data:$("#modifyForm").serialize(),
-        success:function(){
-        	alert("수정 완료");
-        	$('#myModal').modal('hide')
+        data:$("#msgForm").serialize(),
+        success:function(data){
+        	if(data == 0){
+        		alert("실패");
+        	} else{
+        		alert("성공");
+        	}
+        	console.log("delete Message end");
         	window.location.reload();
         },error:function(request,status,error){
-			alert("실패");
+		}
+    })
+}
+
+function closeRoom() {
+	console.log("close room start");
+jQuery.ajaxSettings.traditional = true;
+	$.ajax({
+        url:'/admin/room_close',
+        type:'post',
+        data:$("#roomForm").serialize(),
+        success:function(data){
+        	if(data == 0){
+        		alert("실패");
+        	} else{
+        		alert("성공");
+        	}
+        	console.log("close room end");
+        	window.location.reload();
+        },error:function(request,status,error){
 		}
     })
 }

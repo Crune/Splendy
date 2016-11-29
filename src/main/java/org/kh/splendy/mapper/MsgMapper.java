@@ -77,5 +77,7 @@ public interface MsgMapper {
 	@Select("select * from (select * from "+TABLE+" where RM_ID=#{rId} and M_TYPE = 'chat.new' order by M_ID DESC) where rownum < #{num} order by M_ID ASC")
 	public List<Msg> readPrevChat(@Param("rId") int roomId, @Param("num") int count);
 
-	
+	@ResultMap("msgRst")
+	@Select("select * from "+TABLE+" order by M_ID asc")
+	public List<Msg> read_all();
 }

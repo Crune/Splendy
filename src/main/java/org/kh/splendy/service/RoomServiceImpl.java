@@ -93,4 +93,15 @@ public class RoomServiceImpl implements RoomService {
         sock.send("/room/remove", roomId);
         return roomId;
     }
+
+	@Override
+	public List<Room> getCurrentRooms() {
+		List<Room> room = roomMap.getCurrentRooms();
+		return room;
+	}
+
+	@Override
+	public void close(int id) {
+		roomMap.close(id);
+	}
 }
