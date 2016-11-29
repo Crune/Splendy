@@ -91,10 +91,10 @@ public interface BoardMapper {
 		@Delete("DELETE KH_ARTICLE WHERE AT_ID = #{AT_ID, jdbcType=INTEGER}")
 		public void deleteBoard(int at_id) throws Exception;
 		
-		public void insertReply(Comment comment) throws Exception;
+		public void insertReply(@ModelAttribute("comment") Comment comment) throws Exception;
 		
-		public void updateReply(Comment comment) throws Exception;
+		public void updateReply(@ModelAttribute("comment") Comment comment) throws Exception;
 		
-		public void insertUpdateReply(Comment comment) throws Exception;
+		
 		
 }

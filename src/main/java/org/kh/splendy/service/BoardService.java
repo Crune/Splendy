@@ -31,11 +31,9 @@ public interface BoardService {
 	
 	void updateBoard(Article article) throws Exception;
 	
-	void deleteBoard(int at_id)throws Exception;
+	void deleteBoard(int at_id)throws Exception;	
 	
-	void insertUpdateReply(Comment comment) throws Exception;	
+	void insertReply(@ModelAttribute("comment") Comment comment) throws Exception;
 	
-	void insertReply(Comment comment) throws Exception;
-	
-	void updateReply(Comment comment) throws Exception;
+	void updateReply(@ModelAttribute("comment") Comment comment) throws Exception;
 }

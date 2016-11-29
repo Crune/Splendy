@@ -90,24 +90,16 @@ public class BoardServiceImpl implements BoardService {
 		
 	}
 	
-	@Override
-    public void insertUpdateReply(Comment comment) throws Exception {
-        if (comment.getRe_id()==0 || "".equals(comment.getRe_id())) {
-        	boardMap.insertReply(comment);
-        } else {
-            boardMap.updateReply(comment);
-        }
-    }
 
 	@Override
-	public void insertReply(Comment comment) throws Exception {
-		// TODO Auto-generated method stub
+	public void insertReply(@ModelAttribute("comment") Comment comment) throws Exception {
+		boardMap.insertReply(comment);
 		
 	}
 
 	@Override
-	public void updateReply(Comment comment) throws Exception {
-		// TODO Auto-generated method stub
+	public void updateReply(@ModelAttribute("comment") Comment comment) throws Exception {
+		boardMap.updateReply(comment);
 		
 	}
 	

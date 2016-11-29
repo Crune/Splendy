@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author 찬우 */
 @Controller
 
+@RequestMapping("bbs")
 public class BoardController {
 
 	@SuppressWarnings("unused")
@@ -46,11 +47,11 @@ public class BoardController {
 		return null;
 	}*/
 	
-	@RequestMapping(value = "/bbs/list", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/list", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 목록
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
-	public String list(@RequestParam("pageNum")String pageNum,@RequestParam String bName, Model model
+	public String list(@RequestParam("pageNum")String pageNum, @RequestParam String bName, Model model
 						,HttpServletRequest request) throws Exception{
 		/** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
@@ -64,46 +65,51 @@ public class BoardController {
 			boardName = bName;
 		}
 		
-        
+        /*
         if (pageNum == null) {
             pageNum = "1";
         }
         int pageSize = 10;//한 페이지의 글의 개수
         int currentPage = Integer.parseInt(pageNum);
         int startRow = (currentPage - 1) * pageSize + 1;//한 페이지의 시작글 번호
-        int endRow = currentPage * pageSize;//한 페이지의 마지막 글번호
-        int count =0;
-        int number=0;
-        
+        int endRow = currentPage * pageSize;//한 페이지의 마지막 글번호        
+        int number=0;        
+        */
+		
+		int count =0;
         List<Article> article = null;
         //BoardDBBean dbPro = BoardDBBean.getInstance();//DB연동
         //count = dbPro.getArticleCount();//전체 글의 수 
-        count = boardServ.boardCount();        
+        count = boardServ.boardCount();
+        /*
 	    HashMap map = new HashMap();
 	    map.put("start", startRow);
 	    map.put("end", endRow);
+	    */
         if (count > 0) {
             article = boardServ.getList(bName);
         } else {
         	article = Collections.EMPTY_LIST;
         }
-		number=count-(currentPage-1)*pageSize;//글목록에 표시할 글번호
+        
+		//number=count-(currentPage-1)*pageSize;//글목록에 표시할 글번호
         //해당 뷰에서 사용할 속성
+		/*
 		request.setAttribute("currentPage", new Integer(currentPage));
         request.setAttribute("startRow", new Integer(startRow));
         request.setAttribute("endRow", new Integer(endRow));
         request.setAttribute("count", new Integer(count));
         request.setAttribute("pageSize", new Integer(pageSize));
-		request.setAttribute("number", new Integer(number));
+		request.setAttribute("number", new Integer(number));		
+		*/
+		
 		model.addAttribute("article", article);
-		
-		
 		return "board/list";
 		
 	}
 	
 
-	@RequestMapping(value = "/bbs/view")
+	@RequestMapping(value = "/view")
 	/** 게시글 보기
 	 * @param aId 게시글 번호
 	 * @return 해당 게시글의 내용보기 화면 */
@@ -120,7 +126,7 @@ public class BoardController {
 		return "board/view";
 	}
 
-	@RequestMapping(value = "/bbs/mod", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/mod", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 수정
 	 * @param aId
 	 * @return 글쓰기 화면에 해당 게시글 내용이 채워져 있는 화면 */
@@ -138,7 +144,7 @@ public class BoardController {
 		return "redirect:/bbs/write?bName=1";
 	}
 
-	@RequestMapping(value ="/bbs/write")
+	@RequestMapping(value ="/write")
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
@@ -169,7 +175,7 @@ public class BoardController {
 	}
 	
 
-	@RequestMapping(value = "/bbs/writePro", method = RequestMethod.POST)
+	@RequestMapping(value = "/writePro", method = RequestMethod.POST)
 	/** 게시글 쓰기
 	 * @param bName 게시판이름
 	 * @return 글쓰기 화면 */
@@ -185,17 +191,15 @@ public class BoardController {
 		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}
 
-	@RequestMapping(value = "/bbs/deletePro", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/deletePro", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 삭제
 	 * @param bName 게시판이름
 	 * @return 글삭제 확인 화면 */
 	public String delete(@RequestParam int at_id, RedirectAttributes rttr) throws Exception {
 		/** TODO 찬우.게시판: 게시글 삭제 구현
 		 * - 삭제 후 해당 글이 있던 게시판의 목록화면으로 리다이렉트
-		 */
-		
+		 */		
 		boardServ.deleteBoard(at_id);
-		
 		
 		rttr.addFlashAttribute("bName","1"); // 해당 게시글의 게시판 읽어와서 설정 요망
 		rttr.addFlashAttribute("pageNum", 1);
@@ -203,12 +207,16 @@ public class BoardController {
 		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}
 	
-    @RequestMapping(value = "/bbs/insertReply", method = {RequestMethod.GET,RequestMethod.POST})
-    public String board5ReplySave(HttpServletRequest request, Comment comment) throws Exception {
-        
-    	boardServ.insertUpdateReply(comment);
-
-        return "redirect:/insertReply?at_id=" + comment.getAt_id();
+    @RequestMapping(value = "/insertReply", method = {RequestMethod.GET,RequestMethod.POST})
+    public String insertUpdateReply(@ModelAttribute("comment") Comment comment) throws Exception {
+             
+        if (comment.getRe_id()==0 || "".equals(comment.getRe_id())) {
+    		 boardServ.insertReply(comment);
+         } else {
+        	 boardServ.updateReply(comment);
+         }    	     	
+    	
+        return "redirect:/insertReply";
     	
     }
 }
