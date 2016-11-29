@@ -34,15 +34,14 @@ public class PlayerProtocol extends ProtocolHelper {
 	}
 
     @SubscribeMapping("/player/join/{rid}")
-	public WSPlayer inRoom(SimpMessageHeaderAccessor head, String password, @DestinationVariable int rid) throws Exception {
+	public void inRoom(SimpMessageHeaderAccessor head, String password, @DestinationVariable int rid) throws Exception {
 		UserCore sender = sender(head);
-		int uid = sender.getId();
-		return plServ.join(uid, rid, password);
+        plServ.join(sender.getId(), rid, password);
 	}
 
 	@MessageMapping("/player/left/{rid}")
-	public WSPlayer outRoom(SimpMessageHeaderAccessor head, @DestinationVariable int rid) throws Exception {
+	public void outRoom(SimpMessageHeaderAccessor head, @DestinationVariable int rid) throws Exception {
 		UserCore sender = sender(head);
-        return plServ.left(sender.getId());
+        plServ.left(sender.getId());
 	}
 }

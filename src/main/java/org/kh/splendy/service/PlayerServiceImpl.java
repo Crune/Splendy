@@ -57,59 +57,62 @@ public class PlayerServiceImpl implements PlayerService {
     @Override @Transactional
     public WSPlayer join(int uid, int rid, String password) {
         WSPlayer rst = null;
+        rst = playerMap.getWSPlayer(uid);
+        if (rid == 0) {
+            sock.send("/player/join/" + rid, rst);
+        } else {
+            String pw = new Gson().fromJson(password, String.class);
+            boolean canJoin = false;
 
-        String pw = new Gson().fromJson(password, String.class);
-        boolean canJoin = false;
-
-        // 비밀번호가 일치하거나 없을 경우만 참가가능
-        Room reqRoom = roomMap.read(rid);
-        if (reqRoom.getPassword() == null) {
-            canJoin = true;
-        } else if (reqRoom.getPassword().equals(pw)) {
-            canJoin = true;
-        }
-
-        // 인원제한 보다 참가자 수가 적을 경우만 참가가능
-        int countLimits = playerMap.getInRoomPlayerByRid(rid).size();
-        canJoin = (canJoin && reqRoom.getPlayerLimits() > countLimits);
-
-        // 참가하고 있는 방이 없을 경우만 참가가능
-        int countIsIn = playerMap.countIsIn(uid);
-        canJoin = (canJoin && countIsIn == 0);
-
-        if (canJoin) {
-            // DB에 접속 정보 입력
-            Player player = null;
-            if (playerMap.count(uid, rid) == 0) {
-                player = new Player();
-                player.setId(uid);
-                player.setRoom(rid);
-                player.setIsIn(1);
-                player.setIp("");
-                playerMap.create(player);
-            } else {
-                player = playerMap.read(uid, rid);
-                player.setIp("");
-                player.setIsIn(1);
-                playerMap.update(player);
+            // 비밀번호가 일치하거나 없을 경우만 참가가능
+            Room reqRoom = roomMap.read(rid);
+            if (reqRoom.getPassword() == null) {
+                canJoin = true;
+            } else if (reqRoom.getPassword().equals(pw)) {
+                canJoin = true;
             }
 
-            // 로비 접속 불가능 설정
-            playerMap.setIsIn(uid, 0, 0);
-            profMap.setLastRoom(uid, rid);
+            // 인원제한 보다 참가자 수가 적을 경우만 참가가능
+            int countLimits = playerMap.getInRoomPlayerByRid(rid).size();
+            canJoin = (canJoin && reqRoom.getPlayerLimits() > countLimits);
 
-            boolean joinRst = game.joinPro(rid, uid);
-            int innerPlsCount = game.getRoom(rid).getPls().size();
-            if (joinRst && innerPlsCount == game.getRoom(rid).getLimit()) {
-                // 게임 시작!
-                sock.sendRoom(rid, "start", "게임 시작!");
-                int nextActor  = game.getRoom(rid).nextActor(sock);
-                sock.sendRoom(rid, "actor", nextActor);
+            // 참가하고 있는 방이 없을 경우만 참가가능
+            int countIsIn = playerMap.countIsIn(uid);
+            canJoin = (canJoin && countIsIn == 0);
+
+            if (canJoin) {
+                // DB에 접속 정보 입력
+                Player player = null;
+                if (playerMap.count(uid, rid) == 0) {
+                    player = new Player();
+                    player.setId(uid);
+                    player.setRoom(rid);
+                    player.setIsIn(1);
+                    player.setIp("");
+                    playerMap.create(player);
+                } else {
+                    player = playerMap.read(uid, rid);
+                    player.setIp("");
+                    player.setIsIn(1);
+                    playerMap.update(player);
+                }
+
+                // 로비 접속 불가능 설정
+                playerMap.setIsIn(uid, 0, 0);
+                profMap.setLastRoom(uid, rid);
+
+                boolean joinRst = game.joinPro(rid, uid);
+                int innerPlsCount = game.getRoom(rid).getPls().size();
+                if (joinRst && innerPlsCount == game.getRoom(rid).getLimit()) {
+                    // 게임 시작!
+                    sock.sendRoom(rid, "start", "게임 시작!");
+                    int nextActor = game.getRoom(rid).nextActor(sock);
+                    sock.sendRoom(rid, "actor", nextActor);
+                }
+
+                sock.send(uid, "room", "accept", rid);
+                sock.send("/player/join/" + rid, rst);
             }
-
-            sock.send(uid, "room", "accept", rid);
-            rst = playerMap.getWSPlayer(uid);
-            sock.send("/room/join"+rid, rst);
         }
         return rst;
     }
@@ -124,7 +127,10 @@ public class PlayerServiceImpl implements PlayerService {
     public WSPlayer left(int uid) {
         int rid = profMap.getLastRoom(uid);
 
-        if (uid>0 && rid>0) {
+        WSPlayer rst = playerMap.getWSPlayer(uid);
+        if (rid == 0) {
+            sock.send("/player/left/"+rid, rst);
+        } else if (uid>0 && rid>0) {
             playerMap.setIsIn(uid, rid, 0);
             playerMap.setIsIn(uid, 0, 1);
             profMap.setLastRoom(uid, 0);
@@ -137,9 +143,8 @@ public class PlayerServiceImpl implements PlayerService {
 
             game.leftPro(rid, uid);
             sock.send(uid, "room", "can_left", rid );
+            sock.send("/player/left/"+rid, rst);
         }
-        WSPlayer rst = playerMap.getWSPlayer(uid);
-        sock.send("/room/left/"+rid, rst);
         return rst;
     }
 }

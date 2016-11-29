@@ -48,8 +48,6 @@
 			INNER JOIN KH_USER_INNER
 				ON KH_USER.U_ID = KH_USER_INNER.U_ID
 		WHERE KH_USER.U_ID = #{uid}
-			AND KH_USER_INNER.U_CONNECT > 0
-			AND KH_PLAYER.PL_IS_IN      > 0
 	]]>
 	</select>
 
