@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.SqlSession;
 import org.kh.splendy.mapper.ArticleMapper;
 import org.kh.splendy.mapper.BoardMapper;
 import org.kh.splendy.vo.Article;
 import org.kh.splendy.vo.Comment;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,12 +91,24 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-    public void insertBoardReply(Comment comment) {
+    public void insertUpdateReply(Comment comment) throws Exception {
         if (comment.getRe_id()==0 || "".equals(comment.getRe_id())) {
-            //sqlSession.insert("insertBoard5Reply", comment);
+        	boardMap.insertReply(comment);
         } else {
-            //sqlSession.insert("updateBoard5Reply", comment);
+            boardMap.updateReply(comment);
         }
     }
+
+	@Override
+	public void insertReply(Comment comment) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateReply(Comment comment) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

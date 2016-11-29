@@ -203,12 +203,12 @@ public class BoardController {
 		return "redirect:/bbs/list?pageNum=1&bName=1";
 	}
 	
-    @RequestMapping(value = "/board5ReplySave", method = {RequestMethod.GET,RequestMethod.POST})
-    public String board5ReplySave(HttpServletRequest request, Comment comment) {
+    @RequestMapping(value = "/bbs/insertReply", method = {RequestMethod.GET,RequestMethod.POST})
+    public String board5ReplySave(HttpServletRequest request, Comment comment) throws Exception {
         
-    	/*boardServ.insertBoardReply(boardReplyInfo);
+    	boardServ.insertUpdateReply(comment);
 
-        return "redirect:/board5Read?brdno=" + boardReplyInfo.getBrdno();*/
-    	return null;
+        return "redirect:/insertReply?at_id=" + comment.getAt_id();
+    	
     }
 }

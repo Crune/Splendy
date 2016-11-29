@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.Article;
+import org.kh.splendy.vo.Comment;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.HashMap;
@@ -87,6 +88,11 @@ public interface BoardMapper {
 
 		@Delete("DELETE KH_ARTICLE WHERE AT_ID = #{AT_ID, jdbcType=INTEGER}")
 		public void deleteBoard(int at_id) throws Exception;
-			
+		
+		public void insertReply(Comment comment) throws Exception;
+		
+		public void updateReply(Comment comment) throws Exception;
+		
+		public void insertUpdateReply(Comment comment) throws Exception;
 		
 }

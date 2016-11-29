@@ -86,9 +86,9 @@
     	VALUES (#{at_id}, #{re_id}, #{u_id}, #{cm_cont}, #{cm_pass})
 	</insert>
 
-<update id="updateReply" parameterType="org.kh.splendy.vo.Comment">
-    UPDATE KH_COMMENT
-       SET CM_CONT=#{cm_cont} 
-     WHERE RE_ID=#{re_id}
-</update> 
+	<update id="updateReply" parameterType="org.kh.splendy.vo.Comment">
+	    UPDATE KH_COMMENT
+	       SET CM_CONT=#{cm_cont} 
+	     WHERE RE_ID=#{re_id}
+	</update> 
 </mapper>

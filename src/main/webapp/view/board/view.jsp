@@ -45,11 +45,11 @@
 	   
 <p>&nbsp;</p>
 <div style="border: 1px solid; width: 600px; padding: 5px">
-    <form name="form1" action="board5ReplySave" method="post">
-        <input type="hidden" name="brdno" value="<c:out value="${article.at_id}"/>"> 
-        작성자: <input type="text" name="rewriter" size="20" maxlength="20"> <br/>
-        <textarea name="rememo" rows="3" cols="60" maxlength="500" placeholder="댓글을 달아주세요."></textarea>
-        <a href="#" onclick="fn_formSubmit()">저장</a>
+    <form name="form1" action="insertReply" method="post">
+        <input type="hidden" name="at_id" value="<c:out value="${article.at_id}"/>"> 
+        작성자: <input type="text" name="u_id" size="20" maxlength="20"> <br/>
+        <textarea name="cm_cont" rows="3" cols="60" maxlength="500" placeholder="댓글을 달아주세요."></textarea>
+        <a href="/bbs/insertReply" onclick="fn_formSubmit()">저장</a>
     </form>
 </div>
  

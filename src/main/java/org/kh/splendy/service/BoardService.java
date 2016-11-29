@@ -33,5 +33,9 @@ public interface BoardService {
 	
 	void deleteBoard(int at_id)throws Exception;
 	
-	void insertBoardReply(Comment comment) throws Exception;
+	void insertUpdateReply(Comment comment) throws Exception;	
+	
+	void insertReply(Comment comment) throws Exception;
+	
+	void updateReply(Comment comment) throws Exception;
 }
