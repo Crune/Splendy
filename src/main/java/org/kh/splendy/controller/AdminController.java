@@ -5,12 +5,18 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.kh.splendy.service.ChatService;
+import org.kh.splendy.service.RoomService;
 import org.kh.splendy.service.ServService;
+import org.kh.splendy.service.SocketService;
 import org.kh.splendy.service.UserInnerService;
 import org.kh.splendy.service.UserService;
+import org.kh.splendy.vo.Msg;
 import org.kh.splendy.vo.PropInDB;
+import org.kh.splendy.vo.Room;
 import org.kh.splendy.vo.UserCore;
 import org.kh.splendy.vo.UserInner;
+import org.kh.splendy.vo.WSMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,14 +37,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class AdminController {
 	
-	@Autowired
-	private UserService userServ;
+	@Autowired private UserService userServ;
 	
-	@Autowired
-	private ServService servServ;
+	@Autowired private ServService servServ;
 	
-	@Autowired
-	private UserInnerService innerServ;
+	@Autowired private UserInnerService innerServ;
+	
+	@Autowired private ChatService chatServ;
+	
+	@Autowired private RoomService roomServ;
+	
+	@Autowired private SocketService sockServ;
 	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
@@ -63,7 +72,7 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody int saveState(@ModelAttribute("servMF") PropInDB prop) throws Exception {
 		int result = servServ.update(prop);
-		log.info("admin access servicelist"+prop);
+		log.info("admin save service : "+prop.getKey());
 		return result;
 	}
 	
@@ -91,12 +100,12 @@ public class AdminController {
 		try {
 			userServ.adminMF(user);
 		} catch(Exception e) { e.printStackTrace(); }
-		log.info("admin modify : "+id);
+		log.info("admin modify user info : "+id);
 	}
 	
 	@RequestMapping("/admin/adminList")
 	public String readAdmin(Model model) throws Exception {
-		log.info("admin list read");
+		log.info("admin read user authority");
 		List<UserInner> list = innerServ.readAdmin();
 		model.addAttribute("list", list);
 		return "admin/adminList";
@@ -110,7 +119,72 @@ public class AdminController {
 		int id = inner.getId();
 		String role = inner.getRole();
 		innerServ.setRole(id,role);
-		log.info("admin authority : "+id+","+role);
+		log.info("admin modify authority : "+id+","+role);
+	}
+	
+	@RequestMapping("/admin/notice")
+	public String adminNotice(HttpSession session){
+		log.info("admin access notice");
+		UserCore user = (UserCore)session.getAttribute("user");
+		session.setAttribute("user", user);
+		return "admin/notice";
+	}
+	
+	@RequestMapping("/admin/deleteForm")
+	public String adminDeleteForm(Model model){
+		log.info("admin access delete-form");
+		List<Msg> msg = chatServ.read_all();
+		List<Room> room = roomServ.getCurrentRooms();
+		model.addAttribute("msg", msg);
+		model.addAttribute("room", room);
+		return "admin/deleteForm";
+	}
+	
+	@RequestMapping(
+			value = "/admin/msg_delete",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody int msgDelete(@RequestParam("mid") String[] mid) throws Exception {
+		int result = 0;
+		if(mid != null) {
+			for(int i = 0; i < mid.length; i++ ){
+				int id = new Integer(mid[i]);
+				log.info("admin delete message : "+id);
+				chatServ.delete(id);
+				result = 1;
+			}
+		} else { result = 0;}
+		return result;
 	}
 
+	@RequestMapping(
+			value = "/admin/room_close",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody int roomClose(@RequestParam("id") String[] id) throws Exception {
+		int result = 0;
+		if(id != null) {
+			for(int i = 0; i < id.length; i++ ){
+				int r_id = new Integer(id[i]);
+				log.info("admin close room : "+id);
+				roomServ.close(r_id);
+				result = 1;
+			}
+		} else { result = 0;}
+		return result;
+	}
+	
+	@RequestMapping(
+			value = "/admin/notice_send",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody String sendNotice(@RequestParam("content") String content,@RequestParam("nickname") String nickname) throws Exception {
+		String result = null;
+		if(content != null){
+			log.info("admin send notice : "+nickname+" : "+content);
+			sockServ.send("/notice/everyone", new WSMsg(nickname, content));
+			result = nickname+" : "+content;
+		} else { result = "실패"; }
+		return result;
+	}
 }

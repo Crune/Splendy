@@ -40,9 +40,9 @@ public class AccountController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(HttpSession session) {
-		/*if ((UserCore) session.getAttribute("user") != null) {
+		if ((UserCore) session.getAttribute("user") != null) {
 			return "redirect:/lobby/";
-		} else*/ {
+		} else {
 			return "index";
 		}
 	}

@@ -12,9 +12,11 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.UserInner;
 import org.kh.splendy.vo.UserProfile;
+import org.springframework.stereotype.Component;
 
 /** 개인 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.20) */
+@Component
 public interface UserProfileMapper {
 
 	// BASIC CRUD

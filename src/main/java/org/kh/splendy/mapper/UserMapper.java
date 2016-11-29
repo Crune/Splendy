@@ -11,7 +11,9 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.UserCore;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface UserMapper {
 
 	// BASIC CRUD

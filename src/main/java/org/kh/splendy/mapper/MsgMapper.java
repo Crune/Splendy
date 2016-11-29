@@ -9,9 +9,11 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.Msg;
+import org.springframework.stereotype.Component;
 
 /** 메시지 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.14) */
+@Component
 public interface MsgMapper {
 
 	// BASIC CRUD
@@ -77,5 +79,7 @@ public interface MsgMapper {
 	@Select("select * from (select * from "+TABLE+" where RM_ID=#{rId} and M_TYPE = 'chat.new' order by M_ID DESC) where rownum < #{num} order by M_ID ASC")
 	public List<Msg> readPrevChat(@Param("rId") int roomId, @Param("num") int count);
 
-	
+	@ResultMap("msgRst")
+	@Select("select * from "+TABLE+" order by M_ID asc")
+	public List<Msg> read_all();
 }

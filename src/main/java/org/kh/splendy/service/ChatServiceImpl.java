@@ -58,4 +58,15 @@ public class ChatServiceImpl implements ChatService {
 
         sock.send(uid, "chat", "prev", chats);
     }
+
+	@Override
+	public List<Msg> read_all() {
+		List<Msg> msg = msgMap.read_all();
+		return msg;
+	}
+
+	@Override
+	public void delete(int id) {
+		msgMap.delete(id);
+	}
 }

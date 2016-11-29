@@ -4,9 +4,11 @@ import java.util.List;
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Player;
 import org.kh.splendy.vo.WSPlayer;
+import org.springframework.stereotype.Component;
 
 /** 플레이어 참가 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.11) */
+@Component
 public interface PlayerMapper {
 
 	// BASIC CRUD

@@ -41,6 +41,8 @@
 					<li><a href="/admin/servList">서비스</a></li>
 					<li><a href="/admin/adminList">관리자</a></li>
 					<li><a href="/admin/userList">유저</a></li>
+					<li><a href="/admin/notice">공지사항</a></li>
+					<li><a href="/admin/deleteForm">데이터정리</a></li>
 					<li><a href="/lobby/">게임으로</a></li>
 					<li><a href="/logout">로그아웃</a></li>
 				</ul>
@@ -50,15 +52,11 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
-				<ul class="nav nav-sidebar">
-					<li><a href="/admin/servList">서비스</a></li>
-				</ul>
-				<ul class="nav nav-sidebar">
-					<li><a href="/admin/adminList">관리자</a></li>
-				</ul>
-				<ul class="nav nav-sidebar">
-					<li><a href="/admin/userList">유저</a></li>
-				</ul>
+				<ul class="nav nav-sidebar"> <li><a href="/admin/servList">서비스</a></li> </ul>
+				<ul class="nav nav-sidebar"> <li><a href="/admin/adminList">관리자</a></li> </ul>
+				<ul class="nav nav-sidebar"> <li><a href="/admin/userList">유저</a></li> </ul>
+				<ul class="nav nav-sidebar"> <li><a href="/admin/notice">공지사항</a></li> </ul>
+				<ul class="nav nav-sidebar"> <li><a href="/admin/deleteForm">데이터정리</a></li> </ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<h1 class="page-header">Service 현황</h1>
