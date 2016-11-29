@@ -12,9 +12,11 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.Player;
 import org.kh.splendy.vo.Room;
+import org.springframework.stereotype.Component;
 
 /** 게임방 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.11) */
+@Component
 public interface RoomMapper {
 
 	// BASIC CRUD

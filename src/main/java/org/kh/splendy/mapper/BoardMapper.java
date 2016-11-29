@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.Article;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.List;
 
 
 
+@Component
 public interface BoardMapper {
 	/*
 	String TABLE = "KH_ARTICLE";

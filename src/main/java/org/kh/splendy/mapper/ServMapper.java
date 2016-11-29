@@ -10,12 +10,15 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.PropInDB;
+import org.springframework.stereotype.Component;
+
 /**
  * 
  * 서비스 테이블을 관리하는 MyBatis Mapper
  * @author 진규
  *
  */
+@Component
 public interface ServMapper {
 
 	// BASIC CRUD

@@ -10,9 +10,11 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.UserInner;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 /** 내부 사용 용도의 개인 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.20) */
+@Component
 public interface UserInnerMapper {
 
 	// BASIC CRUD

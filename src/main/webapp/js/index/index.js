@@ -117,13 +117,13 @@ window.onload = function(){
 		});
 		
 		$(".btn_login_prc").on('click', function () {
-			loginRequest();
+			login_check();
 		});
 		
 		$(".btn_naver").on('click', function(){
 		});
 
-		$("#loginForm").find("#password").keypress(function(e) {
+		$("input#exampleInputPassword1").keypress(function(e) {
             if (e.which == 13) {
                 loginRequest();
             }
@@ -263,6 +263,7 @@ function login_check() {
 		document.loginForm.password.focus();
 		return false;
 	} else {
+        loginRequest();
 		return true;
 	}
 }
