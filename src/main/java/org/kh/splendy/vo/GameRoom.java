@@ -6,7 +6,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import org.kh.splendy.config.assist.Utils;
-import org.kh.splendy.service.CompService;
 import org.kh.splendy.service.SocketService;
 
 import java.util.ArrayList;
@@ -99,6 +98,22 @@ public class GameRoom {
         return rst;
     }
 
+    public boolean reqLeft(int uid) {
+        boolean isIn = false;
+        for (WSPlayer curPl : pls) {
+            if (curPl.getUid() == uid) {
+                pls.remove(pls.indexOf(curPl));
+                isIn = true;
+            }
+        }
+        for (PLCoin coin : coins) {
+            if (coin.getU_id() == uid) {
+                coins.remove(coins.indexOf(coin));
+            }
+        }
+        return isIn;
+    }
+
     public Map<Integer, Integer> getCoinAmount(int uid) {
         Map<Integer, Integer> fCoins = new HashMap<>();
         for (PLCoin cur : coins) {
@@ -133,10 +148,25 @@ public class GameRoom {
         }
         return rst;
     }
-    public WSComp pickCard(PLCard reqCard) {
-        // TODO 해당 카드를 가져옴
+    public List<PLCard> pickCard(List<PLCard> reqCard) {
+        List<PLCard> rst = new ArrayList<>();
+        for (PLCard cur : reqCard) {
+            rst.add(pickCard(cur));
+        }
+        return rst;
+    }
 
-        return null;
+    public PLCard pickCard(PLCard reqCard) {
+        PLCard rst = null;
+        // 해당 카드를 가져옴
+        for (PLCard card : cards) {
+            if (card.getCd_id() == reqCard.getCd_id()) {
+                card.setN_hold(reqCard.getN_hold());
+                card.setU_id(reqCard.getU_id());
+                rst = card;
+            }
+        }
+        return rst;
     }
 
     public List<PLCoin> pickCoins(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins) {
@@ -185,13 +215,23 @@ public class GameRoom {
         }
     }
 
-    public boolean reqCard(PLCard reqCard, int reqUser) {
-        boolean rst = false;/*
-        if (isMyTurn(reqUser) && couldBuy(reqUser)) {
-
-            rst = true;
-        }*/
+    public PLCoin pickGold(int uid) {
+        boolean isCan = false;
+        PLCoin rst = null;
+        for (PLCoin cur : coins) {
+            if (cur.getU_id() == 0 && cur.getCn_id() == 6 && cur.getCn_count() > 0) {
+                cur.setCn_count(cur.getCn_count() -1);
+                isCan = true;
+            }
+        }
+        if (isCan) {
+            for (PLCoin cur : coins) {
+                if (cur.getU_id() == uid && cur.getCn_id() == 6) {
+                    cur.setCn_count(cur.getCn_count() +1);
+                    rst = cur;
+                }
+            }
+        }
         return rst;
     }
-
 }

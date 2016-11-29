@@ -1,10 +1,7 @@
 package org.kh.splendy.service;
 
 import org.kh.splendy.mapper.*;
-import org.kh.splendy.vo.GameRoom;
-import org.kh.splendy.vo.Room;
-import org.kh.splendy.vo.UserProfile;
-import org.kh.splendy.vo.WSPlayer;
+import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,23 +76,33 @@ public class GameServiceImpl implements GameService {
 
         WSPlayer joiner = plMap.getWSPlayer(uid).CanSend();
         boolean result = rooms.get(rid).reqJoin(joiner);
+        if (result) {
+            rooms.get(rid).getCoins().addAll(comp.getNewCoins(rid, uid));
+        }
 
         return result;
     }
 
     @Override
-    public void leftPro(int rid, int uid) {
+    public boolean leftPro(int rid, int uid) {
         initRoom(rid);
-
-        List<WSPlayer> pls = rooms.get(rid).getPls();
-        pls.forEach(pl->{
-            if (uid == pl.getUid()) {
-                pls.remove(pl);
+        boolean result = rooms.get(rid).reqLeft(uid);
+        if (result) {
+            List<WSPlayer> pls = rooms.get(rid).getPls();
+            if (pls.isEmpty()) {
+                rooms.remove(rooms.get(rid));
+            } else {
+                if (rooms.get(rid).isPlaying()) {
+                    if (!comp.checkEnding(rooms.get(rid).getCards())) {
+                        int rate = profMap.read(uid).getRate() -100;
+                        if (rate > 0) {
+                            profMap.setRate(uid, rate - 100);
+                        }
+                    }
+                }
             }
-        });
-        if (pls.isEmpty()) {
-            rooms.remove(rooms.get(rid));
         }
+        return result;
     }
 
     @Override @Transactional

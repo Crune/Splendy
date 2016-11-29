@@ -1,7 +1,6 @@
 package org.kh.splendy.service;
 
 import com.google.gson.Gson;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -11,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by runec on 2016-11-27.
@@ -59,10 +55,10 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override @Transactional
-    public boolean join(int uid, int rid, String password) {
+    public WSPlayer join(int uid, int rid, String password) {
+        WSPlayer rst = null;
 
         String pw = new Gson().fromJson(password, String.class);
-        log.info("canjoin0:"+password);
         boolean canJoin = false;
 
         // 비밀번호가 일치하거나 없을 경우만 참가가능
@@ -72,19 +68,14 @@ public class PlayerServiceImpl implements PlayerService {
         } else if (reqRoom.getPassword().equals(pw)) {
             canJoin = true;
         }
-        log.info("canjoin1:"+canJoin);
-
 
         // 인원제한 보다 참가자 수가 적을 경우만 참가가능
         int countLimits = playerMap.getInRoomPlayerByRid(rid).size();
         canJoin = (canJoin && reqRoom.getPlayerLimits() > countLimits);
-        log.info("canjoin2:"+canJoin);
 
         // 참가하고 있는 방이 없을 경우만 참가가능
         int countIsIn = playerMap.countIsIn(uid);
         canJoin = (canJoin && countIsIn == 0);
-        log.info("canjoin3:"+canJoin);
-
 
         if (canJoin) {
             // DB에 접속 정보 입력
@@ -117,18 +108,21 @@ public class PlayerServiceImpl implements PlayerService {
             }
 
             sock.send(uid, "room", "accept", rid);
+            rst = playerMap.getWSPlayer(uid);
         }
-        return canJoin;
+        return rst;
     }
 
     @Override
-    public void left(UserCore sender) {
+    public WSPlayer left(UserCore sender) {
         int uid = sender.getId();
         left(uid);
+        WSPlayer rst = playerMap.getWSPlayer(uid);
+        return rst;
     }
 
     @Override @Transactional
-    public void left(int uid) {
+    public WSPlayer left(int uid) {
         int rid = profMap.getLastRoom(uid);
 
         if (uid>0 && rid>0) {
@@ -145,5 +139,7 @@ public class PlayerServiceImpl implements PlayerService {
             game.leftPro(rid, uid);
             sock.send(uid, "room", "can_left", rid );
         }
+        WSPlayer rst = playerMap.getWSPlayer(uid);
+        return rst;
     }
 }

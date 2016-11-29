@@ -32,15 +32,15 @@ public class PlayerProtocol extends ProtocolHelper {
 	}
 
 	@MessageMapping("/player/join/{rid}")
-	public boolean inRoom(SimpMessageHeaderAccessor head, String password, @DestinationVariable int rid) throws Exception {
+	public WSPlayer inRoom(SimpMessageHeaderAccessor head, String password, @DestinationVariable int rid) throws Exception {
 		UserCore sender = sender(head);
 		int uid = sender.getId();
 		return plServ.join(uid, rid, password);
 	}
 
 	@MessageMapping("/player/left")
-	public void outRoom(SimpMessageHeaderAccessor head) throws Exception {
+	public WSPlayer outRoom(SimpMessageHeaderAccessor head) throws Exception {
 		UserCore sender = sender(head);
-        plServ.left(sender.getId());
+        return plServ.left(sender.getId());
 	}
 }

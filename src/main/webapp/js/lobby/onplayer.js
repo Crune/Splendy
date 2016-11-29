@@ -39,11 +39,20 @@ function player_priv(evt) {
 }
 
 function player_join(evt) {
-	
+    var pl = JSON.parse(evt.body);
+    if (pl.room == '0') {
+        $(".lobby_players").append(temp_player(pl));
+        onChatMsg(new Chat('new', '시스템', pl.nick+'님이 접속하였습니다.','','sys'));
+    } else {
+        $("#user_"+pl.uid).detach();
+        $("#room_"+pl.room+" .row .room_player").append(temp_player(pl));
+    }
 }
 
 function player_left(evt) {
-	
+    var pl = JSON.parse(evt.body);
+    $("#user_"+pl.uid).detach();
+    onChatMsg(new Chat('new', '시스템', pl.nick+'님이 나가셨습니다.','','sys'));
 }
 
 function joinRoom(rid, password) {
