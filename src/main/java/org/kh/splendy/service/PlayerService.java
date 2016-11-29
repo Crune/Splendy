@@ -14,10 +14,10 @@ public interface PlayerService {
 
     List<WSPlayer> readList(int rid);
 
-    WSPlayer join(int uid, int rid, String password);
+    void join(int uid, int rid, String password);
 
-    WSPlayer left(UserCore sender);
+    void left(UserCore sender);
 
     @Transactional
-    WSPlayer left(int uid);
+    void left(int uid);
 }

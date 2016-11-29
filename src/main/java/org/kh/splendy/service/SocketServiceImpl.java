@@ -6,6 +6,7 @@ import org.kh.splendy.mapper.UserInnerMapper;
 import org.kh.splendy.vo.Player;
 import org.kh.splendy.vo.UserCore;
 import org.kh.splendy.vo.WSMsg;
+import org.kh.splendy.vo.WSPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +15,14 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
-/**
- * Created by runec on 2016-11-27.
- */
 @Service
+@EnableTransactionManagement
 public class SocketServiceImpl implements  SocketService {
 
     @Autowired private SimpMessagingTemplate simpT;
@@ -43,7 +38,10 @@ public class SocketServiceImpl implements  SocketService {
     public void putConnectors(UserCore user) {
         if (user.getId() > 0 && connectors.get(user.getId()) == null) {
             connectors.put(user.getId(), user);
+
             innerMap.setConnect(user.getId(), 1);
+            WSPlayer pl = playerMap.getWSPlayer(user.getId());
+            send("/player/join/" + pl.getRoom(), pl);
         }
     }
 
@@ -51,31 +49,16 @@ public class SocketServiceImpl implements  SocketService {
     public void removeConnectors(UserCore user) {
         if (user.getId() > 0 && connectors.get(user.getId()) != null) {
             connectors.remove(user.getId());
+
+            WSPlayer pl = playerMap.getWSPlayer(user.getId());
             innerMap.setConnect(user.getId(), 0);
+            send("/player/left/", pl);
         }
     }
 
     @Override
     public Map<Integer, UserCore> getConnectors() {
         return connectors;
-    }
-
-    /**
-     * 동작설명
-     * - 플레이어 테이블에 해당 항목이 없을 경우 생성
-     * - 해당 플레이어 접속정보 설정
-     */
-    @Override
-    public void initPlayer(int uid, int rid) {
-        if (uid > 0 && rid >= 0) {
-            Player pl = playerMap.read(uid, rid);
-            if (pl == null) {
-                pl = new Player();
-                pl.setId(uid);
-                pl.setRoom(rid);
-                playerMap.create(pl);
-            }
-        }
     }
 
     @Override

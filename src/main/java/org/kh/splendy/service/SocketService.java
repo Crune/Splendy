@@ -20,8 +20,6 @@ public interface SocketService {
 
     Map<Integer, UserCore> getConnectors();
 
-    void initPlayer(int uid, int rid);
-
     MessageHeaders createHeaders(String sessionId, SimpMessageType type);
 
     void kick(String sessionId, String channel);

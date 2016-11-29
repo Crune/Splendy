@@ -33,15 +33,17 @@ public class PlayerProtocol extends ProtocolHelper {
 		sock.send(sender, "player", "prev", pls);
 	}
 
-    @SubscribeMapping("/player/join/{rid}")
+	@MessageMapping("/player/join/{rid}")
 	public void inRoom(SimpMessageHeaderAccessor head, String password, @DestinationVariable int rid) throws Exception {
 		UserCore sender = sender(head);
+		// 입장을 신청한다.
         plServ.join(sender.getId(), rid, password);
 	}
 
-	@MessageMapping("/player/left/{rid}")
+	@MessageMapping("/player/left")
 	public void outRoom(SimpMessageHeaderAccessor head, @DestinationVariable int rid) throws Exception {
 		UserCore sender = sender(head);
+		// 퇴장을 신청한다.
         plServ.left(sender.getId());
 	}
 }

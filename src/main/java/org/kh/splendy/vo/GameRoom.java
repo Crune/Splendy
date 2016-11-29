@@ -38,7 +38,8 @@ public class GameRoom {
 	@SerializedName("currentPl") @Expose
 	private int currentPl = 0;
 
-
+    @SerializedName("isHalted") @Expose
+    private boolean isHalted = false;
 
     public String getJson() {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -46,7 +47,7 @@ public class GameRoom {
 	}
 
 	public boolean isPlaying() {
-		return (turn > 0);
+		return (turn > 0 && isHalted == false);
 	}
 
 	public boolean isMyTurn(int uid) {
@@ -83,16 +84,30 @@ public class GameRoom {
         return this.currentPl;
     }
 
-	public boolean reqJoin(WSPlayer reqUser) {
+    private List<PLCoin> getNewCoins(int uid) {
+        List<PLCoin> coins = new ArrayList<PLCoin>();
+        for (int i=1; i<=6; i++) {
+            PLCoin rst = new PLCoin();
+            rst.setRm_id(room);
+            rst.setCn_id(i);
+            rst.setU_id(uid);
+            rst.setCn_count(0);
+        }
+        return coins;
+    }
+
+	public boolean reqJoin(WSPlayer reqUser, SocketService sock) {
 	    boolean rst = false;
+        for (WSPlayer curPl : pls) {
+            if (curPl.getUid() == reqUser.getUid()) {
+                rst = true;/*
+                this.isHalted = false;
+                sock.sendRoom(room, "resume", reqUser.getUid());*/
+            }
+        }
 	    if (limit > pls.size()) {
-            List<Integer> playerList = new ArrayList<>();
-            for (WSPlayer curPl : pls) {
-                playerList.add(curPl.getUid());
-            }
-	        if (!playerList.contains(reqUser.getUid())) {
-                pls.add(reqUser);
-            }
+            pls.add(reqUser);
+            coins.addAll(getNewCoins(reqUser.getUid()));
 	        rst = true;
         }
         return rst;
@@ -233,5 +248,9 @@ public class GameRoom {
             }
         }
         return rst;
+    }
+
+    public void halt() {
+        this.isHalted = true;
     }
 }
