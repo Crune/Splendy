@@ -112,12 +112,6 @@ public class UserServiceImpl implements UserService {
 		return list;
 	}
 
-	@Override
-	public UserCore selectOne(String email) throws Exception {
-		UserCore user = userMap.selectOne(email);
-		return user;
-	}
-
 	@Override @Async
 	public void sendEmail(UserCore user, String credent_code) throws Exception {
 		String fileName = "img/unnamed.png"; // src/main/webapp 폴더

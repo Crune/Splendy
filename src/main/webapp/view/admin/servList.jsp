@@ -39,7 +39,6 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/admin/index">메인으로</a></li>
 					<li><a href="/admin/servList">서비스</a></li>
-					<li><a href="/admin/adminList">관리자</a></li>
 					<li><a href="/admin/userList">유저</a></li>
 					<li><a href="/admin/notice">공지사항</a></li>
 					<li><a href="/admin/deleteForm">데이터정리</a></li>
@@ -53,7 +52,6 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar"> <li><a href="/admin/servList">서비스</a></li> </ul>
-				<ul class="nav nav-sidebar"> <li><a href="/admin/adminList">관리자</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/userList">유저</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/notice">공지사항</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/deleteForm">데이터정리</a></li> </ul>
@@ -122,7 +120,6 @@
 	<script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 	<script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 	<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-	<script src="/js/vendor/holder.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
 <script>
