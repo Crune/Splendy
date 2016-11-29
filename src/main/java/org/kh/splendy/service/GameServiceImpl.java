@@ -73,11 +73,15 @@ public class GameServiceImpl implements GameService {
     @Override
     public boolean joinPro(int rid, int uid) {
         initRoom(rid);
-
-        WSPlayer joiner = plMap.getWSPlayer(uid).CanSend();
-        boolean result = rooms.get(rid).reqJoin(joiner);
-        if (result) {
-            rooms.get(rid).getCoins().addAll(comp.getNewCoins(rid, uid));
+        boolean result = false;
+        if (rid > 0) {
+            WSPlayer joiner = plMap.getWSPlayer(uid).CanSend();
+            result = rooms.get(rid).reqJoin(joiner);
+            if (result) {
+                rooms.get(rid).getCoins().addAll(comp.getNewCoins(rid, uid));
+            }
+        } else {
+            result = true;
         }
 
         return result;
