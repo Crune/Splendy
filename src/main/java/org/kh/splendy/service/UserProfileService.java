@@ -16,5 +16,7 @@ public interface UserProfileService {
 	void refreshUserProf(HttpSession session);
 	List<UserProfile> getProfAll();
 	void updateRate(int id, int rate);
+	UserProfile read(int id);
+	void adminMF(UserProfile prof);
 	
 }

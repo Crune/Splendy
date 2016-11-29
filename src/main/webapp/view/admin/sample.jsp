@@ -243,7 +243,6 @@
 	<script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 	<script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <script src="/js/vendor/holder.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/js/ie10-viewport-bug-workaround.js"></script>
   </body>
