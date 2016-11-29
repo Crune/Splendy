@@ -87,14 +87,18 @@ window.onload = function(){
 
 function sendNotice() {
 	console.log("send notice start");
-jQuery.ajaxSettings.traditional = true;
 	$.ajax({
         url:'/admin/notice_send',
         type:'post',
         data:$("#noticeForm").serialize(),
         success:function(data){
-        	console.log(data);
-        	console.log("send notice end");
+        	if(data == 1){
+        		alert("전송완료");
+            	console.log("send notice end");
+        	}else{
+        		alert("내용이 존재하지 않습니다.");
+        		console.log("notice content null");
+        	}
         	window.location.reload();
         },error:function(request,status,error){
 

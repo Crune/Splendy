@@ -74,8 +74,11 @@ public class AdminController {
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody int saveState(@ModelAttribute("servMF") PropInDB prop) throws Exception {
-		int result = servServ.update(prop);
-		log.info("admin save service : "+prop.getKey());
+		int result = 0;
+		if(prop.getValue() != "") {
+			result = servServ.update(prop);
+			log.info("admin save service : "+prop.getKey());
+		}
 		return result;
 	}
 	
@@ -156,15 +159,15 @@ public class AdminController {
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody int msgDelete(@RequestParam("mid") String[] mid) throws Exception {
-		int result = 0;
+		int result = 1;
 		if(mid != null) {
 			for(int i = 0; i < mid.length; i++ ){
 				int id = new Integer(mid[i]);
 				log.info("admin delete message : "+id);
 				chatServ.delete(id);
-				result = 1;
+				result = 0;
 			}
-		} else { result = 0;}
+		}
 		return result;
 	}
 	@RequestMapping(
@@ -172,15 +175,15 @@ public class AdminController {
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody int roomClose(@RequestParam("id") String[] id) throws Exception {
-		int result = 0;
+		int result = 1;
 		if(id != null) {
 			for(int i = 0; i < id.length; i++ ){
 				int r_id = new Integer(id[i]);
 				log.info("admin close room : "+id);
 				roomServ.close(r_id);
-				result = 1;
+				result = 0;
 			}
-		} else { result = 0;}
+		}
 		return result;
 	}
 	
@@ -196,13 +199,13 @@ public class AdminController {
 			value = "/admin/notice_send",
 			method = RequestMethod.POST,
 			produces = "application/json")
-	public @ResponseBody String sendNotice(@RequestParam("content") String content,@RequestParam("nickname") String nickname) throws Exception {
-		String result = null;
-		if(content != null){
-			log.info("admin send notice : "+nickname+" : "+content);
+	public @ResponseBody int sendNotice(@RequestParam("content") String content,@RequestParam("nickname") String nickname) throws Exception {
+		int result = 0;
+		if(content != ""){
+			log.info("admin send notice -> "+nickname+" : "+content);
 			sockServ.send("/notice/everyone", new WSMsg(nickname, content));
-			result = "notice : "+nickname+" : "+content;
-		} else { result = "실패"; }
+			result = 1;
+		} else { result = 0; }
 		return result;
 	}
 }
