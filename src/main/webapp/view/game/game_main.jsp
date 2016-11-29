@@ -283,7 +283,7 @@
 			</div>
 		</div>
 		<!-- //보석 가져오는 모달창 -->
-		
+	</div>
 </body>
 
 <script class="heroCard_details" type="text/x-handlebars-template">
@@ -328,6 +328,6 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<link rel='stylesheet' href='/css/game_main.css'>
+<link rel='stylesheet' href='/css/ingame/game_main.css'>
 <script type='text/javascript' src="/js/game/game_main2.js"></script>
 </html>

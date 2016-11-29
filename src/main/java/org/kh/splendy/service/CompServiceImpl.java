@@ -123,10 +123,20 @@ public class CompServiceImpl implements CompService {
 
         PLCoin gold = new PLCoin();
 
+        // TODO 해당 카드를 가져올 조건 검증
+
+        // 해당 카드를 가져옴
         WSComp result = room.pickCard(reqGetCard);
 
+        // TODO 귀족카드 조건 검증
+
+        // TODO 만족하는 귀족카드 증정
+
+        // TODO 홀딩시 잔여 골드 코인 증정
         sock.send("/comp/coin/"+room.getRoom(), result.getCoins());
-	    return null;
+
+        // 결과 카드변경 전체 전송
+	    return result.getCards();
     }
 
 	@Override
@@ -235,23 +245,19 @@ public class CompServiceImpl implements CompService {
             int uid = cur.getU_id();
             int cnid = cur.getCd_id();
 
-            if (result.containsKey(uid)) {
-                Card thisCard = null;
-                for (Card curCard : cardAll) {
-                    if (curCard.getId() == cnid) {
-                        thisCard = curCard;
-                    }
+            Card thisCard = null;
+            for (Card curCard : cardAll) {
+                if (curCard.getId() == cnid) {
+                    thisCard = curCard;
                 }
-                result.put(uid, thisCard.getPoint());
-            } else {
-                Card thisCard = null;
-                for (Card curCard : cardAll) {
-                    if (curCard.getId() == cnid) {
-                        thisCard = curCard;
-                    }
-                }
-                result.put(uid, thisCard.getPoint());
             }
+
+            int prevScore = 0;
+            if (result.containsKey(uid)) {
+                prevScore = result.get(uid);
+                result.remove(uid);
+            }
+            result.put(uid, prevScore + thisCard.getPoint());
         }
 
 		return result;

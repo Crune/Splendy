@@ -39,5 +39,7 @@ public interface SocketService {
 
     void inject(Object target, Object org) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException;
 
+    void sendRoom(int rid, String type, Object cont);
+
     void send(UserCore sender, String topic, String type, Object obj);
 }

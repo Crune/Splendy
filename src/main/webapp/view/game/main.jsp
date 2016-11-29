@@ -8,7 +8,7 @@
 	<meta charset="UTF-8">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
-	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/ingame/main.css">
 	<link rel="stylesheet" href="/css/ingame/chat.css">
 	<link rel='stylesheet' href='/css/default.css'>
 	<!-- Bootstrap's Suck! 적용시 화면 깨짐 - 윤

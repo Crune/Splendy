@@ -51,7 +51,7 @@ public class ProfileController {
 		}
 		return icon;
 	}
-	
+	/*
 	@RequestMapping("/rank")
 	public String rank(Model model){
 		List<UserProfile> profList = profServ.getProfAll();
@@ -60,16 +60,16 @@ public class ProfileController {
 			UserCore user = userServ.selectOne(id);
 			String nickname = user.getNickname();
 			profList.get(i).setNickname(nickname);
-			/*//승패가 정해졌을 때 코딩 다시해야함 
+
 			int win = profList.get(i).getWin();
 			int lose = profList.get(i).getLose();
 			int rate = profList.get(i).getRate();
 			
 			int correctRate = (rate + (win*20) - (lose*20));
 			profServ.updateRate(id, correctRate);
-			profList.get(i).setRate(correctRate);*/
+			profList.get(i).setRate(correctRate);
 		}
 		model.addAttribute("profList", profList);
 		return "lobby";
-	}
+	}*/
 }

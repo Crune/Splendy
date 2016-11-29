@@ -23,15 +23,16 @@ public class Card {
 
 	public Card parse() {
 		setType(code.substring(0, 4));
-		String templv = getType().substring(2,1);
-		setLv((templv.equals("B"))?4:Integer.parseInt(templv) -1);
-		setPoint(Integer.parseInt(code.substring(4,5)));
-		setWhite(Integer.parseInt(code.substring(5,6)));
-		setBlue(Integer.parseInt(code.substring(6,7)));
-		setGreen(Integer.parseInt(code.substring(7,8)));
-		setRed(Integer.parseInt(code.substring(8,9)));
-		setBlack(Integer.parseInt(code.substring(9)));
-		
+		if (getType().length() == 9) {
+			String templv = getType().substring(2, 1);
+			setLv((templv.equals("B")) ? 4 : Integer.parseInt(templv) - 1);
+			setPoint(Integer.parseInt(code.substring(4, 5)));
+			setWhite(Integer.parseInt(code.substring(5, 6)));
+			setBlue(Integer.parseInt(code.substring(6, 7)));
+			setGreen(Integer.parseInt(code.substring(7, 8)));
+			setRed(Integer.parseInt(code.substring(8, 9)));
+			setBlack(Integer.parseInt(code.substring(9)));
+		}
 		return this;
 	}	
 }

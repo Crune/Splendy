@@ -7,8 +7,8 @@ function connect() {
     stompClient.connect({ 'uid': uid, 'rid': rid }, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/notice/everyone', function (notice) {
-        	var notice = JSON.parse(notice.body)
+        stompClient.subscribe('/notice/everyone', function (evt) {
+        	var notice = JSON.parse(evt.body)
         	var type = notice.type;
         	var cont = notice.cont;
             showNotice(type, cont);

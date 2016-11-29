@@ -1,7 +1,9 @@
 package org.kh.splendy.service;
 
 import org.kh.splendy.vo.GameRoom;
+import org.kh.splendy.vo.UserProfile;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,7 +16,9 @@ public interface GameService {
 
     GameRoom readRoom(int rid);
 
-    void joinPro(int rid, int uid);
+    boolean joinPro(int rid, int uid);
 
     void leftPro(int rid, int uid);
+
+    List<UserProfile> endingGame(int rid, Map<Integer, Integer> score);
 }
