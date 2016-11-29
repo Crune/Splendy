@@ -9,8 +9,8 @@ var playerLeft;
 function onPlayer() {
 	playerPriv = stompClient.subscribe('/player/private/'+uid, player_priv);
     
-    playerJoin = stompClient.subscribe('/player/join', player_join);
-    playerLeft = stompClient.subscribe('/player/left', player_left);
+    playerJoin = stompClient.subscribe('/player/join/'+rid, player_join);
+    playerLeft = stompClient.subscribe('/player/left/'+rid, player_left);
     
     player_init();
     send('player/prev/'+rid, '');
@@ -39,11 +39,23 @@ function player_priv(evt) {
 }
 
 function player_join(evt) {
-	
+    var pl = JSON.parse(evt.body);
+    if (pl.room == '0') {
+        $(".lobby_players").append(temp_player(pl));
+        onChatMsg(new Chat('new', '시스템', pl.nick+'님이 접속하였습니다.','','sys'));
+    } else {
+        $("#user_"+pl.uid).detach();
+        $("#room_"+pl.room+" .row .room_player").append(temp_player(pl));
+    }
 }
 
 function player_left(evt) {
-	
+    var pl = JSON.parse(evt.body);
+    $("#user_"+pl.uid).detach();
+    if (pl.room == '0') {
+        onChatMsg(new Chat('new', '시스템', pl.nick+'님이 나가셨습니다.','','sys'));
+    } else {
+    }
 }
 
 function joinRoom(rid, password) {

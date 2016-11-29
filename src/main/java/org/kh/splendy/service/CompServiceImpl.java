@@ -120,26 +120,57 @@ public class CompServiceImpl implements CompService {
     @Override
     public List<PLCard> reqPickCard(PLCard reqGetCard, int uid, GameRoom room) {
         init();
+		WSComp result = null;
 
-        PLCoin gold = new PLCoin();
 
         // TODO 해당 카드를 가져올 조건 검증
+        PLCard resultCard = checkPickCard(room, reqGetCard);
 
-        // 해당 카드를 가져옴
-        WSComp result = room.pickCard(reqGetCard);
+        if (resultCard != null) {
+            // 해당 카드 증정
+            result.getCards().add(room.pickCard(reqGetCard));
 
-        // TODO 귀족카드 조건 검증
+            // TODO 귀족카드 조건 검증
+            Map<Integer, Integer> supplyCoin = new HashMap<>();
+            List<PLCard> nobles = checkNobleCard(room, supplyCoin);
+            if (nobles != null) {
+                // 만족하는 귀족카드 증정
+                result.getCards().addAll(room.pickCard(nobles));
+            }
 
-        // TODO 만족하는 귀족카드 증정
-
-        // TODO 홀딩시 잔여 골드 코인 증정
-        sock.send("/comp/coin/"+room.getRoom(), result.getCoins());
+            // TODO 홀딩시 잔여 골드 코인 증정
+            PLCoin gold = room.pickGold(uid);
+            result.getCoins().add(gold);
+            sock.send("/comp/coin/" + room.getRoom(), result.getCoins());
+        }
 
         // 결과 카드변경 전체 전송
 	    return result.getCards();
     }
 
-	@Override
+    @Override
+    public List<PLCard> checkNobleCard(GameRoom room, Map<Integer, Integer> supplyCoin) {
+	    return null;
+    }
+
+    @Override
+    public PLCard checkPickCard(GameRoom room, PLCard reqGetCard) {
+        return null;
+    }
+
+    @Override
+    public boolean checkEnding(List<PLCard> reqGetCard) {
+        Map<Integer, Integer> score  = scoring(reqGetCard);
+        boolean isGameEnd = false;
+        for (int curScore : score.keySet()) {
+            if (curScore >= 15) {
+                isGameEnd = true;
+            }
+        }
+        return isGameEnd;
+    }
+
+    @Override
 	public List<PLCoin> reqPickCoin(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid, GameRoom room) {
         List<PLCoin> result = new ArrayList<>();
 

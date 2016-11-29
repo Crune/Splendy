@@ -28,25 +28,4 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new SplendyInterceptor());
 		super.addInterceptors(registry);
 	}
-
-/*
-	@Bean
-	public JedisConnectionFactory connectionFactory() {
-		return new JedisConnectionFactory();
-	}
-
-	private static final String GoogleClientID = "768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com";
-	private static final String GoogleClientSecret = "VR7RGj1x7ET3dG8eMUlMn_jj";
-
-	@Bean
-	public GoogleConnectionFactory getGoogleConnectionFactory() {
-		GoogleConnectionFactory connectionFactory = new GoogleConnectionFactory(GoogleClientID, GoogleClientSecret);
-		return connectionFactory;
-	}
-*/
-	/*
-	 * @Bean public OAuth2Parameters googleOAuth2Parameters() {
-	 * 
-	 * }
-	 */
 }
