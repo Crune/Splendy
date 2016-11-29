@@ -109,6 +109,7 @@ public class PlayerServiceImpl implements PlayerService {
 
             sock.send(uid, "room", "accept", rid);
             rst = playerMap.getWSPlayer(uid);
+            sock.send("/room/join"+rid, rst);
         }
         return rst;
     }
@@ -116,9 +117,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public WSPlayer left(UserCore sender) {
         int uid = sender.getId();
-        left(uid);
-        WSPlayer rst = playerMap.getWSPlayer(uid);
-        return rst;
+        return left(uid);
     }
 
     @Override @Transactional
@@ -140,6 +139,7 @@ public class PlayerServiceImpl implements PlayerService {
             sock.send(uid, "room", "can_left", rid );
         }
         WSPlayer rst = playerMap.getWSPlayer(uid);
+        sock.send("/room/left/"+rid, rst);
         return rst;
     }
 }
