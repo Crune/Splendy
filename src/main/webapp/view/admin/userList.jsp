@@ -39,7 +39,6 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/admin/index">메인으로</a></li>
 					<li><a href="/admin/servList">서비스</a></li>
-					<li><a href="/admin/adminList">관리자</a></li>
 					<li><a href="/admin/userList">유저</a></li>
 					<li><a href="/admin/notice">공지사항</a></li>
 					<li><a href="/admin/deleteForm">데이터정리</a></li>
@@ -53,7 +52,6 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar"> <li><a href="/admin/servList">서비스</a></li> </ul>
-				<ul class="nav nav-sidebar"> <li><a href="/admin/adminList">관리자</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/userList">유저</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/notice">공지사항</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/deleteForm">데이터정리</a></li> </ul>
@@ -69,6 +67,8 @@
 								<th>E-MAIL</th>
 								<th>등록일</th>
 								<th>수정</th>
+								<th>권한</th>
+								<th>프로필</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -87,7 +87,13 @@
 										${list.reg}
 									</td>
 									<td>
-										<input id="${list.email}" class="btn btn-default btn_update" type="button" value="수정" />
+										<input id="${list.id}" class="btn btn-default btn_update" type="button" value="수정" />
+									</td>
+									<td>
+										<input id="${list.id}" class="btn btn-default btn_authority" type="button" value="권한" />
+									</td>
+									<td>
+										<input id="${list.id}" class="btn btn-default btn_profile" type="button" value="프로필" />
 									</td>
 								</tr>
 							</c:forEach>
@@ -98,24 +104,23 @@
 		</div>
 	</div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">유저 정보</h4>
+				<h4 class="modal-title" id="userModalLabel">유저 정보</h4>
 			</div>
 			<div class="modal-body">
 				<div class="index-cont">
 					<form method="post" id="modifyForm" name="modifyForm">
 						<div class="form-group">
-							<label for="textfield" id="u_id"> ID :  </label> <input type="hidden" name="id" id="id" class="form-contorl">
+							<label for="textfield"> ID :</label> <label for="textfield" id="u_id"></label> <input type="hidden" name="id" id="id" class="userID">
 						</div>
 						<div class="form-group">
 							<label for="textfield"> 닉네임 </label> <input type="text" id="nickname" name="nickname" class="form-control">
 						</div>
 						<div class="form-group">
-							<label for="textfield" id="email"> E-Mail :  </label>
+							<label for="textfield"> E-Mail :</label> <label for="textfield" id="email"></label>
 						</div>
 						<div class="form-group">
 							<label for="exampleInputPassword1"> 암호 </label> <input name="password" type="password" id="password" placeholder="암호" class="form-control">						
@@ -133,50 +138,135 @@
 							<label for="textfield"> 메일인증 </label> <input type="text" id="notCredential" name="notCredential" class="form-control">
 						</div>
 						<div class="form-group">
-							<label for="textfield" id="reg"> 등록일 :  </label>
+							<label for="textfield"> 등록일 :</label> <label for="textfield" id="reg"></label>
 						</div>
 					</form>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn_modify">Save changes</button>
-				<button type="button" class="btn btn-default btn_modal_close" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default btn_userModal_close" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
 </div>
-	
+
+<div class="modal fade" id="authorityModal" tabindex="-1" role="dialog" aria-labelledby="authorityModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="authorityModalLabel">유저 권한 변경</h4>
+			</div>
+			<div class="modal-body">
+				<div class="index-cont">
+					<form method="post" id="adminMF" name="adminMF">
+						<div class="form-group">
+							<label for="textfield"> ID :</label> <label for="textfield" id="a_id"></label> <input type="hidden" name="id" id="id" class="authorityID">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 직책 </label> <input type="text" id="role" name="role" class="form-control">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary btn_authorityModify">Save changes</button>
+					<button type="button" class="btn btn-default btn_authorityModal_close" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="profileModalLabel">유저 권한 변경</h4>
+			</div>
+			<div class="modal-body">
+				<div class="index-cont">
+					<form method="post" id="profMF" name="profMF">
+						<div class="form-group">
+							<label for="textfield"> ID :</label> <label for="textfield" id="user_id"></label> <input type="hidden" name="userId" id="userId" class="profID">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 최근 게임 </label> <input type="text" id="lastRId" name="lastRId" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 승리 </label> <input type="text" id="win" name="win" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 패배 </label> <input type="text" id="lose" name="lose" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 무승부 </label> <input type="text" id="draw" name="draw" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 점수 </label> <input type="text" id="rate" name="rate" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="textfield"> 정보 </label> <textarea id="info" name="info" class="form-control"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary btn_profileModify">Save changes</button>
+					<button type="button" class="btn btn-default btn_profileModal_close" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 window.onload = function(){
 	$(".btn_update").on('click', function () {
-		var email = $(this).attr('id');
-		sendRequest(email);
+		var id = $(this).attr('id');
+		userInfo(id);
 	});
-	
-	$(".btn_modal_close").on('click', function () {
-		removeVar();
+	$(".btn_userModal_close").on('click', function () {
+		removeUserVar();
 	});
-	
 	$(".btn_modify").on('click', function () {
-		modify();
-		removeVar();
+		userModify();
+		removeUserVar();
 	});
 	
-	$(".close").on('click', function () {
-		removeVar();
+	$(".btn_authority").on('click', function () {
+		var id = $(this).attr('id');
+		userAuthority(id)
+	});
+	$(".btn_authorityModal_close").on('click', function () {
+		removeAuthorityVar();
+	});
+	$(".btn_authorityModify").on('click', function () {
+		authorityModify();
+		removeAuthorityVar();
+	});
+	
+	$(".btn_profile").on('click', function () {
+		var id = $(this).attr('id');
+		userProfile(id)
+	});
+	$(".btn_profileModal_close").on('click', function () {
+		removeAuthorityVar();
+	});
+	$(".btn_profileModify").on('click', function () {
+		authorityModify();
+		removeAuthorityVar();
 	});
 }
 
-function sendRequest(email) {
-	console.log("회원 정보 조회 : "+email);
+function userInfo(id) {
+	console.log("회원 정보 조회 : "+id);
 	$.ajax({
-		url:'/admin/userState/'+email+'/',
+		url:'/admin/userState/'+id+'/',
 		type:'get',
-		data:email,
+		data:id,
 		success:function(data){
-			$('#myModal').modal('show');
+			$('#userModal').modal('show');
 			$('#u_id').append(data.id)
-			$('#id').val(data.id);
+			$('.userID').val(data.id);
 			$('#nickname').val(data.nickname);
 			$('#email').append(data.email);
 			$('#enabled').val(data.enabled);
@@ -187,14 +277,12 @@ function sendRequest(email) {
 		}
 	})
 }
-
-function removeVar() {
+function removeUserVar() {
 	$('#u_id').empty();
 	$('#email').empty();
 	$('#reg').empty();
 }
-
-function modify() {
+function userModify() {
 	console.log("회원 정보 변경");
 	$.ajax({
         url:'/admin/user_modify',
@@ -202,10 +290,79 @@ function modify() {
         data:$("#modifyForm").serialize(),
         success:function(){
         	alert("수정 완료");
-        	$('#myModal').modal('hide')
+        	$('#userModal').modal('hide')
         	window.location.reload();
         },error:function(request,status,error){
 			alert("실패");
+		}
+    })
+}
+
+function userAuthority(id) {
+	console.log("회원 권한 조회 : "+id);
+	$.ajax({
+		url:'/admin/userAuthority/'+id+'/',
+		type:'get',
+		data:id,
+		success:function(data){
+			$('#authorityModal').modal('show');
+			$('#a_id').append(data.id)
+			$('.authorityID').val(data.id);
+			$('#role').val(data.role);
+		}
+	})
+}
+function removeAuthorityVar() {
+	$('#a_id').empty();
+}
+function authorityModify() {
+	console.log("관리자 권한 부여");
+	$.ajax({
+        url:'/admin/admin_modify',
+        type:'post',
+        data:$("#adminMF").serialize(),
+        success:function(){
+        	alert("변경 완료");
+        	$('#authorityModal').modal('hide')
+        	window.location.reload();
+        },error:function(request,status,error){
+		}
+    })
+}
+
+function userProfile(id) {
+	console.log("회원 프로필 조회 : "+id);
+	$.ajax({
+		url:'/admin/userProfile/'+id+'/',
+		type:'get',
+		data:id,
+		success:function(data){
+			$('#profileModal').modal('show');
+			$('#user_id').append(data.userId);
+			$('.profID').val(data.userId);
+			$('#win').val(data.win);
+			$('#lose').val(data.lose);
+			$('#draw').val(data.draw);
+			$('#rate').val(data.rate);
+			$('#lastRId').val(data.lastRId);
+			$('#info').val(data.info);
+		}
+	})
+}
+function removeProfileVar() {
+	$('#user_id').empty();
+}
+function authorityModify() {
+	console.log("관리자 프로필 수정");
+	$.ajax({
+        url:'/admin/user_profile',
+        type:'post',
+        data:$("#profMF").serialize(),
+        success:function(){
+        	alert("변경 완료");
+        	$('#profileModal').modal('hide')
+        	window.location.reload();
+        },error:function(request,status,error){
 		}
     })
 }
@@ -216,7 +373,6 @@ function modify() {
 	<script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 	<script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 	<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-	<script src="/js/vendor/holder.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
 </body>

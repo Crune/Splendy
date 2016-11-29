@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,15 +33,14 @@ public class PlayerProtocol extends ProtocolHelper {
 		sock.send(sender, "player", "prev", pls);
 	}
 
-	@MessageMapping("/player/join/{rid}")
-	public boolean inRoom(SimpMessageHeaderAccessor head, String password, @DestinationVariable int rid) throws Exception {
+    @SubscribeMapping("/player/join/{rid}")
+	public void inRoom(SimpMessageHeaderAccessor head, String password, @DestinationVariable int rid) throws Exception {
 		UserCore sender = sender(head);
-		int uid = sender.getId();
-		return plServ.join(uid, rid, password);
+        plServ.join(sender.getId(), rid, password);
 	}
 
-	@MessageMapping("/player/left")
-	public void outRoom(SimpMessageHeaderAccessor head) throws Exception {
+	@MessageMapping("/player/left/{rid}")
+	public void outRoom(SimpMessageHeaderAccessor head, @DestinationVariable int rid) throws Exception {
 		UserCore sender = sender(head);
         plServ.left(sender.getId());
 	}

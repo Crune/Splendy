@@ -54,6 +54,10 @@ function chat_priv(evt) {
 
 function chat_new(evt) {
     var msg = JSON.parse(evt.body);
+    input_chat(msg);
+}
+
+function input_chat(msg) {
     if (msg.uid == uid) {
         msg.type = 'me'
     } else if (msg.type == 'me') {

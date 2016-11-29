@@ -30,8 +30,6 @@ public interface UserService {
 	
 	List<UserCore> selectAll() throws Exception;
 	
-	UserCore selectOne(String email) throws Exception;
-	
 	UserCore selectOne(int id);
 	
 	void sendEmail(UserCore user, String credent_code) throws Exception;

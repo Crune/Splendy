@@ -39,7 +39,6 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/admin/index">메인으로</a></li>
 					<li><a href="/admin/servList">서비스</a></li>
-					<li><a href="/admin/adminList">관리자</a></li>
 					<li><a href="/admin/userList">유저</a></li>
 					<li><a href="/admin/notice">공지사항</a></li>
 					<li><a href="/admin/deleteForm">데이터정리</a></li>
@@ -53,7 +52,6 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar"> <li><a href="/admin/servList">서비스</a></li> </ul>
-				<ul class="nav nav-sidebar"> <li><a href="/admin/adminList">관리자</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/userList">유저</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/notice">공지사항</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/deleteForm">데이터정리</a></li> </ul>

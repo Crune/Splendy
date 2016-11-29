@@ -60,6 +60,16 @@ public class UserProfileServiceImpl implements UserProfileService{
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Override
+	public UserProfile read(int id) {
+		UserProfile prof = profMap.read(id);
+		return prof;
+	}
+
+	@Override
+	public void adminMF(UserProfile prof) {
+		profMap.adminMF(prof);
+	}
 	
 }
