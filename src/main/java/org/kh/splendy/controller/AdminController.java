@@ -2,7 +2,6 @@ package org.kh.splendy.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kh.splendy.service.ChatService;
@@ -10,12 +9,14 @@ import org.kh.splendy.service.RoomService;
 import org.kh.splendy.service.ServService;
 import org.kh.splendy.service.SocketService;
 import org.kh.splendy.service.UserInnerService;
+import org.kh.splendy.service.UserProfileService;
 import org.kh.splendy.service.UserService;
 import org.kh.splendy.vo.Msg;
 import org.kh.splendy.vo.PropInDB;
 import org.kh.splendy.vo.Room;
 import org.kh.splendy.vo.UserCore;
 import org.kh.splendy.vo.UserInner;
+import org.kh.splendy.vo.UserProfile;
 import org.kh.splendy.vo.WSMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,8 @@ public class AdminController {
 	
 	@Autowired private SocketService sockServ;
 	
+	@Autowired private UserProfileService profServ;
+	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 	
@@ -58,6 +61,7 @@ public class AdminController {
 		return "admin/index";
 	}
 	
+	
 	@RequestMapping("/admin/servList")
 	public String servList(Model model) throws Exception {
 		log.info("admin access servicelist");
@@ -65,16 +69,19 @@ public class AdminController {
 		model.addAttribute("list", list);
 		return "admin/servList";
 	}
-	
 	@RequestMapping(
 			value = "/admin/servState",
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody int saveState(@ModelAttribute("servMF") PropInDB prop) throws Exception {
-		int result = servServ.update(prop);
-		log.info("admin save service : "+prop.getKey());
+		int result = 0;
+		if(prop.getValue() != "") {
+			result = servServ.update(prop);
+			log.info("admin save service : "+prop.getKey());
+		}
 		return result;
 	}
+	
 	
 	@RequestMapping("/admin/userList")
 	public String userList(Model model) throws Exception {
@@ -84,51 +91,59 @@ public class AdminController {
 		return "admin/userList";
 	}
 	
-	@RequestMapping("/admin/userState/{email}/")
-	public @ResponseBody UserCore userState(@PathVariable String email) throws Exception {
-		log.info("admin serch user name : "+email);
-		UserCore user = userServ.selectOne(email);
+	@RequestMapping("/admin/userState/{id}/")
+	public @ResponseBody UserCore userState(@PathVariable int id) throws Exception {
+		log.info("admin serch user Info : "+id);
+		UserCore user = userServ.selectOne(id);
 		return user;
 	}
-	
 	@RequestMapping(
 			value = "/admin/user_modify",
 			method = RequestMethod.POST,
 			produces = "application/json")
-	public @ResponseBody void saveState(@ModelAttribute("modifyForm") UserCore user, HttpSession session) {
-		String id = (String)session.getAttribute("id");
+	public @ResponseBody void saveState(@ModelAttribute("modifyForm") UserCore user) {
 		try {
 			userServ.adminMF(user);
 		} catch(Exception e) { e.printStackTrace(); }
-		log.info("admin modify user info : "+id);
+		log.info("admin modify user info : "+user.getId());
 	}
 	
-	@RequestMapping("/admin/adminList")
-	public String readAdmin(Model model) throws Exception {
-		log.info("admin read user authority");
-		List<UserInner> list = innerServ.readAdmin();
-		model.addAttribute("list", list);
-		return "admin/adminList";
-	}
 	
+	@RequestMapping("/admin/userAuthority/{id}/")
+	public @ResponseBody UserInner userAuthority(@PathVariable int id) throws Exception {
+		log.info("admin serch user Authority : "+id);
+		UserInner inner = innerServ.read(id);
+		return inner;
+	}
 	@RequestMapping(
 			value = "/admin/admin_modify",
 			method = RequestMethod.POST,
 			produces = "application/json")
-	public @ResponseBody void saveAdmin(@ModelAttribute("adminMF") UserInner inner, HttpSession session) throws Exception {
+	public @ResponseBody void saveAdmin(@ModelAttribute("adminMF") UserInner inner) throws Exception {
 		int id = inner.getId();
 		String role = inner.getRole();
 		innerServ.setRole(id,role);
 		log.info("admin modify authority : "+id+","+role);
 	}
 	
-	@RequestMapping("/admin/notice")
-	public String adminNotice(HttpSession session){
-		log.info("admin access notice");
-		UserCore user = (UserCore)session.getAttribute("user");
-		session.setAttribute("user", user);
-		return "admin/notice";
+	
+	@RequestMapping("/admin/userProfile/{id}/")
+	public @ResponseBody UserProfile userProfile(@PathVariable int id) throws Exception {
+		log.info("admin serch user Profile : "+id);
+		UserProfile prof = profServ.read(id);
+		return prof;
 	}
+	@RequestMapping(
+			value = "/admin/user_profile",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody void saveProfile(@ModelAttribute("profMF") UserProfile prof) throws Exception {
+		log.info("admin modify user profile : "+prof.getUserId());
+		System.out.println(prof.getInfo());
+		System.out.println(prof.getUserId());
+		profServ.adminMF(prof);
+	}
+	
 	
 	@RequestMapping("/admin/deleteForm")
 	public String adminDeleteForm(Model model){
@@ -139,52 +154,58 @@ public class AdminController {
 		model.addAttribute("room", room);
 		return "admin/deleteForm";
 	}
-	
 	@RequestMapping(
 			value = "/admin/msg_delete",
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody int msgDelete(@RequestParam("mid") String[] mid) throws Exception {
-		int result = 0;
+		int result = 1;
 		if(mid != null) {
 			for(int i = 0; i < mid.length; i++ ){
 				int id = new Integer(mid[i]);
 				log.info("admin delete message : "+id);
 				chatServ.delete(id);
-				result = 1;
+				result = 0;
 			}
-		} else { result = 0;}
+		}
 		return result;
 	}
-
 	@RequestMapping(
 			value = "/admin/room_close",
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody int roomClose(@RequestParam("id") String[] id) throws Exception {
-		int result = 0;
+		int result = 1;
 		if(id != null) {
 			for(int i = 0; i < id.length; i++ ){
 				int r_id = new Integer(id[i]);
 				log.info("admin close room : "+id);
 				roomServ.close(r_id);
-				result = 1;
+				result = 0;
 			}
-		} else { result = 0;}
+		}
 		return result;
 	}
 	
+	
+	@RequestMapping("/admin/notice")
+	public String adminNotice(HttpSession session){
+		log.info("admin access notice");
+		UserCore user = (UserCore)session.getAttribute("user");
+		session.setAttribute("user", user);
+		return "admin/notice";
+	}
 	@RequestMapping(
 			value = "/admin/notice_send",
 			method = RequestMethod.POST,
 			produces = "application/json")
-	public @ResponseBody String sendNotice(@RequestParam("content") String content,@RequestParam("nickname") String nickname) throws Exception {
-		String result = null;
-		if(content != null){
-			log.info("admin send notice : "+nickname+" : "+content);
+	public @ResponseBody int sendNotice(@RequestParam("content") String content,@RequestParam("nickname") String nickname) throws Exception {
+		int result = 0;
+		if(content != ""){
+			log.info("admin send notice -> "+nickname+" : "+content);
 			sockServ.send("/notice/everyone", new WSMsg(nickname, content));
-			result = nickname+" : "+content;
-		} else { result = "실패"; }
+			result = 1;
+		} else { result = 0; }
 		return result;
 	}
 }

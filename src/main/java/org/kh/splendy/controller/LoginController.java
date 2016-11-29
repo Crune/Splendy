@@ -46,7 +46,7 @@ public class LoginController {
 			UserCore searchUser = userServ.checkEmail(email);
 			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
 				userServ.createUser(user);
-			}
+			} 
 			user = userServ.checkEmail(email);
 			user.openInfo();
 			session.setAttribute("user", user);
@@ -63,7 +63,7 @@ public class LoginController {
 	public @ResponseBody String naverLoginPro(@RequestParam("email") String emailParam, 
 									@RequestParam("nickname") String nicknameParam,HttpSession session){
 		UserCore user = new UserCore();				
-		user.setEmail("N" + emailParam.toLowerCase() + "N");
+		user.setEmail("N" + emailParam.toLowerCase());
 		user.setNickname(nicknameParam);
 		String email = user.getEmail();
 		user.setPassword(RandomStringUtils.randomAlphanumeric(9));

@@ -39,7 +39,6 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/admin/index">메인으로</a></li>
 					<li><a href="/admin/servList">서비스</a></li>
-					<li><a href="/admin/adminList">관리자</a></li>
 					<li><a href="/admin/userList">유저</a></li>
 					<li><a href="/admin/notice">공지사항</a></li>
 					<li><a href="/admin/deleteForm">데이터정리</a></li>
@@ -53,7 +52,6 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar"> <li><a href="/admin/servList">서비스</a></li> </ul>
-				<ul class="nav nav-sidebar"> <li><a href="/admin/adminList">관리자</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/userList">유저</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/notice">공지사항</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/deleteForm">데이터정리</a></li> </ul>
@@ -113,8 +111,9 @@
 					<table class="table table-hover">
 						<tr>
 							<td> <input type="checkbox" name="room-all" id="room-all" /> </td>
-							<td> R_ID </td>
-							<td> host </td>
+							<td> 방번호 </td>
+							<td> 방제목 </td>
+							<td> 방장 </td>
 							<td> 정보 </td>
 							<td> 승자 </td>
 							<td> 시작여부 </td>
@@ -124,6 +123,7 @@
 							<tr>
 								<td> <input type="checkbox" name="id" id="id" class="room-box" value="${room.id}" /> </td>
 								<td> ${room.id} </td>
+								<td> ${room.title} </td>
 								<td> ${room.host} </td>
 								<td> ${room.info} </td>
 								<td> ${room.winner} </td>
@@ -181,9 +181,9 @@ jQuery.ajaxSettings.traditional = true;
         data:$("#msgForm").serialize(),
         success:function(data){
         	if(data == 0){
-        		alert("실패");
-        	} else{
         		alert("성공");
+        	} else {
+        		alert("선택된 항목이 없습니다.");
         	}
         	console.log("delete Message end");
         	window.location.reload();
@@ -201,9 +201,9 @@ jQuery.ajaxSettings.traditional = true;
         data:$("#roomForm").serialize(),
         success:function(data){
         	if(data == 0){
-        		alert("실패");
-        	} else{
         		alert("성공");
+        	} else {
+        		alert("선택된 항목이 없습니다.");
         	}
         	console.log("close room end");
         	window.location.reload();
@@ -218,7 +218,6 @@ jQuery.ajaxSettings.traditional = true;
 	<script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 	<script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 	<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-	<script src="/js/vendor/holder.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
 </body>

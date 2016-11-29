@@ -108,5 +108,7 @@ public interface UserProfileMapper {
 	public List<UserProfile> getProfAll();
 
 	// Another
+	@Update("update "+TABLE+" set U_LAST_RID=#{lastRId}, U_WIN=#{win}, U_LOSE=#{lose}, U_DRAW=#{draw}, U_RATE=#{rate}, U_INFO=#{info} where "+KEY+"=#{userId} ")
+	public void adminMF(UserProfile prof);
 
 }

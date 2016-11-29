@@ -28,8 +28,6 @@ $(document).ready(function() {
 	     
 	    if (response.authResponse) {
 	      FB.api('/me', function(response) {
-	    	  console.log(response.id);
-	          console.log(response.name);
 	          $.ajax({
                   url:'/user/facebook',
                   type:'post',
@@ -54,7 +52,6 @@ $(document).ready(function() {
 	                        data:{email: response.id, nickname: response.name},
 	                        dataType: 'text', 
 	                        success:function(data){
-	                        	console.log(data);
 	                        	document.location.href=data;
 	                        },error:function(request,status,error){
 	                			alert("로그인에 실패했습니다. 다시 시도해주세요.");
@@ -62,7 +59,19 @@ $(document).ready(function() {
 	                    })
 	                });    
 	            } else {
-	                 
+	            	FB.api('/me', function(response) {
+	                	$.ajax({
+	                        url:'/user/facebook',
+	                        type:'post',
+	                        data:{email: response.id, nickname: response.name},
+	                        dataType: 'text', 
+	                        success:function(data){
+	                        	document.location.href=data;
+	                        },error:function(request,status,error){
+	                			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+	                		}
+	                    })
+	                });
 	            }
 	        }, {scope:'email'});    
 	    }

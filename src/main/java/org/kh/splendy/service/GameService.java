@@ -18,7 +18,7 @@ public interface GameService {
 
     boolean joinPro(int rid, int uid);
 
-    void leftPro(int rid, int uid);
+    boolean leftPro(int rid, int uid);
 
     List<UserProfile> endingGame(int rid, Map<Integer, Integer> score);
 }

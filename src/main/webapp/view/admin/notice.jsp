@@ -39,7 +39,6 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/admin/index">메인으로</a></li>
 					<li><a href="/admin/servList">서비스</a></li>
-					<li><a href="/admin/adminList">관리자</a></li>
 					<li><a href="/admin/userList">유저</a></li>
 					<li><a href="/admin/notice">공지사항</a></li>
 					<li><a href="/admin/deleteForm">데이터정리</a></li>
@@ -53,7 +52,6 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar"> <li><a href="/admin/servList">서비스</a></li> </ul>
-				<ul class="nav nav-sidebar"> <li><a href="/admin/adminList">관리자</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/userList">유저</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/notice">공지사항</a></li> </ul>
 				<ul class="nav nav-sidebar"> <li><a href="/admin/deleteForm">데이터정리</a></li> </ul>
@@ -89,14 +87,18 @@ window.onload = function(){
 
 function sendNotice() {
 	console.log("send notice start");
-jQuery.ajaxSettings.traditional = true;
 	$.ajax({
         url:'/admin/notice_send',
         type:'post',
         data:$("#noticeForm").serialize(),
         success:function(data){
-        	console.log(data);
-        	console.log("send notice end");
+        	if(data == 1){
+        		alert("전송완료");
+            	console.log("send notice end");
+        	}else{
+        		alert("내용이 존재하지 않습니다.");
+        		console.log("notice content null");
+        	}
         	window.location.reload();
         },error:function(request,status,error){
 
