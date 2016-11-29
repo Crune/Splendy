@@ -30,7 +30,7 @@ $(document).ready(function() {
     connect();	// in sock.js
 	
 	$(".backSpace").click(function(){
-		send("/player/left", rid);
+		send("player/left", rid);
 	});
 });
 

@@ -7,8 +7,6 @@ var email = "${user.email}";
 var login_result = "${login_result}";
 var credent = "${credent}";*/
 
-var msg = "${msg}";
-
 $(document).ready(function() {
 	
 	if(msg !== "") {

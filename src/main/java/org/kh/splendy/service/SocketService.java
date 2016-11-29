@@ -1,24 +1,23 @@
 package org.kh.splendy.service;
 
-import org.kh.splendy.vo.Room;
 import org.kh.splendy.vo.UserCore;
+import org.kh.splendy.vo.WSPlayer;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by runec on 2016-11-27.
  */
 public interface SocketService {
-    void putConnectors(UserCore user);
+    void putConnectors(WSPlayer uid);
 
-    void removeConnectors(UserCore user);
+    void removeConnectors(WSPlayer uid);
 
-    Map<Integer, UserCore> getConnectors();
+    Map<Integer, WSPlayer> getConnectors();
 
     MessageHeaders createHeaders(String sessionId, SimpMessageType type);
 
@@ -40,4 +39,6 @@ public interface SocketService {
     void sendRoom(int rid, String type, Object cont);
 
     void send(UserCore sender, String topic, String type, Object obj);
+
+
 }

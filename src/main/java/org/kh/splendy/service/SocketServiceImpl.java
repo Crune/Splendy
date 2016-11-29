@@ -3,7 +3,6 @@ package org.kh.splendy.service;
 import org.kh.splendy.config.assist.Utils;
 import org.kh.splendy.mapper.PlayerMapper;
 import org.kh.splendy.mapper.UserInnerMapper;
-import org.kh.splendy.vo.Player;
 import org.kh.splendy.vo.UserCore;
 import org.kh.splendy.vo.WSMsg;
 import org.kh.splendy.vo.WSPlayer;
@@ -16,7 +15,6 @@ import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,32 +30,28 @@ public class SocketServiceImpl implements  SocketService {
 
     private Logger log = LoggerFactory.getLogger(SocketServiceImpl.class);
 
-    private static final Map<Integer, UserCore> connectors = new HashMap<>();
+    private static final Map<Integer, WSPlayer> connectors = new HashMap<>();
 
     @Override
-    public void putConnectors(UserCore user) {
-        if (user.getId() > 0 && connectors.get(user.getId()) == null) {
-            connectors.put(user.getId(), user);
-
-            innerMap.setConnect(user.getId(), 1);
-            WSPlayer pl = playerMap.getWSPlayer(user.getId());
+    public void putConnectors(WSPlayer pl) {
+        if (pl.getUid() > 0 && connectors.get(pl.getUid()) == null) {
+            innerMap.setConnect(pl.getUid(), 1);
+            connectors.put(pl.getUid(), pl);
             send("/player/join/" + pl.getRoom(), pl);
         }
     }
 
     @Override
-    public void removeConnectors(UserCore user) {
-        if (user.getId() > 0 && connectors.get(user.getId()) != null) {
-            connectors.remove(user.getId());
-
-            WSPlayer pl = playerMap.getWSPlayer(user.getId());
-            innerMap.setConnect(user.getId(), 0);
-            send("/player/left/", pl);
+    public void removeConnectors(WSPlayer pl) {
+        if (pl.getUid() > 0 && connectors.get(pl.getUid()) != null) {
+            connectors.remove(pl.getUid());
+            innerMap.setConnect(pl.getUid(), 0);
+            send("/player/left", pl);
         }
     }
 
     @Override
-    public Map<Integer, UserCore> getConnectors() {
+    public Map<Integer, WSPlayer> getConnectors() {
         return connectors;
     }
 
@@ -87,7 +81,7 @@ public class SocketServiceImpl implements  SocketService {
                 log.info("send_msg: "+type);
             } else {
                 simpT.convertAndSend(type , obj);
-                log.info("send_msg: "+type+"/"+obj);
+                log.info("send_msg: "+type+" : "+obj);
             }
         }
     }

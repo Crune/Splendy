@@ -86,7 +86,7 @@ function room_new(evt) {
 }
 
 function room_remove(roomId) {
-    $("#room_"+roomId).detach();
+    $("#room_"+roomId.body).detach();
 }
 
 function roomMouseEvt() {
@@ -123,7 +123,8 @@ function roomMouseEvt() {
             $("div#createRoom").show();
             $(".empty_room").hide();
             $("#roomlist").css('height','calc(100% - 366px)');
-        } else if ($('#ispw_'+rid)) {
+        } else if ($('#ispw_'+rid).css('display') == 'none') {
+            $('.lobby_room .row:last-child').hide();
             $('#ispw_'+rid).show();
         } else {
             joinRoom(rid, '');

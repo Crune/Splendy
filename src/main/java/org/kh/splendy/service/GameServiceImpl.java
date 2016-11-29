@@ -1,5 +1,6 @@
 package org.kh.splendy.service;
 
+import org.kh.splendy.config.assist.Utils;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +72,19 @@ public class GameServiceImpl implements GameService {
         return room;
     }
 
+    @Override
+    public boolean isInPlayer(int rid, int uid) {
+        boolean rst = false;
+        if (getRoom(rid) != null) {
+            for (WSPlayer pls : getRoom(rid).getPls()) {
+                if (pls.getUid() == uid) {
+                    rst = true;
+                }
+            }
+        }
+        return rst;
+    }
+
     /** 게임 목록의 참가자에 없다면 참가자로 추가한다. */
     @Override
     public boolean joinPro(int rid, int uid) {
@@ -121,6 +136,7 @@ public class GameServiceImpl implements GameService {
     private void startingGame(int rid) {
         int innerPlsCount = rooms.get(rid).getPls().size();
         if (innerPlsCount == rooms.get(rid).getLimit()) {
+            roomMap.setStart(new Date(System.currentTimeMillis()));
             // 게임 시작!
             sock.sendRoom(rid, "start", "게임 시작!");
             int nextActor = rooms.get(rid).nextActor(sock);
@@ -139,18 +155,24 @@ public class GameServiceImpl implements GameService {
                 winnerScore = curScore;
             }
         }
-        for (int uid : score.keySet()) {
-            int rstRate = profMap.read(uid).getRate();
-            if (uid == winner) {
-                rstRate += 100;
-            } else {
-                rstRate -= 20;
-            }
-            profMap.setRate(uid, rstRate);
-        }
         List<UserProfile> result = new ArrayList<>();
-        for (int uid : score.keySet()) {
-            result.add(profMap.read(uid));
+        if (winnerScore >= 15) {
+            Room room = roomMap.read(rid);
+            room.setEnd(new Date(System.currentTimeMillis()));
+            room.setWinner(winner);
+            roomMap.update(room);
+            for (int uid : score.keySet()) {
+                int rstRate = profMap.read(uid).getRate();
+                if (uid == winner) {
+                    rstRate += 100;
+                } else {
+                    rstRate -= 20;
+                }
+                profMap.setRate(uid, rstRate);
+            }
+            for (int uid : score.keySet()) {
+                result.add(profMap.read(uid));
+            }
         }
         return result;
     }

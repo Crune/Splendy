@@ -23,14 +23,8 @@
 	<script type='text/javascript' src="https://apis.google.com/js/api:client.js"></script>
 	<script type='text/javascript' src="https://apis.google.com/js/platform.js" async defer></script>
 
-	<script type='text/javascript' src='/js/default.js'></script>
-	<script type='text/javascript' src='/js/index/index.js'></script>
-
 	<script>
         var msg = "${msg}";
-        $(document).ready(function() {
-            if (msg !== "") { $('#myModal').modal('show'); }
-        });
 	</script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -117,7 +111,7 @@
 			</div>
 		</div>
 		<div class="col-md-12 index-bottom">
-			<span>Copyright © spd.cu.cc All rights reserved.</span>
+			<span>Copyright 2016 © spd.cu.cc All rights reserved.</span>
 		</div>
 	</div>
 </div>
@@ -149,6 +143,9 @@
     naver_id_login.setPopup();
     naver_id_login.init_naver_id_login();
 </script>
+
+<script type='text/javascript' src='/js/default.js'></script>
+<script type='text/javascript' src='/js/index/index.js'></script>
 <script>startApp();</script>
 </body>
 </html>

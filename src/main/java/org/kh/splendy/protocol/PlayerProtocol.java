@@ -37,11 +37,11 @@ public class PlayerProtocol extends ProtocolHelper {
 	public void inRoom(SimpMessageHeaderAccessor head, String password, @DestinationVariable int rid) throws Exception {
 		UserCore sender = sender(head);
 		// 입장을 신청한다.
-        plServ.join(sender.getId(), rid, password);
+        plServ.join(sender.getId(), rid, password, false);
 	}
 
 	@MessageMapping("/player/left")
-	public void outRoom(SimpMessageHeaderAccessor head, @DestinationVariable int rid) throws Exception {
+	public void outRoom(SimpMessageHeaderAccessor head) throws Exception {
 		UserCore sender = sender(head);
 		// 퇴장을 신청한다.
         plServ.left(sender.getId());

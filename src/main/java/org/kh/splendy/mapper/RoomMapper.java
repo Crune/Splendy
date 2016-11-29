@@ -1,18 +1,11 @@
 package org.kh.splendy.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.kh.splendy.vo.Player;
+import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Room;
 import org.springframework.stereotype.Component;
+
+import java.sql.Date;
+import java.util.List;
 
 /** 게임방 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.11) */
@@ -71,9 +64,11 @@ public interface RoomMapper {
 	@Update("update "+TABLE+" set RM_PL_LIMITS=#{playerLimits} where "+KEY+"=#{id} ")
 	public void setPlayerLimits(@Param("id") int id, @Param("playerLimits") int value);
 
-	@Update("update "+TABLE+" set RM_HOST=#{host} where "+KEY+"=#{id} ")
+	@Update("update "+TABLE+" set RM_HOST=#{hostId} where "+KEY+"=#{id} ")
 	public void setHostId(@Param("id") int id, @Param("hostId") int value);
 
+    @Update("update "+TABLE+" set RM_START=#{value} where "+KEY+"=#{id} ")
+    public void setStart(@Param("value") Date value);
 
 	// Another
 	@ResultMap("roomResult")

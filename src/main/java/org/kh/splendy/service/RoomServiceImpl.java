@@ -63,6 +63,8 @@ public class RoomServiceImpl implements RoomService {
             if (!rstRoom.getPassword().isEmpty()) {
                 rstRoom.setPassword("true");
             }
+            profMap.setLastRoom(reqUser.getId(), rstRoomId);
+
             sock.send("/room/new", rstRoom);
 
             // 허가 메시지 전송
@@ -98,8 +100,12 @@ public class RoomServiceImpl implements RoomService {
         if (rid > 0) {
             List<Integer> notEmpty = roomMap.getNotEmptyRoom();
             if (!notEmpty.contains(rid)) {
-                roomMap.close(rid);
                 sock.send("/room/remove", rid);
+                if (roomMap.read(rid).getStart() == null) {
+                    roomMap.delete(rid);
+                } else {
+                    roomMap.close(rid);
+                }
             }
         }
     }
@@ -111,7 +117,11 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public void close(int id) {
-		roomMap.close(id);
+	public void close(int rid) {
+        if (roomMap.read(rid).getStart() == null) {
+            roomMap.delete(rid);
+        } else {
+            roomMap.close(rid);
+        }
 	}
 }

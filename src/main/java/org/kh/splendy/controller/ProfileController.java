@@ -30,8 +30,7 @@ public class ProfileController {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 	
-	@RequestMapping(
-			value = "/prof/iconChange")
+	@RequestMapping("/prof/iconChange")
 	public @ResponseBody String iconChangePro(@ModelAttribute("icon") String icon, HttpSession session){
 		try{
 			profServ.updateIcon(icon, session);

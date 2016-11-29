@@ -38,12 +38,7 @@ public class PlayerServiceImpl implements PlayerService {
         int rid = 0;
         if (uid > 0) {
             rid = profMap.getLastRoom(uid);
-
-            String pw = "";
-            if (rid > 0) {
-                pw = roomMap.read(rid).getPassword();
-            }
-            join(uid, rid, pw);
+            join(uid, rid, "", true);
         }
         return rid;
     }
@@ -60,16 +55,40 @@ public class PlayerServiceImpl implements PlayerService {
         return players;
     }
 
+    @Override
+    public void connect(int uid, int rid) {
+        WSPlayer pl = playerMap.getWSPlayer(uid);
+        pl.setRoom(rid);
+        sock.putConnectors(pl);
+        join(uid, rid, "", true);
+        log.info("웹소켓 접속: user" + uid+" / room: "+rid);
+        if (rid != 0) {
+            sock.send("/player/join/" + 0, pl);
+        }
+    }
+
+    @Override
+    public void disconnect(int uid, int rid) {
+        WSPlayer pl = playerMap.getWSPlayer(uid);
+        pl.setRoom(rid);
+        sock.removeConnectors(pl);
+        left(uid, rid);
+        log.info("웹소켓 접속해제: user" + uid);
+    }
+
     @Override @Transactional
-    public void join(int uid, int rid, String password) {
+    public void join(int uid, int rid, String password, boolean isInitial) {
 
         String pw = new Gson().fromJson(password, String.class);
         boolean canJoin = false;
+        boolean isAlreadyPro = playerMap.count(uid, rid) > 0;
 
-        if (rid > 0) {
+        if (isAlreadyPro || rid == 0) {
+            canJoin = true;
+        } else if (rid > 0) {
             // 비밀번호가 일치하거나 없을 경우만 참가가능
             Room reqRoom = roomMap.read(rid);
-            if (reqRoom.getPassword() == null) {
+            if (reqRoom.getPassword() == null || isInitial) {
                 canJoin = true;
             } else if (reqRoom.getPassword().equals(pw)) {
                 canJoin = true;
@@ -85,14 +104,12 @@ public class PlayerServiceImpl implements PlayerService {
 
             // 방이 존재할 경우만 가능
 
-        } else if (rid == 0) {
-            canJoin = true;
         }
 
         if (canJoin) {
             // DB에 접속 정보 입력
             Player player = null;
-            if (playerMap.count(uid, rid) == 0) {
+            if (!isAlreadyPro) {
                 player = new Player();
                 player.setId(uid);
                 player.setRoom(rid);
@@ -113,14 +130,16 @@ public class PlayerServiceImpl implements PlayerService {
                 // 로비 접속 불가능 설정
                 playerMap.setIsIn(uid, 0, 0);
 
-                // 계정 입장 처리
-                profMap.setLastRoom(uid, rid);
-
                 // 게임 내부 입장 처리
                 game.joinPro(rid, uid);
-            }
 
-            sock.send(uid, "room", "accept", rid);
+                if (!isInitial) {
+                    // 계정 입장 처리
+                    profMap.setLastRoom(uid, rid);
+
+                    sock.send(uid, "room", "accept", rid);
+                }
+            }
         }
 
     }
@@ -134,22 +153,30 @@ public class PlayerServiceImpl implements PlayerService {
     @Override @Transactional
     public void left(int uid) {
         int rid = profMap.getLastRoom(uid);
+        left(uid, rid);
+    }
 
-        if (uid>0 && rid>0) {
+    @Override @Transactional
+    public void left(int uid, int rid) {
+        if (uid>0) {
             playerMap.setIsIn(uid, rid, 0);
-            playerMap.setIsIn(uid, 0, 1);
 
-            // 계정 퇴장 처리
-            profMap.setLastRoom(uid, 0);
+            if (rid > 0) {
+                playerMap.setIsIn(uid, 0, 1);
 
-            if (playerMap.getInRoomPlayerByRid(rid).size() == 0) {
-                roomServ.deleteRoom(rid);
+                // 계정 퇴장 처리
+                profMap.setLastRoom(uid, 0);
+
+                if (playerMap.getInRoomPlayerByRid(rid).size() == 0) {
+                    roomServ.deleteRoom(rid);
+                    sock.send("/room/remove", rid);
+                }
+
+                // 게임 내부 퇴장 처리
+                game.leftPro(rid, uid);
+
+                sock.send(uid, "room", "can_left", rid);
             }
-
-            // 게임 내부 퇴장 처리
-            game.leftPro(rid, uid);
-
-            sock.send(uid, "room", "can_left", rid );
         }
     }
 }
