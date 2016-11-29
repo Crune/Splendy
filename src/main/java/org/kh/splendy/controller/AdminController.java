@@ -181,7 +181,7 @@ public class AdminController {
 		String result = null;
 		if(content != null){
 			log.info("admin send notice : "+nickname+" : "+content);
-			sockServ.send("/notice/everyone",nickname+" : "+content);
+			sockServ.send("/notice/everyone", nickname+" : "+content);
 			result = nickname+" : "+content;
 		} else { result = "실패"; }
 		return result;
