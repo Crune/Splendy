@@ -7,22 +7,24 @@
 	<meta name="google-signin-scope" content="profile email">
 	<meta name="google-signin-client_id" content="768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com">
 	<title>Splendy - 환영합니다!</title>
-	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
-	<link rel='stylesheet' href='/css/index.css'>
+	<link rel='stylesheet' href='/css/index/index.css'>
 	<link rel='stylesheet' href='/css/default.css'>
 	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
 	<style type="text/css">
 		body, td, th { color: #777777; font-family: "나눔고딕"; }
 		body { background-color: #191919; }
 	</style>
-	<script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
-	<script src="/webjars/handlebars/4.0.5/handlebars.js"></script>
-	<script src='/js/default.js'></script>
-	<script src="https://apis.google.com/js/api:client.js"></script>
-	<script src="https://apis.google.com/js/platform.js" async defer></script>
-	<script type='text/javascript' src='/js/index.js'></script>
+	<script type='text/javascript' src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
+	<script type='text/javascript' src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
+	<script type='text/javascript' src="/webjars/handlebars/4.0.5/handlebars.js"></script>
+
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script type='text/javascript' src="https://apis.google.com/js/api:client.js"></script>
+	<script type='text/javascript' src="https://apis.google.com/js/platform.js" async defer></script>
+
+	<script type='text/javascript' src='/js/default.js'></script>
+	<script type='text/javascript' src='/js/index/index.js'></script>
 
 	<script>
         var msg = "${msg}";

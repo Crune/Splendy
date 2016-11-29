@@ -37,10 +37,17 @@ public class RoomServiceImpl implements RoomService {
         boolean isInfo = !reqRoom.getInfo().isEmpty();
         boolean isPlLimit = (reqRoom.getPlayerLimits() >= 2 && reqRoom.getPlayerLimits() <= 4);
 
-        boolean isNotHaveRoom = true;
-        for (Room cur : roomMap.getCurrentRooms()) {
-            if (cur.getHost() == reqUser.getId()) {
-                isNotHaveRoom = false;
+        boolean isNotHaveRoom = false;
+        List<Room> curRooms = roomMap.getCurrentRooms();
+        if (curRooms != null) {
+            boolean isTempValid = true;
+            for (Room cur : curRooms) {
+                if (cur.getHost() == reqUser.getId()) {
+                    isTempValid = false;
+                }
+            }
+            if (isTempValid) {
+                isNotHaveRoom = true;
             }
         }
 

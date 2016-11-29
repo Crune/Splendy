@@ -64,13 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 		.and()
 			.logout()
-				.logoutSuccessUrl("/")
-/*
-		.and()
-			.addFilterBefore(new SplendySecurityTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-				.authorizeRequests()
-*/
-		;
+				.logoutSuccessUrl("/");
 		//@formatter:on
 	}
 }

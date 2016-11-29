@@ -87,14 +87,6 @@ public class LobbyController {
 					UserCore user_rank = userServ.selectOne(id);
 					String nickname = user_rank.getNickname();
 					profList.get(i).setNickname(nickname);
-					/*//승패가 정해졌을 때 코딩 다시해야함 
-					int win = profList.get(i).getWin();
-					int lose = profList.get(i).getLose();
-					int rate = profList.get(i).getRate();
-					
-					int correctRate = (rate + (win*20) - (lose*20));
-					profServ.updateRate(id, correctRate);
-					profList.get(i).setRate(correctRate);*/
 				}
 				model.addAttribute("profList", profList);
 				//랭킹 처리 부분 끝

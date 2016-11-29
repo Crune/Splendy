@@ -48,8 +48,13 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<WSPlayer> readList(int rid) {
-        List<WSPlayer> players = playerMap.getInRoomPlayerByRid(rid);
-        players.forEach(pl->pl.CanSend());
+        List<WSPlayer> players = null;
+        if (rid > 0) {
+            players = playerMap.getInRoomPlayerByRid(rid);
+        } else {
+            players = playerMap.getAllWSPlayer();
+        }
+        players.forEach(pl -> pl.CanSend());
         return players;
     }
 
@@ -102,7 +107,15 @@ public class PlayerServiceImpl implements PlayerService {
             playerMap.setIsIn(uid, 0, 0);
             profMap.setLastRoom(uid, rid);
 
-            game.joinPro(rid, uid);
+            boolean joinRst = game.joinPro(rid, uid);
+            int innerPlsCount = game.getRoom(rid).getPls().size();
+            if (joinRst && innerPlsCount == game.getRoom(rid).getLimit()) {
+                // 게임 시작!
+                sock.sendRoom(rid, "start", "게임 시작!");
+                int nextActor  = game.getRoom(rid).nextActor(sock);
+                sock.sendRoom(rid, "actor", nextActor);
+            }
+
             sock.send(uid, "room", "accept", rid);
         }
         return canJoin;
@@ -120,6 +133,7 @@ public class PlayerServiceImpl implements PlayerService {
 
         if (uid>0 && rid>0) {
             playerMap.setIsIn(uid, rid, 0);
+            playerMap.setIsIn(uid, 0, 1);
             profMap.setLastRoom(uid, 0);
 
             List<Integer> notEmpty = roomMap.getNotEmptyRoom();

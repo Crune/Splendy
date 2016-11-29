@@ -1,14 +1,18 @@
 package org.kh.splendy.vo;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-
-import lombok.*;
-
-import com.google.gson.*;
-import com.google.gson.annotations.*;
-import org.kh.splendy.config.aop.SplendyAdvice;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import lombok.Data;
 import org.kh.splendy.config.assist.Utils;
+import org.kh.splendy.service.CompService;
+import org.kh.splendy.service.SocketService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -55,11 +59,41 @@ public class GameRoom {
 		}
 		return rst;
 	}
+	public void nextTurn(SocketService sock) {
+        if (turn >= 0) {
+            this.turn += 1;
+            this.currentPl = pls.get(0).getUid();
+        }
+    }
+
+    public int nextActor(SocketService sock) {
+        boolean isValid = false;
+        int myCursor = 0;
+        for (int i = 0; i < pls.size(); i++) {
+            if (myCursor != 0) {
+                this.currentPl = i;
+                isValid = true;
+            }
+            if (currentPl == pls.get(i).getUid()) {
+                myCursor = i;
+            }
+        }
+        if (!isValid) {
+            nextTurn(sock);
+        }
+        return this.currentPl;
+    }
 
 	public boolean reqJoin(WSPlayer reqUser) {
 	    boolean rst = false;
 	    if (limit > pls.size()) {
-	        pls.add(reqUser);
+            List<Integer> playerList = new ArrayList<>();
+            for (WSPlayer curPl : pls) {
+                playerList.add(curPl.getUid());
+            }
+	        if (!playerList.contains(reqUser.getUid())) {
+                pls.add(reqUser);
+            }
 	        rst = true;
         }
         return rst;
@@ -100,6 +134,8 @@ public class GameRoom {
         return rst;
     }
     public WSComp pickCard(PLCard reqCard) {
+        // TODO 해당 카드를 가져옴
+
         return null;
     }
 
@@ -157,4 +193,5 @@ public class GameRoom {
         }*/
         return rst;
     }
+
 }

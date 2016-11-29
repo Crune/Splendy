@@ -1,0 +1,21 @@
+#game_chat{
+	background : rgba(20,20,12,0.9);
+	width : 500px;
+	height : 200px;
+	position: fixed;	
+	display: none;
+	left: 100px;
+	bottom: 42px;
+	border: solid 1px white;	
+	overflow-y: auto; 
+}
+#chat_input{
+	display: none;
+	border: 1px solid #bcbcbc;
+ 	border-radius: 3px;
+  	-webkit-appearance: none; 	
+  	position: fixed;
+  	bottom: 22px;
+  	left : 100px;
+  	background: rgba(255,255,255,0.9);
+}

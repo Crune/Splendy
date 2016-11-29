@@ -4,9 +4,11 @@ import java.util.List;
 import org.apache.ibatis.annotations.*;
 import org.kh.splendy.vo.Player;
 import org.kh.splendy.vo.WSPlayer;
+import org.springframework.stereotype.Component;
 
 /** 플레이어 참가 정보 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.11) */
+@Component
 public interface PlayerMapper {
 
 	// BASIC CRUD
@@ -51,29 +53,15 @@ public interface PlayerMapper {
 
 	// SQL query in xml
 	public List<WSPlayer> getAllWSPlayer();
-
-	// SQL query in xml
-	public List<WSPlayer> getInRoomPlayer(@Param("sid") String sid);
 	
 	// SQL query in xml
 	public List<WSPlayer> getInRoomPlayerByRid(@Param("rid") int rid);
 
-	// SQL query in xml
-	public WSPlayer getWSPlayerBySid(@Param("sid") String sid);
 	
 	@ResultMap("player")
 	@Select("select * from "+TABLE+" where RM_ID=#{room} AND PL_IS_IN=1 AND U_ID <> 0")
 	public List<Player> getPlayers(int room);
 
-	@Select("select inn.u_ws_id"
-			+ " from kh_player pl"
-			+ " inner join kh_user_inner inn on inn.u_id = pl.u_id"
-			+ " where"
-			+ " 	inn.u_ws_id is not null"
-			+ " 	and inn.u_connect  > 0"
-			+ " 	and pl.pl_is_in   is not null"
-			+ " 	and inn.u_id      <> 0")
-	public List<String> getActiverSid();
 
 	// SQL query in xml
 	public int countIsIn(@Param("uid") int uid);

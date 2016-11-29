@@ -23,8 +23,8 @@ public class CompServiceImpl implements CompService {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(CompServiceImpl.class);
 
-	private static List<Card> cardAll = new ArrayList<Card>();
-	private static List<Coin> coinAll = new ArrayList<Coin>();
+	private static List<Card> cardAll = new ArrayList<>();
+	private static List<Coin> coinAll = new ArrayList<>();
 
 	private void init() {
 		if (cardAll.isEmpty()) {
@@ -123,10 +123,20 @@ public class CompServiceImpl implements CompService {
 
         PLCoin gold = new PLCoin();
 
+        // TODO 해당 카드를 가져올 조건 검증
+
+        // 해당 카드를 가져옴
         WSComp result = room.pickCard(reqGetCard);
 
+        // TODO 귀족카드 조건 검증
+
+        // TODO 만족하는 귀족카드 증정
+
+        // TODO 홀딩시 잔여 골드 코인 증정
         sock.send("/comp/coin/"+room.getRoom(), result.getCoins());
-	    return null;
+
+        // 결과 카드변경 전체 전송
+	    return result.getCards();
     }
 
 	@Override
@@ -225,5 +235,31 @@ public class CompServiceImpl implements CompService {
 	public List<Card> getCards() {
 		init();
 		return cardAll;
+	}
+
+	@Override
+	public Map<Integer, Integer> scoring(List<PLCard> cards) {
+        Map<Integer, Integer> result = new HashMap<>();
+
+        for (PLCard cur : cards) {
+            int uid = cur.getU_id();
+            int cnid = cur.getCd_id();
+
+            Card thisCard = null;
+            for (Card curCard : cardAll) {
+                if (curCard.getId() == cnid) {
+                    thisCard = curCard;
+                }
+            }
+
+            int prevScore = 0;
+            if (result.containsKey(uid)) {
+                prevScore = result.get(uid);
+                result.remove(uid);
+            }
+            result.put(uid, prevScore + thisCard.getPoint());
+        }
+
+		return result;
 	}
 }

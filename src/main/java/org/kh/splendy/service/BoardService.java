@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.vo.Article;
 import org.kh.splendy.vo.Board;
+import org.kh.splendy.vo.Comment;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,5 +33,5 @@ public interface BoardService {
 	
 	void deleteBoard(int at_id)throws Exception;
 	
-	
+	void insertBoardReply(Comment comment) throws Exception;
 }

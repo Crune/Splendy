@@ -110,6 +110,11 @@ public class SocketServiceImpl implements  SocketService {
     }
 
     @Override
+    public void sendRoom(int rid, String type, Object cont) {
+        send("/room/event/"+rid, new WSMsg(type, cont));
+    }
+
+    @Override
     public void send(UserCore sender, String topic, String type, Object obj) {
         send(sender.getId(), topic, type, obj);
     }

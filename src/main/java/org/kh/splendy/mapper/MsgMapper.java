@@ -9,9 +9,11 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.Msg;
+import org.springframework.stereotype.Component;
 
 /** 메시지 테이블을 관리하는 MyBatis Mapper
  * @author 최윤 ('16 11.14) */
+@Component
 public interface MsgMapper {
 
 	// BASIC CRUD

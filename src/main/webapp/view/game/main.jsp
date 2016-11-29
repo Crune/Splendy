@@ -8,7 +8,8 @@
 	<meta charset="UTF-8">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
-	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/ingame/main.css">
+	<link rel="stylesheet" href="/css/ingame/chat.css">
 	<link rel='stylesheet' href='/css/default.css'>
 	<!-- Bootstrap's Suck! 적용시 화면 깨짐 - 윤
 	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
@@ -17,11 +18,21 @@
 	<style type="text/css">
 		body { _behavior: url(/js/iepngfix.htc) }
 	</style>
-	<script>
+	
+	<script id="temp_chatmsg" type="text/x-handlebars-template">
+		<div class="chat_msg"><span class="nick_{{ type }}">{{ nick }}:</span> {{ cont }} <span class="msg_time">- {{ time }}</span></div>
+	</script>
+
+	<script type='text/javascript'>
 		function closeIt() {
 			return "페이지를 벗어날 경우 탈주 처리됩니다.";
 		}
 		window.onbeforeunload = closeIt;
+
+        var uid = ${sessionScope.user.id};
+        var nick = "${sessionScope.user.nickname}";
+        var email = "${sessionScope.user.email}";
+        var rid = ${sessionScope.rid};
 	</script>
 </head>
 
@@ -199,11 +210,14 @@
 			</div>
 		</div>
 		</section>
-
+		<div id="game_chat">			
+			 
+		</div>
+		<input type="text" id="chat_input" size="74px"/>
 	</div>
 	<footer class="clearFix">
 		<p class="users"><a href="#">x 10</a></p>
-		<p class="chat"><a href="#">System: Game started!</a></p>
+		<p class="chat"><a href="#" id="chat_btn">System: Game started!</a></p>
 	</footer>
 </body>
 <scripts>
@@ -214,7 +228,7 @@
 	<script type='text/javascript' src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 	
 	<script type="text/javascript" src="/js/default.js"></script>
-	<script type="text/javascript" src="/js/commonWS.js"></script>
+	<script type="text/javascript" src="/js/sock.js"></script>
 	<script type='text/javascript' src="/js/ingame/starter.js"></script>
 	<script type='text/javascript' src="/js/ingame/onchat.js"></script>
 	<script type='text/javascript' src="/js/ingame/oncomp.js"></script>

@@ -4,16 +4,17 @@ var stompClient = null;
 function connect() {
     var socket = new SockJS("http://" + window.location.host + "/socket");
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClient.connect({ 'uid': uid, 'rid': rid }, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/notice/everyone', function (notice) {
-        	var notice = JSON.parse(notice.body)
+        stompClient.subscribe('/notice/everyone', function (evt) {
+        	var notice = JSON.parse(evt.body)
         	var type = notice.type;
         	var cont = notice.cont;
             showNotice(type, cont);
         });
     });
+    //stompClient.disconnect(disconnect);
 }
 function showNotice(type, cont) {
     alert(type+"/"+cont);
