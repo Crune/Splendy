@@ -52,6 +52,7 @@ function player_priv(evt) {
 }
 
 function player_join(evt) {
+	alert('join');
     var pl = JSON.parse(evt.body);
     if (pls.data[pl.uid]) {
         pls.data[pl.uid] = pl;
@@ -64,15 +65,18 @@ function player_join(evt) {
 }
 
 function player_left(evt) {
+	alert('left');
     var pl = JSON.parse(evt.body);
     if (pls.data[pl.uid] && pl.room == rid) {
         var tempArr = new Array();
+        delete pls.data[pl.uid];
         for(var i=0, uid; uid=pls.order[i]; i++) {
             if(uid != pl.uid) {
                 console.log("uid추가:"+uid);
                 tempArr.push(uid);
             }
         }
+        console.log(pls);
         pls.order = tempArr;
         input_chat(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
         player_refresh();
