@@ -252,7 +252,7 @@ window.onload = function(){
 		removeProfileVar();
 	});
 	$(".btn_profileModify").on('click', function () {
-		authorityModify();
+		profileModify();
 		removeProfileVar();
 	});
 }
@@ -283,7 +283,7 @@ function removeUserVar() {
 	$('#reg').empty();
 }
 function userModify() {
-	console.log("회원 정보 변경");
+	console.log("회원 정보 수정");
 	$.ajax({
         url:'/admin/user_modify',
         type:'post',
@@ -316,7 +316,7 @@ function removeAuthorityVar() {
 	$('#a_id').empty();
 }
 function authorityModify() {
-	console.log("관리자 권한 부여");
+	console.log("권한 변경");
 	$.ajax({
         url:'/admin/admin_modify',
         type:'post',
@@ -352,14 +352,14 @@ function userProfile(id) {
 function removeProfileVar() {
 	$('#user_id').empty();
 }
-function authorityModify() {
-	console.log("관리자 프로필 수정");
+function profileModify() {
+	console.log("회원 프로필 수정");
 	$.ajax({
         url:'/admin/user_profile',
         type:'post',
         data:$("#profMF").serialize(),
         success:function(){
-        	alert("변경 완료");
+        	alert("수정 완료");
         	$('#profileModal').modal('hide')
         	window.location.reload();
         },error:function(request,status,error){

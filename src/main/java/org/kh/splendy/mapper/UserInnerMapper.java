@@ -103,7 +103,7 @@ public interface UserInnerMapper {
 
 	
 	@Update("update "+TABLE+" set U_ROLE=#{value, jdbcType=VARCHAR} where "+KEY+"=#{id} ")
-	public void setRole(@Param("id") int id, @Param("role") String value);
+	public void setRole(@Param("id") int id, @Param("value") String value);
 
 	@Select("select U_ROLE from "+TABLE+" where "+KEY+"=#{id}")
 	public String getRole(int id);
