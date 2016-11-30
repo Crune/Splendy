@@ -16,6 +16,8 @@ public interface GameService {
 
     GameRoom readRoom(int rid);
 
+    boolean isInPlayer(int rid, int uid);
+
     boolean joinPro(int rid, int uid);
 
     boolean leftPro(int rid, int uid);

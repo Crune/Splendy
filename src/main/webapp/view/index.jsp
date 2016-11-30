@@ -19,18 +19,11 @@
 	<script type='text/javascript' src="/webjars/handlebars/4.0.5/handlebars.js"></script>
 
 	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
-	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script type='text/javascript' src="https://apis.google.com/js/api:client.js"></script>
 	<script type='text/javascript' src="https://apis.google.com/js/platform.js" async defer></script>
 
-	<script type='text/javascript' src='/js/default.js'></script>
-	<script type='text/javascript' src='/js/index/index.js'></script>
-
 	<script>
         var msg = "${msg}";
-        $(document).ready(function() {
-            if (msg !== "") { $('#myModal').modal('show'); }
-        });
 	</script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -76,7 +69,7 @@
 						<p class="index-title">로그인</p>
 						<img src="/img/work/index-hr.png" width="310" height="5" alt="" />
 						<div class="index-cont">
-							<form id="loginForm" name="loginForm" method="post" onsubmit="return login_check();">
+							<form id="loginForm" name="loginForm" method="post">
 								<div class="form-group">
 									<label for="textfield">이메일 주소</label>
                                     <input name="email" type="email" class="form-control" id="email" />
@@ -85,7 +78,7 @@
 									<label for="exampleInputPassword1">암호</label>
                                     <input name="password" type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="암호" />
 								</div>
-								<input id="btn_login_prc" class="btn btn-default btn_login_prc" type="button" onclick="return login_check();" value="로그인" />
+								<input id="btn_login_prc" class="btn btn-default btn_login_prc" type="button" value="로그인" />
 								<input id="btn_send_pw" class="btn btn-default btn_send_pw" type="button" value="비밀번호 찾기" />
 								<input id="btn_join" class="btn btn-default btn_join" type="button" value="회원가입" />
 								<div class="f-login" ><img src="/img/sns/facebook.png" id="btn_facebook" title="페이스북 아이디로 로그인"/></div>
@@ -117,7 +110,7 @@
 			</div>
 		</div>
 		<div class="col-md-12 index-bottom">
-			<span>Copyright © spd.cu.cc All rights reserved.</span>
+			<span>Copyright 2016 © spd.cu.cc All rights reserved.</span>
 		</div>
 	</div>
 </div>
@@ -149,6 +142,9 @@
     naver_id_login.setPopup();
     naver_id_login.init_naver_id_login();
 </script>
+
+<script type='text/javascript' src='/js/default.js'></script>
+<script type='text/javascript' src='/js/index/index.js'></script>
 <script>startApp();</script>
 </body>
 </html>

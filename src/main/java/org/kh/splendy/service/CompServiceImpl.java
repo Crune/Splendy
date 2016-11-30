@@ -67,17 +67,16 @@ public class CompServiceImpl implements CompService {
 	}
 	
 	@Override
-	public List<PLCoin> getNewCoins(int rid, int uid) {
+	public List<PLCoin> getNewCoins(int rid) {
 		init();
 
 		int startAmount = 0;
-		if (uid < 1) {
-			Room room = roomMap.read(rid);
-			int plLimits = room.getPlayerLimits();
-			startAmount = plLimits+2;
-			if (plLimits == 4) {
-				startAmount++;
-			}
+
+		Room room = roomMap.read(rid);
+		int plLimits = room.getPlayerLimits();
+		startAmount = plLimits+2;
+		if (plLimits == 4) {
+			startAmount++;
 		}
 		
 		List<PLCoin> coins = new ArrayList<PLCoin>();
@@ -85,7 +84,7 @@ public class CompServiceImpl implements CompService {
 			PLCoin rst = new PLCoin();
 			rst.setRm_id(rid);
 			rst.setCn_id(coin.getId());
-			rst.setU_id(uid);
+			rst.setU_id(0);
 			if (coin.getId() == 6) {
 				rst.setCn_count(5);
 			} else {

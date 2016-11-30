@@ -181,9 +181,9 @@ jQuery.ajaxSettings.traditional = true;
         data:$("#msgForm").serialize(),
         success:function(data){
         	if(data == 0){
-        		alert("실패");
-        	} else{
         		alert("성공");
+        	} else {
+        		alert("선택된 항목이 없습니다.");
         	}
         	console.log("delete Message end");
         	window.location.reload();
@@ -201,9 +201,9 @@ jQuery.ajaxSettings.traditional = true;
         data:$("#roomForm").serialize(),
         success:function(data){
         	if(data == 0){
-        		alert("실패");
-        	} else{
         		alert("성공");
+        	} else {
+        		alert("선택된 항목이 없습니다.");
         	}
         	console.log("close room end");
         	window.location.reload();
@@ -218,7 +218,6 @@ jQuery.ajaxSettings.traditional = true;
 	<script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
 	<script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 	<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-	<script src="/js/vendor/holder.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
 </body>

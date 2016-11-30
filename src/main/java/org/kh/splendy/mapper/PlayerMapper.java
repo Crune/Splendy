@@ -31,8 +31,8 @@ public interface PlayerMapper {
 	@Update("update "+TABLE+" set "+UPDATES+" where "+KEY+"=#{id} ")
 	public void update(Player player);
 	
-	@Delete("delete from "+TABLE+" where "+KEY+"=#{id}")
-	public void delete(int id);
+	@Delete("delete from "+TABLE+" where "+KEY+"=#{uid} and RM_ID = #{rid}")
+	public void delete(@Param("uid") int uid, @Param("rid") int rid);
 
 
 	// BASIC MAPPER ( count , set )
@@ -47,6 +47,9 @@ public interface PlayerMapper {
 	public void setIp(@Param("uid") int uid, @Param("rid") int rid, @Param("value") String value);
 
 	// Another
+
+	// SQL query in xml
+	public void createInitial(@Param("uid") int uid, @Param("rid") int rid);
 
 	// SQL query in xml
 	public WSPlayer getWSPlayer(@Param("uid") int uid);

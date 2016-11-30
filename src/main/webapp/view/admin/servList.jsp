@@ -163,6 +163,8 @@ function modify() {
         		alert("실패");
         	} else if(data == 2){
         		alert("성공");
+        	} else if(data == 0){
+        		alert("빈값을 입력할 수 없습니다.");
         	}
         	window.location.reload();
         },error:function(request,status,error){

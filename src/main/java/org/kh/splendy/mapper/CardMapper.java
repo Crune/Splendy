@@ -22,7 +22,7 @@ public interface CardMapper {
 		@Result(property = "info", column = "CD_INFO")
 	})
 	@Select("select * from KH_CARD")
-	public List<Card> selectAll() throws Exception;
+	public List<Card> selectAll();
 	
 	@Select("select * from KH_CARD where cd_type like 'CD1%'")
 	@ResultMap("cardResult")

@@ -6,15 +6,13 @@ import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by runec on 2016-11-27.
- */
 @Service
 @EnableTransactionManagement
 public class PlayerServiceImpl implements PlayerService {
@@ -31,13 +29,17 @@ public class PlayerServiceImpl implements PlayerService {
 
     private static final Logger log = LoggerFactory.getLogger(PlayerServiceImpl.class);
 
+    /**
+     * 동작설명
+     * - 플레이어 테이블에 해당 항목이 없을 경우 생성
+     * - 해당 플레이어 접속정보 설정
+     */
     @Override
     public int getLastRoomAndInit(int uid) {
         int rid = 0;
         if (uid > 0) {
             rid = profMap.getLastRoom(uid);
-            // 플레이어 기본정보 생성 여부 확인 및 생성
-            sock.initPlayer(uid, rid);
+            join(uid, rid, "", true);
         }
         return rid;
     }
@@ -54,19 +56,56 @@ public class PlayerServiceImpl implements PlayerService {
         return players;
     }
 
-    @Override @Transactional
-    public WSPlayer join(int uid, int rid, String password) {
-        WSPlayer rst = null;
-        rst = playerMap.getWSPlayer(uid);
-        if (rid == 0) {
-            sock.send("/player/join/" + rid, rst);
-        } else {
-            String pw = new Gson().fromJson(password, String.class);
-            boolean canJoin = false;
+    @Override
+    public void connect(int uid, int rid) {
+        WSPlayer pl = playerMap.getWSPlayer(uid);
+        pl.setRoom(rid);
+        sock.putConnectors(pl);
+        join(uid, rid, "", true);
+        log.info("웹소켓 접속: user" + uid+" / room: "+rid);
+        if (rid != 0) {
+            sock.send("/player/join/" + 0, pl);
+        }
+    }
 
+    @Override
+    public void disconnect(int uid, int rid) {
+        WSPlayer pl = playerMap.getWSPlayer(uid);
+        pl.setRoom(rid);
+        sock.removeConnectors(pl);
+        try {
+            if (!checkConnected(uid)) {
+                left(uid, rid);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("웹소켓 접속해제: user" + uid);
+    }
+
+    @Async
+    public boolean checkConnected(int uid) throws InterruptedException {
+        Thread.sleep(1000 * 30);
+        if (sock.getConnectors().containsKey(uid)) {
+            return true;
+        } else  {
+            return false;
+        }
+    }
+
+    @Override @Transactional
+    public void join(int uid, int rid, String password, boolean isInitial) {
+
+        String pw = new Gson().fromJson(password, String.class);
+        boolean canJoin = false;
+        boolean isAlreadyPro = playerMap.count(uid, rid) > 0;
+
+        if (isAlreadyPro || rid == 0) {
+            canJoin = true;
+        } else if (rid > 0) {
             // 비밀번호가 일치하거나 없을 경우만 참가가능
             Room reqRoom = roomMap.read(rid);
-            if (reqRoom.getPassword() == null) {
+            if (reqRoom.getPassword() == null || isInitial) {
                 canJoin = true;
             } else if (reqRoom.getPassword().equals(pw)) {
                 canJoin = true;
@@ -80,71 +119,81 @@ public class PlayerServiceImpl implements PlayerService {
             int countIsIn = playerMap.countIsIn(uid);
             canJoin = (canJoin && countIsIn == 0);
 
-            if (canJoin) {
-                // DB에 접속 정보 입력
-                Player player = null;
-                if (playerMap.count(uid, rid) == 0) {
-                    player = new Player();
-                    player.setId(uid);
-                    player.setRoom(rid);
-                    player.setIsIn(1);
-                    player.setIp("");
-                    playerMap.create(player);
-                } else {
-                    player = playerMap.read(uid, rid);
-                    player.setIp("");
-                    player.setIsIn(1);
-                    playerMap.update(player);
-                }
+            // 방이 존재할 경우만 가능
 
+        }
+
+        if (canJoin) {
+            // DB에 접속 정보 입력
+            Player player = null;
+            if (!isAlreadyPro) {
+                player = new Player();
+                player.setId(uid);
+                player.setRoom(rid);
+                player.setIsIn(1);
+                player.setIp("");
+                playerMap.create(player);
+                if (rid > 0) {
+                    playerMap.createInitial(uid, rid);
+                }
+            } else {
+                player = playerMap.read(uid, rid);
+                player.setIp("");
+                player.setIsIn(1);
+                playerMap.update(player);
+            }
+
+            if (rid > 0) {
                 // 로비 접속 불가능 설정
                 playerMap.setIsIn(uid, 0, 0);
-                profMap.setLastRoom(uid, rid);
 
-                boolean joinRst = game.joinPro(rid, uid);
-                int innerPlsCount = game.getRoom(rid).getPls().size();
-                if (joinRst && innerPlsCount == game.getRoom(rid).getLimit()) {
-                    // 게임 시작!
-                    sock.sendRoom(rid, "start", "게임 시작!");
-                    int nextActor = game.getRoom(rid).nextActor(sock);
-                    sock.sendRoom(rid, "actor", nextActor);
+                // 게임 내부 입장 처리
+                game.joinPro(rid, uid);
+
+                if (!isInitial) {
+                    // 계정 입장 처리
+                    profMap.setLastRoom(uid, rid);
+
+                    sock.send(uid, "room", "accept", rid);
                 }
-
-                sock.send(uid, "room", "accept", rid);
-                sock.send("/player/join/" + rid, rst);
             }
         }
-        return rst;
+
     }
 
     @Override
-    public WSPlayer left(UserCore sender) {
+    public void left(UserCore sender) {
         int uid = sender.getId();
-        return left(uid);
+        left(uid);
     }
 
     @Override @Transactional
-    public WSPlayer left(int uid) {
+    public void left(int uid) {
         int rid = profMap.getLastRoom(uid);
+        left(uid, rid);
+    }
 
-        WSPlayer rst = playerMap.getWSPlayer(uid);
-        if (rid == 0) {
-            sock.send("/player/left/"+rid, rst);
-        } else if (uid>0 && rid>0) {
+    @Override @Transactional
+    public void left(int uid, int rid) {
+        if (uid>0) {
             playerMap.setIsIn(uid, rid, 0);
-            playerMap.setIsIn(uid, 0, 1);
-            profMap.setLastRoom(uid, 0);
 
-            List<Integer> notEmpty = roomMap.getNotEmptyRoom();
-            if (!notEmpty.contains(rid)) {
-                roomMap.close(rid);
-                roomServ.deleteRoom(rid);
+            if (rid > 0) {
+                // 게임 내부 퇴장 처리
+                game.leftPro(rid, uid);
+
+                playerMap.setIsIn(uid, 0, 1);
+
+                // 계정 퇴장 처리
+                profMap.setLastRoom(uid, 0);
+
+                if (playerMap.getInRoomPlayerByRid(rid).size() == 0) {
+                    roomServ.deleteRoom(rid);
+                    sock.send("/room/remove", rid);
+                }
+
+                sock.send(uid, "room", "can_left", rid);
             }
-
-            game.leftPro(rid, uid);
-            sock.send(uid, "room", "can_left", rid );
-            sock.send("/player/left/"+rid, rst);
         }
-        return rst;
     }
 }

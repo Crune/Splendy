@@ -1,9 +1,11 @@
 package org.kh.splendy.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.kh.splendy.mapper.UserMapper;
 import org.kh.splendy.mapper.UserProfileMapper;
 import org.kh.splendy.vo.UserCore;
 import org.kh.splendy.vo.UserProfile;
@@ -20,6 +22,7 @@ public class UserProfileServiceImpl implements UserProfileService{
 	private static final Logger log = LoggerFactory.getLogger(CardServiceImpl.class);
 
 	@Autowired UserProfileMapper profMap;
+    @Autowired private UserMapper userMap;
 	
 	@Override
 	public void updateIcon(String icon, HttpSession session) {
@@ -41,14 +44,19 @@ public class UserProfileServiceImpl implements UserProfileService{
 		session.setAttribute("profile", ups);		
 	}
 
+	private static List<UserProfile> profList = null;
+    private static Date profListTime = new Date(System.currentTimeMillis());
+
 	@Override
 	public List<UserProfile> getProfAll() {
-		List<UserProfile> profList = null;
-		try{
-			profList = profMap.getProfAll();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
+        if (profList == null || (profListTime.getTime()) - (new Date(System.currentTimeMillis())).getTime() > 1000*60*60*24) {
+            profList = profMap.getProfAll();
+            for (int i = 0; i < profList.size(); i++) {
+                int id = profList.get(i).getUserId();
+                UserCore user = userMap.read(id);
+                profList.get(i).setNickname(user.getNickname());
+            }
+        }
 		return profList;
 	}
 

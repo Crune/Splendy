@@ -23,11 +23,6 @@
 		<div class="chat_msg"><span class="nick_{{ type }}">{{ nick }}:</span> {{ cont }} <span class="msg_time">- {{ time }}</span></div>
 	</script>
 	<script type='text/javascript'>
-		function closeIt() {
-			return "페이지를 벗어날 경우 탈주 처리됩니다.";
-		}
-		window.onbeforeunload = closeIt;
-
         var uid = ${sessionScope.user.id};
         var nick = "${sessionScope.user.nickname}";
         var email = "${sessionScope.user.email}";

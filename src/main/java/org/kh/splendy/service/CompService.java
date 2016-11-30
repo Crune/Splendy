@@ -10,9 +10,10 @@ import org.kh.splendy.vo.PLCard;
 import org.kh.splendy.vo.PLCoin;
 
 public interface CompService {
-	
-	List<PLCoin> getNewCoins(int rid, int uid);
-	List<PLCard> getNewDeck(int rid);
+
+    List<PLCoin> getNewCoins(int rid);
+
+    List<PLCard> getNewDeck(int rid);
 
 	List<PLCard> reqPickCard(PLCard reqGetCard, int uid, GameRoom room);
 

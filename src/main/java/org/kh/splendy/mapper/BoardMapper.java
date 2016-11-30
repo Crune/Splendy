@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.kh.splendy.vo.Article;
+import org.kh.splendy.vo.Comment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -89,6 +90,11 @@ public interface BoardMapper {
 
 		@Delete("DELETE KH_ARTICLE WHERE AT_ID = #{AT_ID, jdbcType=INTEGER}")
 		public void deleteBoard(int at_id) throws Exception;
-			
+		
+		public void insertReply(@ModelAttribute("comment") Comment comment) throws Exception;
+		
+		public void updateReply(@ModelAttribute("comment") Comment comment) throws Exception;
+		
+		
 		
 }
