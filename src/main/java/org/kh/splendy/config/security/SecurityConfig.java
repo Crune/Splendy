@@ -3,6 +3,7 @@ package org.kh.splendy.config.security;
 import org.kh.splendy.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.ignoring()
 				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**")
 				.antMatchers("/socket/**", "/socket**");
+		
 	}
 	/**
 	 * permitAll() -> 모두 접근 가능
@@ -46,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.authorizeRequests()
 				.antMatchers("/").permitAll()
 				.antMatchers("/user/**").permitAll()
+				.antMatchers("/prof/**").permitAll()
 				.antMatchers("/lobby/**", "/lobby**").permitAll()
 				.antMatchers("/game/**", "/game**").permitAll()
 				.antMatchers("/bbs/**", "/bbs**").permitAll()

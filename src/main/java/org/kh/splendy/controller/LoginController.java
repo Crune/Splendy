@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -100,6 +101,32 @@ public class LoginController {
 		
 		UserCore user = new UserCore();
 		user.setEmail("F"+email);
+		user.setNickname(nickname);
+		user.setPassword(password);
+		try {
+			UserCore searchUser = userServ.checkEmail(user.getEmail());
+			if(searchUser == null) { //최초로 소셜로그인을 통해 접속할 때
+				userServ.createUser(user);
+			}
+			user = userServ.checkEmail(user.getEmail());
+			user.openInfo();
+			session.setAttribute("user", user);
+			text = "lobby/";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return text;
+	}
+	
+	@RequestMapping(value = "/user/kakao", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody String kakaoLogin(@RequestParam("email") String email, @RequestParam("nickname") String nickname,
+												HttpSession session) throws Exception {
+		String text = "/";
+		System.out.println("Name : "+ nickname);
+		String password = RandomStringUtils.randomAlphanumeric(9); 
+		
+		UserCore user = new UserCore();
+		user.setEmail("K"+email);
 		user.setNickname(nickname);
 		user.setPassword(password);
 		try {

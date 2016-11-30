@@ -26,9 +26,11 @@ public class CompProtocol extends ProtocolHelper {
 
     private void sendNext(int rid) {
 
+        // 현재 점수를 계산
         Map<Integer, Integer> score  = compServ.scoring(game.getRoom(rid).getCards());
         sock.sendRoom(rid, "score", score);
 
+        // 게임 종료 여부를 계산
         boolean isGameEnd = false;
         for (int curScore : score.keySet()) {
             if (curScore >= 15) {
@@ -36,9 +38,11 @@ public class CompProtocol extends ProtocolHelper {
             }
         }
         if (isGameEnd) {
+            // 게임 종료 처리
             List<UserProfile> result = game.endingGame(rid, score);
             sock.sendRoom(rid, "end", result);
         } else {
+            // 다음 사람으로 넘김
             int nextActor  = game.getRoom(rid).nextActor(sock);
             sock.sendRoom(rid, "actor", nextActor);
         }
@@ -57,7 +61,7 @@ public class CompProtocol extends ProtocolHelper {
         UserCore sender = sender(head);
 
         List<PLCard> rst = null;
-        if (rid(head) == rid) {
+        if (rid(head) == rid && !game.getRoom(rid).isHalted()) {
             // 카드 홀딩시 골드 코인 정보는 'CompService'가 '/comp/coin/{rid}'의 구독자들에게 제공
             rst = compServ.reqPickCard(reqCard, sender.getId(), game.getRoom(rid));
             if (rst != null) {
@@ -78,7 +82,7 @@ public class CompProtocol extends ProtocolHelper {
 
         List<PLCoin> rst = null;
 
-        if (rid(head) == rid) {
+        if (rid(head) == rid && !game.getRoom(rid).isHalted()) {
             rst = compServ.reqPickCoin(req, draw, sender.getId(), game.getRoom(rid));
             if (rst != null) {
                 sendNext(rid(head));

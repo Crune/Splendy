@@ -33,4 +33,33 @@
 		HAVING COUNT(KH_PLAYER.U_ID) > 0
 	]]>
 	</select>
+
+	<insert id="createInitial" statementType="CALLABLE">
+		<![CDATA[
+            DECLARE
+              rid NUMBER := #{rid};
+              limits NUMBER;
+
+            BEGIN
+
+              SELECT RM_PL_LIMITS INTO limits FROM KH_ROOM WHERE RM_ID = rid;
+
+              FOR i IN 1..100 LOOP
+                INSERT INTO KH_PL_CARD(RM_ID, U_ID, CD_ID, N_HOLD) VALUES (rid, 0, i, 0);
+              END LOOP;
+
+              INSERT INTO KH_PL_COIN(RM_ID, CN_ID, U_ID, CN_COUNT) VALUES (rid, 6, 0, 5);
+              FOR i IN 1..5 LOOP
+                IF limits = 4 THEN
+                  INSERT INTO KH_PL_COIN(RM_ID, CN_ID, U_ID, CN_COUNT) VALUES (rid, i, 0, 7);
+                ELSE
+                  INSERT INTO KH_PL_COIN(RM_ID, CN_ID, U_ID, CN_COUNT) VALUES (rid, i, 0, limits+2);
+                END IF;
+              END LOOP;
+
+              COMMIT;
+
+            END;
+		]]>
+	</insert>
 </mapper>

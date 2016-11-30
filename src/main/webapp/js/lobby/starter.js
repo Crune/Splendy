@@ -16,8 +16,7 @@ function setConnected(connected) {
         onRoom();
         onPlayer();
         setControll(true);
-    }
-    else {
+    } else {
         if (isPageMove == false) {
             alert("튕김");
             connect();

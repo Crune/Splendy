@@ -16,17 +16,17 @@ public class SplendyWSDisconnectEventListener implements ApplicationListener<Ses
 
 	private static final Logger log = LoggerFactory.getLogger(SplendyWSDisconnectEventListener.class);
 
-	@Autowired private SocketService sock;
 	@Autowired private PlayerService player;
 
 	@Override
 	public void onApplicationEvent(SessionDisconnectEvent event) {
 		StompHeaderAccessor head = StompHeaderAccessor.wrap(event.getMessage());
-		UserCore sender = (UserCore) head.getSessionAttributes().get("user");
-		if (sender != null) {
-			sock.removeConnectors(sender);
-			player.left(sender.getId());
-			log.info("웹소켓 접속해제: " + sender);
-		}
+        try {
+            int uid = (int) head.getSessionAttributes().get("uid");
+            int rid = (int) head.getSessionAttributes().get("rid");
+            player.disconnect(uid, rid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 }

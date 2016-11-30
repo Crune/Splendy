@@ -7,8 +7,6 @@ var email = "${user.email}";
 var login_result = "${login_result}";
 var credent = "${credent}";*/
 
-var msg = "${msg}";
-
 $(document).ready(function() {
 	
 	if(msg !== "") {
@@ -40,8 +38,6 @@ $(document).ready(function() {
           		}
               });
 	      });
-	       
-	       
 	    } else {
 	         FB.login(function(response) {
 	            if (response.authResponse) {
@@ -59,19 +55,7 @@ $(document).ready(function() {
 	                    })
 	                });    
 	            } else {
-	            	FB.api('/me', function(response) {
-	                	$.ajax({
-	                        url:'/user/facebook',
-	                        type:'post',
-	                        data:{email: response.id, nickname: response.name},
-	                        dataType: 'text', 
-	                        success:function(data){
-	                        	document.location.href=data;
-	                        },error:function(request,status,error){
-	                			alert("로그인에 실패했습니다. 다시 시도해주세요.");
-	                		}
-	                    })
-	                });
+	            	alert("로그인을 다시 시도해주세요.");
 	            }
 	        }, {scope:'email'});    
 	    }
@@ -131,16 +115,50 @@ window.onload = function(){
 		
 		$(".btn_naver").on('click', function(){
 		});
+		
+		$("#btn_kakao").on('click', function(){
+			kakaoLogin();
+		});
 
 		$("input#exampleInputPassword1").keypress(function(e) {
             if (e.which == 13) {
-                loginRequest();
+                login_check();
             }
         });
-		
 		self.opener = self;
 	
+		Kakao.init('434e775be31c907b0fcc3bc817220392');
 }
+
+function kakaoLogin(){	
+		Kakao.Auth.login({
+		       success: function(authObj) {
+		    	   Kakao.API.request({
+		    	          url: '/v1/user/me',
+		    	          success: function(res) {
+		    	            $.ajax({
+		    	                url:'/user/kakao',
+		    	                type:'post',
+		    	                data:{email: res.id, nickname: res.properties.nickname},
+		    	                dataType: 'text', 
+		    	                success:function(data){
+		    	                	document.location.href=data;
+		    	                },error:function(request,status,error){
+		    	        			alert("로그인에 실패했습니다. 다시 시도해주세요.");
+		    	        		}
+		    	            })
+		    	          },
+		    	          fail: function(error) {
+		    	            alert(JSON.stringify(error));
+		    	          }
+		    	   })
+		       },
+		       fail: function(err) {
+		         alert(JSON.stringify(err));
+		       }
+	    });
+}
+
 
 function joinRequest() {
 	login_result = "-1";
@@ -210,7 +228,7 @@ function loginRequest() {
 				window.location.href = "/";
 			} else if (text == "idFalse") {
 				alert("id를 다시 확인해주세요.");
-				window.location.href = "/logout";
+				window.location.href = "/logout"; // "/logout"페이지는 security에서 기본제공
 			} else if (text == "lockAccount") {
 				alert("차단된 아이디 입니다.");
 				window.location.href = "/logout";
@@ -323,32 +341,5 @@ function google() {
 		}
     })
 }
-
-
-   /*
-function onSignIn(googleUser) {
-    // Useful data for your client-side scripts:
-    var profile = googleUser.getBasicProfile();
-    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-    console.log('Full Name: ' + profile.getName());
-    console.log('Given Name: ' + profile.getGivenName());
-    console.log('Family Name: ' + profile.getFamilyName());
-    console.log("Image URL: " + profile.getImageUrl());
-    console.log("Email: " + profile.getEmail());
-
-    // The ID token you need to pass to your backend:
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + id_token);
-    
-    document.googleForm.email.value = profile.getId(); //구글의 id:디비의 email
-    document.googleForm.nickname.value = profile.getName();
-   
-    google();
-} */
-
-
-
-
- 
 
 

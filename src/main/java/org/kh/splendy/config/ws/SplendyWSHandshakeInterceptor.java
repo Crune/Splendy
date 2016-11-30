@@ -33,8 +33,8 @@ public class SplendyWSHandshakeInterceptor implements HandshakeInterceptor {
             HttpHeaders header = request.getHeaders();
 
             if (header != null) {
-                log.info("헤더에 이게 들어감"+header);
 				/*
+                log.info("헤더에 이게 들어감"+header);
                 log.info("plServ: "+playerService);
                 int rid = playerService.getLastRoomAndInit(user.getId());
 

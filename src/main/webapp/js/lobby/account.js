@@ -1,72 +1,3 @@
-
-$(document).ready(function() {
-	/*if (email.startsWith('F')) {
-		window.fbAsyncInit = function(){
-			FB.init({ appId: '1687598368235887',
-				status: true,
-				cookie: true,
-				xfbml: true,
-				oauth: true});
-		}
-
-		function updateButton(response) {
-			if (response.authResponse) {
-
-			  FB.api('/me', function(response) {
-				  console.log(response.id);
-				  console.log(response.name);
-				  $.ajax({
-					  url:'/user/facebook',
-					  type:'post',
-					  data:{email: response.id, nickname: response.name},
-					  dataType: 'text',
-					  success:function(data){
-						document.location.href=data;
-					  },error:function(request,status,error){
-						alert("로그인에 실패했습니다. 다시 시도해주세요.");
-					}
-				  })
-			  });
-
-
-			} else {
-				 FB.login(function(response) {
-					if (response.authResponse) {
-						FB.api('/me', function(response) {
-							$.ajax({
-								url:'/user/facebook',
-								type:'post',
-								data:{email: response.id, nickname: response.name},
-								dataType: 'text',
-								success:function(data){
-									document.location.href=data;
-								},error:function(request,status,error){
-									alert("로그인에 실패했습니다. 다시 시도해주세요.");
-								}
-							})
-						});
-					} else {
-
-					}
-				}, {scope:'email'});
-			}
-		}
-
-		(function() {
-			  var e = document.createElement('script'); e.async = true;
-			  e.src = document.location.protocol
-				+ '//connect.facebook.net/ko_KR/all.js';
-			  document.getElementById('fb-root').appendChild(e);
-			}());
-		$('#btn_logout').on('click', function () {
-			FB.logout()
-			alert("로그아웃");
-		});
-
-    }*/
-	
-});
-
 window.onload = function(){
 	if (email.startsWith('F')) {
 		window.fbAsyncInit = function(){
@@ -126,11 +57,6 @@ window.onload = function(){
 				+ '//connect.facebook.net/ko_KR/all.js';
 			  document.getElementById('fb-root').appendChild(e);
 			}());
-		/*$('#btn_logout').on('click', function () {
-			FB.logout()
-			alert("로그아웃");
-		});*/
-
     }
 	
 	
@@ -146,12 +72,10 @@ window.onload = function(){
 
 	$("#btn_logout").on('click', function () {
 		if (email.startsWith('F')) {
-			alert("페이스북 로그아웃");
-			FB.logout();
+			facebookLogout();
 			document.location.href='/user/logout';
 		}
 		if (email.startsWith('G')) {
-			alert("구글 로그아웃");
 			googleLogout();
 		}
 		if ((!email.startsWith('F') && !email.startsWith('G'))){
@@ -190,11 +114,13 @@ window.onload = function(){
 	});
 	
 }
-
-function onSignOut(googleUser) {
-	var revokeAllScopes = function() {
-		auth2.disconnect();
-	}
+function facebookLogout(){
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+            FB.logout(function(response) {
+            });
+        };
+    });
 }
 
 function googleLogout(){

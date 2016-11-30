@@ -1,6 +1,5 @@
 package org.kh.splendy.service;
 
-import org.apache.ibatis.annotations.Param;
 import org.kh.splendy.vo.Room;
 import org.kh.splendy.vo.UserCore;
 
@@ -12,7 +11,7 @@ import java.util.List;
 public interface RoomService {
     int createRoom(Room reqRoom, UserCore user);
 
-    int deleteRoom(int rid);
+    void deleteRoom(int rid);
 
     List<Room> readList();
     

@@ -1,5 +1,6 @@
 package org.kh.splendy.config.ws;
 
+import org.kh.splendy.service.PlayerService;
 import org.kh.splendy.service.SocketService;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
@@ -15,15 +16,17 @@ public class SplendyWSConnectEventListener implements ApplicationListener<Sessio
 
 	private static final Logger log = LoggerFactory.getLogger(SplendyWSConnectEventListener.class);
 
-    @Autowired private SocketService sock;
+    @Autowired private PlayerService player;
 
 	@Override
 	public void onApplicationEvent(SessionConnectEvent event) {
 		StompHeaderAccessor head = StompHeaderAccessor.wrap(event.getMessage());
-		UserCore sender = (UserCore) head.getSessionAttributes().get("user");
-		if (sender != null) {
-            sock.putConnectors(sender);
-            log.info("웹소켓 접속: " + sender);
+		try {
+            int uid = (int) head.getSessionAttributes().get("uid");
+            int rid = (int) head.getSessionAttributes().get("rid");
+            player.connect(uid, rid);
+        } catch (Exception e) {
+		    e.printStackTrace();
         }
 	}
 }

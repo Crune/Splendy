@@ -126,7 +126,7 @@
                 </div>
                 <div class="profile_info">
                     <div>
-                        <span class="lobby_text_nick">${sessionScope.user.nickname}</span>
+                        <span class="lobby_text_nick">${user.nickname}</span>
                     </div>
                     <div class="lobby_text_level">Lv.7</div>
                     <div class="lobby_text_biglabel">플레이어 레벨</div>
@@ -299,8 +299,7 @@
                 <form method="post" name="modal_form" id="modal_form">
                     <table>
                         <tr>
-                            <input type="hidden" class="form-control" name="email"
-                                   id="email" value="${user.email}" />
+                            <input type="hidden" class="form-control" name="email" id="email" value="${user.email}" />
                             <td>비밀번호&nbsp;</td>
                             <td><input type="password" name="password"
                                        class="form-control" id="password" /></td>
