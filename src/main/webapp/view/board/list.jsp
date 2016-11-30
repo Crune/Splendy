@@ -48,7 +48,42 @@
             </c:choose>
         </tbody>
     </table>
-    <br/>
+      <div id="PAGE_NAVI"></div>
+    <input type="hidden" id="PAGE_INDEX" name="PAGE_INDEX"/>
+     
+    <br/> 
+     
+ <c:if test="${count > 0}">
+   <c:set var="pageCount" value="${count / pageSize + ( count % pageSize == 0 ? 0 : 1)}"/>
+   <c:set var="startPage" value="${pageGroupSize*(numPageGroup-1)+1}"/>
+   <c:set var="endPage" value="${startPage + pageGroupSize-1}"/>
+   
+   <c:if test="${endPage > pageCount}" >
+     <c:set var="endPage" value="${pageCount}" />
+   </c:if>
+          
+   <c:if test="${numPageGroup > 1}">
+        <a href="./list.do?pageNum=${(numPageGroup-2)*pageGroupSize+1 }">[이전]</a>
+   </c:if>
+
+
+   <c:forEach var="i" begin="${startPage}" end="${endPage}">
+       <a href="list.do?pageNum=${i}">[
+        <font color="#000000" />
+          <c:if test="${currentPage == i}">
+          <font color="#bbbbbb" />
+        </c:if>
+        ${i}
+       </font>]
+       </a>
+   </c:forEach>
+
+
+   <c:if test="${numPageGroup < pageGroupCount}">
+        <a href="./list.do?pageNum=${numPageGroup*pageGroupSize+1}">[다음]</a>
+   </c:if>
+</c:if>
+
     <a href="#this" class="btn" id="write">글쓰기</a>
 
     <%@ include file="/view/board/include/bodyinclude.jspf" %>
@@ -77,7 +112,9 @@
             comSubmit.setUrl("<c:url value='/bbs/view' />");
             comSubmit.addParam("at_id", obj.parent().find("#at_id").val());
             comSubmit.submit();
-        }
+        }       
+
     </script> 
+
 </body>
 </html>

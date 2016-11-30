@@ -51,8 +51,7 @@ public class BoardController {
 	/** 게시글 목록
 	 * @param bName 게시판이름
 	 * @return	해당 게시판의 게시글 목록 화면 */
-	public String list(@RequestParam("pageNum")String pageNum, @RequestParam String bName, Model model
-						,HttpServletRequest request) throws Exception{
+	public String list(@RequestParam("pageNum")String pageNum, @RequestParam String bName, Model model,HttpServletRequest request) throws Exception{
 		/** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
 		 * - bName이 설정되어 있지 않을경우 default로 설정
@@ -64,8 +63,7 @@ public class BoardController {
 		} else if (!bName.isEmpty()) {
 			boardName = bName;
 		}
-		
-        /*
+
         if (pageNum == null) {
             pageNum = "1";
         }
@@ -74,36 +72,35 @@ public class BoardController {
         int startRow = (currentPage - 1) * pageSize + 1;//한 페이지의 시작글 번호
         int endRow = currentPage * pageSize;//한 페이지의 마지막 글번호        
         int number=0;        
-        */
+      
 		
 		int count =0;
         List<Article> article = null;
-        //BoardDBBean dbPro = BoardDBBean.getInstance();//DB연동
-        //count = dbPro.getArticleCount();//전체 글의 수 
+         
         count = boardServ.boardCount();
-        /*
+   
 	    HashMap map = new HashMap();
 	    map.put("start", startRow);
 	    map.put("end", endRow);
-	    */
+	
         if (count > 0) {
             article = boardServ.getList(bName);
         } else {
         	article = Collections.EMPTY_LIST;
         }
         
-		//number=count-(currentPage-1)*pageSize;//글목록에 표시할 글번호
+		number=count-(currentPage-1)*pageSize;//글목록에 표시할 글번호
         //해당 뷰에서 사용할 속성
-		/*
+		
 		request.setAttribute("currentPage", new Integer(currentPage));
         request.setAttribute("startRow", new Integer(startRow));
         request.setAttribute("endRow", new Integer(endRow));
         request.setAttribute("count", new Integer(count));
         request.setAttribute("pageSize", new Integer(pageSize));
 		request.setAttribute("number", new Integer(number));		
-		*/
 		
 		model.addAttribute("article", article);
+		
 		return "board/list";
 		
 	}
@@ -119,10 +116,17 @@ public class BoardController {
 		 * - 목록으로 돌아가기엔 해당 게시판이름에 해당하는 목록의 해당 글이 있는 페이지가 보여야 함
 		 */
 		
-		boardServ.readCount(at_id);
-		Article article = boardServ.getDetail(at_id);		
-		model.addAttribute("article",article);
+		Article article = boardServ.getDetail(at_id);
 		
+		boardServ.readCount(at_id);
+		
+		List<Comment> comment = null;    	
+		comment = boardServ.replyList(at_id);		
+				
+		model.addAttribute("article",article);
+		model.addAttribute("comment", comment);
+		
+		System.out.println(comment);
 		return "board/view";
 	}
 
@@ -218,5 +222,6 @@ public class BoardController {
     	
         return "redirect:/insertReply";
     	
-    }
+    }   
+    
 }

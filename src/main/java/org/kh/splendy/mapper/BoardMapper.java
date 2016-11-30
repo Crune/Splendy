@@ -95,6 +95,7 @@ public interface BoardMapper {
 		
 		public void updateReply(@ModelAttribute("comment") Comment comment) throws Exception;
 		
+		public List<Comment> replyList(int at_id) throws Exception;
 		
 		
 }

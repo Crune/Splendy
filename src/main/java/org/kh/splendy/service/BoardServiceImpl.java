@@ -102,5 +102,12 @@ public class BoardServiceImpl implements BoardService {
 		boardMap.updateReply(comment);
 		
 	}
-	
+
+	@Override
+	public List<Comment> replyList(int at_id) throws Exception {
+		List<Comment> comment = boardMap.replyList(at_id);
+		return comment;
+	}
+
+
 }

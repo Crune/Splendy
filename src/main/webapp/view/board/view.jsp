@@ -4,7 +4,9 @@
 <head>
 <%@ include file="/view/board/include/boardinclude.jspf"%>
 </head>
+<center>
 <body>
+	
 	  <form id="frm">
 	    <table class="board_view">
 	        <colgroup>
@@ -41,7 +43,8 @@
 	    <a href="#this" class="btn" id="list" >목록으로</a>
 	    <a href="#this" class="btn" id="update">수정하기</a>
 	    <a href="#this" class="btn" id="delete">삭제하기</a>
-	</form>  	   
+	</form>  	
+	  
 <p>&nbsp;</p>
 <div style="border: 1px solid; width: 600px; padding: 5px">
     <form id="form1" action="/bbs/insertReply" method="post">
@@ -50,9 +53,29 @@
         <textarea name="cm_cont" rows="3" cols="60" maxlength="500" placeholder="댓글을 달아주세요."></textarea>
         <a href="#" onclick="fn_formSubmit()">저장</a>
         
+    </form>    
+</div>
+
+<c:forEach var="row" items="${comment}" >
+    <div style="border: 1px solid gray; width: 600px; padding: 5px; margin-top: 5px;">    
+        <c:out value=""/>
+        <a href="#" onclick="fn_replyDelete('<c:out value="${row.re_id}"/>')">삭제</a>
+        <a href="#" onclick="fn_replyUpdate('<c:out value="${row.re_id}"/>')">수정</a>
+        <br/>
+        <div id="reply<c:out value="${row.re_id}"/>"><c:out value="${row.cm_cont}"/></div>
+    </div>
+</c:forEach>
+
+<div id="replyDiv" style="width: 99%; display:none">
+    <form name="form2" action="board5ReplySave" method="post">
+        <input type="hidden" name="brdno" value="<c:out value="${boardInfo.brdno}"/>"> 
+        <input type="hidden" name="reno"> 
+        <textarea name="rememo" rows="3" cols="60" maxlength="500"></textarea>
+        <a href="#" onclick="fn_replyUpdateSave()">저장</a>
+        <a href="#" onclick="fn_replyUpdateCancel()">취소</a>
     </form>
 </div>
- 
+</center> 
     <%@ include file="/view/board/include/boardinclude.jspf" %>
 	    <script type="text/javascript">
     $(document).ready(function(){
