@@ -1,4 +1,4 @@
-var temp_player = Handlebars.compile($("#temp_player").html());
+//var temp_player = Handlebars.compile($("#temp_player").html());
 
 var isReadPrevPlayer = false;
 
