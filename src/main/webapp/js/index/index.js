@@ -38,8 +38,6 @@ $(document).ready(function() {
           		}
               });
 	      });
-	       
-	       
 	    } else {
 	         FB.login(function(response) {
 	            if (response.authResponse) {
@@ -57,19 +55,7 @@ $(document).ready(function() {
 	                    })
 	                });    
 	            } else {
-	            	FB.api('/me', function(response) {
-	                	$.ajax({
-	                        url:'/user/facebook',
-	                        type:'post',
-	                        data:{email: response.id, nickname: response.name},
-	                        dataType: 'text', 
-	                        success:function(data){
-	                        	document.location.href=data;
-	                        },error:function(request,status,error){
-	                			alert("로그인에 실패했습니다. 다시 시도해주세요.");
-	                		}
-	                    })
-	                });
+	            	alert("로그인을 다시 시도해주세요.");
 	            }
 	        }, {scope:'email'});    
 	    }
