@@ -5,6 +5,7 @@ var cardChange;
 var coinChange;
 
 function onComp() {
+
     compPriv = stompClient.subscribe('/comp/private/'+uid, comp_priv);
 
     cardChange = stompClient.subscribe('/comp/card/'+rid, card_change);
@@ -13,13 +14,18 @@ function onComp() {
     send('comp/join/'+rid, '');
     comp_refresh();
     send('comp/cards', '');
+
 }
 
 function comp_refresh() {
-    console.log("Component Refreshed!");
+    console.log("Component Refreshed!" + compMap.size());
 
-    compMap.get("card");
-    compMap.get("coin");
+    // 필드 코인 설정
+    for (i = 0; i <= 6; i++) {
+        var cur = compMap.get("coin").get(0).get(i);
+        $("#container #side li:nth-child(" + i + ") span").html(cur);
+    }
+
 }
 
 function comp_priv(evt) {
@@ -28,7 +34,7 @@ function comp_priv(evt) {
     var cont = msg.cont;
 
     if (type == 'card') {
-        card_prev(data);
+        card_prev(cont);
     }
     comp_refresh();
 }
@@ -86,19 +92,27 @@ function coin_changing(coins) {
 }
 
 function getCoin(u_id, cn_id) {
-    var user = compMap.get("coin").get(u_id);
-    return user.get(cn_id);
+    var rst = 0;
+    if (!compMap.isEmpty()) {
+        if (!compMap.get("coin").isEmpty()) {
+            var user = compMap.get("coin").get(u_id);
+            user.get(cn_id);
+        }
+    }
+    return rst;
 }
 function setCoin(u_id, cn_id, amount) {
-    var user = compMap.get("coin").get(u_id);
-    if (user == "") {
-        compMap.get("coin").put(u_id, newMap());
+    console.log("코인 설정중: "+u_id +"/"+ cn_id +"/"+ amount);
+    if (!compMap.contains("coin")) {
+        compMap.put("coin", newMap());
+        console.log("코인맵 추가");
     }
-    var cur = user.get(cn_id);
-    if (cur == "") {
-        compMap.get("coin").get(u_id).remove(cn_id);
+    if (!compMap.get("coin").contains(u_id)) {
+        compMap.get("coin").put(u_id, newMap());
+        console.log("코인 사용자 추가: " + u_id);
     }
     compMap.get("coin").get(u_id).put(cn_id, amount);
+    console.log("코인 설정 완료: " + u_id + "/" + cn_id + "/" + compMap.get("coin").get(u_id).get(cn_id));
 }
 function proCoin(u_id, cn_id, amount) {
     setCoin(u_id, cn_id, getCoin(u_id, cn_id) + amount);

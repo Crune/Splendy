@@ -41,16 +41,16 @@ function room_event(evt) {
     }
     if (type == 'actor') {
     }
-
-
 }
+
+
 function room_priv(evt) {
 
     var msg = JSON.parse(evt.body);
     var type = msg.type;
     var cont = msg.cont;
 
-    if (type == 'prev') {
+    if (type == 'current') {
         room_prev(cont);
     }
     if (type == 'can_left') {
@@ -59,12 +59,17 @@ function room_priv(evt) {
     }
 }
 
-function room_prev(rooms) {
-
+function room_prev(room) {
+    len = room.coins.length;
+    for (i = 0; i < len; i++) {
+        var cur_coin = room.coins[i];
+        setCoin(cur_coin.u_id, cur_coin.cn_id, cur_coin.cn_count);
+    }
 
     if (!isReadPrevRoom) {
         isReadPrevRoom = true;
     }
+    comp_refresh();
 }
 
 function room_remove(roomId) {

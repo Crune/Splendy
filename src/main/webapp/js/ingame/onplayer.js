@@ -7,6 +7,7 @@ var playerPriv;
 var playerJoin;
 var playerLeft;
 
+var playerMap = newMap();
 var playerList = new Array();
 
 function onPlayer() {
@@ -25,55 +26,61 @@ function player_init() {
     
 }
 
+function player_refresh(){
+	$(".player ul").detach();
+	for(i=0; i<playerList.length; i++){
+		$(".player"+(i+1)).html(temp_player(playerMap.get(playerList[i])));
+	}
+	
+}
+
+
 function player_priv(evt) {
     var data = JSON.parse(evt.body);
-    $(".player ul").detach();
+    
     if (data.type == 'prev') {
         var pl = data.cont;
         console.log(pl);
         plLen = pl.length;
-        playerList.push(pl);
+        
         for (i = 0; i < plLen; i++) {
-            var curPl = pl[i];
-			$(".player"+(i+1)).html(temp_player(curPl));			
+        	var curPl = pl[i];
+        	playerList.push(curPl.uid);
+        	playerMap.put(curPl.uid, curPl);        	
         }
+        player_refresh();
     }
 }
 
 function player_join(evt) {
-    var pl = JSON.parse(evt.body);
-    $(".player ul").detach();
-    playerList.push(pl);
-    console.log(playerList);
+    var pl = JSON.parse(evt.body);      
     for(i = 0; i < playerList.length; i++){
     	if(playerList[i].uid === pl.uid){
     		return;
     	}	
     }
-	for(i = 0; i < playerList.length; i++){
-		$(".player"+(i+1)).html(temp_player(playerList(i)));
-	}
+    playerMap.put(pl.uid, pl);
+    playerList.push(pl.uid);
+    
 	input_chat(new Chat('시스템', pl.nick+'님이 접속하였습니다.','','sys'));
+	player_refresh();
 }
 
 function player_left(evt) {
 	var tempArr = new Array();
     var pl = JSON.parse(evt.body);
-	/* 적절하게 다 뗄것
-	 $(".player").detach();
-	 */
+    
     for(i = 0; i < playerList.length; i++){
-    	if(pl.uid != playerList[i].uid){
+    	if( (pl.uid != playerList[i].uid) && (pl.room != 0) ){
     		console.log(playerList[i]);
     		tempArr.push(playerList[i]);
+    		alert('t');
     	}
     }
     playerList = tempArr;
     $(".player ul").detach();
     console.log(playerList);
-    for(i = 0; i < playerList.length; i++){
-    	$(".player"+(i+1)).html(temp_player(playerList(i)));
-    }
+    player_refresh();
     
     
 

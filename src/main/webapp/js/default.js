@@ -62,13 +62,28 @@ function newMap() {
         var key = map.getKey(id);
         if(map.value[key]) {
             return map.value[key];
+        } else {
+            return this;
         }
-        return null;
     };
     map.remove = function(id) {
         var key = map.getKey(id);
         if(map.contains(id)){
             map.value[key] = undefined;
+        }
+    };
+    map.size = function() {
+        if (map.value) {
+            return map.value.length;
+        } else {
+            return 0;
+        }
+    };
+    map.isEmpty = function() {
+        if (map.value) {
+            return !(map.value.length > 0);
+        } else {
+            return true;
         }
     };
 
