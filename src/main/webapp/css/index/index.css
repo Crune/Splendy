@@ -46,22 +46,32 @@
 
 #btn_facebook {
 	cursor:pointer;
-	width: 65px;
-	height:65px;
+	width: 40px;
+	height:40px;
 	float:left;
 	margin-top: 20px;
-	margin-right: 40px;
+	margin-right: 37px;
+	margin-left: 2px;
 }
 
 #btn_google {
 	cursor:pointer;
-	width: 65px;
-	height:65px;
-	margin-top: 20px;
-	margin-right: 40px;
+	width: 40px;
+	height:40px;
 	float:left;
+	margin-top: 20px;
+	margin-right: 37px;
 }
 
 #naver_id_login {
 	margin-top: 20px;
+}
+
+#btn_kakao {
+	cursor:pointer;
+	width: 40px;
+	height:40px;
+	float:left;
+	margin-top: 20px;
+	margin-right: 37px;
 }

@@ -76,7 +76,6 @@ window.onload = function(){
 			document.location.href='/user/logout';
 		}
 		if (email.startsWith('G')) {
-			alert("구글 로그아웃");
 			googleLogout();
 		}
 		if ((!email.startsWith('F') && !email.startsWith('G'))){
@@ -120,13 +119,12 @@ function facebookLogout(){
         if (response.status === 'connected') {
             FB.logout(function(response) {
             });
-        	alert("페이스북 로그아웃");
         };
     });
 }
 
 function googleLogout(){
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost/user/logout";
+	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://spd.cu.cc/user/logout";
 }
 
 function modifyRequest() {
