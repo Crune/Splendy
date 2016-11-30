@@ -60,6 +60,8 @@ function room_priv(evt) {
 }
 
 function room_prev(rooms) {
+
+
     if (!isReadPrevRoom) {
         isReadPrevRoom = true;
     }

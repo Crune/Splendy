@@ -23,6 +23,11 @@
 		<div class="chat_msg"><span class="nick_{{ type }}">{{ nick }}:</span> {{ cont }} <span class="msg_time">- {{ time }}</span></div>
 	</script>
 	<script type='text/javascript'>
+		function closeIt() {
+			return "페이지를 벗어날 경우 탈주 처리됩니다.";
+		}
+		window.onbeforeunload = closeIt;
+
         var uid = ${sessionScope.user.id};
         var nick = "${sessionScope.user.nickname}";
         var email = "${sessionScope.user.email}";
@@ -31,7 +36,7 @@
 	
 	<script id="temp_player" type="text/x-handlebars-template">
             <ul class="aTop">
-				<li class="playerIcon"><img src="{{ img }}" alt="player icon"></li>
+				<li class="playerIcon"><img src="{{ icon }}" alt="player icon"></li>
 				<li class="playerName">{{ nick }}</li>
 				<li class="playerTime"><span>11:23</span></li>
 				<li class="playerScore">15</li>
@@ -66,110 +71,18 @@
 
 		<aside>
 		<div class="player player1">
-		<div>
-			 <ul class="aTop">
-				<li class="playerIcon"><img src="/img/top_icon1.png" alt="player icon"></li>
-				<li class="playerName">Jonaliza</li>
-				<li class="playerTime"><span>11:23</span></li>
-				<li class="playerScore">15</li>
-			</ul>
-			<ul class="aMid clearFix">
-				<li><img src="/img/blue.png" alt="블루보석"><span>2</span></li>
-				<li><img src="/img/red.png" alt="빨간보석"><span>1</span></li>
-				<li><img src="/img/yellow.png" alt="노란보석"><span>3</span></li>
-				<li><img src="/img/white.png" alt="하얀보석"><span>4</span></li>
-				<li><img src="/img/purple.png" alt="보라보석"><span>2</span></li>
-				<li><img src="/img/green.png" alt="초록보석"><span>5</span></li>
-			</ul>
-
-			<ul class="aBottom clearFix">
-				<li><img src="/img/cards/lev1_Black_B4.png" alt="플레이어카드1"><span>5</span></li>
-				<li><img src="/img/cards/lev1_Black_G1R3K1.png" alt="플레이어카드2"><span>4</span></li>
-				<li><img src="/img/cards/lev1_Black_G2R1.png" alt="플레이어카드3"><span>3</span></li>
-				<li><img src="/img/cards/lev1_Black_W1B1G1R1.png" alt="플레이어카드4"><span>2</span></li>
-				<li><img src="/img/cards/lev1_Black_W2G2.png" alt="플레이어카드5"><span>1</span></li>
-			</ul> 
+			 
 		</div>
-</div>
 		<div class="player player2">
-			<!-- <ul class="aTop">
-				<li class="playerIcon"><img src="/img/top_icon2.png"
-					alt="player icon"></li>
-				<li class="playerName">Jonaliza</li>
-				<li class="playerTime"><span>11:23</span></li>
-				<li class="playerScore"><a href="">15</a></li>
-			</ul>
-
-			<ul class="aMid clearFix">
-				<li><img src="/img/blue.png" alt="블루보석"><span>2</span></li>
-				<li><img src="/img/red.png" alt="빨간보석"><span>1</span></li>
-				<li><img src="/img/yellow.png" alt="노란보석"><span>3</span></li>
-				<li><img src="/img/white.png" alt="하얀보석"><span>4</span></li>
-				<li><img src="/img/purple.png" alt="보라보석"><span>2</span></li>
-				<li><img src="/img/green.png" alt="초록보석"><span>5</span></li>
-			</ul>
-
-			<ul class="aBottom clearFix">
-				<li><img src="/img/cards/lev1_Black_B4.png" alt="플레이어카드1"><span>5</span></li>
-				<li><img src="/img/cards/lev1_Black_G1R3K1.png" alt="플레이어카드2"><span>4</span></li>
-				<li><img src="/img/cards/lev1_Black_G2R1.png" alt="플레이어카드3"><span>3</span></li>
-				<li><img src="/img/cards/lev1_Black_W1B1G1R1.png" alt="플레이어카드4"><span>2</span></li>
-				<li><img src="/img/cards/lev1_Black_W2G2.png" alt="플레이어카드5"><span>1</span></li>
-			</ul> -->
+			
 		</div>
 
 		<div class="player player3">
-			<!-- <ul class="aTop">
-				<li class="playerIcon"><img src="/img/top_icon3.png"
-					alt="player icon"></li>
-				<li class="playerName">Jonaliza</li>
-				<li class="playerTime"><span>11:23</span></li>
-				<li class="playerScore"><a href="">15</a></li>
-			</ul>
-
-			<ul class="aMid clearFix">
-				<li><img src="/img/blue.png" alt="블루보석"><span>2</span></li>
-				<li><img src="/img/red.png" alt="빨간보석"><span>1</span></li>
-				<li><img src="/img/yellow.png" alt="노란보석"><span>3</span></li>
-				<li><img src="/img/white.png" alt="하얀보석"><span>4</span></li>
-				<li><img src="/img/purple.png" alt="보라보석"><span>2</span></li>
-				<li><img src="/img/green.png" alt="초록보석"><span>5</span></li>
-			</ul>
-
-			<ul class="aBottom clearFix">
-				<li><img src="/img/cards/lev1_Black_B4.png" alt="플레이어카드1"><span>5</span></li>
-				<li><img src="/img/cards/lev1_Black_G1R3K1.png" alt="플레이어카드2"><span>4</span></li>
-				<li><img src="/img/cards/lev1_Black_G2R1.png" alt="플레이어카드3"><span>3</span></li>
-				<li><img src="/img/cards/lev1_Black_W1B1G1R1.png" alt="플레이어카드4"><span>2</span></li>
-				<li><img src="/img/cards/lev1_Black_W2G2.png" alt="플레이어카드5"><span>1</span></li>
-			</ul> -->
+			
 		</div>
 
 		<div class="player player4">
-			<!-- <ul class="aTop">
-				<li class="playerIcon"><img src="/img/top_icon4.png"
-					alt="player icon"></li>
-				<li class="playerName">Jonaliza</li>
-				<li class="playerTime"><span>11:23</span></li>
-				<li class="playerScore"><a href="">15</a></li>
-			</ul>
-
-			<ul class="aMid clearFix">
-				<li><img src="/img/blue.png" alt="블루보석"><span>2</span></li>
-				<li><img src="/img/red.png" alt="빨간보석"><span>1</span></li>
-				<li><img src="/img/yellow.png" alt="노란보석"><span>3</span></li>
-				<li><img src="/img/white.png" alt="하얀보석"><span>4</span></li>
-				<li><img src="/img/purple.png" alt="보라보석"><span>2</span></li>
-				<li><img src="/img/green.png" alt="초록보석"><span>5</span></li>
-			</ul>
-
-			<ul class="aBottom clearFix">
-				<li><img src="/img/cards/lev1_Black_B4.png" alt="플레이어카드1"><span>5</span></li>
-				<li><img src="/img/cards/lev1_Black_G1R3K1.png" alt="플레이어카드2"><span>4</span></li>
-				<li><img src="/img/cards/lev1_Black_G2R1.png" alt="플레이어카드3"><span>3</span></li>
-				<li><img src="/img/cards/lev1_Black_W1B1G1R1.png" alt="플레이어카드4"><span>2</span></li>
-				<li><img src="/img/cards/lev1_Black_W2G2.png" alt="플레이어카드5"><span>1</span></li>
-			</ul> -->
+			
 		</div>
 		</aside>
 		<section id="container" class="clearFix">
