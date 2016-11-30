@@ -139,8 +139,6 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody void saveProfile(@ModelAttribute("profMF") UserProfile prof) throws Exception {
 		log.info("admin modify user profile : "+prof.getUserId());
-		System.out.println(prof.getInfo());
-		System.out.println(prof.getUserId());
 		profServ.adminMF(prof);
 	}
 	
