@@ -5,14 +5,14 @@ var cardChange;
 var coinChange;
 
 function onComp() {
-    compPriv = stompClient.subscribe('/comp/private/'+uid, comp_priv);
+    /*compPriv = stompClient.subscribe('/comp/private/'+uid, comp_priv);
 
     cardChange = stompClient.subscribe('/comp/card/'+rid, card_change);
     coinChange = stompClient.subscribe('/comp/coin/'+rid, coin_change);
 
     send('comp/join/'+rid, '');
     comp_refresh();
-    send('comp/cards', '');
+    send('comp/cards', '');*/
 }
 
 function comp_refresh() {
