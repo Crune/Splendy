@@ -23,6 +23,8 @@ function setConnected(connected) {
 
 
 $(document).ready(function() {
+    global:!1
+
 	// 입력 받지 않음
 	setControll(false);
 

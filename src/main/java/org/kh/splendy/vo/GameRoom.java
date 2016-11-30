@@ -8,11 +8,11 @@ import lombok.Data;
 import org.kh.splendy.config.assist.Utils;
 import org.kh.splendy.service.SocketService;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 @Data
 public class GameRoom {
@@ -46,14 +46,41 @@ public class GameRoom {
 		return gson.toJson(this);
 	}
 
+    public List<WSPlayer> getPls() {
+        return getPls(false);
+    }
+	public List<WSPlayer> getPls(boolean isChanging) {
+        List<WSPlayer> mirror_pls = null;
+        if (isChanging) {
+            mirror_pls = pls;
+        } else {
+            try {
+                mirror_pls = (List<WSPlayer>) Utils.copy(pls);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return mirror_pls;
+    }
+
+	public boolean isInPlayer(int uid) {
+        boolean rst = false;
+        for (WSPlayer cur : getPls()) {
+            if (cur.getUid() == uid) {
+                rst = true;
+            }
+        }
+        return rst;
+    }
+
 	public boolean isPlaying() {
 		return (turn > 0 && isHalted == false);
 	}
 
 	public boolean isMyTurn(int uid) {
 		boolean rst = false;
-		for (int i=0; i<pls.size(); i++) {
-		    if (uid == pls.get(i).getUid()) {
+		for (int i=0; i<getPls().size(); i++) {
+		    if (uid == getPls().get(i).getUid()) {
                 rst = (currentPl == i);
             }
 		}
@@ -62,19 +89,19 @@ public class GameRoom {
 	public void nextTurn(SocketService sock) {
         if (turn >= 0) {
             this.turn += 1;
-            this.currentPl = pls.get(0).getUid();
+            this.currentPl = getPls().get(0).getUid();
         }
     }
 
     public int nextActor(SocketService sock) {
         boolean isValid = false;
         int myCursor = 0;
-        for (int i = 0; i < pls.size(); i++) {
+        for (int i = 0; i < getPls().size(); i++) {
             if (myCursor != 0) {
                 this.currentPl = i;
                 isValid = true;
             }
-            if (currentPl == pls.get(i).getUid()) {
+            if (currentPl == getPls().get(i).getUid()) {
                 myCursor = i;
             }
         }
@@ -98,32 +125,38 @@ public class GameRoom {
 
 	public boolean reqJoin(WSPlayer reqUser, SocketService sock) {
 	    boolean rst = false;
-        for (WSPlayer curPl : pls) {
-            if (curPl.getUid() == reqUser.getUid()) {
-                rst = true;/*
+        if (getPls() != null) {
+            for (WSPlayer curPl : getPls()) {
+                if (curPl.getUid() == reqUser.getUid()) {
+                    rst = true;
+                /*
                 this.isHalted = false;
-                sock.sendRoom(room, "resume", reqUser.getUid());*/
+                sock.sendRoom(room, "resume", reqUser.getUid());
+                */
+                }
             }
-        }
-	    if (limit > pls.size()) {
-            pls.add(reqUser);
-            coins.addAll(getNewCoins(reqUser.getUid()));
-	        rst = true;
+            if (!rst && limit > getPls().size()) {
+                getPls(true).add(reqUser);
+                coins.addAll(getNewCoins(reqUser.getUid()));
+                rst = true;
+            }
         }
         return rst;
     }
 
     public boolean reqLeft(int uid) {
         boolean isIn = false;
-        for (WSPlayer curPl : pls) {
-            if (curPl.getUid() == uid) {
-                pls.remove(pls.indexOf(curPl));
-                isIn = true;
+        if (getPls() != null) {
+            for (WSPlayer curPl : getPls()) {
+                if (curPl.getUid() == uid) {
+                    getPls(true).remove(getPls().indexOf(curPl));
+                    isIn = true;
+                }
             }
-        }
-        for (PLCoin coin : coins) {
-            if (coin.getU_id() == uid) {
-                coins.remove(coins.indexOf(coin));
+            for (PLCoin coin : coins) {
+                if (coin.getU_id() == uid) {
+                    coins.remove(coins.indexOf(coin));
+                }
             }
         }
         return isIn;

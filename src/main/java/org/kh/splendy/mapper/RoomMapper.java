@@ -68,7 +68,7 @@ public interface RoomMapper {
 	public void setHostId(@Param("id") int id, @Param("hostId") int value);
 
     @Update("update "+TABLE+" set RM_START=#{value} where "+KEY+"=#{id} ")
-    public void setStart(@Param("value") Date value);
+    public void setStart(@Param("id") int id, @Param("value") Date value);
 
 	// Another
 	@ResultMap("roomResult")

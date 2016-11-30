@@ -132,7 +132,7 @@ window.onload = function(){
 
 		$("input#exampleInputPassword1").keypress(function(e) {
             if (e.which == 13) {
-                loginRequest();
+                login_check();
             }
         });
 		

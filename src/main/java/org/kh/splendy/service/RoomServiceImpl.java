@@ -101,10 +101,13 @@ public class RoomServiceImpl implements RoomService {
             List<Integer> notEmpty = roomMap.getNotEmptyRoom();
             if (!notEmpty.contains(rid)) {
                 sock.send("/room/remove", rid);
-                if (roomMap.read(rid).getStart() == null) {
-                    roomMap.delete(rid);
-                } else {
-                    roomMap.close(rid);
+                Room temp = roomMap.read(rid);
+                if (temp != null) {
+                    if (temp.getStart() == null) {
+                        roomMap.delete(rid);
+                    } else {
+                        roomMap.close(rid);
+                    }
                 }
             }
         }

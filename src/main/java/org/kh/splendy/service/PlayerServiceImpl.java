@@ -6,6 +6,7 @@ import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,8 +73,24 @@ public class PlayerServiceImpl implements PlayerService {
         WSPlayer pl = playerMap.getWSPlayer(uid);
         pl.setRoom(rid);
         sock.removeConnectors(pl);
-        left(uid, rid);
+        try {
+            if (!checkConnected(uid)) {
+                left(uid, rid);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         log.info("웹소켓 접속해제: user" + uid);
+    }
+
+    @Async
+    public boolean checkConnected(int uid) throws InterruptedException {
+        Thread.sleep(1000 * 30);
+        if (sock.getConnectors().containsKey(uid)) {
+            return true;
+        } else  {
+            return false;
+        }
     }
 
     @Override @Transactional
@@ -162,6 +179,9 @@ public class PlayerServiceImpl implements PlayerService {
             playerMap.setIsIn(uid, rid, 0);
 
             if (rid > 0) {
+                // 게임 내부 퇴장 처리
+                game.leftPro(rid, uid);
+
                 playerMap.setIsIn(uid, 0, 1);
 
                 // 계정 퇴장 처리
@@ -171,9 +191,6 @@ public class PlayerServiceImpl implements PlayerService {
                     roomServ.deleteRoom(rid);
                     sock.send("/room/remove", rid);
                 }
-
-                // 게임 내부 퇴장 처리
-                game.leftPro(rid, uid);
 
                 sock.send(uid, "room", "can_left", rid);
             }

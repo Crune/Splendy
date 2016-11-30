@@ -76,11 +76,7 @@ public class GameServiceImpl implements GameService {
     public boolean isInPlayer(int rid, int uid) {
         boolean rst = false;
         if (getRoom(rid) != null) {
-            for (WSPlayer pls : getRoom(rid).getPls()) {
-                if (pls.getUid() == uid) {
-                    rst = true;
-                }
-            }
+            rst = getRoom(rid).isInPlayer(uid);
         }
         return rst;
     }
@@ -136,7 +132,7 @@ public class GameServiceImpl implements GameService {
     private void startingGame(int rid) {
         int innerPlsCount = rooms.get(rid).getPls().size();
         if (innerPlsCount == rooms.get(rid).getLimit()) {
-            roomMap.setStart(new Date(System.currentTimeMillis()));
+            roomMap.setStart(rid, new Date(System.currentTimeMillis()));
             // 게임 시작!
             sock.sendRoom(rid, "start", "게임 시작!");
             int nextActor = rooms.get(rid).nextActor(sock);

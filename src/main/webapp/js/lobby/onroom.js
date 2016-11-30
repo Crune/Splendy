@@ -49,21 +49,24 @@ function room_priv(evt) {
 
 function room_prev(rooms) {
     $(".empty_room").detach();
-    
+
     roomLen = rooms.length;
     for (i = 0; i < roomLen; i++) {
         var curRoom = rooms[i];
         $("#roomlist").append(temp_room(curRoom));
         if (curRoom.password != 'true') {
-            $('#ispw_'+curRoom.id).detach();
+            $('#ispw_' + curRoom.id).detach();
         }
     }
-    send('player/list');
     
     $("#roomlist").append(temp_room_empty());
     
     roomMouseEvt();
-    
+
+    if (!isReadPrevRoom) {
+        send('player/list');
+        isReadPrevRoom = true;
+    }
 }
 
 function room_accept(roomId) {
