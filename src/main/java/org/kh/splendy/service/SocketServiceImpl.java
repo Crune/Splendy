@@ -3,9 +3,9 @@ package org.kh.splendy.service;
 import org.kh.splendy.config.assist.Utils;
 import org.kh.splendy.mapper.PlayerMapper;
 import org.kh.splendy.mapper.UserInnerMapper;
-import org.kh.splendy.vo.Player;
 import org.kh.splendy.vo.UserCore;
 import org.kh.splendy.vo.WSMsg;
+import org.kh.splendy.vo.WSPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +14,13 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
-/**
- * Created by runec on 2016-11-27.
- */
 @Service
+@EnableTransactionManagement
 public class SocketServiceImpl implements  SocketService {
 
     @Autowired private SimpMessagingTemplate simpT;
@@ -37,45 +30,29 @@ public class SocketServiceImpl implements  SocketService {
 
     private Logger log = LoggerFactory.getLogger(SocketServiceImpl.class);
 
-    private static final Map<Integer, UserCore> connectors = new HashMap<>();
+    private static final Map<Integer, WSPlayer> connectors = new HashMap<>();
 
     @Override
-    public void putConnectors(UserCore user) {
-        if (user.getId() > 0 && connectors.get(user.getId()) == null) {
-            connectors.put(user.getId(), user);
-            innerMap.setConnect(user.getId(), 1);
+    public void putConnectors(WSPlayer pl) {
+        if (pl.getUid() > 0 && connectors.get(pl.getUid()) == null) {
+            innerMap.setConnect(pl.getUid(), 1);
+            connectors.put(pl.getUid(), pl);
+            send("/player/join/" + pl.getRoom(), pl);
         }
     }
 
     @Override
-    public void removeConnectors(UserCore user) {
-        if (user.getId() > 0 && connectors.get(user.getId()) != null) {
-            connectors.remove(user.getId());
-            innerMap.setConnect(user.getId(), 0);
+    public void removeConnectors(WSPlayer pl) {
+        if (pl.getUid() > 0 && connectors.get(pl.getUid()) != null) {
+            connectors.remove(pl.getUid());
+            innerMap.setConnect(pl.getUid(), 0);
+            send("/player/left", pl);
         }
     }
 
     @Override
-    public Map<Integer, UserCore> getConnectors() {
+    public Map<Integer, WSPlayer> getConnectors() {
         return connectors;
-    }
-
-    /**
-     * 동작설명
-     * - 플레이어 테이블에 해당 항목이 없을 경우 생성
-     * - 해당 플레이어 접속정보 설정
-     */
-    @Override
-    public void initPlayer(int uid, int rid) {
-        if (uid > 0 && rid >= 0) {
-            Player pl = playerMap.read(uid, rid);
-            if (pl == null) {
-                pl = new Player();
-                pl.setId(uid);
-                pl.setRoom(rid);
-                playerMap.create(pl);
-            }
-        }
     }
 
     @Override
@@ -104,7 +81,7 @@ public class SocketServiceImpl implements  SocketService {
                 log.info("send_msg: "+type);
             } else {
                 simpT.convertAndSend(type , obj);
-                log.info("send_msg: "+type+"/"+obj);
+                log.info("send_msg: "+type+" : "+obj);
             }
         }
     }

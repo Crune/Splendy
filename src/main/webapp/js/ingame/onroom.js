@@ -1,40 +1,74 @@
-/**
- * 게임방 초기 정보가 전달될 경우 수행할 메서드  
- */
+var isReadPrevRoom = false;
 
-function onRoom(type, room) {
-	if (type=='init') {
-		console.log("Room initialized!");
-		console.log("Room: "+room);
-		
-		// TODO 게임이 진행중일 경우
-		if (room.turn > 0) {
-			
-		} else {
-			
-		}
-		// TODO 카드 세팅
-		
-		// TODO 코인 세팅
-		
-		// TODO 플레이어 세팅
-		
-		// 사용 가능하게 설정
-		setControll(true);
-		
-	} else {
-		if (type=='remove' && room.id == rid) {
-			isPageMove = true;
-			location.replace("/lobby/");
-		}
-		if (type=='halt' && room.id == rid) {
-			// TODO 누군가 탈주 하였을 경우 5분 대기
-		}
-		if (type=='resume' && room.id == rid) {
-			// TODO 누군가 복귀 하였을 경우 재 실행
-		}
-		if (type=='end' && room.id == rid) {
-			// TODO 탈주자는 복귀하지 않았다...
-		}
-	}
+var roomPriv;
+var roomRemove;
+var roomEvent;
+
+function onRoom() {
+    roomPriv = stompClient.subscribe('/room/private/'+uid, room_priv);
+
+    roomEvent = stompClient.subscribe('/room/event/'+rid, room_event);
+    roomRemove = stompClient.subscribe('/room/remove', room_remove);
+
+    room_init();
+
+    send('room/prev', rid);
+}
+
+$(document).ready(function() {
+
+});
+
+function room_init() {
+    console.log("Room initialized!")
+}
+
+function room_event(evt) {
+
+    var msg = JSON.parse(evt.body);
+    var type = msg.type;
+    var cont = msg.cont;
+
+    if (type == 'start') {
+    }
+    if (type == 'halt') {
+    }
+    if (type == 'resume') {
+    }
+    if (type == 'end') {
+    }
+    if (type == 'score') {
+    }
+    if (type == 'actor') {
+    }
+
+
+}
+function room_priv(evt) {
+
+    var msg = JSON.parse(evt.body);
+    var type = msg.type;
+    var cont = msg.cont;
+
+    if (type == 'prev') {
+        room_prev(cont);
+    }
+    if (type == 'can_left') {
+    	isPageMove = true;
+    	location.replace("/lobby/");
+    }
+}
+
+function room_prev(rooms) {
+    if (!isReadPrevRoom) {
+        isReadPrevRoom = true;
+    }
+}
+
+function room_remove(roomId) {
+    roomId = roomId.body;
+    if (rid == roomId) {
+        isPageMove = true;
+        location.replace("/lobby/");
+    }
 }

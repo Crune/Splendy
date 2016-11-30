@@ -49,21 +49,24 @@ function room_priv(evt) {
 
 function room_prev(rooms) {
     $(".empty_room").detach();
-    
+
     roomLen = rooms.length;
     for (i = 0; i < roomLen; i++) {
         var curRoom = rooms[i];
         $("#roomlist").append(temp_room(curRoom));
         if (curRoom.password != 'true') {
-            $('#ispw_'+curRoom.id).detach();
+            $('#ispw_' + curRoom.id).detach();
         }
     }
-    send('player/list');
     
     $("#roomlist").append(temp_room_empty());
     
     roomMouseEvt();
-    
+
+    if (!isReadPrevRoom) {
+        send('player/list');
+        isReadPrevRoom = true;
+    }
 }
 
 function room_accept(roomId) {
@@ -86,7 +89,7 @@ function room_new(evt) {
 }
 
 function room_remove(roomId) {
-    $("#room_"+roomId).detach();
+    $("#room_"+roomId.body).detach();
 }
 
 function roomMouseEvt() {
@@ -123,7 +126,8 @@ function roomMouseEvt() {
             $("div#createRoom").show();
             $(".empty_room").hide();
             $("#roomlist").css('height','calc(100% - 366px)');
-        } else if ($('#ispw_'+rid)) {
+        } else if ($('#ispw_'+rid).css('display') == 'none') {
+            $('.lobby_room .row:last-child').hide();
             $('#ispw_'+rid).show();
         } else {
             joinRoom(rid, '');

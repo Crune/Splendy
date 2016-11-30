@@ -23,6 +23,8 @@ function setConnected(connected) {
 
 
 $(document).ready(function() {
+    global:!1
+
 	// 입력 받지 않음
 	setControll(false);
 
@@ -30,7 +32,7 @@ $(document).ready(function() {
     connect();	// in sock.js
 	
 	$(".backSpace").click(function(){
-		send("/player/left", rid);
+		send("player/left", rid);
 	});
 });
 

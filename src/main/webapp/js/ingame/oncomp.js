@@ -1,20 +1,18 @@
-/**
- * 
- */
+//var temp_player = Handlebars.compile($("#temp_player").html());
 
-function onComp(type, comp) {
-	if (type =='init') {
-		console.log("Components initialized!");
-	} else {
-		if (type =='cards') {
-			compLen = comp.length;
-			for (i = 0; i < compLen; i++) {
-				var curComp = comp[i];
-				// TODO 카드 목록이 들어올 경우
-				
-			}
-			// 완료 후 방 기본정보 요청
-			wssend('reqRoom', rid);
-		}
-	}
+var isReadPrevPlayer = false;
+
+var playerPriv;
+var playerJoin;
+var playerLeft;
+
+function onComp() {
+    playerPriv = stompClient.subscribe('/player/private/'+uid, player_priv);
+
+    playerJoin = stompClient.subscribe('/player/join/'+rid, player_join);
+    playerLeft = stompClient.subscribe('/player/left', player_left);
+
+    send('player/join/'+rid, '');
+    player_init();
+    send('player/prev/'+rid, '');
 }

@@ -7,8 +7,6 @@ var email = "${user.email}";
 var login_result = "${login_result}";
 var credent = "${credent}";*/
 
-var msg = "${msg}";
-
 $(document).ready(function() {
 	
 	if(msg !== "") {
@@ -134,7 +132,7 @@ window.onload = function(){
 
 		$("input#exampleInputPassword1").keypress(function(e) {
             if (e.which == 13) {
-                loginRequest();
+                login_check();
             }
         });
 		

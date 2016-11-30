@@ -8,11 +8,11 @@ import lombok.Data;
 import org.kh.splendy.config.assist.Utils;
 import org.kh.splendy.service.SocketService;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 @Data
 public class GameRoom {
@@ -38,21 +38,49 @@ public class GameRoom {
 	@SerializedName("currentPl") @Expose
 	private int currentPl = 0;
 
-
+    @SerializedName("isHalted") @Expose
+    private boolean isHalted = false;
 
     public String getJson() {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		return gson.toJson(this);
 	}
 
+    public List<WSPlayer> getPls() {
+        return getPls(false);
+    }
+	public List<WSPlayer> getPls(boolean isChanging) {
+        List<WSPlayer> mirror_pls = null;
+        if (isChanging) {
+            mirror_pls = pls;
+        } else {
+            try {
+                mirror_pls = (List<WSPlayer>) Utils.copy(pls);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return mirror_pls;
+    }
+
+	public boolean isInPlayer(int uid) {
+        boolean rst = false;
+        for (WSPlayer cur : getPls()) {
+            if (cur.getUid() == uid) {
+                rst = true;
+            }
+        }
+        return rst;
+    }
+
 	public boolean isPlaying() {
-		return (turn > 0);
+		return (turn > 0 && isHalted == false);
 	}
 
 	public boolean isMyTurn(int uid) {
 		boolean rst = false;
-		for (int i=0; i<pls.size(); i++) {
-		    if (uid == pls.get(i).getUid()) {
+		for (int i=0; i<getPls().size(); i++) {
+		    if (uid == getPls().get(i).getUid()) {
                 rst = (currentPl == i);
             }
 		}
@@ -61,19 +89,19 @@ public class GameRoom {
 	public void nextTurn(SocketService sock) {
         if (turn >= 0) {
             this.turn += 1;
-            this.currentPl = pls.get(0).getUid();
+            this.currentPl = getPls().get(0).getUid();
         }
     }
 
     public int nextActor(SocketService sock) {
         boolean isValid = false;
         int myCursor = 0;
-        for (int i = 0; i < pls.size(); i++) {
+        for (int i = 0; i < getPls().size(); i++) {
             if (myCursor != 0) {
                 this.currentPl = i;
                 isValid = true;
             }
-            if (currentPl == pls.get(i).getUid()) {
+            if (currentPl == getPls().get(i).getUid()) {
                 myCursor = i;
             }
         }
@@ -83,32 +111,52 @@ public class GameRoom {
         return this.currentPl;
     }
 
-	public boolean reqJoin(WSPlayer reqUser) {
+    private List<PLCoin> getNewCoins(int uid) {
+        List<PLCoin> coins = new ArrayList<PLCoin>();
+        for (int i=1; i<=6; i++) {
+            PLCoin rst = new PLCoin();
+            rst.setRm_id(room);
+            rst.setCn_id(i);
+            rst.setU_id(uid);
+            rst.setCn_count(0);
+        }
+        return coins;
+    }
+
+	public boolean reqJoin(WSPlayer reqUser, SocketService sock) {
 	    boolean rst = false;
-	    if (limit > pls.size()) {
-            List<Integer> playerList = new ArrayList<>();
-            for (WSPlayer curPl : pls) {
-                playerList.add(curPl.getUid());
+        if (getPls() != null) {
+            for (WSPlayer curPl : getPls()) {
+                if (curPl.getUid() == reqUser.getUid()) {
+                    rst = true;
+                /*
+                this.isHalted = false;
+                sock.sendRoom(room, "resume", reqUser.getUid());
+                */
+                }
             }
-	        if (!playerList.contains(reqUser.getUid())) {
-                pls.add(reqUser);
+            if (!rst && limit > getPls().size()) {
+                getPls(true).add(reqUser);
+                coins.addAll(getNewCoins(reqUser.getUid()));
+                rst = true;
             }
-	        rst = true;
         }
         return rst;
     }
 
     public boolean reqLeft(int uid) {
         boolean isIn = false;
-        for (WSPlayer curPl : pls) {
-            if (curPl.getUid() == uid) {
-                pls.remove(pls.indexOf(curPl));
-                isIn = true;
+        if (getPls() != null) {
+            for (WSPlayer curPl : getPls()) {
+                if (curPl.getUid() == uid) {
+                    getPls(true).remove(getPls().indexOf(curPl));
+                    isIn = true;
+                }
             }
-        }
-        for (PLCoin coin : coins) {
-            if (coin.getU_id() == uid) {
-                coins.remove(coins.indexOf(coin));
+            for (PLCoin coin : coins) {
+                if (coin.getU_id() == uid) {
+                    coins.remove(coins.indexOf(coin));
+                }
             }
         }
         return isIn;
@@ -233,5 +281,9 @@ public class GameRoom {
             }
         }
         return rst;
+    }
+
+    public void halt() {
+        this.isHalted = true;
     }
 }

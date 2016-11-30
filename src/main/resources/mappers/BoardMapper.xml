@@ -49,7 +49,7 @@
 		)
 	]]>		
 	</insert>
-		
+			
 	<update id="readCount" parameterType="org.kh.splendy.vo.Article">
     <![CDATA[
         UPDATE KH_ARTICLE 
@@ -78,17 +78,18 @@
 	</delete>	
 	 -->
 	 <insert id="insertReply" parameterType="org.kh.splendy.vo.Comment" >
-    	<selectKey resultType="String" keyProperty="re_id" order="BEFORE">
-        SELECT IFNULL(MAX(RE_ID),0)+1 FROM KH_COMMENT
+    	<selectKey resultType="int" keyProperty="re_id" order="BEFORE">
+        SELECT NVL(MAX(RE_ID),0)+1 FROM KH_COMMENT
     	</selectKey>
         
-    	INSERT INTO KH_COMMENT(AT_ID, RE_ID, U_ID, CM_CONT, CM_PASS)
-    	VALUES (#{at_id}, #{re_id}, #{u_id}, #{cm_cont}, #{cm_pass})
+    	INSERT INTO KH_COMMENT(AT_ID, RE_ID, BD_ID, U_ID, CM_CONT, CM_PASS)
+    	VALUES (#{at_id, jdbcType=INTEGER}, #{re_id, jdbcType=INTEGER},1, 1, #{cm_cont, jdbcType=VARCHAR}, #{cm_pass, jdbcType=VARCHAR})
 	</insert>
 
-<update id="updateReply" parameterType="org.kh.splendy.vo.Comment">
-    UPDATE KH_COMMENT
-       SET CM_CONT=#{cm_cont} 
-     WHERE RE_ID=#{re_id}
-</update> 
+	<update id="updateReply" parameterType="org.kh.splendy.vo.Comment">
+	    UPDATE KH_COMMENT
+	       SET CM_CONT=#{cm_cont} 
+	     WHERE RE_ID=#{re_id}
+	</update>
+	 
 </mapper>

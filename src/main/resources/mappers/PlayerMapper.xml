@@ -24,7 +24,25 @@
 		<result column="U_NICK"			property="nick"			javaType="java.lang.String" />
 		<result column="U_ID"			property="uid"			javaType="int" />
 	</resultMap>
-	
+
+	<insert id="createInitial" statementType="CALLABLE">
+		<![CDATA[
+            DECLARE
+              u_id NUMBER := #{uid};
+              r_id NUMBER := #{rid};
+
+            BEGIN
+
+              FOR i IN 1..6 LOOP
+                INSERT INTO KH_PL_COIN(RM_ID, CN_ID, U_ID, CN_COUNT) VALUES (r_id, i, u_id, 0);
+              END LOOP;
+
+              COMMIT;
+
+            END;
+		]]>
+	</insert>
+
 	<select
 		id="getWSPlayer" 
 		parameterType="int"

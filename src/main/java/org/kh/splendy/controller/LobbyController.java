@@ -81,14 +81,7 @@ public class LobbyController {
 				return "redirect:/game/" + lastRoom;
 			} else {
 				//랭킹 처리 부분
-				List<UserProfile> profList = profServ.getProfAll();
-				for (int i = 0; i < profList.size(); i++) {
-					int id = profList.get(i).getUserId();
-					UserCore user_rank = userServ.selectOne(id);
-					String nickname = user_rank.getNickname();
-					profList.get(i).setNickname(nickname);
-				}
-				model.addAttribute("profList", profList);
+				model.addAttribute("profList", profServ.getProfAll());
 				//랭킹 처리 부분 끝
 				profServ.refreshUserProf(session);
 				return "lobby";

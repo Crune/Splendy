@@ -19,6 +19,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired private RoomMapper roomMap;
     @Autowired private MsgMapper msgMap;
+    @Autowired private CardMapper cardMap;
 
     @Autowired private PlayerMapper playerMap;
 
@@ -55,9 +56,15 @@ public class RoomServiceImpl implements RoomService {
             roomMap.create(reqRoom);
             int rstRoomId = roomMap.getMyRoom(reqUser.getId());
             Room rstRoom = roomMap.read(rstRoomId);
+
+            // 방 생성시 기본 덱과 코인을 깔음
+            roomMap.createInitial(rstRoomId);
+
             if (!rstRoom.getPassword().isEmpty()) {
                 rstRoom.setPassword("true");
             }
+            profMap.setLastRoom(reqUser.getId(), rstRoomId);
+
             sock.send("/room/new", rstRoom);
 
             // 허가 메시지 전송
@@ -89,16 +96,21 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public int deleteRoom(int rid) {
-        int roomId = -1;
-
-        if (rid>0) {
-            roomId = rid;
+    public void deleteRoom(int rid) {
+        if (rid > 0) {
+            List<Integer> notEmpty = roomMap.getNotEmptyRoom();
+            if (!notEmpty.contains(rid)) {
+                sock.send("/room/remove", rid);
+                Room temp = roomMap.read(rid);
+                if (temp != null) {
+                    if (temp.getStart() == null) {
+                        roomMap.delete(rid);
+                    } else {
+                        roomMap.close(rid);
+                    }
+                }
+            }
         }
-        roomMap.close(roomId);
-
-        sock.send("/room/remove", roomId);
-        return roomId;
     }
 
 	@Override
@@ -108,7 +120,11 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public void close(int id) {
-		roomMap.close(id);
+	public void close(int rid) {
+        if (roomMap.read(rid).getStart() == null) {
+            roomMap.delete(rid);
+        } else {
+            roomMap.close(rid);
+        }
 	}
 }
