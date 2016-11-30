@@ -181,7 +181,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="profileModalLabel">유저 권한 변경</h4>
+				<h4 class="modal-title" id="profileModalLabel">유저 프로필 변경</h4>
 			</div>
 			<div class="modal-body">
 				<div class="index-cont">
@@ -249,11 +249,11 @@ window.onload = function(){
 		userProfile(id)
 	});
 	$(".btn_profileModal_close").on('click', function () {
-		removeAuthorityVar();
+		removeProfileVar();
 	});
 	$(".btn_profileModify").on('click', function () {
 		authorityModify();
-		removeAuthorityVar();
+		removeProfileVar();
 	});
 }
 
