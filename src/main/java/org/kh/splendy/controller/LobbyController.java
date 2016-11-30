@@ -61,7 +61,7 @@ public class LobbyController {
 	 * 로비 첫 화면
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list(Model model, HttpSession session, RedirectAttributes rttr) {
+	public String list(Model model, HttpSession session, RedirectAttributes rttr) throws Exception{
 		/** 윤.로비: 로비 입장 화면 구현
 		 * - 세션에서 유저ID 불러옴
 		 * - 플레이어 정보에 계정 인증코드 입력
@@ -83,6 +83,7 @@ public class LobbyController {
 			} else {
 				//랭킹 처리 부분
 				model.addAttribute("profList", profServ.getProfAll());
+				model.addAttribute("user", userServ.get(user.getEmail()));
 				//랭킹 처리 부분 끝
 				profServ.refreshUserProf(session);
 				return "lobby";

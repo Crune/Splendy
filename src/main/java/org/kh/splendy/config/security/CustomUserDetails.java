@@ -10,7 +10,7 @@ public class CustomUserDetails implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	private Collection<? extends GrantedAuthority> authorities;
-	private String username;
+	private String username; //UserCore의 Email
 	private String password;
 	private boolean accountNonExpired = true;
 	private boolean accountNonLocked = true;
