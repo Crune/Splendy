@@ -60,10 +60,8 @@ function room_priv(evt) {
 }
 
 function room_prev(room) {
-    len = room.coins.length;
-    for (i = 0; i < len; i++) {
-        var cur_coin = room.coins[i];
-        setCoin(cur_coin.u_id, cur_coin.cn_id, cur_coin.cn_count);
+    for (var i = 0, coin; coin = room.coins[i]; i++) {
+        setCoin(coin.u_id, coin.cn_id, coin.cn_count);
     }
 
     if (!isReadPrevRoom) {

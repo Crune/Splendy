@@ -7,18 +7,19 @@ var playerPriv;
 var playerJoin;
 var playerLeft;
 
-var playerMap = newMap();
-var playerList = new Array();
+var pls = {};
+pls.order = new Array();
+pls.data = {};
 
 function onPlayer() {
-	
+    player_init();
+
     playerPriv = stompClient.subscribe('/player/private/'+uid, player_priv);
 
     playerJoin = stompClient.subscribe('/player/join/'+rid, player_join);
     playerLeft = stompClient.subscribe('/player/left', player_left);
 
     send('player/join/'+rid, '');
-    player_init();
     send('player/prev/'+rid, '');
 }
 
@@ -28,59 +29,52 @@ function player_init() {
 }
 
 function player_refresh(){
-	alert('refresh');
 	$(".player ul").detach();
-	for(i=0; i<playerList.length; i++){
-		console.log(playerMap.get(playerList[i]));
-		$(".player"+(i+1)).html(temp_player(playerMap.get(playerList[i])));
+	for(var i=0, uid; uid = pls.order[i]; i++) {
+		console.log(pls.data[uid]);
+		$(".player"+(i+1)).html(temp_player(pls.data[uid]));
 	}
 }
 
 
 function player_priv(evt) {
-	alert('priv');
     var data = JSON.parse(evt.body);
     if (data.type == 'prev') {
         var pl = data.cont;
-        plLen = pl.length;
-        
-        for (i = 0; i < plLen; i++) {
-        	var curPl = pl[i];
-        	playerList.push(curPl.uid);
-        	playerMap.put(curPl.uid, curPl);  
-        	console.log(playerList);
+        for (i = 0, pl; pl = data.cont[i]; i++) {
+            pls.data[pl.uid] = pl;
+            pls.order.push(pl.uid);
+        	console.log("player added: "+pl);
         }
+        isReadPrevPlayer = true;
         player_refresh();
     }
 }
 
 function player_join(evt) {
-	alert('join');
-    var pl = JSON.parse(evt.body);      
-    for(i = 0; i < playerList.length; i++){
-    	if(playerList[i].uid === pl.uid){
-    		return;
-    	}	
-    }   
-    
-    playerMap.put(pl.uid, pl);
-    playerList.push(pl.uid);
-	input_chat(new Chat('시스템', pl.nick+'님이 접속하였습니다.','','sys'));
-	player_refresh();
+    var pl = JSON.parse(evt.body);
+    if (pls.data[pl.uid]) {
+        pls.data[pl.uid] = pl;
+    } else {
+        pls.data[pl.uid] = pl;
+        pls.order.push(pl.uid);
+        input_chat(new Chat('시스템', pl.nick+'님이 접속하였습니다.','','sys'));
+        player_refresh();
+    }
 }
 
 function player_left(evt) {
-	alert('left');
-	var tempArr = new Array();
     var pl = JSON.parse(evt.body);
-    
-    for(i = 0; i < playerList.length; i++){
-    	if( pl.room != 0 ){
-    		tempArr.push(playerList[i]);    		
-    	}
+    if (pls.data[pl.uid] && pl.room == rid) {
+        var tempArr = new Array();
+        for(var i=0, uid; uid=pls.order[i]; i++) {
+            if(uid != pl.uid) {
+                console.log("uid추가:"+uid);
+                tempArr.push(uid);
+            }
+        }
+        pls.order = tempArr;
+        input_chat(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
+        player_refresh();
     }
-    playerList = tempArr;
-    player_refresh();
-
-    input_chat(new Chat('시스템', pl.nick+'님이 나가셨습니다.','','sys'));
 }
