@@ -52,7 +52,6 @@ function player_priv(evt) {
 }
 
 function player_join(evt) {
-	alert('join');
     var pl = JSON.parse(evt.body);
     if (pls.data[pl.uid]) {
         pls.data[pl.uid] = pl;
@@ -65,7 +64,6 @@ function player_join(evt) {
 }
 
 function player_left(evt) {
-	alert('left');
     var pl = JSON.parse(evt.body);
     if (pls.data[pl.uid] && pl.room == rid) {
         var tempArr = new Array();
