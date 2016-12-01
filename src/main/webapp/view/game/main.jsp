@@ -124,7 +124,7 @@
 				</ul>
 				<div class="mainCard">
 					<div class="cardBox cardBox1">
-						<article><img src="/img/cards/lev1_Red_W2G1K2.png" alt=""></article>
+						<article><img id="modal_btn" src="/img/cards/lev1_Red_W2G1K2.png" alt=""></article>
 						<article><img src="/img/cards/lev2_Black_B1G4R2.png" alt=""></article>
 						<article><img src="/img/cards/lev3_Black_G3R6K3.png" alt=""></article>
 						<article><img src="/img/cards/lev1_White_W3B1K1.png" alt=""></article>
@@ -149,6 +149,13 @@
 			 
 		</div>
 		<input type="text" id="chat_input" size="74px"/>
+
+		<div id="modal">
+			<h3>Test Modal</h3>
+			<p>이 창은 모달창입니다.</p>
+			<button id="confirm_button">확인</button>
+			<button class="js_close">닫기</button>
+		</div>
 	</div>
 	<footer class="clearFix">
 		<p class="users"><a href="#">x 10</a></p>
@@ -169,5 +176,6 @@
 	<script type='text/javascript' src="/js/ingame/oncomp.js"></script>
 	<script type='text/javascript' src="/js/ingame/onplayer.js"></script>
 	<script type='text/javascript' src="/js/ingame/onroom.js"></script>
+	<script type='text/javascript' src="/js/ingame/popup.js"></script>
 </scripts>
 </html>
