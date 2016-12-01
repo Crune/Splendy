@@ -25,7 +25,7 @@ public class IndexController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(HttpSession session) {
-        if (isInitialized) { compServ.initialize(); isInitialized = true; }
+        if (!isInitialized) { compServ.initialize(); isInitialized = true; }
         if (session.getAttribute("user") != null) {
             return "redirect:/lobby/";
         } else {
@@ -34,7 +34,7 @@ public class IndexController {
     }
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String indexWithMsg(@RequestParam("msg") String msg, Model model, HttpSession session) {
-        if (isInitialized) { compServ.initialize(); isInitialized = true; }
+        if (!isInitialized) { compServ.initialize(); isInitialized = true; }
         if (session.getAttribute("user") != null) {
             return "redirect:/lobby/";
         } else {
