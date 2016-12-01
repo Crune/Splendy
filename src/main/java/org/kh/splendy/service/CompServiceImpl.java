@@ -117,6 +117,7 @@ public class CompServiceImpl implements CompService {
 
     @Override
     public PLCard checkPickCard(GameRoom room, PLCard reqGetCard) {
+        Map<Integer, Integer> score = scoring(compMap.getCards(room.getRoom()));
         return null;
     }
 
@@ -225,11 +226,11 @@ public class CompServiceImpl implements CompService {
 
         for (PLCard cur : cards) {
             int uid = cur.getU_id();
-            int cnid = cur.getCd_id();
+            int cdid = cur.getCd_id();
 
             Card thisCard = null;
             for (Card curCard : cardAll) {
-                if (curCard.getId() == cnid) {
+                if (curCard.getId() == cdid) {
                     thisCard = curCard;
                 }
             }
@@ -244,4 +245,31 @@ public class CompServiceImpl implements CompService {
 
 		return result;
 	}
+
+
+    @Override
+    public Map<Integer, Integer> calcYield(int reqUid, List<PLCard> cards) {
+        Map<Integer, Integer> result = new HashMap<>();
+
+        for (PLCard cur : cards) {
+            if (cur.getU_id() == reqUid) {
+                Card curCardInfo = null;
+                for (Card curCard : cardAll) {
+                    if (curCard.getId() == cur.getCd_id()) {
+                        curCardInfo = curCard.parse();
+                    }
+                }
+
+                int prevYeild = 0;
+                int yieldType = curCardInfo.getYieldType();
+                if (result.containsKey(yieldType)) {
+                    prevYeild = result.get(curCardInfo.getYieldType());
+                }
+                result.remove(yieldType);
+                result.put(yieldType, ++prevYeild);
+            }
+        }
+
+        return result;
+    }
 }

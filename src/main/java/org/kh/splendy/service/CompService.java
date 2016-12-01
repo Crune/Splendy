@@ -32,4 +32,6 @@ public interface CompService {
 
 	boolean checkEnding(List<PLCard> reqGetCard);
     Map<Integer,Integer> scoring(List<PLCard> cards);
+
+    Map<Integer, Integer> calcYield(int reqUid, List<PLCard> cards);
 }
