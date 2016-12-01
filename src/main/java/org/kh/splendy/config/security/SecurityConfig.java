@@ -22,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		web
 			.ignoring()
 				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**")
+				.antMatchers("/naver_loginPro**")
+				.antMatchers("/login/**")
 				.antMatchers("/socket/**", "/socket**");
 	}
 	/**
