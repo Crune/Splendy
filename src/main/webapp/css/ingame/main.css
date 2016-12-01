@@ -357,14 +357,12 @@ aside .player1{
     width:100%;
 }
 #container #main .hero li:first-child{
-    margin-left:17%;
 }
 
 
 /*카드뒷면*/
 #container #main .mVisual{
 /*    background:green;*/
-    width:85%;
     height:75.7%;
     float:right; 
     position:relative;

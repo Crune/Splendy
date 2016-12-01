@@ -36,27 +36,6 @@ public class AccountController {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index(HttpSession session) {
-		if (session.getAttribute("user") != null) {
-			return "redirect:/lobby/";
-		} else {
-			return "index";
-		}
-	}
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String indexWithMsg(@RequestParam("msg") String msg, Model model, HttpSession session) {
-		if (session.getAttribute("user") != null) {
-			return "redirect:/lobby/";
-		} else {
-			if(msg == null) {
-				msg = "";
-			}
-			model.addAttribute(msg);
-			return "index";
-		}
-	}
-
 	@RequestMapping(value = "/user/requestJoin", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody int requestJoin(@ModelAttribute("joinForm") UserCore user, HttpServletRequest request) {
 		int result = -1;

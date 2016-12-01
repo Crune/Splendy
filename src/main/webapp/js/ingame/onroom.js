@@ -49,7 +49,6 @@ function room_event(evt) {
     }
 }
 
-
 function room_priv(evt) {
 
     var msg = JSON.parse(evt.body);

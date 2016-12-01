@@ -35,7 +35,7 @@ public class RoomProtocol extends ProtocolHelper {
 		UserCore sender = sender(head);
         List<Room> rooms = roomServ.readList();
         if (rid > 1 && rid(head) == rid) {
-            GameRoom room = game.readRoom(rid);
+            GameRoom room = game.getRoom(rid);
             sock.send(sender, "room", "current", room);
         } else {
             sock.send(sender, "room", "prev", rooms);
