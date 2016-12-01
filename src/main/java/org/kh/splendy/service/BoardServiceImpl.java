@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
 	private ArticleMapper articleMap;
 
 	@SuppressWarnings("unused")
-	private static final Logger log = LoggerFactory.getLogger(CardServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(BoardServiceImpl.class);
 
 	/** TODO 찬우.게시판: 게시글 목록 반환 구현
 	 * boardMap 이용하여 작성

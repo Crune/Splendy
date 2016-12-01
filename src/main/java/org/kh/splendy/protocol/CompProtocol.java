@@ -43,7 +43,7 @@ public class CompProtocol extends ProtocolHelper {
             sock.sendRoom(rid, "end", result);
         } else {
             // 다음 사람으로 넘김
-            int nextActor  = game.getRoom(rid).nextActor(sock);
+            int nextActor  = game.getRoom(rid).nextActor();
             sock.sendRoom(rid, "actor", nextActor);
         }
     }
@@ -51,7 +51,7 @@ public class CompProtocol extends ProtocolHelper {
     @MessageMapping("/comp/cards")
     public void reqCards(SimpMessageHeaderAccessor head) throws Exception {
         UserCore sender = sender(head);
-        List<Card> cards = compServ.getCards();
+        List<Card> cards = compServ.getCardAll();
         sock.send(sender.getId(), "comp", "card", cards);
     }
 

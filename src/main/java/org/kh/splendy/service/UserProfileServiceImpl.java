@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class UserProfileServiceImpl implements UserProfileService{
 	
-	private static final Logger log = LoggerFactory.getLogger(CardServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(UserProfileServiceImpl.class);
 
 	@Autowired UserProfileMapper profMap;
     @Autowired private UserMapper userMap;

@@ -14,13 +14,11 @@ public interface GameService {
 
     GameRoom getRoom(int rid);
 
+    void refreshPlayers(int rid);
+
+    void refreshComponents(int rid);
+
     GameRoom readRoom(int rid);
-
-    boolean isInPlayer(int rid, int uid);
-
-    boolean joinPro(int rid, int uid);
-
-    boolean leftPro(int rid, int uid);
 
     List<UserProfile> endingGame(int rid, Map<Integer, Integer> score);
 }

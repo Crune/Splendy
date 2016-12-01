@@ -27,9 +27,7 @@ public class PlayerProtocol extends ProtocolHelper {
 	@MessageMapping("/player/prev/{rid}")
 	public void readPlayers(SimpMessageHeaderAccessor head, @DestinationVariable int rid) throws Exception {
         UserCore sender = sender(head);
-
 		List<WSPlayer> pls = plServ.readList(rid);
-
 		sock.send(sender, "player", "prev", pls);
 	}
 

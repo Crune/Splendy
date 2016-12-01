@@ -19,7 +19,6 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired private RoomMapper roomMap;
     @Autowired private MsgMapper msgMap;
-    @Autowired private CardMapper cardMap;
 
     @Autowired private PlayerMapper playerMap;
 
