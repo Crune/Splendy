@@ -118,6 +118,7 @@ public class GameRoom {
         }
         return rst;
     }
+
     public List<PLCard> pickCard(List<PLCard> reqCard) {
         List<PLCard> rst = new ArrayList<>();
         for (PLCard cur : reqCard) {

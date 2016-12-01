@@ -111,10 +111,7 @@ public class GameServiceImpl implements GameService {
 
         // 인원수가 충족되면 게임 시작!
         if (rooms.get(rid).getLimit() == newPlayers.size()) {
-            roomMap.setStart(rid, new Date(System.currentTimeMillis()));
-            sock.sendRoom(rid, "start", "게임 시작!");
-            int nextActor = rooms.get(rid).nextActor();
-            sock.sendRoom(rid, "actor", nextActor);
+            startingGame(rid);
         }
     }
 
@@ -129,6 +126,13 @@ public class GameServiceImpl implements GameService {
         initRoom(rid);
         GameRoom room = rooms.get(rid);
         return room;
+    }
+
+    private void startingGame(int rid) {
+        roomMap.setStart(rid, new Date(System.currentTimeMillis()));
+        sock.sendRoom(rid, "start", "게임 시작!");
+        int nextActor = rooms.get(rid).nextActor();
+        sock.sendRoom(rid, "actor", nextActor);
     }
 
     @Override @Transactional

@@ -83,42 +83,33 @@ public class CompServiceImpl implements CompService {
     public List<PLCard> reqPickCard(PLCard reqGetCard, int uid, GameRoom room) {
 		WSComp result = null;
 
-        // TODO 해당 카드를 가져올 조건 검증
-        PLCard resultCard = checkPickCard(room, reqGetCard);
+		// DB에서 해당 방 정보를 가져옴
+		List<PLCard> cards = compMap.getCards(room.getRoom());
+        List<PLCoin> coins = compMap.getCoins(room.getRoom());
 
-        if (resultCard != null) {
-            // 해당 카드 증정
-            result.getCards().add(room.pickCard(reqGetCard));
+        // 개발카드 생산량과 보유 코인수를 계산함
+        Map<Integer, Integer> yield = calcYield(uid, cards);
+        Map<Integer, Integer> hasCoins = getCoinAmount(uid, coins);
+
+        boolean isBuyValid = getCard(reqGetCard.getCd_id()).isBAble(yield, hasCoins);
+
+        if (isBuyValid) {
+            // TODO 해당 카드 증정
 
             // TODO 귀족카드 조건 검증
-            Map<Integer, Integer> supplyCoin = new HashMap<>();
-            List<PLCard> nobles = checkNobleCard(room, supplyCoin);
-            if (nobles != null) {
-                // 만족하는 귀족카드 증정
-                result.getCards().addAll(room.pickCard(nobles));
-            }
+
+            // TODO 만족하는 귀족카드 증정
 
             // TODO 홀딩시 잔여 골드 코인 증정
-            PLCoin gold = room.pickGold(uid);
-            result.getCoins().add(gold);
+
             sock.send("/comp/coin/" + room.getRoom(), result.getCoins());
         }
 
         setCardsInDB(result.getCards());
         setCoinsInDB(result.getCoins());
+
         // 결과 카드변경 전체 전송
 	    return result.getCards();
-    }
-
-    @Override
-    public List<PLCard> checkNobleCard(GameRoom room, Map<Integer, Integer> supplyCoin) {
-	    return null;
-    }
-
-    @Override
-    public PLCard checkPickCard(GameRoom room, PLCard reqGetCard) {
-        Map<Integer, Integer> score = scoring(compMap.getCards(room.getRoom()));
-        return null;
     }
 
     @Override
@@ -271,5 +262,16 @@ public class CompServiceImpl implements CompService {
         }
 
         return result;
+    }
+
+
+    public Map<Integer, Integer> getCoinAmount(int uid, List<PLCoin> coins) {
+        Map<Integer, Integer> fCoins = new HashMap<>();
+        for (PLCoin cur : coins) {
+            if (cur.getU_id() == uid) {
+                fCoins.put(cur.getCn_id(), cur.getCn_count());
+            }
+        }
+        return fCoins;
     }
 }
