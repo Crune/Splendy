@@ -1,6 +1,5 @@
 package org.kh.splendy.service;
 
-import org.kh.splendy.config.assist.Utils;
 import org.kh.splendy.mapper.*;
 import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
@@ -38,6 +37,7 @@ public class GameServiceImpl implements GameService {
     }
 
     private GameRoom initRoom(int rid) {
+        comp.initialize();
         if (rooms.get(rid) == null && rid > 0) {
             Room reqRoom = roomMap.read(rid);
             if (reqRoom != null) {
@@ -45,24 +45,83 @@ public class GameServiceImpl implements GameService {
                 GameRoom room = new GameRoom();
                 room.setRoom(rid);
                 room.setLimit(reqRoom.getPlayerLimits());
-
-                List<WSPlayer> players = plMap.getInRoomPlayerByRid(rid);
-                if (players != null) {
-                    room.getPls().addAll(players);
-                }
-
-                room.getCards().addAll(comp.getNewDeck(rid));
-                room.getCoins().addAll(comp.getNewCoins(rid));
-
                 room.setCurrentPl(0);
                 room.setTurn(0);
-
-                comp.initCompDB(rid);
-
                 rooms.put(room.getRoom(), room);
+
+                refreshPlayers(rid);
+                refreshComponents(rid);
             }
         }
         return rooms.get(rid);
+    }
+
+    @Override
+    public void refreshPlayers(int rid) {
+        List<WSPlayer> joinPlayers = new ArrayList<>();
+        List<WSPlayer> leftPlayers = new ArrayList<>();
+
+        // 기존 참가자 목록 획득
+        List<WSPlayer> prevPlayers = rooms.get(rid).getPls();
+        List<Integer> prevUids = new ArrayList<>();
+        for (WSPlayer cur : prevPlayers) {
+            prevUids.add(cur.getUid());
+        }
+        // 신규 참가자 목록 획득
+        List<WSPlayer> newPlayers = plMap.getInRoomPlayerByRid(rid);
+        List<Integer> newUids = new ArrayList<>();
+        for (WSPlayer cur : newPlayers) {
+            newUids.add(cur.getUid());
+        }
+
+        // 입장 및 퇴장 참가자 산정
+        for (WSPlayer cur : prevPlayers) {
+            if (!newUids.contains(cur.getUid())) {
+                leftPlayers.add(cur);
+            }
+        }
+        for (WSPlayer cur : newPlayers) {
+            if (!prevUids.contains(cur.getUid())) {
+                joinPlayers.add(cur);
+            }
+        }
+
+        // 참가자 목록 갱신 및 처리
+
+        rooms.get(rid).setPls(newPlayers);
+
+        for (WSPlayer cur : joinPlayers) {
+
+        }
+
+        for (WSPlayer cur : leftPlayers) {
+            int uid = cur.getUid();
+            if (rooms.get(rid).isPlaying()) {
+                // 만약 게임 진행 중이라면 감점 처리한다.
+                if (!comp.checkEnding(rooms.get(rid).getCards())) {
+                    int rate = profMap.read(uid).getRate() -100;
+                    if (rate > 0) {
+                        profMap.setRate(uid, rate - 100);
+                    }
+                }
+                sock.sendRoom(rid, "halt", uid);
+                rooms.get(rid).halt();
+            }
+        }
+
+        // 인원수가 충족되면 게임 시작!
+        if (rooms.get(rid).getLimit() == newPlayers.size()) {
+            roomMap.setStart(rid, new Date(System.currentTimeMillis()));
+            sock.sendRoom(rid, "start", "게임 시작!");
+            int nextActor = rooms.get(rid).nextActor();
+            sock.sendRoom(rid, "actor", nextActor);
+        }
+    }
+
+    @Override
+    public void refreshComponents(int rid) {
+        rooms.get(rid).getCards().addAll(comp.getCardsInDB(rid));
+        rooms.get(rid).getCoins().addAll(comp.getCoinsInDB(rid));
     }
 
     @Override
@@ -70,74 +129,6 @@ public class GameServiceImpl implements GameService {
         initRoom(rid);
         GameRoom room = rooms.get(rid);
         return room;
-    }
-
-    @Override
-    public boolean isInPlayer(int rid, int uid) {
-        boolean rst = false;
-        if (getRoom(rid) != null) {
-            rst = getRoom(rid).isInPlayer(uid);
-        }
-        return rst;
-    }
-
-    /** 게임 목록의 참가자에 없다면 참가자로 추가한다. */
-    @Override
-    public boolean joinPro(int rid, int uid) {
-        initRoom(rid);
-        WSPlayer joiner = plMap.getWSPlayer(uid).CanSend();
-        boolean result = rooms.get(rid).reqJoin(joiner, sock);
-        if (result) {
-            startingGame(rid);
-        }
-        return result;
-    }
-
-
-    /** 게임 목록의 참가자에 있다면 해당 참가자 나가기 처리한다. */
-    @Override
-    public boolean leftPro(int rid, int uid) {
-        initRoom(rid);
-        boolean result = rooms.get(rid).reqLeft(uid);
-
-        if (result) {
-            List<WSPlayer> pls = rooms.get(rid).getPls();
-            if (!pls.isEmpty()) {
-                if (rooms.get(rid).isPlaying()) {
-                    // 만약 게임 진행 중이라면 감점 처리한다.
-                    if (!comp.checkEnding(rooms.get(rid).getCards())) {
-                        int rate = profMap.read(uid).getRate() -100;
-                        if (rate > 0) {
-                            profMap.setRate(uid, rate - 100);
-                        }
-                    }
-                    sock.sendRoom(rid, "halt", uid);
-                    rooms.get(rid).halt();
-                } else {
-                    // 시작하지 않았기 때문에 해당 참가자의 정보를 제거한다.
-                    for (PLCoin curCoin : rooms.get(rid).getCoins()) {
-                        if (curCoin.getU_id() == uid) {
-                            rooms.get(rid).getCoins().remove(curCoin);
-                            plMap.delete(uid, rid);
-                        }
-                    }
-                }
-            } else {
-                rooms.remove(rid);
-            }
-        }
-        return result;
-    }
-
-    private void startingGame(int rid) {
-        int innerPlsCount = rooms.get(rid).getPls().size();
-        if (innerPlsCount == rooms.get(rid).getLimit()) {
-            roomMap.setStart(rid, new Date(System.currentTimeMillis()));
-            // 게임 시작!
-            sock.sendRoom(rid, "start", "게임 시작!");
-            int nextActor = rooms.get(rid).nextActor(sock);
-            sock.sendRoom(rid, "actor", nextActor);
-        }
     }
 
     @Override @Transactional

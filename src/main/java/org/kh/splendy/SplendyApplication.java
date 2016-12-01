@@ -20,7 +20,7 @@ public class SplendyApplication {
 	/** 스프링 부트 시작점 @param args 받지 않을 예정 */
 	public static void main(String[] args) {
 		ctx = SpringApplication.run(SplendyApplication.class, args);
-		
+
 		String[] beanNames = ctx.getBeanDefinitionNames();
 		Arrays.sort(beanNames);
 		log.info("Add Beans: "+ Arrays.asList(beanNames));

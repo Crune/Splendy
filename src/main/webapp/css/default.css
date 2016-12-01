@@ -16,3 +16,257 @@
 	top: 100px;
 	z-index: 10000;
 }
+
+a img:hover {
+    background-color: transparent;
+	text-decoration: none;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	transition: all 0.5s;
+}
+/*
+#container #side li img:hover {
+	color: #fff;
+	-webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+	-moz-animation: neon1 1.5s ease-in-out infinite alternate;
+	animation: neon1 1.5s ease-in-out infinite alternate;
+}
+*/
+
+ul.backCard img:hover {
+    border-radius: 4%;
+    color: #fff;
+    -webkit-animation: card_neon 1.5s ease-in-out infinite alternate;
+    -moz-animation: card_neon 1.5s ease-in-out infinite alternate;
+    animation: card_neon 1.5s ease-in-out infinite alternate;
+}
+.new_jewel {
+    display: none;
+    position: fixed;
+    left: 42%;
+    z-index: 100;
+}
+.new_jewel img {
+    width: 70px;
+}
+.add_jewel_1 { top: 30%; }
+.add_jewel_2 { top: 40%; }
+.add_jewel_3 { top: 50%; }
+.new_jewel span {
+    font-size: 35px;
+    position: absolute;
+    top: -40%;
+    left: -20%;
+    -webkit-text-stroke: 1px black;
+    text-shadow: -1px -1px 0 #000, 1px 1px 0 #000, -1px -1px 0 #000, 1px 1px 0 #000;
+}
+article img:hover {
+    color: #fff;
+    -webkit-animation: card_neon 1.5s ease-in-out infinite alternate;
+    -moz-animation: card_neon 1.5s ease-in-out infinite alternate;
+    animation: card_neon 1.5s ease-in-out infinite alternate;
+}
+@-webkit-keyframes card_neon {
+    from {
+        box-shadow:
+                0 0 5px #fff,
+                0 0 10px #fceb90,
+                0 0 20px #fceb90;
+    }
+    to {
+        box-shadow:
+                0 0 5px #fff,
+                0 0 10px #fceb90,
+                0 0 20px #fceb90;
+    }
+}
+
+
+
+li#cn_id_1 img:hover {
+    color: #fff;
+    -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon1 1.5s ease-in-out infinite alternate;
+    animation: neon1 1.5s ease-in-out infinite alternate;
+}
+
+li#cn_id_2 img:hover {
+    color: #fff;
+    -webkit-animation: neon2 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon2 1.5s ease-in-out infinite alternate;
+    animation: neon2 1.5s ease-in-out infinite alternate;
+}
+li#cn_id_3 img:hover {
+    color: #fff;
+    -webkit-animation: neon3 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon3 1.5s ease-in-out infinite alternate;
+    animation: neon3 1.5s ease-in-out infinite alternate;
+}
+li#cn_id_4 img:hover {
+    color: #fff;
+    -webkit-animation: neon4 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon4 1.5s ease-in-out infinite alternate;
+    animation: neon4 1.5s ease-in-out infinite alternate;
+}
+li#cn_id_5 img:hover {
+    color: #fff;
+    -webkit-animation: neon5 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon5 1.5s ease-in-out infinite alternate;
+    animation: neon5 1.5s ease-in-out infinite alternate;
+}
+
+li#cn_id_6 p img:hover {
+    color: #fff;
+    -webkit-animation: neon6 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon6 1.5s ease-in-out infinite alternate;
+    animation: neon6 1.5s ease-in-out infinite alternate;
+}
+@-webkit-keyframes neon6 {
+    from {
+        box-shadow:
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #fff,
+                0 0 40px #fceb90,
+                0 0 70px #fceb90,
+                0 0 80px #fceb90,
+                0 0 100px #fceb90,
+                0 0 150px #fceb90;
+    }
+    to {
+        box-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 15px #fff,
+                0 0 20px #fceb90,
+                0 0 35px #fceb90,
+                0 0 40px #fceb90,
+                0 0 50px #fceb90,
+                0 0 75px #fceb90;
+    }
+}
+
+@-webkit-keyframes neon1 {
+    from {
+        box-shadow:
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #fff,
+                0 0 40px #fff,
+                0 0 70px #fff,
+                0 0 80px #fff,
+                0 0 100px #fff,
+                0 0 150px #fff;
+    }
+    to {
+        box-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 15px #fff,
+                0 0 20px #fff,
+                0 0 35px #fff,
+                0 0 40px #fff,
+                0 0 50px #fff,
+                0 0 75px #fff;
+    }
+}
+
+@-webkit-keyframes neon2 {
+    from {
+        box-shadow:
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #fff,
+                0 0 40px #00cc00,
+                0 0 70px #00cc00,
+                0 0 80px #00cc00,
+                0 0 100px #00cc00,
+                0 0 150px #00cc00;
+    }
+    to {
+        box-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 15px #fff,
+                0 0 20px #00cc00,
+                0 0 35px #00cc00,
+                0 0 40px #00cc00,
+                0 0 50px #00cc00,
+                0 0 75px #00cc00;
+    }
+}
+
+@-webkit-keyframes neon3 {
+    from {
+        box-shadow:
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #fff,
+                0 0 40px #0231fb,
+                0 0 70px #0231fb,
+                0 0 80px #0231fb,
+                0 0 100px #0231fb,
+                0 0 150px #0231fb;
+    }
+    to {
+        box-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 15px #fff,
+                0 0 20px #0231fb,
+                0 0 35px #0231fb,
+                0 0 40px #0231fb,
+                0 0 50px #0231fb,
+                0 0 75px #0231fb;
+    }
+}
+
+@-webkit-keyframes neon4 {
+    from {
+        box-shadow:
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #fff,
+                0 0 40px #ee3646,
+                0 0 70px #ee3646,
+                0 0 80px #ee3646,
+                0 0 100px #ee3646,
+                0 0 150px #ee3646;
+    }
+    to {
+        box-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 15px #fff,
+                0 0 20px #ee3646,
+                0 0 35px #ee3646,
+                0 0 40px #ee3646,
+                0 0 50px #ee3646,
+                0 0 75px #ee3646;
+    }
+}
+
+@-webkit-keyframes neon5 {
+    from {
+        box-shadow:
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #fff,
+                0 0 40px #e460f1,
+                0 0 70px #e460f1,
+                0 0 80px #e460f1,
+                0 0 100px #e460f1,
+                0 0 150px #e460f1;
+    }
+    to {
+        box-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 15px #fff,
+                0 0 20px #e460f1,
+                0 0 35px #e460f1,
+                0 0 40px #e460f1,
+                0 0 50px #e460f1,
+                0 0 75px #e460f1;
+    }
+}

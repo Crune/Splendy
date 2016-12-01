@@ -1,14 +1,8 @@
 package org.kh.splendy.config.ws;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
-import org.kh.splendy.service.PlayerService;
 import org.kh.splendy.vo.UserCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -16,13 +10,15 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
+import javax.servlet.http.HttpSession;
+import java.util.Map;
+
 public class SplendyWSHandshakeInterceptor implements HandshakeInterceptor {
 
-    @Autowired
-    private PlayerService playerService;
 
     @SuppressWarnings("unused")
     private Logger log = LoggerFactory.getLogger(SplendyWSHandshakeInterceptor.class);
+
 
     @Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,

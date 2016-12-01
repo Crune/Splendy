@@ -30,16 +30,22 @@ function room_event(evt) {
     var cont = msg.cont;
 
     if (type == 'start') {
+
     }
     if (type == 'halt') {
+
     }
     if (type == 'resume') {
+
     }
     if (type == 'end') {
+
     }
     if (type == 'score') {
+
     }
     if (type == 'actor') {
+
     }
 }
 

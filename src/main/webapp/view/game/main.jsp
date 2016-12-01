@@ -39,22 +39,22 @@
 				<li class="playerIcon"><img src="{{ icon }}" alt="player icon"></li>
 				<li class="playerName">{{ nick }}</li>
 				<li class="playerTime"><span>11:23</span></li>
-				<li class="playerScore">15</li>
+				<li class="playerScore">0</li>
 			</ul>
 			<ul class="aMid clearFix">
-				<li><img src="/img/blue.png" alt="블루보석"><span>2</span></li>
-				<li><img src="/img/red.png" alt="빨간보석"><span>1</span></li>
-				<li><img src="/img/yellow.png" alt="노란보석"><span>3</span></li>
-				<li><img src="/img/white.png" alt="하얀보석"><span>4</span></li>
-				<li><img src="/img/purple.png" alt="보라보석"><span>2</span></li>
-				<li><img src="/img/green.png" alt="초록보석"><span>5</span></li>
+				<li id="pl{{ order }}_cn6"><img src="/img/yellow.png" alt="노란보석"><span>0</span></li>
+				<li id="pl{{ order }}_cn1"><img src="/img/white.png" alt="하얀보석"><span>0</span></li>
+				<li id="pl{{ order }}_cn2"><img src="/img/green.png" alt="초록보석"><span>0</span></li>
+				<li id="pl{{ order }}_cn3"><img src="/img/blue.png" alt="블루보석"><span>0</span></li>
+				<li id="pl{{ order }}_cn4"><img src="/img/red.png" alt="빨간보석"><span>0</span></li>
+				<li id="pl{{ order }}_cn5"><img src="/img/purple.png" alt="보라보석"><span>0</span></li>
 			</ul>
 			<ul class="aBottom clearFix">
-				<li><img src="/img/cards/lev1_Black_B4.png" alt="플레이어카드1"><span>5</span></li>
-				<li><img src="/img/cards/lev1_Black_G1R3K1.png" alt="플레이어카드2"><span>4</span></li>
-				<li><img src="/img/cards/lev1_Black_G2R1.png" alt="플레이어카드3"><span>3</span></li>
-				<li><img src="/img/cards/lev1_Black_W1B1G1R1.png" alt="플레이어카드4"><span>2</span></li>
-				<li><img src="/img/cards/lev1_Black_W2G2.png" alt="플레이어카드5"><span>1</span></li>
+				<li id="pl{{ order }}_cd1"><img src="/img/cards/lev1_Black_B4.png" alt="플레이어카드1"><span>5</span></li>
+				<li id="pl{{ order }}_cd2"><img src="/img/cards/lev1_Black_G1R3K1.png" alt="플레이어카드2"><span>4</span></li>
+				<li id="pl{{ order }}_cd3"><img src="/img/cards/lev1_Black_G2R1.png" alt="플레이어카드3"><span>3</span></li>
+				<li id="pl{{ order }}_cd4"><img src="/img/cards/lev1_Black_W1B1G1R1.png" alt="플레이어카드4"><span>2</span></li>
+				<li id="pl{{ order }}_cd5"><img src="/img/cards/lev1_Black_W2G2.png" alt="플레이어카드5"><span>1</span></li>
 			</ul>
     </script>
 </head>
@@ -87,12 +87,15 @@
 		</aside>
 		<section id="container" class="clearFix">
 		<ul id="side">
-			<li><p class="gold"><img src="/img/yellow.png" alt="노랑메인보석"></p><span>2</span></li>
-			<li><img src="/img/green.png" alt="초록메인보석"><span>1</span></li>
-			<li><img src="/img/blue.png" alt="파랑메인보석"><span>2</span></li>
-			<li><img src="/img/white.png" alt="하얀메인보석"><span>3</span></li>
-			<li><img src="/img/red.png" alt="빨간메인보석"><span>4</span></li>
-			<li><img src="/img/purple.png" alt="보라메인보석"><span>5</span></li>
+			<li id="cn_id_6"><p class="gold"><img src="/img/yellow.png" alt="노랑메인보석"></p><span>0</span></li>
+			<li id="cn_id_1"><img src="/img/white.png" alt="하얀메인보석"><span>0</span></li>
+			<li id="cn_id_2"><img src="/img/green.png" alt="초록메인보석"><span>0</span></li>
+			<li id="cn_id_3"><img src="/img/blue.png" alt="파랑메인보석"><span>0</span></li>
+			<li id="cn_id_4"><img src="/img/red.png" alt="빨간메인보석"><span>0</span></li>
+			<li id="cn_id_5"><img src="/img/purple.png" alt="보라메인보석"><span>0</span></li>
+			<p class="new_jewel add_jewel_1"><img src="/img/yellow.png"><span>+</span></p>
+            <p class="new_jewel add_jewel_2"><img src="/img/yellow.png"><span>+</span></p>
+            <p class="new_jewel add_jewel_3"><img src="/img/yellow.png"><span>+</span></p>
 		</ul>
 
 		<div id="main">

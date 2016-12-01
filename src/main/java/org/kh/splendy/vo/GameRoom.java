@@ -46,33 +46,6 @@ public class GameRoom {
 		return gson.toJson(this);
 	}
 
-    public List<WSPlayer> getPls() {
-        return getPls(false);
-    }
-	public List<WSPlayer> getPls(boolean isChanging) {
-        List<WSPlayer> mirror_pls = null;
-        if (isChanging) {
-            mirror_pls = pls;
-        } else {
-            try {
-                mirror_pls = (List<WSPlayer>) Utils.copy(pls);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return mirror_pls;
-    }
-
-	public boolean isInPlayer(int uid) {
-        boolean rst = false;
-        for (WSPlayer cur : getPls()) {
-            if (cur.getUid() == uid) {
-                rst = true;
-            }
-        }
-        return rst;
-    }
-
 	public boolean isPlaying() {
 		return (turn > 0 && isHalted == false);
 	}
@@ -86,14 +59,14 @@ public class GameRoom {
 		}
 		return rst;
 	}
-	public void nextTurn(SocketService sock) {
+	public void nextTurn() {
         if (turn >= 0) {
             this.turn += 1;
             this.currentPl = getPls().get(0).getUid();
         }
     }
 
-    public int nextActor(SocketService sock) {
+    public int nextActor() {
         boolean isValid = false;
         int myCursor = 0;
         for (int i = 0; i < getPls().size(); i++) {
@@ -106,60 +79,9 @@ public class GameRoom {
             }
         }
         if (!isValid) {
-            nextTurn(sock);
+            nextTurn();
         }
         return this.currentPl;
-    }
-
-    private List<PLCoin> getNewCoins(int uid) {
-        List<PLCoin> coins = new ArrayList<PLCoin>();
-        for (int i=1; i<=6; i++) {
-            PLCoin rst = new PLCoin();
-            rst.setRm_id(room);
-            rst.setCn_id(i);
-            rst.setU_id(uid);
-            rst.setCn_count(0);
-        }
-        return coins;
-    }
-
-	public boolean reqJoin(WSPlayer reqUser, SocketService sock) {
-	    boolean rst = false;
-        if (getPls() != null) {
-            for (WSPlayer curPl : getPls()) {
-                if (curPl.getUid() == reqUser.getUid()) {
-                    rst = true;
-                /*
-                this.isHalted = false;
-                sock.sendRoom(room, "resume", reqUser.getUid());
-                */
-                }
-            }
-            if (!rst && limit > getPls().size()) {
-                getPls(true).add(reqUser);
-                coins.addAll(getNewCoins(reqUser.getUid()));
-                rst = true;
-            }
-        }
-        return rst;
-    }
-
-    public boolean reqLeft(int uid) {
-        boolean isIn = false;
-        if (getPls() != null) {
-            for (WSPlayer curPl : getPls()) {
-                if (curPl.getUid() == uid) {
-                    getPls(true).remove(getPls().indexOf(curPl));
-                    isIn = true;
-                }
-            }
-            for (PLCoin coin : coins) {
-                if (coin.getU_id() == uid) {
-                    coins.remove(coins.indexOf(coin));
-                }
-            }
-        }
-        return isIn;
     }
 
     public Map<Integer, Integer> getCoinAmount(int uid) {

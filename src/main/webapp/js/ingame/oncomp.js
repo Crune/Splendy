@@ -12,8 +12,8 @@ function onComp() {
     coinChange = stompClient.subscribe('/comp/coin/'+rid, coin_change);
 
     send('comp/join/'+rid, '');
-    comp_refresh();
     send('comp/cards', '');
+    comp_refresh();
 
 }
 
@@ -21,12 +21,15 @@ function comp_refresh() {
     console.log("Component Refreshed!" + comp.length);
 
     // 필드 코인 설정
-    for (var i = 0; i < 6; i++) {
-        var cn_num = i+1;
-        if (cn_num == 6) {
-            cn_num = 0;
+    for (var i = 1; i <= 6; i++) {
+        $("#container #side li#cn_id_"+i+" span").html(getCoin(0, i));
+    }
+
+    // 사용자 코인 설정
+    for (var i=0, pl; pl=pls.data[pls.order[i]]; i++) {
+        for (var j = 1; j < 6; j++) {
+            $("#pl"+i+"_cd"+j).html(getCoin(pl.uid, j));
         }
-        $("#container #side li:nth-child(" + cn_num + ") span").html(getCoin(0, i));
     }
 
 }

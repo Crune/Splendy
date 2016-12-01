@@ -11,26 +11,25 @@ import org.kh.splendy.vo.PLCoin;
 
 public interface CompService {
 
-    List<PLCoin> getNewCoins(int rid);
+    CompService initialize();
 
-    List<PLCard> getNewDeck(int rid);
+    Card getCard(int cid);
+	Coin getCoin(int cid);
 
+    List<Card> getCardAll();
+    List<Coin> getCoinAll();
+
+	List<PLCoin> getCoinsInDB(int rid);
+    void setCoinsInDB(List<PLCoin> coins);
+    List<PLCard> getCardsInDB(int rid);
+    void setCardsInDB(List<PLCard> cards);
+
+	List<PLCoin> reqPickCoin(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid, GameRoom room);
 	List<PLCard> reqPickCard(PLCard reqGetCard, int uid, GameRoom room);
 
 	List<PLCard> checkNobleCard(GameRoom room, Map<Integer, Integer> supplyCoin);
-
 	PLCard checkPickCard(GameRoom room, PLCard reqGetCard);
 
 	boolean checkEnding(List<PLCard> reqGetCard);
-
-	List<PLCoin> reqPickCoin(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid, GameRoom room);
-
-    void initCompDB(int rid);
-	
-	Card getCard(int cid);
-	Coin getCoin(int cid);
-
-	List<Card> getCards();
-
     Map<Integer,Integer> scoring(List<PLCard> cards);
 }

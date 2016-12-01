@@ -2,7 +2,12 @@ package org.kh.splendy.protocol;
 
 import org.kh.splendy.config.assist.ProtocolHelper;
 import org.kh.splendy.service.CompService;
-import org.kh.splendy.vo.*;
+import org.kh.splendy.vo.Card;
+import org.kh.splendy.vo.PLCard;
+import org.kh.splendy.vo.PLCoin;
+import org.kh.splendy.vo.UserCore;
+import org.kh.splendy.vo.UserProfile;
+import org.kh.splendy.vo.WSCoinRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,8 @@ public class CompProtocol extends ProtocolHelper {
 
     @Autowired private CompService compServ;
 
+    private static boolean isCompInitialized = false;
+
     private void sendNext(int rid) {
 
         // 현재 점수를 계산
@@ -43,21 +50,23 @@ public class CompProtocol extends ProtocolHelper {
             sock.sendRoom(rid, "end", result);
         } else {
             // 다음 사람으로 넘김
-            int nextActor  = game.getRoom(rid).nextActor(sock);
+            int nextActor  = game.getRoom(rid).nextActor();
             sock.sendRoom(rid, "actor", nextActor);
         }
     }
 
     @MessageMapping("/comp/cards")
     public void reqCards(SimpMessageHeaderAccessor head) throws Exception {
+        if (!isCompInitialized) { compServ.initialize(); }
         UserCore sender = sender(head);
-        List<Card> cards = compServ.getCards();
+        List<Card> cards = compServ.getCardAll();
         sock.send(sender.getId(), "comp", "card", cards);
     }
 
     @SubscribeMapping("/comp/card/{rid}")
     @SendTo("/comp/card/{rid}")
     public List<PLCard> requestCard(SimpMessageHeaderAccessor head, PLCard reqCard, @DestinationVariable int rid) throws Exception {
+        if (!isCompInitialized) { compServ.initialize(); }
         UserCore sender = sender(head);
 
         List<PLCard> rst = null;
@@ -75,6 +84,7 @@ public class CompProtocol extends ProtocolHelper {
     @SubscribeMapping("/comp/coin/{rid}")
     @SendTo("/comp/coin/{rid}")
     public List<PLCoin> requestCoin(SimpMessageHeaderAccessor head, WSCoinRequest request, @DestinationVariable int rid) throws Exception {
+        if (!isCompInitialized) { compServ.initialize(); }
         UserCore sender = sender(head);
 
         List<PLCoin> req = request.getReq();

@@ -265,6 +265,7 @@ aside .player1{
 #container #side li .gold{
     width:40%;
     margin-left:27%;
+    margin-bottom: 70px;
 }
 #container #side li img{
     width:100%;
@@ -288,12 +289,13 @@ aside .player1{
 
 /*컨테이너 상단*/
 #container #main{
-    width:95%;
+    width:80%;
     height:100%;
-    position:absolute;
+    /*position:absolute;*/
     top:0;
-    left:2.5%;
-/*    background:yellow;*/
+    left:2%;
+    float: right;
+    margin-right: 2%;
 }
 #container #main .mHead{
 /*    background:blue;*/
@@ -304,7 +306,7 @@ aside .player1{
 }
 #container #main .mHead .turn{
 /*    background:red;*/
-    width:15%;
+    width:25%;
 /*    height:100%;*/
     float:left;
     text-align: center;
@@ -416,6 +418,7 @@ aside .player1{
 }
 #container #main .mVisual .mainCard article img{
     width:100%;
+    border-radius: 7%;
 }
 
 
