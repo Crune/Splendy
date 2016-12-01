@@ -27,9 +27,6 @@ public interface CompService {
 	List<PLCoin> reqPickCoin(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid, GameRoom room);
 	List<PLCard> reqPickCard(PLCard reqGetCard, int uid, GameRoom room);
 
-	List<PLCard> checkNobleCard(GameRoom room, Map<Integer, Integer> supplyCoin);
-	PLCard checkPickCard(GameRoom room, PLCard reqGetCard);
-
 	boolean checkEnding(List<PLCard> reqGetCard);
     Map<Integer,Integer> scoring(List<PLCard> cards);
 

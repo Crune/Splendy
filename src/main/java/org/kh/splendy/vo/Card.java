@@ -2,6 +2,9 @@ package org.kh.splendy.vo;
 
 import lombok.Data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Data
 public class Card {
 	private int id;
@@ -18,8 +21,8 @@ public class Card {
 	private int point=0;
 	
 	private int white=0;
+    private int green=0;
 	private int blue=0;
-	private int green=0;
 	private int red=0;
 	private int black=0;
 	
@@ -48,5 +51,15 @@ public class Card {
 			setBlack(Integer.parseInt(code.substring(9)));
 		}
 		return this;
-	}	
+	}
+
+    public boolean isBAble(Map<Integer, Integer> yield) {
+
+        return false;
+    }
+
+    public boolean isBAble(Map<Integer, Integer> yield, Map<Integer, Integer> coins) {
+        Map<Integer, Integer> temp = new HashMap<>();
+	    return isBAble(temp);
+    }
 }

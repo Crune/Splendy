@@ -335,7 +335,7 @@ function google() {
         data:$("#googleForm").serialize(),
         dataType: 'text', 
         success:function(data){
-        	document.location.href="../../";
+        	document.location.href="http://spd.cu.cc/lobby";
         },error:function(request,status,error){
 			alert("로그인에 실패했습니다. 다시 시도해주세요.");
 		}
