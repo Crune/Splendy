@@ -461,3 +461,15 @@ footer .chat a{
     background:url(/img/foot_say.png) no-repeat;
 }
 
+
+
+#modal {
+	display: none;
+	background-color: #FFFFFF;
+	position: absolute;
+	top: 300px;
+	left: 200px;
+	padding: 10px;
+	border: 2px solid #E2E2E2;
+	z-Index: 9999;
+}
