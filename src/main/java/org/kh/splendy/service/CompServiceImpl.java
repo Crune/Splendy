@@ -1,6 +1,8 @@
 package org.kh.splendy.service;
 
 import java.util.*;
+
+import lombok.Getter;
 import org.kh.splendy.vo.*;
 import org.kh.splendy.mapper.*;
 
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @EnableTransactionManagement
@@ -16,35 +19,35 @@ public class CompServiceImpl implements CompService {
 
     @Autowired private SocketService sock;
 
-	@Autowired private CardMapper cardMap;
-	@Autowired private CoinMapper coinMap;
+	@Autowired private CompMapper compMap;
 	@Autowired private RoomMapper roomMap;
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(CompServiceImpl.class);
 
-	private static List<Card> cardAll = new ArrayList<>();
-	private static List<Coin> coinAll = new ArrayList<>();
+	@Getter private List<Card> cardAll = new ArrayList<>();
+    @Getter private List<Coin> coinAll = new ArrayList<>();
 
-	private void init() {
-		if (cardAll.isEmpty()) {
-			try {
-				cardAll = cardMap.selectAll();
-				for (Card cur : cardAll) {
-					cur.parse();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if (coinAll.isEmpty()) {
-			try {
-				coinAll = coinMap.selectAll();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+    @Override
+	public void initialize() {
+        if (cardAll.isEmpty()) {
+            try {
+                cardAll = compMap.getDeck();
+                for (Card cur : cardAll) {
+                    cur.parse();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (coinAll.isEmpty()) {
+            try {
+                coinAll = compMap.getToken();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 	@Override
 	public Card getCard(int cid) {
@@ -66,61 +69,18 @@ public class CompServiceImpl implements CompService {
 		return null;
 	}
 	
-	@Override
-	public List<PLCoin> getNewCoins(int rid) {
-		init();
-
-		int startAmount = 0;
-
-		Room room = roomMap.read(rid);
-		int plLimits = room.getPlayerLimits();
-		startAmount = plLimits+2;
-		if (plLimits == 4) {
-			startAmount++;
-		}
-		
-		List<PLCoin> coins = new ArrayList<PLCoin>();
-		for (Coin coin : coinAll) {
-			PLCoin rst = new PLCoin();
-			rst.setRm_id(rid);
-			rst.setCn_id(coin.getId());
-			rst.setU_id(0);
-			if (coin.getId() == 6) {
-				rst.setCn_count(5);
-			} else {
-				rst.setCn_count(startAmount);
-			}
-			coins.add(rst);
-		}
-
-		return coins;
+	@Override public List<PLCoin> getCoinsInDB(int rid) { return compMap.getCoins(rid); }
+	@Override public void setCoinsInDB(List<PLCoin> coins) {
+		compMap.updateCoins(coins);
 	}
-	
-	@Override
-	public List<PLCard> getNewDeck(int rid) {
-		init();
-
-		List<PLCard> cards = new ArrayList<>();
-
-		for (Card card : cardAll) {
-			PLCard rst = new PLCard();
-			rst.setRm_id(rid);
-			rst.setCd_id(card.getId());
-			rst.setN_hold(0);
-			rst.setU_id(0);
-
-			cards.add(rst);
-		}
-		Collections.shuffle(cards);
-
-		return cards;
+	@Override public List<PLCard> getCardsInDB(int rid) {
+		return compMap.getCards(rid);
 	}
+	@Override public void setCardsInDB(List<PLCard> cards) { compMap.updateCards(cards); }
 
     @Override
     public List<PLCard> reqPickCard(PLCard reqGetCard, int uid, GameRoom room) {
-        init();
 		WSComp result = null;
-
 
         // TODO 해당 카드를 가져올 조건 검증
         PLCard resultCard = checkPickCard(room, reqGetCard);
@@ -143,6 +103,8 @@ public class CompServiceImpl implements CompService {
             sock.send("/comp/coin/" + room.getRoom(), result.getCoins());
         }
 
+        setCardsInDB(result.getCards());
+        setCoinsInDB(result.getCoins());
         // 결과 카드변경 전체 전송
 	    return result.getCards();
     }
@@ -169,7 +131,7 @@ public class CompServiceImpl implements CompService {
         return isGameEnd;
     }
 
-    @Override
+    @Override @Transactional
 	public List<PLCoin> reqPickCoin(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid, GameRoom room) {
         List<PLCoin> result = new ArrayList<>();
 
@@ -250,21 +212,10 @@ public class CompServiceImpl implements CompService {
 			rst = ((isAct1Valid || isAct2Valid) && isHasCoinValid);
 			if (rst) {
                 result = room.pickCoins(reqGetCoins, reqDrawCoins);
+                setCoinsInDB(result);
 			}
 		}
 		return result;
-	}
-
-	@Override
-	public void initCompDB(int rid) {
-		Room room = roomMap.read(rid);
-		int plLimits = room.getPlayerLimits();
-	}
-
-	@Override
-	public List<Card> getCards() {
-		init();
-		return cardAll;
 	}
 
 	@Override

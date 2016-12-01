@@ -17,8 +17,18 @@
 		<result column="AT_REG_DATE" property="at_reg_date" javaType="java.sql.Timestamp" />
 	</resultMap>
 
+	<resultMap id="CommentVO" type="org.kh.splendy.vo.Comment">
+		<result column="U_ID" property="u_id" javaType="int" />
+		<result column="AT_ID" property="at_id" javaType="int" />
+		<result column="BD_ID" property="bd_id" javaType="int" />
+		<result column="CM_CONT" property="cm_cont" javaType="java.lang.String" />
+		<result column="CM_PASS" property="cm_pass" javaType="java.lang.String" />
+		<result column="RE_ID" property="re_id" javaType="int" />
+		
+	</resultMap>
+	
 	<select id="getList" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
-		select * from KH_ARTICLE
+		SELECT * FROM KH_ARTICLE
 	</select>
 	
 	<select id="getDetail" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
@@ -83,7 +93,7 @@
     	</selectKey>
         
     	INSERT INTO KH_COMMENT(AT_ID, RE_ID, BD_ID, U_ID, CM_CONT, CM_PASS)
-    	VALUES (#{at_id, jdbcType=INTEGER}, #{re_id, jdbcType=INTEGER},1, 1, #{cm_cont, jdbcType=VARCHAR}, #{cm_pass, jdbcType=VARCHAR})
+    	VALUES (#{at_id, jdbcType=INTEGER}, #{re_id, jdbcType=INTEGER}, #{bd_id, jdbcType=INTEGER}, #{u_id, jdbcType=INTEGER}, #{cm_cont, jdbcType=VARCHAR}, #{cm_pass, jdbcType=VARCHAR})
 	</insert>
 
 	<update id="updateReply" parameterType="org.kh.splendy.vo.Comment">
@@ -91,5 +101,21 @@
 	       SET CM_CONT=#{cm_cont} 
 	     WHERE RE_ID=#{re_id}
 	</update>
+	
+	<select id="replyList" parameterType="org.kh.splendy.vo.Comment" resultMap="CommentVO">
+	<![CDATA[
+        SELECT
+            AT_ID,          
+            BD_ID,
+            U_ID,
+            CM_CONT,
+            CM_PASS,
+            RE_ID
+        FROM
+            KH_COMMENT
+        WHERE
+            AT_ID = #{at_id}        
+    ]]>
+	</select> 
 	 
 </mapper>

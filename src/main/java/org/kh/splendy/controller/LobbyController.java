@@ -74,6 +74,7 @@ public class LobbyController {
 		} else {
 			//user = serv.initPlayer(user, 0); // 플레이어 인증 정보 생성
 			session.setAttribute("user", user);
+
 			int lastRoom = player.getLastRoomAndInit(user.getId());
 			session.setAttribute("rid", lastRoom);
 			if (lastRoom > 0) {

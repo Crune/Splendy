@@ -36,4 +36,8 @@ public interface BoardService {
 	void insertReply(@ModelAttribute("comment") Comment comment) throws Exception;
 	
 	void updateReply(@ModelAttribute("comment") Comment comment) throws Exception;
+	
+	List<Comment> replyList(int at_id) throws Exception;
+	
 }
+

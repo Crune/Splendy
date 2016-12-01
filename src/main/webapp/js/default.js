@@ -38,39 +38,3 @@ $(document).ready(function() {
 	});
 });
 */
-
-
-function newMap() {
-    var map = {};
-    map.value = {};
-    map.getKey = function(id) {
-        return "k_"+id;
-    };
-    map.put = function(id, value) {
-        var key = map.getKey(id);
-        map.value[key] = value;
-    };
-    map.contains = function(id) {
-        var key = map.getKey(id);
-        if(map.value[key]) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-    map.get = function(id) {
-        var key = map.getKey(id);
-        if(map.value[key]) {
-            return map.value[key];
-        }
-        return null;
-    };
-    map.remove = function(id) {
-        var key = map.getKey(id);
-        if(map.contains(id)){
-            map.value[key] = undefined;
-        }
-    };
-
-    return map;
-}
