@@ -1,10 +1,8 @@
 package org.kh.splendy.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
 import org.kh.splendy.vo.Card;
 import org.kh.splendy.vo.Coin;
 import org.kh.splendy.vo.GameRoom;
@@ -13,7 +11,7 @@ import org.kh.splendy.vo.PLCoin;
 
 public interface CompService {
 
-    void initialize();
+    CompService initialize();
 
     Card getCard(int cid);
 	Coin getCoin(int cid);
@@ -34,4 +32,6 @@ public interface CompService {
 
 	boolean checkEnding(List<PLCard> reqGetCard);
     Map<Integer,Integer> scoring(List<PLCard> cards);
+
+    Map<Integer, Integer> calcYield(int reqUid, List<PLCard> cards);
 }

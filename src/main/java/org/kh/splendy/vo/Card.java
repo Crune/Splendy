@@ -11,6 +11,9 @@ public class Card {
 	private String info="";
 	
 	private String type="ZZZZ00000";
+
+	private int yieldType = 0;
+
 	private int lv=0;
 	private int point=0;
 	
@@ -24,8 +27,19 @@ public class Card {
 	public Card parse() {
 		setType(code.substring(0, 4));
 		if (getType().length() == 9) {
-			String templv = getType().substring(2, 1);
-			setLv((templv.equals("B")) ? 4 : Integer.parseInt(templv) - 1);
+			String temp = getType().substring(2, 1);
+			setLv((temp.equals("B")) ? 4 : Integer.parseInt(temp) - 1);
+
+            temp = getType().substring(3, 4);
+            int yield =0;
+            yield = temp.toUpperCase().equals("W")?1:yield;
+            yield = temp.toUpperCase().equals("G")?2:yield;
+            yield = temp.toUpperCase().equals("B")?3:yield;
+            yield = temp.toUpperCase().equals("R")?4:yield;
+            yield = temp.toUpperCase().equals("K")?5:yield;
+            yield = temp.toUpperCase().equals("L")?6:yield;
+            setYieldType(yield);
+
 			setPoint(Integer.parseInt(code.substring(4, 5)));
 			setWhite(Integer.parseInt(code.substring(5, 6)));
 			setBlue(Integer.parseInt(code.substring(6, 7)));

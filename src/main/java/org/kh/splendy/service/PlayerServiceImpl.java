@@ -148,7 +148,7 @@ public class PlayerServiceImpl implements PlayerService {
                 playerMap.setIsIn(uid, 0, 0);
 
                 // 게임 내부 입장 처리
-                game.refreshPlayers(rid);
+                game.initRoom(rid);
 
                 if (!isInitial) {
                     // 계정 입장 처리
@@ -184,7 +184,7 @@ public class PlayerServiceImpl implements PlayerService {
                 profMap.setLastRoom(uid, 0);
 
                 // 게임 내부 퇴장 처리
-                game.refreshPlayers(rid);
+                game.initRoom(rid);
 
                 if (playerMap.getInRoomPlayerByRid(rid).size() == 0) {
                     roomServ.deleteRoom(rid);

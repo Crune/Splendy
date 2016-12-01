@@ -36,11 +36,12 @@ public class GameServiceImpl implements GameService {
         return initRoom(rid);
     }
 
-    private GameRoom initRoom(int rid) {
+    @Override
+    public GameRoom initRoom(int rid) {
+        comp.initialize();
         if (rooms.get(rid) == null && rid > 0) {
             Room reqRoom = roomMap.read(rid);
             if (reqRoom != null) {
-
                 GameRoom room = new GameRoom();
                 room.setRoom(rid);
                 room.setLimit(reqRoom.getPlayerLimits());
@@ -48,7 +49,6 @@ public class GameServiceImpl implements GameService {
                 room.setTurn(0);
                 rooms.put(room.getRoom(), room);
 
-                //comp.initCompDB(rid);
                 refreshPlayers(rid);
                 refreshComponents(rid);
             }
@@ -96,7 +96,7 @@ public class GameServiceImpl implements GameService {
 
         for (WSPlayer cur : leftPlayers) {
             int uid = cur.getUid();
-            if (rooms.get(rid).isPlaying()) {
+                if (rooms.get(rid).isPlaying()) {
                 // 만약 게임 진행 중이라면 감점 처리한다.
                 if (!comp.checkEnding(rooms.get(rid).getCards())) {
                     int rate = profMap.read(uid).getRate() -100;

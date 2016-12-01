@@ -82,7 +82,7 @@ public class LoginController {
 		return "success";
 	}
 	
-	/** FIXME 민정아 지워라 */
+	//** FIXME 민정아 지워라 *//*
 	@RequestMapping("/login/naver_loginPro")
 	public String naverLoginPro(HttpServletRequest request){
 		
