@@ -14,6 +14,8 @@ public interface GameService {
 
     GameRoom getRoom(int rid);
 
+    GameRoom initRoom(int rid);
+
     void refreshPlayers(int rid);
 
     void refreshComponents(int rid);
