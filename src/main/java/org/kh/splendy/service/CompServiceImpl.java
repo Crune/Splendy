@@ -29,7 +29,7 @@ public class CompServiceImpl implements CompService {
     @Getter private List<Coin> coinAll = new ArrayList<>();
 
     @Override
-	public void initialize() {
+	public CompService initialize() {
         if (cardAll.isEmpty()) {
             try {
                 cardAll = compMap.getDeck();
@@ -47,6 +47,7 @@ public class CompServiceImpl implements CompService {
                 e.printStackTrace();
             }
         }
+        return this;
     }
 
 	@Override

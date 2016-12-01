@@ -37,6 +37,7 @@ public class GameServiceImpl implements GameService {
     }
 
     private GameRoom initRoom(int rid) {
+        comp.initialize();
         if (rooms.get(rid) == null && rid > 0) {
             Room reqRoom = roomMap.read(rid);
             if (reqRoom != null) {
@@ -48,7 +49,6 @@ public class GameServiceImpl implements GameService {
                 room.setTurn(0);
                 rooms.put(room.getRoom(), room);
 
-                //comp.initCompDB(rid);
                 refreshPlayers(rid);
                 refreshComponents(rid);
             }
