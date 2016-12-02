@@ -27,10 +27,6 @@
 		
 	</resultMap>
 	
-	<select id="getList" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
-		SELECT * FROM KH_ARTICLE
-	</select>
-	
 	<select id="getDetail" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
     <![CDATA[
         SELECT

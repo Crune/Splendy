@@ -53,7 +53,8 @@ public interface BoardMapper {
 	*/
 	// SQL query in xml
 		
-		public List<Article> getList(String bName) throws Exception;		
+		@Select("select * from KH_ARTICLE WHERE BD_ID=#{bd_id} order by AT_ID desc")
+		public List<Article> getList(int bd_id) throws Exception;		
 /*
  		@Results(id ="article", value = {
 			@Result(property = "u_id", column = "U_ID"),

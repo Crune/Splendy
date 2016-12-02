@@ -37,11 +37,9 @@ public class BoardServiceImpl implements BoardService {
 	 * boardMap 이용하여 작성
 	 */
 	@Override
-	public List<Article> getList(String bName) throws Exception {
-		
-		List<Article> article = boardMap.getList(bName);
+	public List<Article> getList(int bd_id) throws Exception {
+		List<Article> article = boardMap.getList(bd_id);
 		return article;
-		
 	}
 	
 	@Override

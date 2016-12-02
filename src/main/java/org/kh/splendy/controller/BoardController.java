@@ -47,6 +47,8 @@ public class BoardController {
 		return null;
 	}*/
 	
+	
+	
 	@RequestMapping(value = "/list", method = {RequestMethod.GET,RequestMethod.POST})
 	/** 게시글 목록
 	 * @param bName 게시판이름
@@ -55,8 +57,7 @@ public class BoardController {
 		/** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
 		 * - bName이 설정되어 있지 않을경우 default로 설정
-		 */		
-		
+		 */
 		
 		String boardName = "default";
 		if (bName==null) {			
@@ -84,7 +85,7 @@ public class BoardController {
 	    map.put("end", endRow);
 	
         if (count > 0) {
-            article = boardServ.getList(bName);
+            /*article = boardServ.getList(bName);*/
         } else {
         	article = Collections.EMPTY_LIST;
         }
@@ -102,7 +103,6 @@ public class BoardController {
 		model.addAttribute("article", article);
 		
 		return "board/list";
-		
 	}
 	
 

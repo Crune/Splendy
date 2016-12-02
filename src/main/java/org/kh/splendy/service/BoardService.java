@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 public interface BoardService {
 
-	List<Article> getList(String bName) throws Exception;
+	List<Article> getList(int bd_id) throws Exception;
 
 	Article getDetail(int at_id) throws Exception;
 	

@@ -300,7 +300,7 @@
                     <table>
                         <tr>
                             <input type="hidden" class="form-control" name="email" id="email" value="${user.email}" />
-                            <td>비밀번호&nbsp;</td>
+                            <td width="70">비밀번호&nbsp;</td>
                             <td><input type="password" name="password"
                                        class="form-control" id="password" /></td>
                         </tr>

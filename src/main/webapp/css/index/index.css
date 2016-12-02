@@ -10,12 +10,13 @@
 }
 .index-inner-frame {
 }
-.index-image-frame {
-	background: transparent url(/img/work/index-img-01.png) no-repeat;
+.index-image-frame { 
+	background: transparent url(/img/work/avengers.png) no-repeat;
+	background-size: 926px 480px;
 	width: 1024px;
 	height: 700px;
 	position: relative;
-	background-position-y: 127px;
+	background-position-y: 135px;
 	background-position-x: 47px;
 }
 .index-right-frame {
