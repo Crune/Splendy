@@ -74,7 +74,7 @@ public class PlayerServiceImpl implements PlayerService {
         pl.setRoom(rid);
         sock.removeConnectors(pl);
         try {
-            if (!checkConnected(uid)) {
+            if (!checkConnected(uid, rid)) {
                 left(uid, rid);
             }
         } catch (InterruptedException e) {
@@ -84,8 +84,10 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Async
-    public boolean checkConnected(int uid) throws InterruptedException {
-        Thread.sleep(1000 * 30);
+    public boolean checkConnected(int uid, int rid) throws InterruptedException {
+        if (rid>0) {
+            Thread.sleep(1000 * 30);
+        }
         if (sock.getConnectors().containsKey(uid)) {
             return true;
         } else  {

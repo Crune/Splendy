@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public interface CompMapper {
 
-    @Results(id = "cardResult", value = {
+    @Results(id = "card", value = {
             @Result(property = "id", column = "CD_ID"),
             @Result(property = "code", column = "CD_TYPE"),
             @Result(property = "name", column = "CD_NAME"),

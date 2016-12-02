@@ -19,12 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web
-			.ignoring()
-				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**")
-				.antMatchers("/naver_loginPro**")
-				.antMatchers("/login/**")
-				.antMatchers("/socket/**", "/socket**");
+		web.ignoring().antMatchers("/css/**", "/js/**", "/img/**");
 	}
 	/**
 	 * permitAll() -> 모두 접근 가능
@@ -48,11 +43,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				
 			.authorizeRequests()
 				.antMatchers("/").permitAll()
-				.antMatchers("/user/**").permitAll()
-				.antMatchers("/prof/**").permitAll()
+				.antMatchers("/webjars/**", "/webjars**").permitAll()
+				.antMatchers("/user/**", "/user**").permitAll()
+				.antMatchers("/prof/**", "/prof**").permitAll()
 				.antMatchers("/lobby/**", "/lobby**").permitAll()
 				.antMatchers("/game/**", "/game**").permitAll()
 				.antMatchers("/bbs/**", "/bbs**").permitAll()
+				.antMatchers("/login/**", "/login**").permitAll()
+				.antMatchers("/naver_loginPro/**", "/naver_loginPro**").permitAll()
+				.antMatchers("/socket/**", "/socket**").permitAll()
 				.antMatchers("/admin/**", "/admin**").hasAuthority("admin")
 				
 			.anyRequest()

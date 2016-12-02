@@ -38,9 +38,4 @@ public class GameContorller {
 			}
 		}
 	}
-	
-	@RequestMapping("/canvas")
-	public String canvas() {
-		return "canvas";
-	}
 }

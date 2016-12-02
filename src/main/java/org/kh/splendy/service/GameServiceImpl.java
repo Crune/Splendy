@@ -23,6 +23,7 @@ public class GameServiceImpl implements GameService {
     @Autowired private CompService comp;
     @Autowired private SocketService sock;
 
+    @Autowired private CompMapper compMap;
     @Autowired private RoomMapper roomMap;
     @Autowired private PlayerMapper plMap;
     @Autowired private UserInnerMapper innerMap;
@@ -115,8 +116,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void refreshComponents(int rid) {
-        rooms.get(rid).getCards().addAll(comp.getCardsInDB(rid));
-        rooms.get(rid).getCoins().addAll(comp.getCoinsInDB(rid));
+        rooms.get(rid).getCards().addAll(compMap.getCards(rid));
+        rooms.get(rid).getCoins().addAll(compMap.getCoins(rid));
     }
 
     private void startingGame(int rid) {

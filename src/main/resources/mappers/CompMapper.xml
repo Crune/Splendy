@@ -11,7 +11,7 @@
 		<result column="CN_COUNT"		property="cn_count"			javaType="int" />
 	</resultMap>
 	<resultMap id="pl_card" type="org.kh.splendy.vo.PLCard">
-		<result column="CN_ID"			property="cn_id"			javaType="int" />
+		<result column="CD_ID"			property="cd_id"			javaType="int" />
 		<result column="RM_ID"			property="rm_id"			javaType="int" />
 		<result column="U_ID"			property="u_id"				javaType="int" />
 		<result column="N_HOLD"			property="n_hold"			javaType="int" />
