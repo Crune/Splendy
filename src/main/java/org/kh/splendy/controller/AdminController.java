@@ -1,6 +1,12 @@
 package org.kh.splendy.controller;
 
+import java.io.Console;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +24,7 @@ import org.kh.splendy.vo.UserCore;
 import org.kh.splendy.vo.UserInner;
 import org.kh.splendy.vo.UserProfile;
 import org.kh.splendy.vo.WSMsg;
+import org.kh.splendy.vo.WSPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -148,8 +155,13 @@ public class AdminController {
 		log.info("admin access delete-form");
 		List<Msg> msg = chatServ.read_all();
 		List<Room> room = roomServ.getCurrentRooms();
+		Map<Integer, WSPlayer> conn = sockServ.getConnectors();
+		Collection<WSPlayer> player = conn.values();
+		List<Integer> connect = innerServ.getUserRecord();
 		model.addAttribute("msg", msg);
 		model.addAttribute("room", room);
+		model.addAttribute("player", player);
+		model.addAttribute("connect", connect);
 		return "admin/deleteForm";
 	}
 	@RequestMapping(
@@ -184,7 +196,29 @@ public class AdminController {
 		}
 		return result;
 	}
-	
+	@RequestMapping(
+			value = "/admin/player_delete",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public @ResponseBody void playerDelete(@RequestParam("connectID") List<String> connectID, @RequestParam("recordID") List<String> recordID) throws Exception {
+
+		List<String> connList = new ArrayList<String>(connectID);
+		List<String> recoList = new ArrayList<String>(recordID);
+		
+		for(String conn:connList){
+			for(String record:recoList){
+				String conn_value = conn;
+				String record_value = record;
+				if(conn_value.equals(record_value)){
+					if(recoList.remove(record_value)){
+						log.info(record_value+"제거");
+						break;
+					}
+				}
+			}
+		}
+		innerServ.userDisconnect(recoList);
+	}
 	
 	@RequestMapping("/admin/notice")
 	public String adminNotice(HttpSession session){

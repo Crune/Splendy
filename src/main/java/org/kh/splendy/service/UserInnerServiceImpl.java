@@ -1,5 +1,7 @@
 package org.kh.splendy.service;
 
+import java.util.List;
+
 import org.kh.splendy.mapper.UserInnerMapper;
 import org.kh.splendy.vo.UserInner;
 import org.slf4j.Logger;
@@ -28,4 +30,20 @@ public class UserInnerServiceImpl implements UserInnerService {
 		UserInner inner = innerMap.read(id);
 		return inner;
 	}
+
+	@Override
+	public List<Integer> getUserRecord() {
+		List<Integer> list = innerMap.getUserRecord();
+		return list;
+	}
+
+	@Override
+	public void userDisconnect(List<String> list) {
+		for(String result:list){
+			int id = new Integer(result);
+			innerMap.userDisconnect(id);
+		}
+	}
+
+
 }

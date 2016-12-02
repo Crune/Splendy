@@ -10,11 +10,10 @@
 	<meta name="keywords" content="">
 	<link rel="stylesheet" href="/css/ingame/main.css">
 	<link rel="stylesheet" href="/css/ingame/chat.css">
-	<link rel='stylesheet' href='/css/default.css'>
-	<!-- Bootstrap's Suck! 적용시 화면 깨짐 - 윤
+	<link rel="stylesheet" href="/css/ingame/coin_modal.css">
+	<link rel='stylesheet' href='/css/default.css'><!-- 
 	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
-	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap-theme.min.css' />
-	-->
+	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap-theme.min.css' /> -->
 	<style type="text/css">
 		body { _behavior: url(/js/iepngfix.htc) }
 	</style>
@@ -87,12 +86,12 @@
 		</aside>
 		<section id="container" class="clearFix">
 		<ul id="side">
-			<li id="cn_id_6"><p class="gold"><img src="/img/yellow.png" alt="노랑메인보석"></p><span>0</span></li>
-			<li id="cn_id_1"><img src="/img/white.png" alt="하얀메인보석"><span>0</span></li>
-			<li id="cn_id_2"><img src="/img/green.png" alt="초록메인보석"><span>0</span></li>
-			<li id="cn_id_3"><img src="/img/blue.png" alt="파랑메인보석"><span>0</span></li>
-			<li id="cn_id_4"><img src="/img/red.png" alt="빨간메인보석"><span>0</span></li>
-			<li id="cn_id_5"><img src="/img/purple.png" alt="보라메인보석"><span>0</span></li>
+			<li id="cn_id_6" class="cn"><p class="gold"><img src="/img/yellow.png" alt="노랑메인보석"></p><span>0</span></li>
+			<li id="cn_id_1" class="cn"><img src="/img/white.png" alt="하얀메인보석"><span>0</span></li>
+			<li id="cn_id_2" class="cn"><img src="/img/green.png" alt="초록메인보석"><span>0</span></li>
+			<li id="cn_id_3" class="cn"><img src="/img/blue.png" alt="파랑메인보석"><span>0</span></li>
+			<li id="cn_id_4" class="cn"><img src="/img/red.png" alt="빨간메인보석"><span>0</span></li>
+			<li id="cn_id_5" class="cn"><img src="/img/purple.png" alt="보라메인보석"><span>0</span></li>
 			<p class="new_jewel add_jewel_1"><img src="/img/yellow.png"><span>+</span></p>
             <p class="new_jewel add_jewel_2"><img src="/img/yellow.png"><span>+</span></p>
             <p class="new_jewel add_jewel_3"><img src="/img/yellow.png"><span>+</span></p>
@@ -124,7 +123,7 @@
 				</ul>
 				<div class="mainCard">
 					<div class="cardBox cardBox1">
-						<article><img src="/img/cards/lev1_Red_W2G1K2.png" alt=""></article>
+						<article><img id="modal_btn" src="/img/cards/lev1_Red_W2G1K2.png" alt=""></article>
 						<article><img src="/img/cards/lev2_Black_B1G4R2.png" alt=""></article>
 						<article><img src="/img/cards/lev3_Black_G3R6K3.png" alt=""></article>
 						<article><img src="/img/cards/lev1_White_W3B1K1.png" alt=""></article>
@@ -149,6 +148,23 @@
 			 
 		</div>
 		<input type="text" id="chat_input" size="74px"/>
+
+		<div id="card_modal">
+			<h3>Test Modal</h3>
+			<p>이 창은 모달창입니다.</p>
+			<button id="confirm_button">확인</button>
+		</div>
+		
+		<div id="coin_modal">
+			<ul id="#side_modal">
+			<li id="cn_modal_id_1" class="cn_modal"><img src="/img/white.png" alt="하얀메인보석"><span>0</span></li>
+			<li id="cn_modal_id_2" class="cn_modal"><img src="/img/green.png" alt="초록메인보석"><span>0</span></li>
+			<li id="cn_modal_id_3" class="cn_modal"><img src="/img/blue.png" alt="파랑메인보석"><span>0</span></li>
+			<li id="cn_modal_id_4" class="cn_modal"><img src="/img/red.png" alt="빨간메인보석"><span>0</span></li>
+			<li id="cn_modal_id_5" class="cn_modal"><img src="/img/purple.png" alt="보라메인보석"><span>0</span></li>
+		</ul>
+			<button id="coin_confirm_btn">PICK</button>
+		</div>
 	</div>
 	<footer class="clearFix">
 		<p class="users"><a href="#">x 10</a></p>
@@ -169,5 +185,6 @@
 	<script type='text/javascript' src="/js/ingame/oncomp.js"></script>
 	<script type='text/javascript' src="/js/ingame/onplayer.js"></script>
 	<script type='text/javascript' src="/js/ingame/onroom.js"></script>
+	<script type='text/javascript' src="/js/ingame/popup.js"></script>
 </scripts>
 </html>

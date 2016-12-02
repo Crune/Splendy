@@ -31,7 +31,6 @@ public class GameServiceImpl implements GameService {
 
     private static final Map<Integer, GameRoom> rooms = new HashMap<>();
 
-    @Override public Map<Integer, GameRoom> getRooms() { return rooms; }
     @Override public GameRoom getRoom(int rid) {
         return initRoom(rid);
     }
@@ -93,7 +92,6 @@ public class GameServiceImpl implements GameService {
         for (WSPlayer cur : joinPlayers) {
 
         }
-
         for (WSPlayer cur : leftPlayers) {
             int uid = cur.getUid();
                 if (rooms.get(rid).isPlaying()) {
@@ -111,10 +109,7 @@ public class GameServiceImpl implements GameService {
 
         // 인원수가 충족되면 게임 시작!
         if (rooms.get(rid).getLimit() == newPlayers.size()) {
-            roomMap.setStart(rid, new Date(System.currentTimeMillis()));
-            sock.sendRoom(rid, "start", "게임 시작!");
-            int nextActor = rooms.get(rid).nextActor();
-            sock.sendRoom(rid, "actor", nextActor);
+            startingGame(rid);
         }
     }
 
@@ -124,16 +119,19 @@ public class GameServiceImpl implements GameService {
         rooms.get(rid).getCoins().addAll(comp.getCoinsInDB(rid));
     }
 
-    @Override
-    public GameRoom readRoom(int rid) {
-        initRoom(rid);
-        GameRoom room = rooms.get(rid);
-        return room;
+    private void startingGame(int rid) {
+        roomMap.setStart(rid, new Date(System.currentTimeMillis()));
+        sock.sendRoom(rid, "start", "게임 시작!");
+        comp.startPresent(rid);
+
+        int nextActor = rooms.get(rid).nextActor();
+        sock.sendRoom(rid, "actor", nextActor);
     }
 
     @Override @Transactional
-    public List<UserProfile> endingGame(int rid, Map<Integer, Integer> score) {
+    public void endingGame(int rid) {
         initRoom(rid);
+        Map<Integer, Integer> score = comp.scoring(rid);
         int winner = 0, winnerScore = 0;
         for (int uid : score.keySet()) {
             int curScore = score.get(uid);
@@ -160,8 +158,8 @@ public class GameServiceImpl implements GameService {
             for (int uid : score.keySet()) {
                 result.add(profMap.read(uid));
             }
+            sock.sendRoom(rid, "end", result);
         }
-        return result;
     }
 
 }
