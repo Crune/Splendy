@@ -6,6 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="google-signin-scope" content="profile email">
 	<meta name="google-signin-client_id" content="768530434374-au3vrrllnhr3a96h3i6utec28filmqcn.apps.googleusercontent.com">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<title>Splendy - 환영합니다!</title>
 	<link rel='stylesheet' href='/css/index/index.css'>
 	<link rel='stylesheet' href='/css/default.css'>
@@ -18,9 +19,10 @@
 	<script type='text/javascript' src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
 	<script type='text/javascript' src="/webjars/handlebars/4.0.5/handlebars.js"></script>
 
-	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
+	<script type='text/javascript' src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
 	<script type='text/javascript' src="https://apis.google.com/js/api:client.js"></script>
 	<script type='text/javascript' src="https://apis.google.com/js/platform.js" async defer></script>
+	<script type='text/javascript' src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 	<script>
         var msg = "${msg}";
@@ -83,6 +85,7 @@
 								<input id="btn_join" class="btn btn-default btn_join" type="button" value="회원가입" />
 								<div class="f-login" ><img src="/img/sns/facebook.png" id="btn_facebook" title="페이스북 아이디로 로그인"/></div>
 								<div class="g-login" class="customGPlusSignIn"><img src="/img/sns/google.png" title="구글 아이디로 로그인" id="btn_google" /></div>
+								<div class="k-login"><img src="/img/sns/kakao.png" id="btn_kakao" title="카카오톡 아이디로 로그인"/></div>
 								<div id="naver_id_login"></div>
 							</form>
 							<form name="googleForm" id="googleForm" method="post">
@@ -136,7 +139,7 @@
 <script type="text/javascript">
     var naver_id_login = new naver_id_login("iM6rVSYTz69Duz5F99Mp", "http://spd.cu.cc/login/naver_loginPro");
     var state = naver_id_login.getUniqState();
-    naver_id_login.setButton("green", 1, 65);
+    naver_id_login.setButton("green", 1, 40);
     naver_id_login.setDomain("http://spd.cu.cc/");
     naver_id_login.setState(state);
     naver_id_login.setPopup();

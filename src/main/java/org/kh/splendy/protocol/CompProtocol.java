@@ -2,7 +2,12 @@ package org.kh.splendy.protocol;
 
 import org.kh.splendy.config.assist.ProtocolHelper;
 import org.kh.splendy.service.CompService;
-import org.kh.splendy.vo.*;
+import org.kh.splendy.vo.Card;
+import org.kh.splendy.vo.PLCard;
+import org.kh.splendy.vo.PLCoin;
+import org.kh.splendy.vo.UserCore;
+import org.kh.splendy.vo.UserProfile;
+import org.kh.splendy.vo.WSCoinRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +29,16 @@ public class CompProtocol extends ProtocolHelper {
 
     @Autowired private CompService compServ;
 
-    private void sendNext(int rid) {
+    private static boolean isCompInitialized = false;
 
+    private boolean isCanActing(int rid, int uid) {
+         boolean rst = game.getRoom(rid).isMyTurn(uid) && game.getRoom(rid).isPlaying() && !game.getRoom(rid).isHalted();
+         return  rst;
+    }
+
+    private void sendNext(int rid) {
         // 현재 점수를 계산
-        Map<Integer, Integer> score  = compServ.scoring(game.getRoom(rid).getCards());
+        Map<Integer, Integer> score  = compServ.scoring(rid);
         sock.sendRoom(rid, "score", score);
 
         // 게임 종료 여부를 계산
@@ -39,57 +50,50 @@ public class CompProtocol extends ProtocolHelper {
         }
         if (isGameEnd) {
             // 게임 종료 처리
-            List<UserProfile> result = game.endingGame(rid, score);
-            sock.sendRoom(rid, "end", result);
+            game.endingGame(rid);
         } else {
             // 다음 사람으로 넘김
-            int nextActor  = game.getRoom(rid).nextActor(sock);
+            int nextActor  = game.getRoom(rid).nextActor();
             sock.sendRoom(rid, "actor", nextActor);
         }
     }
 
     @MessageMapping("/comp/cards")
     public void reqCards(SimpMessageHeaderAccessor head) throws Exception {
+        if (!isCompInitialized) { compServ.initialize(); }
         UserCore sender = sender(head);
-        List<Card> cards = compServ.getCards();
+        List<Card> cards = compServ.getCardAll();
         sock.send(sender.getId(), "comp", "card", cards);
     }
 
-    @SubscribeMapping("/comp/card/{rid}")
-    @SendTo("/comp/card/{rid}")
-    public List<PLCard> requestCard(SimpMessageHeaderAccessor head, PLCard reqCard, @DestinationVariable int rid) throws Exception {
+    @MessageMapping("/comp/card/{rid}")
+    public void requestCard(SimpMessageHeaderAccessor head, PLCard reqCard, @DestinationVariable int rid) throws Exception {
+        if (!isCompInitialized) { compServ.initialize(); }
         UserCore sender = sender(head);
 
-        List<PLCard> rst = null;
-        if (rid(head) == rid && !game.getRoom(rid).isHalted()) {
-            // 카드 홀딩시 골드 코인 정보는 'CompService'가 '/comp/coin/{rid}'의 구독자들에게 제공
-            rst = compServ.reqPickCard(reqCard, sender.getId(), game.getRoom(rid));
-            if (rst != null) {
+        if (rid(head) == rid && isCanActing(rid, sender.getId())) {
+            if (reqCard.getCd_id() == 0) {
+                compServ.holdByDeck(sender.getId(), rid, compServ.getCard(reqCard.getCd_id()).getLv());
+                sendNext(rid(head));
+            } else if (compServ.reqPickCard(reqCard, sender.getId(), rid)) {
                 sendNext(rid(head));
             }
         }
-
-        return rst;
     }
 
-    @SubscribeMapping("/comp/coin/{rid}")
-    @SendTo("/comp/coin/{rid}")
-    public List<PLCoin> requestCoin(SimpMessageHeaderAccessor head, WSCoinRequest request, @DestinationVariable int rid) throws Exception {
+    @MessageMapping("/comp/coin/{rid}")
+    public void requestCoin(SimpMessageHeaderAccessor head, WSCoinRequest request, @DestinationVariable int rid) throws Exception {
+        if (!isCompInitialized) { compServ.initialize(); }
         UserCore sender = sender(head);
 
         List<PLCoin> req = request.getReq();
         List<PLCoin> draw = request.getDraw();
 
-        List<PLCoin> rst = null;
-
-        if (rid(head) == rid && !game.getRoom(rid).isHalted()) {
-            rst = compServ.reqPickCoin(req, draw, sender.getId(), game.getRoom(rid));
-            if (rst != null) {
+        if (rid(head) == rid && isCanActing(rid, sender.getId())) {
+            if (compServ.reqPickCoin(req, draw, sender.getId(), rid)) {
                 sendNext(rid(head));
             }
         }
-
-        return rst;
     }
 
 }

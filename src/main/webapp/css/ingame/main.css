@@ -265,6 +265,7 @@ aside .player1{
 #container #side li .gold{
     width:40%;
     margin-left:27%;
+    margin-bottom: 70px;
 }
 #container #side li img{
     width:100%;
@@ -288,12 +289,13 @@ aside .player1{
 
 /*컨테이너 상단*/
 #container #main{
-    width:95%;
+    width:80%;
     height:100%;
-    position:absolute;
+    /*position:absolute;*/
     top:0;
-    left:2.5%;
-/*    background:yellow;*/
+    left:2%;
+    float: right;
+    margin-right: 2%;
 }
 #container #main .mHead{
 /*    background:blue;*/
@@ -304,7 +306,7 @@ aside .player1{
 }
 #container #main .mHead .turn{
 /*    background:red;*/
-    width:15%;
+    width:25%;
 /*    height:100%;*/
     float:left;
     text-align: center;
@@ -355,14 +357,12 @@ aside .player1{
     width:100%;
 }
 #container #main .hero li:first-child{
-    margin-left:17%;
 }
 
 
 /*카드뒷면*/
 #container #main .mVisual{
 /*    background:green;*/
-    width:85%;
     height:75.7%;
     float:right; 
     position:relative;
@@ -416,6 +416,7 @@ aside .player1{
 }
 #container #main .mVisual .mainCard article img{
     width:100%;
+    border-radius: 7%;
 }
 
 
@@ -460,3 +461,15 @@ footer .chat a{
     background:url(/img/foot_say.png) no-repeat;
 }
 
+
+
+#modal {
+	display: none;
+	background-color: #FFFFFF;
+	position: absolute;
+	top: 300px;
+	left: 200px;
+	padding: 10px;
+	border: 2px solid #E2E2E2;
+	z-Index: 9999;
+}

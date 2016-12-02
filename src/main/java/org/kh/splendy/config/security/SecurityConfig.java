@@ -3,6 +3,7 @@ package org.kh.splendy.config.security;
 import org.kh.splendy.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		web
 			.ignoring()
 				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**")
+				.antMatchers("/naver_loginPro**")
+				.antMatchers("/login/**")
 				.antMatchers("/socket/**", "/socket**");
 	}
 	/**

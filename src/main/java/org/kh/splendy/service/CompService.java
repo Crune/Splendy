@@ -5,32 +5,49 @@ import java.util.Map;
 
 import org.kh.splendy.vo.Card;
 import org.kh.splendy.vo.Coin;
-import org.kh.splendy.vo.GameRoom;
 import org.kh.splendy.vo.PLCard;
 import org.kh.splendy.vo.PLCoin;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface CompService {
 
-    List<PLCoin> getNewCoins(int rid);
+    CompService initialize();
 
-    List<PLCard> getNewDeck(int rid);
-
-	List<PLCard> reqPickCard(PLCard reqGetCard, int uid, GameRoom room);
-
-	List<PLCard> checkNobleCard(GameRoom room, Map<Integer, Integer> supplyCoin);
-
-	PLCard checkPickCard(GameRoom room, PLCard reqGetCard);
-
-	boolean checkEnding(List<PLCard> reqGetCard);
-
-	List<PLCoin> reqPickCoin(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid, GameRoom room);
-
-    void initCompDB(int rid);
-	
-	Card getCard(int cid);
+    Card getCard(int cid);
 	Coin getCoin(int cid);
 
-	List<Card> getCards();
+    List<Card> getCardAll();
+    List<Coin> getCoinAll();
 
-    Map<Integer,Integer> scoring(List<PLCard> cards);
+	List<PLCoin> getCoinsInDB(int rid);
+    void setCoinsInDB(List<PLCoin> coins);
+    List<PLCard> getCardsInDB(int rid);
+    void setCardsInDB(List<PLCard> cards);
+
+	boolean reqPickCoin(List<PLCoin> reqGetCoins, List<PLCoin> reqDrawCoins, int uid, int rid);
+
+    @Transactional
+    void transCoin(int rid, int fromId, int toId, int cn_id, int amount);
+
+    void updateCoins(int rid, List<PLCoin> reqCoins);
+
+    @Transactional
+    void updateCards(int rid, List<PLCard> reqCard);
+
+    void cardPresent(int rid, int toUid, int lv, int amount);
+
+    @Transactional
+    void startPresent(int rid);
+
+    void holdByDeck(int uid, int rid, int lv);
+
+    boolean reqPickCard(PLCard reqGetCard, int uid, int rid);
+
+    boolean checkEnding(List<PLCard> reqGetCard);
+
+    Map<Integer, Integer> scoring(int rid);
+
+    Map<Integer, Integer> calcYield(int reqUid, List<PLCard> cards);
+
+    Map<Integer, Integer> getCoinAmount(int uid, List<PLCoin> coins);
 }

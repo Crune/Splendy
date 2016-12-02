@@ -45,7 +45,7 @@ public class SplendyAuthenticationProvider implements AuthenticationProvider {
 				hashedPassword = SplendyAdvice.getEncSHA256(password); // 사용자가 입력한 비밀번호를 암호화
 				if(!cus.getPassword().equals(hashedPassword)){ // 데이터베이스상의 암호와 비교
 					cus.setPassword(null); // 일치하지 않으면 null
-				} else { authorities = cus.getAuthorities(); }
+				} else { authorities = cus.getAuthorities(); } //getAuthorities = admin 혹은 user
 			} catch (Exception e) { e.printStackTrace(); }
 		}
 		log.info("End authenticationing!");

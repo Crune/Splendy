@@ -33,31 +33,8 @@ public class AccountController {
 	@Autowired
 	private UserService userServ;
 	
-	
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
-
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index(HttpSession session) {
-		if ((UserCore) session.getAttribute("user") != null) {
-			return "redirect:/lobby/";
-		} else {
-			return "index";
-		}
-	}
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String indexWithMsg(@RequestParam("msg") String msg, Model model, HttpSession session) {
-		/*if ((UserCore) session.getAttribute("user") != null) {
-			return "redirect:/lobby/";
-		} else*/ {
-			if(msg == null){
-				msg = "";
-			}
-			model.addAttribute(msg);
-			return "index";
-		}
-	}
 
 	@RequestMapping(value = "/user/requestJoin", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody int requestJoin(@ModelAttribute("joinForm") UserCore user, HttpServletRequest request) {
@@ -100,10 +77,7 @@ public class AccountController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(
-			value = "/user/send_pw",
-			method = RequestMethod.POST,
-			produces = "application/json")
+	@RequestMapping(value = "/user/send_pw", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody int send_pw(@RequestParam("email") String email) {
 		
 		int result_pw = -1;
@@ -119,7 +93,7 @@ public class AccountController {
 	}
 	
 	@RequestMapping( value = "/user/login_suc", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
-	public @ResponseBody String login_suc( Authentication authentication, @ModelAttribute("loginForm") UserCore user0, HttpSession session) {
+	public @ResponseBody String login_suc(Authentication authentication, @ModelAttribute("loginForm") UserCore user0, HttpSession session) {
 				
 		int isSameAccountInfo = -1;
 		int isAlreadyCredent = -1;
