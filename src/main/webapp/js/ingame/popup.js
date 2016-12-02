@@ -139,20 +139,33 @@ Example.Modal.prototype = {
 })(jQuery);
 
 $(document).ready(function() {
-	var myModal = new Example.Modal({
-	    id: "modal" // 모달창 아이디 지정
+	var coinModal = new Example.Modal({
+		id: "coin_modal"
 	});
-
+	var cardModal = new Example.Modal({
+	    id: "card_modal" // 모달창 아이디 지정
+	});
+	
+	$(".cn").click(function(){
+		coinModal.show();
+		setControll(false);
+	});
+	$("#coin_confirm_btn").click(function(){
+		setControll(true);
+		coinModal.hide();
+	});
+	
 	// 모달 창 여는 버튼에 이벤트 걸기
 	$("#modal_btn").click(function() {
-	    myModal.show(); // 모달창 보여주기
-	    //setControll(false);
+		cardModal.show(); // 모달창 보여주기
+	    setControll(false);
 	});
 	
 	// 모달 창 안에 있는 확인 버튼에 이벤트 걸기
 	$("#confirm_button").click(function() {
 	    alert("나는 모달창이다.");
-	    myModal.hide(); // 모달창 감추기
+	    setControll(true);
+	    cardModal.hide(); // 모달창 감추기
 	});
 });
 
