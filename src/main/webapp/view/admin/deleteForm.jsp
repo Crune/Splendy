@@ -60,6 +60,7 @@
 				<h1 class="page-header">잔여 데이터 관리</h1>
 				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#msgModal"> Message 정리 </button>
 				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#roomModal"> Room 정리 </button>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#connModal"> Player 정리 </button>
 			</div>
 		</div>
 	</div>
@@ -141,6 +142,60 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="connModal" tabindex="-1" role="dialog" aria-labelledby="connModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="connModalLabel">접속자 현황</h4>
+			</div>
+			<div class="modal-body">
+					<form id="connForm" name="connForm" method="post" >
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th colspan="3">실제 접속자</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td> uid </td>
+									<td> nick </td>
+									<td> room </td>
+								</tr>
+								<c:forEach var="player" items="${player}">
+									<tr>
+										<td> ${player.uid} <input type="hidden" id="connectID" name="connectID" value="${player.uid}" /> </td>
+										<td> ${player.nick} </td>
+										<td> ${player.room} </td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>기록상 접속자</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="connect" items="${connect}">
+									<tr>
+										<td> ${connect} <input type="hidden" id="recordID" name="recordID" value="${connect}" /> </td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</form>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" id="btn_delete" name="btn_delete" class="btn btn-default btn_delete_player" value="삭제" />
+				<button type="button" class="btn btn-default btn_modal_close" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 window.onload = function(){
 	$("#msg-all").click( function () {
@@ -163,12 +218,26 @@ window.onload = function(){
 		}
 	});
 	
+	$("#player-all").click( function () {
+		$(".player-box").prop( 'checked', this.checked );
+	});
+
+	$('.player-box').on( 'change', function(){
+		if(!this.checked){
+			$('#player-all').prop('checked', false);
+		}
+	});
+	
 	$(".btn_delete_msg").on('click', function () {
 		deleteMsg();
 	});
 	
 	$(".btn_delete_room").on('click', function () {
 		closeRoom();
+	});
+	
+	$(".btn_delete_player").on('click', function () {
+		deletePlayer();
 	});
 }
 
@@ -206,6 +275,22 @@ jQuery.ajaxSettings.traditional = true;
         		alert("선택된 항목이 없습니다.");
         	}
         	console.log("close room end");
+        	window.location.reload();
+        },error:function(request,status,error){
+		}
+    })
+}
+
+function deletePlayer() {
+	console.log("delete player start");
+jQuery.ajaxSettings.traditional = true;
+	$.ajax({
+        url:'/admin/player_delete',
+        type:'post',
+        data:$("#connForm").serialize(),
+        success:function(){
+        	alert("성공");
+        	console.log("delete player end");
         	window.location.reload();
         },error:function(request,status,error){
 		}

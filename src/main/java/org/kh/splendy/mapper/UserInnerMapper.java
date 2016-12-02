@@ -131,4 +131,10 @@ public interface UserInnerMapper {
 
 	@Select("SELECT "+TABLE+".U_WS_ID FROM "+TABLE+" WHERE "+TABLE+".U_CONNECT > 0")
 	public List<String> getConnector();
+	
+	@Select("SELECT "+TABLE+".U_ID FROM "+TABLE+" WHERE "+TABLE+".U_CONNECT > 0 order by "+TABLE+".U_ID asc")
+	public List<Integer> getUserRecord();
+	
+	@Update("update "+TABLE+" set U_CONNECT=0 where "+KEY+"=#{id} ")
+	public void userDisconnect(int id);
 }
