@@ -36,6 +36,7 @@ public class RoomProtocol extends ProtocolHelper {
         List<Room> rooms = roomServ.readList();
         if (rid > 1 && rid(head) == rid) {
             GameRoom room = game.getRoom(rid);
+            game.refreshComponents(rid);
             sock.send(sender, "room", "current", room);
         } else {
             sock.send(sender, "room", "prev", rooms);

@@ -5,16 +5,14 @@ var cardChange;
 var coinChange;
 
 function onComp() {
+    load_card();
 
     compPriv = stompClient.subscribe('/comp/private/'+uid, comp_priv);
 
     cardChange = stompClient.subscribe('/comp/card/'+rid, card_change);
     coinChange = stompClient.subscribe('/comp/coin/'+rid, coin_change);
 
-    send('comp/join/'+rid, '');
-    send('comp/cards', '');
     comp_refresh();
-
 }
 
 function comp_refresh() {
@@ -40,7 +38,6 @@ function comp_priv(evt) {
     var cont = msg.cont;
 
     if (type == 'card') {
-        card_prev(cont);
     }
     comp_refresh();
 }
@@ -49,13 +46,6 @@ var comp = {};
 comp.card = {};
 comp.cards = {};
 comp.coins = {};
-
-function card_prev(data) {
-    for (var i = 0, card; card = data[i]; i++) {
-        comp.card[card.cd_id] = card;
-    }
-    isReadPrevComp = true;
-}
 
 function card_change(evt) {
     var cards = JSON.parse(evt.body);

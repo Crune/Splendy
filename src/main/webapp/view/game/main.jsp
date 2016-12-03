@@ -179,12 +179,16 @@
 	<script type='text/javascript' src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 	
 	<script type="text/javascript" src="/js/default.js"></script>
+
+	<script type="text/javascript" src="/js/ingame/cards.js"></script>
+	<script type='text/javascript' src="/js/ingame/popup.js"></script>
+
 	<script type="text/javascript" src="/js/sock.js"></script>
 	<script type='text/javascript' src="/js/ingame/starter.js"></script>
+
 	<script type='text/javascript' src="/js/ingame/onchat.js"></script>
 	<script type='text/javascript' src="/js/ingame/oncomp.js"></script>
 	<script type='text/javascript' src="/js/ingame/onplayer.js"></script>
 	<script type='text/javascript' src="/js/ingame/onroom.js"></script>
-	<script type='text/javascript' src="/js/ingame/popup.js"></script>
 </scripts>
 </html>
