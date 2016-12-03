@@ -5,6 +5,7 @@ import org.kh.splendy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,24 +110,30 @@ public class GameServiceImpl implements GameService {
         }
 
         // 인원수가 충족되면 게임 시작!
-        if (rooms.get(rid).getLimit() == newPlayers.size()) {
-            startingGame(rid);
+        if (rooms.get(rid).getLimit() == newPlayers.size() && rooms.get(rid).getTurn() < 1) {
+            try {
+                startGame(rid);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void startGame(int rid) throws InterruptedException {
+        if (rid>0) {
+            roomMap.setStart(rid, new Date(System.currentTimeMillis()));
+            sock.sendRoom(rid, "start", "게임 시작!");
+            comp.startPresent(rid);
+
+            int nextActor = rooms.get(rid).nextActor();
+            sock.sendRoom(rid, "actor", nextActor);
         }
     }
 
     @Override
     public void refreshComponents(int rid) {
-        rooms.get(rid).getCards().addAll(compMap.getCards(rid));
-        rooms.get(rid).getCoins().addAll(compMap.getCoins(rid));
-    }
-
-    private void startingGame(int rid) {
-        roomMap.setStart(rid, new Date(System.currentTimeMillis()));
-        sock.sendRoom(rid, "start", "게임 시작!");
-        comp.startPresent(rid);
-
-        int nextActor = rooms.get(rid).nextActor();
-        sock.sendRoom(rid, "actor", nextActor);
+        rooms.get(rid).setCards(compMap.getCards(rid));
+        rooms.get(rid).setCoins(compMap.getCoins(rid));
     }
 
     @Override @Transactional

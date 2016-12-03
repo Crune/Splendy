@@ -72,10 +72,15 @@ public class CompProtocol extends ProtocolHelper {
         UserCore sender = sender(head);
 
         if (rid(head) == rid && isCanActing(rid, sender.getId())) {
-            if (reqCard.getCd_id() == 0) {
+            boolean isFromDeck = (reqCard.getCd_id() == 0);
+            boolean isFromField = false;
+            if (isFromDeck) {
                 compServ.holdByDeck(sender.getId(), rid, compServ.getCard(reqCard.getCd_id()).getLv());
-                sendNext(rid(head));
-            } else if (compServ.reqPickCard(reqCard, sender.getId(), rid)) {
+            } else {
+                isFromField = compServ.reqPickCard(reqCard, sender.getId(), rid);
+            }
+            if (isFromDeck || isFromField ) {
+                game.refreshComponents(rid);
                 sendNext(rid(head));
             }
         }
@@ -91,6 +96,7 @@ public class CompProtocol extends ProtocolHelper {
 
         if (rid(head) == rid && isCanActing(rid, sender.getId())) {
             if (compServ.reqPickCoin(req, draw, sender.getId(), rid)) {
+                game.refreshComponents(rid);
                 sendNext(rid(head));
             }
         }
