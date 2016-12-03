@@ -19,7 +19,7 @@ public interface BoardService {
 
 	Article getDetail(int at_id) throws Exception;
 	
-	int boardCount() throws Exception;
+	int boardCount(int bd_id) throws Exception;
 	
 	void writePro(@ModelAttribute("article") Article article) throws Exception;
 	
@@ -36,6 +36,8 @@ public interface BoardService {
 	void insertReply(@ModelAttribute("comment") Comment comment) throws Exception;
 	
 	void updateReply(@ModelAttribute("comment") Comment comment) throws Exception;
+	
+	void deleteReply(int re_id) throws Exception;
 	
 	List<Comment> replyList(int at_id) throws Exception;
 	

@@ -5,13 +5,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<%@ include file="/view/board/include/boardinclude.jspf"%>
 	<title>게시판</title>
 </head>
   
   <body>
   	<table width="600" border="0" cellspacing="0" cellpadding="2">
   		<tr>
-  			<td align="center"><h2>게시판</h2></td>
+  		<c:if test="${bd_id == 1}">
+  			<td align="center"><h2>공지 게시판</h2></td>
+  		</c:if>
+  		<c:if test="${bd_id == 2}">
+  			<td align="center"><h2>자유 게시판</h2></td>
+  		</c:if>
+  		<c:if test="${bd_id == 3}">
+  			<td align="center"><h2>QnA 게시판</h2></td>
+  		</c:if>
   		</tr>
   		<tr>
   			<td height="20"></td>
@@ -34,7 +43,7 @@
 	      <c:forEach var="article" items="${article}">
 	      	<tr bgcolor="#FFFFFF"  align="center">
         		<td>${article.at_id}</td>
-        		<td align="left"> &nbsp;<a href="http://localhost/board/view?at_id=${article.at_id}&bd_id=${bd_id}&currentPage=${currentPage}">${article.at_subject}</a></td>
+        		<td align="left"> &nbsp;<a href="/board/view?bd_id=${bd_id}&at_id=${article.at_id}">${article.at_subject}</a></td>
         		<td align="center">${article.u_id}</td>
 				<td align="center"><fmt:formatDate value="${article.at_reg_date}" type="date"/></td>
         		<td>${article.at_readcount}</td>
@@ -59,9 +68,10 @@
     	
     	  <tr align="right">
     		<td colspan="5">
-    		<input type="button" value="글쓰기" class="input" onClick="javascript:location.href='http://localhost/board/writeForm?currentPage=${currentPage}&bd_id=${bd_id}';">
+    		<input type="button" value="글쓰기" class="input" onClick="javascript:location.href='/board/writeForm?bd_id=${bd_id}';">
 		    </td>
     	  </tr>
+    	  <input type="hidden" name="bd_id" value="${bd_id}" />
 	</table>
    </body>
 </html>

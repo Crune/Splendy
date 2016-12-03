@@ -1,5 +1,5 @@
-package org.kh.splendy.controller;
-
+/*package org.kh.splendy.controller;
+  
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/** TODO 찬우.게시판: 컨트롤러 구현
- * @author 찬우 */
+*//** TODO 찬우.게시판: 컨트롤러 구현
+ * @author 찬우 *//*
 @Controller
 
 @RequestMapping("bbs")
@@ -35,9 +35,9 @@ public class BoardController {
 	private BoardService boardServ;
 	
 	//@ModelAttribute("article")
-	/** 뷰어(JSP)에서 article을 요청했을때 선언되지 않을 경우 반환할 값
-	 * @return 게시글 읽기 실패했다는 id가 -1인 결과를 반환 */
-	/*
+	*//** 뷰어(JSP)에서 article을 요청했을때 선언되지 않을 경우 반환할 값
+	 * @return 게시글 읽기 실패했다는 id가 -1인 결과를 반환 *//*
+	
 	public Article article() {
 		Article article = new Article();
 		article.setAt_id(-1);
@@ -45,19 +45,19 @@ public class BoardController {
 		article.setAt_subject("게시글 읽기 실패");
 		article.setAt_content("게시글 읽기에 실패하였습니다.");
 		return null;
-	}*/
+	}
 	
 	
 	
 	@RequestMapping(value = "/list", method = {RequestMethod.GET,RequestMethod.POST})
-	/** 게시글 목록
+	*//** 게시글 목록
 	 * @param bName 게시판이름
-	 * @return	해당 게시판의 게시글 목록 화면 */
+	 * @return	해당 게시판의 게시글 목록 화면 *//*
 	public String list(@RequestParam("pageNum")String pageNum, @RequestParam String bName, Model model,HttpServletRequest request) throws Exception{
-		/** TODO 찬우.게시판: 게시글 목록 구현
+		*//** TODO 찬우.게시판: 게시글 목록 구현
 		 * - 게시판 이름으로 접속 가능하도록 구현
 		 * - bName이 설정되어 있지 않을경우 default로 설정
-		 */
+		 *//*
 		
 		String boardName = "default";
 		if (bName==null) {			
@@ -78,14 +78,14 @@ public class BoardController {
 		int count =0;
         List<Article> article = null;
          
-        count = boardServ.boardCount();
+        count = boardServ.boardCount(Integer.parseInt(bd_id));
    
 	    HashMap map = new HashMap();
 	    map.put("start", startRow);
 	    map.put("end", endRow);
 	
         if (count > 0) {
-            /*article = boardServ.getList(bName);*/
+            article = boardServ.getList(bName);
         } else {
         	article = Collections.EMPTY_LIST;
         }
@@ -107,14 +107,14 @@ public class BoardController {
 	
 
 	@RequestMapping(value = "/view")
-	/** 게시글 보기
+	*//** 게시글 보기
 	 * @param aId 게시글 번호
-	 * @return 해당 게시글의 내용보기 화면 */
+	 * @return 해당 게시글의 내용보기 화면 *//*
 	public String view(@RequestParam int at_id, Model model) throws Exception {
-		/** TODO 찬우.게시판: 게시글 보기 구현
+		*//** TODO 찬우.게시판: 게시글 보기 구현
 		 * - 사용자가 작성한 글이 아니고 해당 사용자가 처음 보는 글이라면 읽기 횟수가 증가해야 함
 		 * - 목록으로 돌아가기엔 해당 게시판이름에 해당하는 목록의 해당 글이 있는 페이지가 보여야 함
-		 */
+		 *//*
 		
 		Article article = boardServ.getDetail(at_id);
 		
@@ -131,13 +131,13 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/mod", method = {RequestMethod.GET,RequestMethod.POST})
-	/** 게시글 수정
+	*//** 게시글 수정
 	 * @param aId
-	 * @return 글쓰기 화면에 해당 게시글 내용이 채워져 있는 화면 */
+	 * @return 글쓰기 화면에 해당 게시글 내용이 채워져 있는 화면 *//*
 	public String modify(@RequestParam int at_id,@RequestParam String bName,RedirectAttributes rttr,Model model) throws Exception {
-		/** TODO 찬우.게시판: 게시글 수정 구현
+		*//** TODO 찬우.게시판: 게시글 수정 구현
 		 * - 게시글 쓰기 화면으로 리다이렉트 하되 글쓰기 내용이 채워져 있어야 함.
-		 */
+		 *//*
 			
 	
 		Article article = boardServ.getDetail(at_id);	
@@ -149,12 +149,12 @@ public class BoardController {
 	}
 
 	@RequestMapping(value ="/write")
-	/** 게시글 쓰기
+	*//** 게시글 쓰기
 	 * @param bName 게시판이름
-	 * @return 글쓰기 화면 */
+	 * @return 글쓰기 화면 *//*
 	public String write(@RequestParam String bName,RedirectAttributes rttr) {
 		
-		/*	
+			
 		int at_id=0,reply=1,at_re_step=0,at_re_level=0;  
        
 		  try{  
@@ -171,7 +171,7 @@ public class BoardController {
 	        request.setAttribute("ref", new Integer(reply));
 	        request.setAttribute("re_step", new Integer(at_re_step));
 	        request.setAttribute("re_level", new Integer(at_re_level));	       
-	       */
+	       
 		rttr.addFlashAttribute("pageNum", 1);
 		rttr.addFlashAttribute("bName", "1");
 		
@@ -180,9 +180,9 @@ public class BoardController {
 	
 
 	@RequestMapping(value = "/writePro", method = RequestMethod.POST)
-	/** 게시글 쓰기
+	*//** 게시글 쓰기
 	 * @param bName 게시판이름
-	 * @return 글쓰기 화면 */
+	 * @return 글쓰기 화면 *//*
 	public String writePro(@ModelAttribute("article") Article article, @RequestParam String bName,
 						   RedirectAttributes rttr)throws Exception{
 				
@@ -196,13 +196,13 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/deletePro", method = {RequestMethod.GET,RequestMethod.POST})
-	/** 게시글 삭제
+	*//** 게시글 삭제
 	 * @param bName 게시판이름
-	 * @return 글삭제 확인 화면 */
+	 * @return 글삭제 확인 화면 *//*
 	public String delete(@RequestParam int at_id, RedirectAttributes rttr) throws Exception {
-		/** TODO 찬우.게시판: 게시글 삭제 구현
+		*//** TODO 찬우.게시판: 게시글 삭제 구현
 		 * - 삭제 후 해당 글이 있던 게시판의 목록화면으로 리다이렉트
-		 */		
+		 *//*		
 		boardServ.deleteBoard(at_id);
 		
 		rttr.addFlashAttribute("bName","1"); // 해당 게시글의 게시판 읽어와서 설정 요망
@@ -225,3 +225,4 @@ public class BoardController {
     }   
     
 }
+*/

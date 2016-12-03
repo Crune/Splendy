@@ -113,6 +113,15 @@ window.onload = function(){
 		$("#rank_modal").modal('show');
 	});
 	
+	$("#board").click(function(){
+		document.location.href='/board/list?bd_id=2';
+	});
+	
+	$("#notice").click(function(){
+		document.location.href='/board/list?bd_id=1';
+	});
+	
+	
 }
 function facebookLogout(){
     FB.getLoginStatus(function(response) {
@@ -124,7 +133,7 @@ function facebookLogout(){
 }
 
 function googleLogout(){
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost/user/logout";
+	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://spd.cu.cc/user/logout";
 }
 
 function modifyRequest() {

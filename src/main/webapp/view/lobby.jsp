@@ -104,9 +104,9 @@
                 <sec:authorize access="hasAuthority('admin')">
                     <button type="button" onclick="window.location='/admin/index'" class="btn btn-default btn-xs">관리자</button>
                 </sec:authorize>
-                <button type="button" class="btn btn-default btn-xs">공지사항</button>
+                <button type="button" class="btn btn-default btn-xs" id="notice">공지사항</button>
                 <button type="button" class="btn btn-default btn-xs" id="btn_rank">TOP 20 Player</button>
-                <button type="button" class="btn btn-default btn-xs">자유게시판</button>
+                <button type="button" class="btn btn-default btn-xs" id="board">자유게시판</button>
 
                 <button type="button" class="btn btn-default btn-xs" id="btn_modify">정보수정</button>
                 <button type="button" class="btn btn-default btn-xs" id="btn_logout" data-onsuccess="onSignOut">로그아웃</button>

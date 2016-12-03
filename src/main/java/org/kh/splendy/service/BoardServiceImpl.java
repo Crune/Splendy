@@ -43,8 +43,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public int boardCount() throws Exception {
-		int result = boardMap.boardCount();
+	public int boardCount(int bd_id) throws Exception {
+		int result = boardMap.boardCount(bd_id);
 		return result;
 	}
 
@@ -105,6 +105,12 @@ public class BoardServiceImpl implements BoardService {
 	public List<Comment> replyList(int at_id) throws Exception {
 		List<Comment> comment = boardMap.replyList(at_id);
 		return comment;
+	}
+
+	@Override
+	public void deleteReply(int re_id) throws Exception {
+		boardMap.deleteReply(re_id);
+		
 	}
 
 

@@ -72,8 +72,8 @@ public interface BoardMapper {
 			@Result(property = "at_category", column = "AT_CATEGORY"),			
 		})
 */
-		@Select("select count(*) from KH_ARTICLE")
-		public int boardCount() throws Exception;		
+		@Select("select count(*) from KH_ARTICLE where bd_id= #{bd_id}")
+		public int boardCount(int bd_id) throws Exception;		
 		
 		@Update("update KH_ARTICLE set AT_RE_STEP=AT_RE_LEVEL+1 where AT_REPLY= #{reply} and AT_RE_STEP> #{re_step}")
 		public void reply(HashMap<String, String> map) throws Exception;
@@ -95,6 +95,9 @@ public interface BoardMapper {
 		public void insertReply(@ModelAttribute("comment") Comment comment) throws Exception;
 		
 		public void updateReply(@ModelAttribute("comment") Comment comment) throws Exception;
+		
+		@Delete("DELETE KH_COMMENT WHERE RE_ID = #{RE_ID}")
+		public void deleteReply(int re_id) throws Exception;
 		
 		public List<Comment> replyList(int at_id) throws Exception;
 		

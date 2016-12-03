@@ -30,7 +30,9 @@
 	<select id="getDetail" parameterType="org.kh.splendy.vo.Article" resultMap="BoardVO">
     <![CDATA[
         SELECT
-            AT_ID,          
+            AT_ID,
+            U_ID,
+            BD_ID,          
             AT_REG_DATE,
             AT_SUBJECT,
             AT_CONTENT,
@@ -45,11 +47,11 @@
 	<insert id="writePro" parameterType="org.kh.splendy.vo.Article">
 	<![CDATA[		
 		INSERT INTO KH_ARTICLE(
-			AT_ID,BD_ID, AT_SUBJECT, AT_PASS,
+			AT_ID, BD_ID, U_ID, AT_SUBJECT, AT_PASS,
 			AT_CONTENT, AT_IP, AT_READCOUNT,
 			AT_REG_DATE)
 		VALUES(
-			KH_BOARD_SEQ.NEXTVAL,1, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR}, 
+			KH_BOARD_SEQ.NEXTVAL, #{bd_id}, #{u_id}, #{at_subject, jdbcType=VARCHAR}, #{at_pass, jdbcType=VARCHAR}, 
 			#{at_content, jdbcType=VARCHAR}, #{at_ip, jdbcType=VARCHAR},
 			#{at_readcount, jdbcType=INTEGER}, SYSDATE
 		)
@@ -110,7 +112,8 @@
         FROM
             KH_COMMENT
         WHERE
-            AT_ID = #{at_id}        
+            AT_ID = #{at_id} 
+        ORDER BY RE_ID ASC       
     ]]>
 	</select> 
 	 

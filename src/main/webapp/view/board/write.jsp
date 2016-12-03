@@ -3,9 +3,10 @@
 <html lang="ko">
 <head>
 <%@ include file="/view/board/include/boardinclude.jspf" %>
+	<title>Splendy - 환영합니다!</title>
 </head>
 <body>
-    <form id="frm"> 
+    <form id="articleForm"> 
         <c:if test="${article == null}">
         <table class="board_view">
             <colgroup>
@@ -16,15 +17,15 @@
             <tbody>
                 <tr>
                     <th scope="row">제목</th>
-                    <td><input type="text" id="at_subject" name="at_subject" class="wdp_90"></input>
-                                       	 
+                    <td><input type="text" id="at_subject" name="at_subject" class="wdp_90"></input>         	 
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" class="view_text">
                         <textarea rows="20" cols="100" title="내용" id="at_content" name="at_content"></textarea>
                     </td>
-                   
+                <input type="hidden" name="u_id" value="${sessionScope.user.id}" />   
+                <input type="hidden" name="bd_id" value="${bd_id}" /> 
                 </tr>
             </tbody>
         </table>
@@ -49,19 +50,19 @@
                     <td colspan="2" class="view_text">
                         <textarea rows="20" cols="100" title="내용" id="at_content" name="at_content">${article.at_content }</textarea>
                     </td>
-        			<input type="hidden" name="at_id" value="${article.at_id}">			           
+        			<input type="hidden" name="at_id" value="${article.at_id}" />
+        			<input type="hidden" name="bd_id" value="${bd_id}" />			           
                 </tr>
             </tbody>
         </table>
-        </c:if>  
+        </c:if>
      </form>
         <a href="#this" class="btn" id="write" >작성하기</a>
-        
         <a href="#this" class="btn" id="list" >목록으로</a>      
        
  
      
-    <%@ include file="/view/board/include/boardinclude.jspf" %>
+    
     <script type="text/javascript">
     $(document).ready(function(){
         $("#list").on("click", function(e){ //목록으로 버튼
@@ -76,14 +77,15 @@
     });
      
     function fn_openBoardList(){
-        var comSubmit = new ComSubmit("frm");
-        comSubmit.setUrl("<c:url value='/bbs/list?pageNum=1&bName=1' />");
+        var comSubmit = new ComSubmit("articleForm");
+        comSubmit.setUrl("<c:url value='/board/list' />");
+        comSubmit.addParam("bd_id", $("#bd_id").val());
         comSubmit.submit();
     }
      
     function fn_insertBoard(){
-        var comSubmit = new ComSubmit("frm");
-        comSubmit.setUrl("<c:url value='/bbs/writePro?bName=1' />");        
+        var comSubmit = new ComSubmit("articleForm");
+        comSubmit.setUrl("<c:url value='/board/write' />");
         comSubmit.submit();
     }
 </script>
