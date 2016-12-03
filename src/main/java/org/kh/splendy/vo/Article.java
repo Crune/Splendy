@@ -15,4 +15,5 @@ public class Article {
     private int at_readcount;
     private String at_ip;
     private String at_category;
+    private String nick;
 }

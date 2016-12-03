@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.kh.splendy.service.BoardService;
 import org.kh.splendy.vo.Article;
 import org.kh.splendy.vo.Comment;
+import org.kh.splendy.vo.UserCore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -129,6 +130,8 @@ public class BoardController2 {
         
 		number = totalCount-(currentPage-1)*blockCount;//글목록에 표시할 글번호
         //해당 뷰에서 사용할 속성
+		
+		
 		request.setAttribute("currentPage", currentPage);
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("blockCount", blockCount);

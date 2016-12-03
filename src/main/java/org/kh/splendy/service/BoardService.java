@@ -40,6 +40,7 @@ public interface BoardService {
 	void deleteReply(int re_id) throws Exception;
 	
 	List<Comment> replyList(int at_id) throws Exception;
+
 	
 }
 

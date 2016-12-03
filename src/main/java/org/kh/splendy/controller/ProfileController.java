@@ -50,25 +50,4 @@ public class ProfileController {
 		}
 		return icon;
 	}
-	/*
-	@RequestMapping("/rank")
-	public String rank(Model model){
-		List<UserProfile> profList = profServ.getProfAll();
-		for(int i = 0; i < profList.size(); i++){
-			int id = profList.get(i).getUserId();
-			UserCore user = userServ.selectOne(id);
-			String nickname = user.getNickname();
-			profList.get(i).setNickname(nickname);
-
-			int win = profList.get(i).getWin();
-			int lose = profList.get(i).getLose();
-			int rate = profList.get(i).getRate();
-			
-			int correctRate = (rate + (win*20) - (lose*20));
-			profServ.updateRate(id, correctRate);
-			profList.get(i).setRate(correctRate);
-		}
-		model.addAttribute("profList", profList);
-		return "lobby";
-	}*/
 }

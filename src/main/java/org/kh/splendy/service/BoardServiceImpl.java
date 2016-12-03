@@ -8,8 +8,10 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.kh.splendy.mapper.ArticleMapper;
 import org.kh.splendy.mapper.BoardMapper;
+import org.kh.splendy.mapper.UserMapper;
 import org.kh.splendy.vo.Article;
 import org.kh.splendy.vo.Comment;
+import org.kh.splendy.vo.UserCore;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -29,6 +31,9 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 	private ArticleMapper articleMap;
+	
+	@Autowired
+	private UserMapper userMap;
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(BoardServiceImpl.class);
@@ -39,6 +44,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<Article> getList(int bd_id) throws Exception {
 		List<Article> article = boardMap.getList(bd_id);
+	
+		for(int i = 0; i < article.size(); i++){
+			UserCore user = userMap.read(article.get(i).getU_id());
+			article.get(i).setNick(user.getNickname());
+		}
 		return article;
 	}
 	
@@ -69,6 +79,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Article getDetail(int at_id) throws Exception {
 		Article article = boardMap.getDetail(at_id);
+		UserCore user = userMap.read(article.getU_id());
+		article.setNick(user.getNickname());
 		return article;
 	}
 
@@ -112,6 +124,8 @@ public class BoardServiceImpl implements BoardService {
 		boardMap.deleteReply(re_id);
 		
 	}
+	
+	
 
 
 }

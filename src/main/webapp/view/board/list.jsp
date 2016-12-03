@@ -44,7 +44,7 @@
 	      	<tr bgcolor="#FFFFFF"  align="center">
         		<td>${article.at_id}</td>
         		<td align="left"> &nbsp;<a href="/board/view?bd_id=${bd_id}&at_id=${article.at_id}">${article.at_subject}</a></td>
-        		<td align="center">${article.u_id}</td>
+        		<td align="center">${article.nick}</td>
 				<td align="center"><fmt:formatDate value="${article.at_reg_date}" type="date"/></td>
         		<td>${article.at_readcount}</td>
       	    </tr>

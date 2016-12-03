@@ -27,7 +27,7 @@
 	            </tr>
 	            <tr>
 	                <th scope="row">작성자</th>
-	            	<td>${article.u_id }</td>
+	            	<td>${article.nick }</td>
 	                <th scope="row">작성시간</th>
 	                <td><fmt:formatDate value="${article.at_reg_date}" type="date"/></td>
 	            </tr>
