@@ -8,9 +8,14 @@ function wrapWindowByMask() {
 		'height' : maskHeight
 	});
 
-	$('#mask').fadeTo("slow", 0.8);
-
-	$('.window').show();
+	if (true) {
+        $('#mask').fadeTo("slow", 0.8);
+        $('.window').show();
+    } else {
+        $('#mask').fadeTo("slow", 0.0);
+        $('#mask').hide();
+        $('.window').hide();
+	}
 }
 
 function setControll(boolVar) {

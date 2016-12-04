@@ -5,10 +5,6 @@ spring:
         view:
             prefix: /view/
             suffix: .jsp
-    social: 
-        facebook: 
-            appId: 1687598368235887
-            appSecret: 6cedf9fad691b370013d001c793907c4
 
     # DB를 사용하기 위한 설정
     datasource:
@@ -27,7 +23,6 @@ spring:
             
 
     # wabjar 버전생략 locator를 위한 설정
-    # ..인데 왜 안될까
     resources.chain.enabled: true
     
     # HTTP encoding (HttpEncodingProperties)
@@ -36,14 +31,6 @@ spring:
             charset: UTF-8
             enabled: true
             force: true
-    
-    # MULTIPART (MultipartProperties)
-        multipart:
-            enabled: true
-            file-size-threshold: 500MB
-            max-file-size: 5Mb
-            max-request-size: 10Mb
-            resolve-lazily: false
             
 #Spring Boot App 시작 포트 설정
 server.port: 80

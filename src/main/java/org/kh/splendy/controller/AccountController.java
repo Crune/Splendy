@@ -73,7 +73,7 @@ public class AccountController {
 			e.printStackTrace();
 		}
 		
-		rttr.addFlashAttribute("msg","이메일 인증을 완료하였습니다."); // 해당 게시글의 게시판 읽어와서 설정 요망
+		rttr.addFlashAttribute("msg","이메일 인증을 완료하였습니다."); // 메시지 전달
 		return "redirect:/";
 	}
 

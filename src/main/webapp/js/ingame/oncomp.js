@@ -52,10 +52,35 @@ function card_change(evt) {
     card_changing(cards);
 }
 function card_changing(data) {
+    var toUserList = {}
+    var toFieldList = {}
     for (var i=0, card; card = data[i]; i++) {
-        comp.cards[card.cd_id] = card;
+        if (card.u_id == 0) {
+            toFieldList[toUserList.length] = card;
+        } else {
+            toUserList[toUserList.length] = card;
+        }
+        comp.cards[card.cd_id]["u_id"] = card.u_id;
+        comp.cards[card.cd_id]["n_hold"] = card.n_hold;
     }
-    comp_refresh();
+    card_animate(toUserList, toFieldList);
+}
+function card_animate(to_user, to_field) {
+
+    for (var i=0, card; card = to_user[i]; i++) {
+        $("#card_" + card.cd_id).animate({
+            left: '250px',
+            opacity: '0.5',
+            height: '150px',
+            width: '150px'
+        });
+    }
+}
+
+function setCard(u_id, cd_id, n_hold) {
+    comp.cards[cd_id]["u_id"] = u_id;
+    comp.cards[cd_id]["n_hold"] = n_hold;
+    comp.cards[cd_id]["card"] = comp.card[cd_id];
 }
 
 function coin_change(evt) {
@@ -88,3 +113,4 @@ function setCoin(u_id, cn_id, amount) {
 function proCoin(u_id, cn_id, amount) {
     setCoin(u_id, cn_id, getCoin(u_id, cn_id) + amount);
 }
+

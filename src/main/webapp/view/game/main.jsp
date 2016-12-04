@@ -11,9 +11,11 @@
 	<link rel="stylesheet" href="/css/ingame/main.css">
 	<link rel="stylesheet" href="/css/ingame/chat.css">
 	<link rel="stylesheet" href="/css/ingame/coin_modal.css">
-	<link rel='stylesheet' href='/css/default.css'><!-- 
+	<link rel='stylesheet' href='/css/default.css'>
+	<!--
 	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css' />
-	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap-theme.min.css' /> -->
+	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap-theme.min.css' />
+	-->
 	<style type="text/css">
 		body { _behavior: url(/js/iepngfix.htc) }
 	</style>

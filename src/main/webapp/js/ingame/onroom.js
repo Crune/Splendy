@@ -68,6 +68,9 @@ function room_prev(room) {
     for (var i = 0, coin; coin = room.coins[i]; i++) {
         setCoin(coin.u_id, coin.cn_id, coin.cn_count);
     }
+    for (var i = 0, card; card = room.cards[i]; i++) {
+        setCard(card.u_id, card.cd_id, card.n_hold);
+    }
 
     if (!isReadPrevRoom) {
         isReadPrevRoom = true;
