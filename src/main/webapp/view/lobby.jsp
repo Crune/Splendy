@@ -16,7 +16,7 @@
         body, td, th {
             color: #777777;
             font-family: "나눔고딕";
-            _behavior: url(/js/iepngfix.htc)
+            _behavior: url(/js/etc/iepngfix.htc)
         }
 
         body {

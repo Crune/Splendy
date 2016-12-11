@@ -78,6 +78,9 @@ function card_animate(to_user, to_field) {
 }
 
 function setCard(u_id, cd_id, n_hold) {
+    if (comp.cards[cd_id] == undefined) {
+        comp.cards[cd_id] = {};
+    }
     comp.cards[cd_id]["u_id"] = u_id;
     comp.cards[cd_id]["n_hold"] = n_hold;
     comp.cards[cd_id]["card"] = comp.card[cd_id];

@@ -131,10 +131,14 @@ aside .player .aMid{
     position:relative;
     margin-top:1.5%;
 }
+li#pl_cn6 {
+    margin-right: 12%;
+    margin-left: 2%;
+}
 aside .player .aMid li{
     float:left;
     width:8%;
-    margin-right:10%;
+    margin-right:9%;
 /*    margin-top:1.5%;*/
 }
 aside .player .aMid li img{
@@ -156,19 +160,19 @@ aside .player .aMid li:first-child span{
     left:7%;
 }
 aside .player .aMid li:nth-child(2) span{
-    left:25%;
+    left:27%;
 }
 aside .player .aMid li:nth-child(3) span{
-    left:43%;
+    left:44%;
 }
 aside .player .aMid li:nth-child(4) span{
     left:61%;
 }
 aside .player .aMid li:nth-child(5) span{
-    left:79%;
+    left:78%;
 }
 aside .player .aMid li:nth-child(6) span{
-    left:97%;
+    left:95%;
 }
 
 
@@ -180,13 +184,16 @@ aside .player .aBottom{
     margin:0 auto;
     font-size:22px;
     position:relative;
-    margin-top:1%;
+    margin-top:3%;
 }
 aside .player .aBottom li{
     float:left;
-    width:15%;
+    width:11%;
     height:100%;
     margin-right:6%;
+}
+aside .player .aBottom li:first-child{
+    margin-right:10%;
 }
 aside .player .aBottom li:last-child{
     margin-right:0;
@@ -199,22 +206,30 @@ aside .player .aBottom li span{
 /*    -webkit-text-stroke: 1px black;*/
     text-shadow: -1px -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000;
     position:absolute;
-    top:0;
+    top:30%;
 }
 aside .player .aBottom li:first-child span{
-    left:13%;
+    left:5%;
 }
 aside .player .aBottom li:nth-child(2) span{
-    left:34%;
+    left:26%;
+    top:30%;
 }
 aside .player .aBottom li:nth-child(3) span{
-    left:55%;
+    left:43%;
+    top:30%;
 }
 aside .player .aBottom li:nth-child(4) span{
-    left:76%;
+    left:60%;
+    top:30%;
 }
 aside .player .aBottom li:nth-child(5) span{
-    left:97%;
+    left:77%;
+    top:30%;
+}
+aside .player .aBottom li:last-child span{
+    left:94%;
+    top:30%;
 }
 
 /*각플레이어 박스 상단 마진*/
@@ -459,30 +474,4 @@ footer .chat{
 footer .chat a{
     padding-left:35px;
     background:url(/img/foot_say.png) no-repeat;
-}
-
-
-
-#card_modal {
-	display: none;
-	background : rgba(20,20,12,0.9);
-	position: absolute;
-	top: 300px;
-	left: 200px;
-	width: 20%;
-	height: 30%;
-	padding: 10px;
-	z-Index: 9999;
-}
-
-#coin_modal {
-	display: none;
-	background : rgba(20,20,12,0.9);
-	position: absolute;
-	top: 200px;
-	left: 200px;
-	width: 20%;
-	height: 30%;
-	padding: 10px;
-	z-Index: 9999;
 }

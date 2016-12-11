@@ -1,5 +1,89 @@
 
+div#coin_modal {
+    display: none;
+    background : rgba(0,0,0,0.9);
+    position: absolute;
+    box-shadow: 0 0 20px 0px #525252;
+
+    top: 29%;
+    left: 41%;
+    width: 20%;
+    height: 25%;
+
+    padding: 10px;
+    z-Index: 9999;
+}
+
+.cn_modal {
+    margin-top: 20px;
+    position: relative;
+    float: left;
+}
+
 .cn_modal img{
-	width: 30%;
-	right: 80px;
+    width: 50px;
+    right: 80px;
+    margin-left: 15px;
+}
+
+
+#head_text {
+    font-size: 29px;
+    margin-top: 20px;
+}
+
+.coin_text {
+    position: relative;
+    font-family: "배달의민족 도현";
+    text-align: center;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+
+
+div#card_modal {
+    display: none;
+    background : rgba(0,0,0,0.9);
+    position: absolute;
+    box-shadow: 0 0 20px 0px #525252;
+
+    top: 20%;
+    left: 40%;
+    width: 20%;
+    height: 60%;
+
+    padding: 10px;
+    z-Index: 9999;
+}
+
+
+#card_modal p {
+	font-family: "배달의민족 도현";
+	font-size: 29px;
+	text-align: center;
+	margin-top: 20px;
+}
+
+#card_modal #select_card {
+    margin-left: 10%;
+    width: 80%;
+    margin-top: 5%;
+}
+
+
+#card_modal ul li:first-child {
+    margin-top: 5%;
+    float: left;
+    margin-left: 10%;
+}
+#card_modal ul li:nth-child(2) {
+    margin-top: 5%;
+    float: left;
+    margin-left: 11.5%;
+}
+#card_modal ul li:last-child {
+    margin-top: 5%;
+    float: right;
+    margin-right: 10%;
 }

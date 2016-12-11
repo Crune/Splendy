@@ -17,7 +17,7 @@
 	<link rel='stylesheet' href='/webjars/bootstrap/3.3.4/dist/css/bootstrap-theme.min.css' />
 	-->
 	<style type="text/css">
-		body { _behavior: url(/js/iepngfix.htc) }
+		body { _behavior: url(/js/etc/iepngfix.htc) }
 	</style>
 	
 	<script id="temp_chatmsg" type="text/x-handlebars-template">
@@ -51,11 +51,12 @@
 				<li id="pl{{ order }}_cn5"><img src="/img/purple.png" alt="보라보석"><span>0</span></li>
 			</ul>
 			<ul class="aBottom clearFix">
-				<li id="pl{{ order }}_cd1"><img src="/img/cards/lev1_Black_B4.png" alt="플레이어카드1"><span>5</span></li>
-				<li id="pl{{ order }}_cd2"><img src="/img/cards/lev1_Black_G1R3K1.png" alt="플레이어카드2"><span>4</span></li>
-				<li id="pl{{ order }}_cd3"><img src="/img/cards/lev1_Black_G2R1.png" alt="플레이어카드3"><span>3</span></li>
-				<li id="pl{{ order }}_cd4"><img src="/img/cards/lev1_Black_W1B1G1R1.png" alt="플레이어카드4"><span>2</span></li>
-				<li id="pl{{ order }}_cd5"><img src="/img/cards/lev1_Black_W2G2.png" alt="플레이어카드5"><span>1</span></li>
+				<li id="pl{{ order }}_cd6"><img src="/img/ye.png" alt="플레이어카드6"><span>x0</span></li>
+				<li id="pl{{ order }}_cd1"><img src="/img/wh.png" alt="플레이어카드1"><span>x0</span></li>
+				<li id="pl{{ order }}_cd2"><img src="/img/gr.png" alt="플레이어카드2"><span>x0</span></li>
+				<li id="pl{{ order }}_cd3"><img src="/img/bl.png" alt="플레이어카드3"><span>x0</span></li>
+				<li id="pl{{ order }}_cd4"><img src="/img/re.png" alt="플레이어카드4"><span>x0</span></li>
+				<li id="pl{{ order }}_cd5"><img src="/img/pu.png" alt="플레이어카드5"><span>x0</span></li>
 			</ul>
     </script>
 </head>
@@ -152,20 +153,29 @@
 		<input type="text" id="chat_input" size="74px"/>
 
 		<div id="card_modal">
-			<h3>Test Modal</h3>
-			<p>이 창은 모달창입니다.</p>
-			<button id="confirm_button">확인</button>
+			<p>선택한 카드가 맞습니까?</p>
+			<img id="select_card" src="/img/cards/lev1_White_W1B1G2R1.png">
+			<ul>
+                <li><img src="/img/c_buy.png"></li>
+                <li><img src="/img/c_hold.png"></li>
+                <li><img src="/img/c_esc.png"></li>
+            </ul>
 		</div>
 		
 		<div id="coin_modal">
+            <p class="coin_text" id="head_text">희망 보석 획득량</p>
 			<ul id="#side_modal">
-			<li id="cn_modal_id_1" class="cn_modal"><img src="/img/white.png" alt="하얀메인보석"><span>0</span></li>
-			<li id="cn_modal_id_2" class="cn_modal"><img src="/img/green.png" alt="초록메인보석"><span>0</span></li>
-			<li id="cn_modal_id_3" class="cn_modal"><img src="/img/blue.png" alt="파랑메인보석"><span>0</span></li>
-			<li id="cn_modal_id_4" class="cn_modal"><img src="/img/red.png" alt="빨간메인보석"><span>0</span></li>
-			<li id="cn_modal_id_5" class="cn_modal"><img src="/img/purple.png" alt="보라메인보석"><span>0</span></li>
-		</ul>
-			<button id="coin_confirm_btn">PICK</button>
+                <li id="cn_modal_id_1" class="cn_modal"><img src="/img/white.png" alt="하얀메인보석"><span>0</span></li>
+                <li id="cn_modal_id_2" class="cn_modal"><img src="/img/green.png" alt="초록메인보석"><span>0</span></li>
+                <li id="cn_modal_id_3" class="cn_modal"><img src="/img/blue.png" alt="파랑메인보석"><span>0</span></li>
+                <li id="cn_modal_id_4" class="cn_modal"><img src="/img/red.png" alt="빨간메인보석"><span>0</span></li>
+                <li id="cn_modal_id_5" class="cn_modal"><img src="/img/purple.png" alt="보라메인보석"><span>0</span></li>
+            </ul>
+            <p class="coin_text" style="margin-top: 100px;">전체 보유 보석량이 10개 이하여야 합니다.</p>
+            <ul style="margin-top: 10px;">
+                <li style="float: left; margin-right: 60px; margin-left: 90px;"><img src="/img/c_buy.png"></li>
+                <li style="float: left;"><img id="btn_coin_esc" src="/img/c_esc.png"></li>
+            </ul>
 		</div>
 	</div>
 	<footer class="clearFix">
